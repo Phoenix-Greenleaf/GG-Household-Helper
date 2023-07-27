@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://be574yx4gi08t"]
+
+[node name="Main Menu" type="Control"]
+layout_mode = 3
+anchor_right = 0.702083
+anchor_bottom = 0.617593
+offset_right = 572.0
+offset_bottom = 413.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Background ColorRect" type="ColorRect" parent="."]
+layout_mode = 2
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.133333, 0.266667, 0.188235, 1)
+
+[node name="Main Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="Main VBox" type="VBoxContainer" parent="Main Margin"]
+layout_mode = 2
+
+[node name="Title VBox" type="VBoxContainer" parent="Main Margin/Main VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Main Label" type="Label" parent="Main Margin/Main VBox/Title VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "GG Household Helper"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Secondary Label" type="Label" parent="Main Margin/Main VBox/Title VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "A productivity program"
+horizontal_alignment = 1
+
+[node name="Menu Margin" type="MarginContainer" parent="Main Margin/Main VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 400
+theme_override_constants/margin_right = 400
+
+[node name="Menu VBox" type="VBoxContainer" parent="Main Margin/Main VBox/Menu Margin"]
+layout_mode = 2
+
+[node name="Button Margin" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Button Margin"]
+layout_mode = 2
+
+[node name="Button Margin2" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Button Margin2"]
+layout_mode = 2
+
+[node name="Button Margin3" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Button Margin3"]
+layout_mode = 2
+
+[node name="Button Margin4" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Button Margin4"]
+layout_mode = 2
+
+[node name="Button Margin5" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Button Margin5"]
+layout_mode = 2
+
+[node name="Button Margin6" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Button Margin6"]
+layout_mode = 2
