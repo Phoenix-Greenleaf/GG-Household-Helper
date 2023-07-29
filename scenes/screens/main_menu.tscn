@@ -1,15 +1,16 @@
-[gd_scene format=3 uid="uid://be574yx4gi08t"]
+[gd_scene load_steps=2 format=3 uid="uid://be574yx4gi08t"]
+
+[ext_resource type="Script" path="res://scripts/screens/main_menu.gd" id="1_rl0tp"]
 
 [node name="Main Menu" type="Control"]
 layout_mode = 3
-anchor_right = 0.702083
-anchor_bottom = 0.617593
-offset_right = 572.0
-offset_bottom = 413.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource("1_rl0tp")
 metadata/_edit_use_anchors_ = true
 
 [node name="Background ColorRect" type="ColorRect" parent="."]
@@ -35,19 +36,18 @@ layout_mode = 2
 
 [node name="Title VBox" type="VBoxContainer" parent="Main Margin/Main VBox"]
 layout_mode = 2
-size_flags_vertical = 3
 alignment = 1
 
 [node name="Main Label" type="Label" parent="Main Margin/Main VBox/Title VBox"]
 layout_mode = 2
-size_flags_vertical = 3
+theme_override_font_sizes/font_size = 67
 text = "GG Household Helper"
 horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="Secondary Label" type="Label" parent="Main Margin/Main VBox/Title VBox"]
 layout_mode = 2
-size_flags_vertical = 3
+theme_override_font_sizes/font_size = 35
 text = "A productivity program"
 horizontal_alignment = 1
 
@@ -60,7 +60,7 @@ theme_override_constants/margin_right = 400
 [node name="Menu VBox" type="VBoxContainer" parent="Main Margin/Main VBox/Menu Margin"]
 layout_mode = 2
 
-[node name="Button Margin" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+[node name="Continue Margin" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -68,10 +68,12 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Button Margin"]
+[node name="New Continue Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Continue Margin"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Continue"
 
-[node name="Button Margin2" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+[node name="Metrics Margin" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -79,10 +81,13 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Button Margin2"]
+[node name="Metrics Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Metrics Margin"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 40
+disabled = true
+text = "Metrics"
 
-[node name="Button Margin3" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+[node name="Manage Margin" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -90,10 +95,13 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Button Margin3"]
+[node name="Manage Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Manage Margin"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 40
+disabled = true
+text = "Manage Files"
 
-[node name="Button Margin4" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+[node name="Settings Margin" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -101,10 +109,13 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Button Margin4"]
+[node name="Settings Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Settings Margin"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 40
+disabled = true
+text = "Settings"
 
-[node name="Button Margin5" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+[node name="Help Margin" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -112,10 +123,13 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Button Margin5"]
+[node name="Help Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Help Margin"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 40
+disabled = true
+text = "Help"
 
-[node name="Button Margin6" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+[node name="Exit Margin" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -123,5 +137,15 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Button Margin6"]
+[node name="Exit Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Exit Margin"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Exit"
+
+[node name="Versoning" type="Label" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+layout_mode = 2
+text = "Version 0.nothing.1"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="Main Margin/Main VBox/Menu Margin/Menu VBox/Continue Margin/New Continue Button" to="." method="_on_new_continue_button_pressed"]
+[connection signal="pressed" from="Main Margin/Main VBox/Menu Margin/Menu VBox/Exit Margin/Exit Button" to="." method="_on_exit_button_pressed"]

@@ -1,0 +1,111 @@
+[gd_scene load_steps=2 format=3 uid="uid://dcunatisg8ibr"]
+
+[ext_resource type="Script" path="res://scripts/screens/editor.gd" id="1_4kg36"]
+
+[node name="Editor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_4kg36")
+
+[node name="Background ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.133333, 0.266667, 0.188235, 1)
+
+[node name="Main Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Main HBox" type="HBoxContainer" parent="Main Margin"]
+layout_mode = 2
+
+[node name="Side Menu VBox" type="VBoxContainer" parent="Main Margin/Main HBox"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Menu Button" type="MenuButton" parent="Main Margin/Main HBox/Side Menu VBox"]
+layout_mode = 2
+text = "Menu"
+item_count = 3
+popup/item_0/text = "Main Menu"
+popup/item_0/id = 0
+popup/item_1/text = "Save Files"
+popup/item_1/id = 1
+popup/item_2/text = "Change Logs"
+popup/item_2/id = 2
+
+[node name="Button" type="Button" parent="Main Margin/Main HBox/Side Menu VBox"]
+layout_mode = 2
+text = "Test"
+
+[node name="Button2" type="Button" parent="Main Margin/Main HBox/Side Menu VBox"]
+layout_mode = 2
+text = "Test"
+
+[node name="Button3" type="Button" parent="Main Margin/Main HBox/Side Menu VBox"]
+layout_mode = 2
+text = "Test"
+
+[node name="Button4" type="Button" parent="Main Margin/Main HBox/Side Menu VBox"]
+layout_mode = 2
+text = "Test"
+
+[node name="Button5" type="Button" parent="Main Margin/Main HBox/Side Menu VBox"]
+layout_mode = 2
+text = "Test"
+
+[node name="Button6" type="Button" parent="Main Margin/Main HBox/Side Menu VBox"]
+layout_mode = 2
+text = "Test"
+
+[node name="NonSide VBox" type="VBoxContainer" parent="Main Margin/Main HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Top Menu HBox" type="HBoxContainer" parent="Main Margin/Main HBox/NonSide VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="Button" type="Button" parent="Main Margin/Main HBox/NonSide VBox/Top Menu HBox"]
+layout_mode = 2
+text = "Test"
+
+[node name="Button2" type="Button" parent="Main Margin/Main HBox/NonSide VBox/Top Menu HBox"]
+layout_mode = 2
+text = "Test"
+
+[node name="Button3" type="Button" parent="Main Margin/Main HBox/NonSide VBox/Top Menu HBox"]
+layout_mode = 2
+text = "Test"
+
+[node name="Button4" type="Button" parent="Main Margin/Main HBox/NonSide VBox/Top Menu HBox"]
+layout_mode = 2
+text = "Test"
+
+[node name="Button5" type="Button" parent="Main Margin/Main HBox/NonSide VBox/Top Menu HBox"]
+layout_mode = 2
+text = "Test"
+
+[node name="Button6" type="Button" parent="Main Margin/Main HBox/NonSide VBox/Top Menu HBox"]
+layout_mode = 2
+text = "Test"
+
+[node name="Tree" type="Tree" parent="Main Margin/Main HBox/NonSide VBox"]
+layout_mode = 2
+column_titles_visible = true
