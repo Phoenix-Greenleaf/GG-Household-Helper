@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/screens/main_menu.gd" id="1_rl0tp"]
 
-[node name="Main Menu" type="Control"]
+[node name="MainMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,13 +13,13 @@ size_flags_vertical = 3
 script = ExtResource("1_rl0tp")
 metadata/_edit_use_anchors_ = true
 
-[node name="Background ColorRect" type="ColorRect" parent="."]
+[node name="BackgroundColorRect" type="ColorRect" parent="."]
 layout_mode = 2
 offset_right = 1920.0
 offset_bottom = 1080.0
 color = Color(0.133333, 0.266667, 0.188235, 1)
 
-[node name="Main Margin" type="MarginContainer" parent="."]
+[node name="MainMargin" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,36 +31,36 @@ theme_override_constants/margin_top = 100
 theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 100
 
-[node name="Main VBox" type="VBoxContainer" parent="Main Margin"]
+[node name="MainVBox" type="VBoxContainer" parent="MainMargin"]
 layout_mode = 2
 
-[node name="Title VBox" type="VBoxContainer" parent="Main Margin/Main VBox"]
+[node name="TitleVBox" type="VBoxContainer" parent="MainMargin/MainVBox"]
 layout_mode = 2
 alignment = 1
 
-[node name="Main Label" type="Label" parent="Main Margin/Main VBox/Title VBox"]
+[node name="MainLabel" type="Label" parent="MainMargin/MainVBox/TitleVBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 67
 text = "GG Household Helper"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="Secondary Label" type="Label" parent="Main Margin/Main VBox/Title VBox"]
+[node name="SecondaryLabel" type="Label" parent="MainMargin/MainVBox/TitleVBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 35
 text = "A productivity program"
 horizontal_alignment = 1
 
-[node name="Menu Margin" type="MarginContainer" parent="Main Margin/Main VBox"]
+[node name="MenuMargin" type="MarginContainer" parent="MainMargin/MainVBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 400
 theme_override_constants/margin_right = 400
 
-[node name="Menu VBox" type="VBoxContainer" parent="Main Margin/Main VBox/Menu Margin"]
+[node name="MenuVBox" type="VBoxContainer" parent="MainMargin/MainVBox/MenuMargin"]
 layout_mode = 2
 
-[node name="Continue Margin" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+[node name="ContinueMargin" type="MarginContainer" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -68,12 +68,12 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="New Continue Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Continue Margin"]
+[node name="NewContinueButton" type="Button" parent="MainMargin/MainVBox/MenuMargin/MenuVBox/ContinueMargin"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "Continue"
 
-[node name="Metrics Margin" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+[node name="MetricsMargin" type="MarginContainer" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -81,13 +81,13 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Metrics Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Metrics Margin"]
+[node name="MetricsButton" type="Button" parent="MainMargin/MainVBox/MenuMargin/MenuVBox/MetricsMargin"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 disabled = true
 text = "Metrics"
 
-[node name="Manage Margin" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+[node name="ManageMargin" type="MarginContainer" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -95,13 +95,13 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Manage Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Manage Margin"]
+[node name="ManageButton" type="Button" parent="MainMargin/MainVBox/MenuMargin/MenuVBox/ManageMargin"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 disabled = true
 text = "Manage Files"
 
-[node name="Settings Margin" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+[node name="SettingsMargin" type="MarginContainer" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -109,13 +109,13 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Settings Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Settings Margin"]
+[node name="SettingsButton" type="Button" parent="MainMargin/MainVBox/MenuMargin/MenuVBox/SettingsMargin"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 disabled = true
 text = "Settings"
 
-[node name="Help Margin" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+[node name="HelpMargin" type="MarginContainer" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -123,13 +123,13 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Help Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Help Margin"]
+[node name="HelpButton" type="Button" parent="MainMargin/MainVBox/MenuMargin/MenuVBox/HelpMargin"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 disabled = true
 text = "Help"
 
-[node name="Exit Margin" type="MarginContainer" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+[node name="ExitMargin" type="MarginContainer" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -137,15 +137,15 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Exit Button" type="Button" parent="Main Margin/Main VBox/Menu Margin/Menu VBox/Exit Margin"]
+[node name="ExitButton" type="Button" parent="MainMargin/MainVBox/MenuMargin/MenuVBox/ExitMargin"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "Exit"
 
-[node name="Versoning" type="Label" parent="Main Margin/Main VBox/Menu Margin/Menu VBox"]
+[node name="Versoning" type="Label" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
 layout_mode = 2
 text = "Version 0.nothing.1"
 horizontal_alignment = 1
 
-[connection signal="pressed" from="Main Margin/Main VBox/Menu Margin/Menu VBox/Continue Margin/New Continue Button" to="." method="_on_new_continue_button_pressed"]
-[connection signal="pressed" from="Main Margin/Main VBox/Menu Margin/Menu VBox/Exit Margin/Exit Button" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/MenuMargin/MenuVBox/ContinueMargin/NewContinueButton" to="." method="_on_new_continue_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainVBox/MenuMargin/MenuVBox/ExitMargin/ExitButton" to="." method="_on_exit_button_pressed"]

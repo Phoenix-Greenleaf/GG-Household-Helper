@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=3 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scripts/screens/editor.gd" id="1_4kg36"]
+[ext_resource type="Script" path="res://data/screens/table_tree.gd" id="2_445hx"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -13,13 +14,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_4kg36")
 
-[node name="Background ColorRect" type="ColorRect" parent="."]
+[node name="BackgroundColorRect" type="ColorRect" parent="."]
 layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 color = Color(0.133333, 0.266667, 0.188235, 1)
 
-[node name="Main Margin" type="MarginContainer" parent="."]
+[node name="MainMargin" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,14 +32,14 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Main HBox" type="HBoxContainer" parent="Main Margin"]
+[node name="MainHBox" type="HBoxContainer" parent="MainMargin"]
 layout_mode = 2
 
-[node name="Side Menu VBox" type="VBoxContainer" parent="Main Margin/Main HBox"]
+[node name="SideMenuVBox" type="VBoxContainer" parent="MainMargin/MainHBox"]
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="Menu Button" type="MenuButton" parent="Main Margin/Main HBox/Side Menu VBox"]
+[node name="MenuButton" type="MenuButton" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 text = "Menu"
 item_count = 3
@@ -49,63 +50,74 @@ popup/item_1/id = 1
 popup/item_2/text = "Change Logs"
 popup/item_2/id = 2
 
-[node name="Button" type="Button" parent="Main Margin/Main HBox/Side Menu VBox"]
+[node name="Button" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 text = "Test"
 
-[node name="Button2" type="Button" parent="Main Margin/Main HBox/Side Menu VBox"]
+[node name="Button2" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 text = "Test"
 
-[node name="Button3" type="Button" parent="Main Margin/Main HBox/Side Menu VBox"]
+[node name="Button3" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 text = "Test"
 
-[node name="Button4" type="Button" parent="Main Margin/Main HBox/Side Menu VBox"]
+[node name="Button4" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 text = "Test"
 
-[node name="Button5" type="Button" parent="Main Margin/Main HBox/Side Menu VBox"]
+[node name="Button5" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 text = "Test"
 
-[node name="Button6" type="Button" parent="Main Margin/Main HBox/Side Menu VBox"]
+[node name="Button6" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 text = "Test"
 
-[node name="NonSide VBox" type="VBoxContainer" parent="Main Margin/Main HBox"]
+[node name="NonSideVBox" type="VBoxContainer" parent="MainMargin/MainHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Top Menu HBox" type="HBoxContainer" parent="Main Margin/Main HBox/NonSide VBox"]
+[node name="TopMenuHBox" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 
-[node name="Button" type="Button" parent="Main Margin/Main HBox/NonSide VBox/Top Menu HBox"]
+[node name="Button" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
 text = "Test"
 
-[node name="Button2" type="Button" parent="Main Margin/Main HBox/NonSide VBox/Top Menu HBox"]
+[node name="Button2" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
 text = "Test"
 
-[node name="Button3" type="Button" parent="Main Margin/Main HBox/NonSide VBox/Top Menu HBox"]
+[node name="Button3" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
 text = "Test"
 
-[node name="Button4" type="Button" parent="Main Margin/Main HBox/NonSide VBox/Top Menu HBox"]
+[node name="Button4" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
 text = "Test"
 
-[node name="Button5" type="Button" parent="Main Margin/Main HBox/NonSide VBox/Top Menu HBox"]
+[node name="Button5" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
 text = "Test"
 
-[node name="Button6" type="Button" parent="Main Margin/Main HBox/NonSide VBox/Top Menu HBox"]
+[node name="Button6" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
 text = "Test"
 
-[node name="Tree" type="Tree" parent="Main Margin/Main HBox/NonSide VBox"]
+[node name="CurrentDateLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
+size_flags_horizontal = 10
+text = "Date Goes Here"
+
+[node name="TableTree" type="Tree" parent="MainMargin/MainHBox/NonSideVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 10
 column_titles_visible = true
+script = ExtResource("2_445hx")
+
+[connection signal="cell_selected" from="MainMargin/MainHBox/NonSideVBox/TableTree" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_cell_selected"]
+[connection signal="column_title_clicked" from="MainMargin/MainHBox/NonSideVBox/TableTree" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_column_title_clicked"]
