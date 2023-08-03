@@ -21,8 +21,6 @@ var day_header: Array
 
 var month_keys: Array = DataGlobal.Month.keys()
 
-var year_task_data: YearTaskData
-
 func _ready() -> void:
 	create_new_blank_tree()
 
@@ -36,11 +34,11 @@ func _ready() -> void:
 func create_new_blank_tree() -> void:
 #	var month_label: String = month_keys[month]
 #		month_label = month_label.capitalize()
-	year_task_data = YearTaskData.new()
-	var year_item: TreeItem = create_item()
-	year_item.set_cell_mode(0,TreeItem.CELL_MODE_CHECK)
-	year_item.set_checked(0,true)
-	
+#	year_task_data = YearTaskData.new()
+#	var year_item: TreeItem = create_item()
+#	year_item.set_cell_mode(0,TreeItem.CELL_MODE_CHECK)
+#	year_item.set_checked(0,true)
+	pass
 	
 	
 	
