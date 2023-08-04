@@ -13,8 +13,6 @@ func _ready() -> void:
 	var popup:= menu_button.get_popup()
 	popup.connect("id_pressed", menu_button_actions)
 	
-	## i am sure date time will soon be its own script
-	
 	var current_date: Dictionary = Time.get_date_dict_from_system()
 	var current_weekday: String =  Weekday[current_date["weekday"]] + " "
 	var current_day: String = str(current_date["day"]) + ", "
