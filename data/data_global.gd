@@ -88,7 +88,14 @@ var task_three: Array = [
 	"Group 3",
 ]
 
-var test_data_array: Array = [column_header, task_one, task_two, task_three]
+var task_four: Array = [
+	"Task 4",
+	"Section 2",
+	"Group 3",
+]
+
+
+var test_data_array: Array = [column_header, task_one, task_two, task_three, task_four]
 
 func print_test_array():
 	print("Test Data Array:")
