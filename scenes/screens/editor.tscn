@@ -117,6 +117,7 @@ layout_mode = 2
 size_flags_vertical = 3
 columns = 10
 column_titles_visible = true
+hide_root = true
 script = ExtResource("2_445hx")
 
 [connection signal="cell_selected" from="MainMargin/MainHBox/NonSideVBox/TableTree" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_cell_selected"]

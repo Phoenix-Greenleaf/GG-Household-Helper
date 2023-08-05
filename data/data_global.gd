@@ -1,11 +1,11 @@
 extends Node
 
 enum Checkbox {
-	NOT_ASSIGNED,
-	ASSIGNED,
-	IN_PROGRESS,
-	COMPLETED,
-	EXPIRED,
+	INACTIVE, #blank
+	ACTIVE, #white
+	IN_PROGRESS, #faint color
+	COMPLETED, #full color
+	EXPIRED,  #black
 }
 
 enum Section {
@@ -48,3 +48,49 @@ enum Priority {
 	MAX_PRIORITY_OVERRIDE,
 }
 
+
+
+
+
+
+# Test Data
+
+
+var column_header: Array = [
+	"Task",
+	"Section",
+	"Group",
+	"Task Description",
+	"Responsible Parties",
+	"Time of Day",
+	"Priority",
+	"Location",
+	"Days in Cycle",
+	"Last Completed",
+	"Days when skipping?",
+]
+
+var task_one: Array = [
+	"Task 1",
+	"Section 1",
+	"Group 1",
+]
+
+var task_two: Array = [
+	"Task 2",
+	"Section 2",
+	"Group 2",
+]
+
+var task_three: Array = [
+	"Task 3",
+	"Section 3",
+	"Group 3",
+]
+
+var test_data_array: Array = [column_header, task_one, task_two, task_three]
+
+func print_test_array():
+	print("Test Data Array:")
+	for row in test_data_array.size():
+		print(test_data_array[row])
