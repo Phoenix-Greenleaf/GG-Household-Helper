@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=4 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scripts/screens/editor.gd" id="1_4kg36"]
 [ext_resource type="Script" path="res://data/screens/table_tree.gd" id="2_445hx"]
+[ext_resource type="ButtonGroup" uid="uid://tci5j17kmt8l" path="res://scenes/screens/section_button_group.tres" id="2_rjskt"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -41,38 +42,84 @@ size_flags_horizontal = 0
 
 [node name="MenuButton" type="MenuButton" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-text = "Menu"
-item_count = 3
-popup/item_0/text = "Main Menu"
-popup/item_0/id = 0
-popup/item_1/text = "Save Files"
-popup/item_1/id = 1
-popup/item_2/text = "Change Logs"
-popup/item_2/id = 2
+text = "Editor
+Menu"
+item_count = 5
+popup/item_0/text = "Save Files"
+popup/item_0/id = 1
+popup/item_0/disabled = true
+popup/item_1/text = "Change Logs"
+popup/item_1/id = 2
+popup/item_1/disabled = true
+popup/item_2/text = ""
+popup/item_2/id = 4
+popup/item_2/separator = true
+popup/item_3/text = "Main Menu"
+popup/item_3/id = 0
+popup/item_4/text = "Quit"
+popup/item_4/id = 3
 
-[node name="Button" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="CheckboxSelectionButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-text = "Test"
+disabled = true
+text = "Checkbox
+Selection
+Menu"
 
-[node name="Button2" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="HSeparator" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-text = "Test"
 
-[node name="Button3" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="EditingLockButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-text = "Test"
+toggle_mode = true
+button_pressed = true
+text = "Editing
+Locked"
 
-[node name="Button4" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="HSeparator2" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-text = "Test"
 
-[node name="Button5" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="SectionSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-text = "Test"
+text = "Section"
+horizontal_alignment = 1
 
-[node name="Button6" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="YearlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-text = "Test"
+toggle_mode = true
+button_pressed = true
+button_group = ExtResource("2_rjskt")
+text = "Yearly"
+
+[node name="MonthlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("2_rjskt")
+text = "Monthly"
+
+[node name="WeeklyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("2_rjskt")
+text = "Weekly"
+
+[node name="DailyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("2_rjskt")
+text = "Daily"
+
+[node name="HSeparator3" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
+layout_mode = 2
+
+[node name="MonthSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
+layout_mode = 2
+text = "Month"
+horizontal_alignment = 1
+
+[node name="MonthSelectionButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+layout_mode = 2
+text = "Selected"
 
 [node name="NonSideVBox" type="VBoxContainer" parent="MainMargin/MainHBox"]
 layout_mode = 2
@@ -83,29 +130,36 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 
-[node name="Button" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
+[node name="SaveWarningButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
-text = "Test"
+disabled = true
+text = "Save Warning"
 
-[node name="Button2" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
+[node name="VSeparator" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
-text = "Test"
 
-[node name="Button3" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
+[node name="StandardNavigation" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
-text = "Test"
+disabled = true
+text = "Standard Navigation"
 
-[node name="Button4" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
+[node name="SavedNavigation" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
-text = "Test"
+disabled = true
+text = "Saved Navigation"
 
-[node name="Button5" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
+[node name="VSeparator2" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
-text = "Test"
 
-[node name="Button6" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
+[node name="StandardFilters" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
-text = "Test"
+disabled = true
+text = "Standard Filters"
+
+[node name="SavedFilters" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
+layout_mode = 2
+disabled = true
+text = "Saved Filters"
 
 [node name="CurrentDateLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
