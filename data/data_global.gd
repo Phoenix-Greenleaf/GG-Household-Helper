@@ -72,25 +72,25 @@ var column_header: Array = [
 
 var task_one: Array = [
 	"Task 1",
-	"Section 1",
+	"Yearly",
 	"Group 1",
 ]
 
 var task_two: Array = [
 	"Task 2",
-	"Section 2",
+	"Weekly",
 	"Group 2",
 ]
 
 var task_three: Array = [
 	"Task 3",
-	"Section 3",
+	"Weekly",
 	"Group 3",
 ]
 
 var task_four: Array = [
 	"Task 4",
-	"Section 2",
+	"Daily",
 	"Group 3",
 ]
 

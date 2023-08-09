@@ -71,6 +71,7 @@ layout_mode = 2
 
 [node name="EditingLockButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+disabled = true
 toggle_mode = true
 button_pressed = true
 text = "Editing
@@ -119,6 +120,7 @@ horizontal_alignment = 1
 
 [node name="MonthSelectionButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+disabled = true
 text = "Selected"
 
 [node name="NonSideVBox" type="VBoxContainer" parent="MainMargin/MainHBox"]
@@ -174,5 +176,9 @@ column_titles_visible = true
 hide_root = true
 script = ExtResource("2_445hx")
 
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/YearlyButton" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_yearly_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/MonthlyButton" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_monthly_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/WeeklyButton" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_weekly_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/DailyButton" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_daily_button_toggled"]
 [connection signal="cell_selected" from="MainMargin/MainHBox/NonSideVBox/TableTree" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_cell_selected"]
 [connection signal="column_title_clicked" from="MainMargin/MainHBox/NonSideVBox/TableTree" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_column_title_clicked"]
