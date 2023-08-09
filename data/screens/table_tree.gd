@@ -1,5 +1,5 @@
 extends Tree
-# motion on the floor to classify as TreeTabler
+
 
 
 var column_header: Array = []
@@ -50,8 +50,7 @@ var monthly_groups: Array
 var weekly_groups: Array
 var daily_groups: Array
 
-#var sections_array: Array = [[section_1],[section_2],[section_3]]
-#var groups: Array
+
 var tree_address: Array # for get_all_tree_items / print_human_tree
 
 enum {SECTION_COLUMN = 1, GROUP_COLUMN = 2}
@@ -83,51 +82,38 @@ func switch_sections(new_section: String):
 
 
 func new_assign_by_group(section_to_assign: String):
-	var root: TreeItem = create_item()
+	var root_node: TreeItem = create_item()
 	var tree_groups: Dictionary = {}
 	match section_to_assign:
 		"Yearly":
-			for current_root_group in yearly_groups:
-				tree_groups[current_root_group] = root.create_child()
-				tree_groups[current_root_group].set_text(0, current_root_group)
-				
-			for row_loop in yearly_section.size():
-				var current_assignment_group = yearly_section[row_loop][GROUP_COLUMN]
-				var child: TreeItem = tree_groups[current_assignment_group].create_child()
-				for column_loop in yearly_section[row_loop].size():
-					child.set_text(column_loop, yearly_section[row_loop][column_loop])
+			create_group_roots(yearly_groups, tree_groups, root_node)
+			create_tree_items(yearly_section, tree_groups)
 		"Monthly":
-			for current_root_group in monthly_groups:
-				tree_groups[current_root_group] = root.create_child()
-				tree_groups[current_root_group].set_text(0, current_root_group)
-	
-			for row_loop in monthly_section.size():
-				var current_assignment_group = monthly_section[row_loop][GROUP_COLUMN]
-				var child: TreeItem = tree_groups[current_assignment_group].create_child()
-				for column_loop in monthly_section[row_loop].size():
-					child.set_text(column_loop, monthly_section[row_loop][column_loop])
+			create_group_roots(monthly_groups, tree_groups, root_node)
+			create_tree_items(monthly_section, tree_groups)
 		"Weekly":
-			for current_root_group in weekly_groups:
-				tree_groups[current_root_group] = root.create_child()
-				tree_groups[current_root_group].set_text(0, current_root_group)
-	
-			for row_loop in weekly_section.size():
-				var current_assignment_group = weekly_section[row_loop][GROUP_COLUMN]
-				var child: TreeItem = tree_groups[current_assignment_group].create_child()
-				for column_loop in weekly_section[row_loop].size():
-					child.set_text(column_loop, weekly_section[row_loop][column_loop])
+			create_group_roots(weekly_groups, tree_groups, root_node)
+			create_tree_items(weekly_section, tree_groups)
 		"Daily":
-			for current_creation_group in daily_groups:
-				tree_groups[current_creation_group] = root.create_child()
-				tree_groups[current_creation_group].set_text(0, current_creation_group)
-			for row_loop in daily_section.size():
-				var current_assignment_group = daily_section[row_loop][GROUP_COLUMN]
-				var child: TreeItem = tree_groups[current_assignment_group].create_child()
-				for column_loop in daily_section[row_loop].size():
-					child.set_text(column_loop, daily_section[row_loop][column_loop])
+			create_group_roots(daily_groups, tree_groups, root_node)
+			create_tree_items(daily_section, tree_groups)
 		_:
 			print("Assignment Error: No Section Match")
 	
+
+func create_group_roots(current_groups_section: Array, current_tree_groups: Dictionary, current_root: TreeItem):
+	for current_root_group in current_groups_section:
+		current_tree_groups[current_root_group] = current_root.create_child()
+		current_tree_groups[current_root_group].set_text(0, current_root_group)
+
+
+func create_tree_items(current_section: Array, current_tree_groups: Dictionary):
+	for row_loop in current_section.size():
+		var current_assignment_group = current_section[row_loop][GROUP_COLUMN]
+		var child: TreeItem = current_tree_groups[current_assignment_group].create_child()
+		for column_loop in current_section[row_loop].size():
+			child.set_text(column_loop, current_section[row_loop][column_loop])
+
 
 func get_all_tree_items(target: TreeItem = get_root(), level: int = 1):
 	
