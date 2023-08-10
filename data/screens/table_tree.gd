@@ -67,10 +67,10 @@ func _ready() -> void:
 	create_new_blank_tree()
 
 
-func connect_month_menu():
+func connect_month_menu() -> void:
 	month_menu_popup.connect("id_pressed", month_menu_button_actions)
 
-func month_menu_button_actions(id: int):
+func month_menu_button_actions(id: int) -> void:
 	match id:
 		1:
 			month_menu_switch(1, "January")
@@ -100,7 +100,7 @@ func month_menu_button_actions(id: int):
 	switch_sections("Daily")
 
 
-func month_menu_switch(passed_id: int, month_text: String):
+func month_menu_switch(passed_id: int, month_text: String) -> void:
 			month_menu_button.text = month_text
 			month_menu_popup.set_item_disabled(passed_id, true)
 			current_toggled_month =  month_text
@@ -109,7 +109,7 @@ func month_menu_switch(passed_id: int, month_text: String):
 
 
 
-func create_new_blank_tree(): #initializes on yearly, could be a setting
+func create_new_blank_tree() -> void: #initializes on yearly, could be a setting
 	number_of_rows = default_data.size()
 	prints("Number of rows:", number_of_rows)
 	dumb_to_smart_array(default_data)
@@ -117,14 +117,14 @@ func create_new_blank_tree(): #initializes on yearly, could be a setting
 	new_assign_by_group("Yearly")
 	
 	
-func switch_sections(new_section: String):
+func switch_sections(new_section: String) -> void:
 	clear_current_tree()
 	set_table_headers()
 	new_assign_by_group(new_section)
 	
 
 
-func new_assign_by_group(section_to_assign: String):
+func new_assign_by_group(section_to_assign: String) -> void:
 	var root_node: TreeItem = create_item()
 	var tree_groups: Dictionary = {}
 	match section_to_assign:
@@ -148,13 +148,13 @@ func new_assign_by_group(section_to_assign: String):
 			print("Assignment Error: No Section Match")
 	
 
-func create_group_roots(current_groups_section: Array, current_tree_groups: Dictionary, current_root: TreeItem):
+func create_group_roots(current_groups_section: Array, current_tree_groups: Dictionary, current_root: TreeItem) -> void:
 	for current_root_group in current_groups_section:
 		current_tree_groups[current_root_group] = current_root.create_child()
 		current_tree_groups[current_root_group].set_text(0, current_root_group)
 
 
-func create_tree_items(current_section: Array, current_tree_groups: Dictionary):
+func create_tree_items(current_section: Array, current_tree_groups: Dictionary) -> void:
 	for row_loop in current_section.size():
 		var current_assignment_group = current_section[row_loop][GROUP_COLUMN]
 		var child: TreeItem = current_tree_groups[current_assignment_group].create_child()
@@ -179,10 +179,10 @@ func create_tree_items(current_section: Array, current_tree_groups: Dictionary):
 		if current_section[row_loop][MONTH_COLUMN] != current_toggled_month:
 			if current_section[row_loop][MONTH_COLUMN] != "All":
 				child.visible = false
-				prints("Hiding items from month:", current_section[row_loop][MONTH_COLUMN])
+#				prints("Hiding items from month:", current_section[row_loop][MONTH_COLUMN])
 
 
-func remove_unused_checkboxes(number_to_remove: int):
+func remove_unused_checkboxes(number_to_remove: int) -> void:
 	if current_toggled_mode == editor_modes["Info"]:
 		columns -= 31
 	else:
@@ -207,7 +207,7 @@ func days_in_month_finder() -> int:
 
 
 
-func get_all_tree_items(target: TreeItem = get_root(), level: int = 1):
+func get_all_tree_items(target: TreeItem = get_root(), level: int = 1) -> void:
 	
 	var child = target.get_children()
 	var address_number = 0
@@ -240,7 +240,7 @@ func set_table_headers() -> void:
 				adjusted_column = current_column - info_offset
 				set_column_title(adjusted_column, header_string)
 				current_column += 1
-				prints("Printed column title - offset:", current_column, info_offset)
+#				prints("Printed column title - offset:", current_column, info_offset)
 		
 		elif current_toggled_mode == editor_modes["Info"]:
 			set_column_title(current_column, header_string)
@@ -253,14 +253,14 @@ func clear_current_tree() -> void:
 	clear()
 
 
-func print_human_tree_address():
+func print_human_tree_address() -> void:
 	var human_tree_address: Array = []
 	for computer_address in tree_address:
 		human_tree_address.append(computer_address.get_text(0))
 	prints("Magic array:", human_tree_address)
 
 
-func dumb_to_smart_array(target: Array):
+func dumb_to_smart_array(target: Array) -> void:
 	column_header = target[0] #headers isolated
 	
 	for task_row in target.size(): 
@@ -287,8 +287,15 @@ func dumb_to_smart_array(target: Array):
 				print("You didn't say the magic word")
 
 
-func smart_to_dumb_array():
+func smart_to_dumb_array() -> void:
 	pass
+
+
+func section_enum_to_string() -> String:
+	var section_enum: int = current_toggled_section
+	var section_keys: Array = DataGlobal.Section.keys()
+	var current_section_key: String = section_keys[section_enum]
+	return current_section_key.capitalize()
 
 
 ##signal town
@@ -346,5 +353,25 @@ func _on_daily_button_toggled(button_pressed: bool) -> void:
 			current_toggled_section = DataGlobal.Section.DAILY
 			switch_sections("Daily")
 			prints("Daily Section Toggled")
+		else:
+			prints("ALREADY TOGGLED")
+
+
+func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void:
+	if (button_pressed):
+		if current_toggled_mode != editor_modes["Checkbox"]:
+			current_toggled_mode = editor_modes["Checkbox"]
+			switch_sections(section_enum_to_string())
+			prints("Checkbox Mode toggled")
+		else:
+			prints("ALREADY TOGGLED")
+
+
+func _on_info_mode_button_toggled(button_pressed: bool) -> void:
+	if (button_pressed):
+		if current_toggled_mode != editor_modes["Info"]:
+			current_toggled_mode = editor_modes["Info"]
+			switch_sections(section_enum_to_string())
+			prints("Info Mode toggled")
 		else:
 			prints("ALREADY TOGGLED")

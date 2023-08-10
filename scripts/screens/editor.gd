@@ -16,7 +16,7 @@ func _ready() -> void:
 	
 
 
-func set_current_date_label():
+func set_current_date_label() -> void:
 	var current_date: Dictionary = Time.get_date_dict_from_system()
 	var current_weekday: String =  Weekday[current_date["weekday"]] + " "
 	var current_day: String = str(current_date["day"]) + ", "
@@ -25,14 +25,14 @@ func set_current_date_label():
 	var current_label:= "Today: " + current_weekday + current_day + current_month + current_year
 	current_date_label.set_text(current_label)
 
-func connect_menu_button_popup():
+func connect_menu_button_popup() -> void:
 	var popup:= menu_button.get_popup()
 	popup.connect("id_pressed", menu_button_actions)
 
-func print_ready():
+func print_ready() -> void:
 	print("========= Editor Scene Ready! =========")
 
-func menu_button_actions(id: int):
+func menu_button_actions(id: int) -> void:
 	match id:
 		0:
 			get_tree().change_scene_to_file("res://scenes/screens/main_menu.tscn")
@@ -44,6 +44,3 @@ func menu_button_actions(id: int):
 			get_tree().quit()
 
 
-
-
-#func 
