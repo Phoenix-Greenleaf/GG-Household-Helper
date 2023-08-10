@@ -1,21 +1,26 @@
 extends Tree
 
 
+#var default_import = preload("user directory some day")
+var default_import = preload("res://data/default_input_1.csv") # but for now, just the res directory
+var default_data: Array = default_import.records
+
+
 
 var column_header: Array = []
-var default_column_header: Array = [
-	"Default_Task",
-	"Default_Section",
-	"Default_Group",
-	"Default_Task Description",
-	"Default_Responsible Parties",
-	"Default_Time of Day",
-	"Default_Priority",
-	"Default_Location",
-	"Default_Days in Cycle",
-	"Default_Last Completed",
-	"Default_Days when skipping?",
-]
+#var default_column_header: Array = [
+#	"Default_Task",
+#	"Default_Section",
+#	"Default_Group",
+#	"Default_Task Description",
+#	"Default_Responsible Parties",
+#	"Default_Time of Day",
+#	"Default_Priority",
+#	"Default_Location",
+#	"Default_Days in Cycle",
+#	"Default_Last Completed",
+#	"Default_Days when skipping?",
+#]
 
 var Checkbox: Dictionary = DataGlobal.Checkbox
 var Section: Dictionary = DataGlobal.Section
@@ -65,10 +70,10 @@ func _ready() -> void:
 
 
 func create_new_blank_tree(): #initializes on yearly, could be a setting
-	number_of_rows = DataGlobal.test_data_array.size()
+	number_of_rows = default_data.size()
 	prints("Number of rows:", number_of_rows)
 #	DataGlobal.print_test_array()
-	dumb_to_smart_array(DataGlobal.test_data_array)
+	dumb_to_smart_array(default_data)
 	set_table_headers()
 #	group_and_assign() #the previous version
 	new_assign_by_group("Yearly")
@@ -154,28 +159,30 @@ func print_human_tree_address():
 func dumb_to_smart_array(target: Array):
 	column_header = target[0] #headers isolated
 	
-	for task_row in target.size(): #section separation
-		if task_row != 0:  #skip the header row
-			print(target[task_row][SECTION_COLUMN])
-			match target[task_row][SECTION_COLUMN]:
-				"Yearly":
-					yearly_section.append(target[task_row])
-					if not yearly_groups.has(target[task_row][GROUP_COLUMN]):
-						yearly_groups.append(target[task_row][GROUP_COLUMN])
-				"Monthly":
-					monthly_section.append(target[task_row])
-					if not monthly_groups.has(target[task_row][GROUP_COLUMN]):
-						monthly_groups.append(target[task_row][GROUP_COLUMN])
-				"Weekly":
-					weekly_section.append(target[task_row])
-					if not weekly_groups.has(target[task_row][GROUP_COLUMN]):
-						weekly_groups.append(target[task_row][GROUP_COLUMN])
-				"Daily":
-					daily_section.append(target[task_row])
-					if not daily_groups.has(target[task_row][GROUP_COLUMN]):
-						daily_groups.append(target[task_row][GROUP_COLUMN])
-				_:
-					print("You didn't say the magic word")
+	for task_row in target.size(): 
+		if task_row == 0: #skip the header row
+			continue
+		match target[task_row][SECTION_COLUMN]: #section separation
+			"Yearly":
+				yearly_section.append(target[task_row]) #add task to section
+				if not yearly_groups.has(target[task_row][GROUP_COLUMN]): #create group if group not found
+					yearly_groups.append(target[task_row][GROUP_COLUMN])
+			"Monthly":
+				monthly_section.append(target[task_row])
+				if not monthly_groups.has(target[task_row][GROUP_COLUMN]):
+					monthly_groups.append(target[task_row][GROUP_COLUMN])
+			"Weekly":
+				weekly_section.append(target[task_row])
+				if not weekly_groups.has(target[task_row][GROUP_COLUMN]):
+					weekly_groups.append(target[task_row][GROUP_COLUMN])
+			"Daily":
+				daily_section.append(target[task_row])
+				if not daily_groups.has(target[task_row][GROUP_COLUMN]):
+					daily_groups.append(target[task_row][GROUP_COLUMN])
+			_:
+				print("You didn't say the magic word")
+
+
 
 
 
@@ -184,6 +191,8 @@ func smart_to_dumb_array():
 
 
 ##signal town
+
+
 ##Tree Signals
 
 func _on_cell_selected() -> void:

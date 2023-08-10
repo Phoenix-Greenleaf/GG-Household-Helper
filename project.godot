@@ -13,6 +13,7 @@ config_version=5
 config/name="GG Household Helper"
 run/main_scene="res://scenes/screens/main_menu.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
+boot_splash/show_image=false
 config/icon="res://icon.svg"
 
 [autoload]

@@ -30,7 +30,7 @@ func connect_menu_button_popup():
 	popup.connect("id_pressed", menu_button_actions)
 
 func print_ready():
-	print("Yearly Editor Scene Ready!")
+	print("========= Editor Scene Ready! =========")
 
 func menu_button_actions(id: int):
 	match id:
