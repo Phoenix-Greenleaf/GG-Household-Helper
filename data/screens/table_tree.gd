@@ -1,26 +1,16 @@
 extends Tree
 
 
+@onready var month_menu_button:= $"../../SideMenuVBox/MonthSelectionMenu" as MenuButton
+@onready var month_menu_popup:= month_menu_button.get_popup()
+
 #var default_import = preload("user directory some day")
 var default_import = preload("res://data/default_input_1.csv") # but for now, just the res directory
 var default_data: Array = default_import.records
 
 
-
 var column_header: Array = []
-#var default_column_header: Array = [
-#	"Default_Task",
-#	"Default_Section",
-#	"Default_Group",
-#	"Default_Task Description",
-#	"Default_Responsible Parties",
-#	"Default_Time of Day",
-#	"Default_Priority",
-#	"Default_Location",
-#	"Default_Days in Cycle",
-#	"Default_Last Completed",
-#	"Default_Days when skipping?",
-#]
+
 
 var Checkbox: Dictionary = DataGlobal.Checkbox
 var Section: Dictionary = DataGlobal.Section
@@ -29,8 +19,15 @@ var TimeOfDay: Dictionary = DataGlobal.TimeOfDay
 var Priority: Dictionary = DataGlobal.Priority
 
 
+var editor_modes: Dictionary = {"Checkbox": 0, "Info": 1}
 
+var year_for_data: int = 1990
 var current_toggled_section: int = DataGlobal.Section.YEARLY
+var current_toggled_mode = editor_modes["Checkbox"]
+var current_toggled_month: String = "January"
+var last_toggled_month: int = 1
+
+
 
 # arrays for the number of checkboxes
 var month_header: Array
@@ -58,14 +55,54 @@ var daily_groups: Array
 
 var tree_address: Array # for get_all_tree_items / print_human_tree
 
-enum {SECTION_COLUMN = 1, GROUP_COLUMN = 2}
+enum {SECTION_COLUMN = 1, GROUP_COLUMN = 2, MONTH_COLUMN = 3}
 
 
 
 func _ready() -> void:
+	connect_month_menu()
 	create_new_blank_tree()
 
 
+func connect_month_menu():
+	month_menu_popup.connect("id_pressed", month_menu_button_actions)
+
+func month_menu_button_actions(id: int):
+	match id:
+		1:
+			month_menu_switch(1, "January")
+		2:
+			month_menu_switch(2, "February")
+		3:
+			month_menu_switch(3, "March")
+		4:
+			month_menu_switch(4, "April")
+		5:
+			month_menu_switch(5, "May")
+		6:
+			month_menu_switch(6, "June")
+		7:
+			month_menu_switch(7, "July")
+		8:
+			month_menu_switch(8, "August")
+		9:
+			month_menu_switch(9, "September")
+		10:
+			month_menu_switch(10, "October")
+		11:
+			month_menu_switch(11, "November")
+		12:
+			month_menu_switch(12, "December")
+	prints("Switching between months")
+	switch_sections("Daily")
+
+
+func month_menu_switch(passed_id: int, month_text: String):
+			month_menu_button.text = month_text
+			month_menu_popup.set_item_disabled(passed_id, true)
+			current_toggled_month =  month_text
+			month_menu_popup.set_item_disabled(last_toggled_month, false)
+			last_toggled_month = passed_id
 
 
 
@@ -81,9 +118,9 @@ func create_new_blank_tree(): #initializes on yearly, could be a setting
 	
 func switch_sections(new_section: String):
 	clear_current_tree()
+	set_table_headers()
 	new_assign_by_group(new_section)
-
-
+	
 
 
 func new_assign_by_group(section_to_assign: String):
@@ -93,15 +130,19 @@ func new_assign_by_group(section_to_assign: String):
 		"Yearly":
 			create_group_roots(yearly_groups, tree_groups, root_node)
 			create_tree_items(yearly_section, tree_groups)
+			remove_unused_checkboxes(30)
 		"Monthly":
 			create_group_roots(monthly_groups, tree_groups, root_node)
 			create_tree_items(monthly_section, tree_groups)
+			remove_unused_checkboxes(19)
 		"Weekly":
 			create_group_roots(weekly_groups, tree_groups, root_node)
 			create_tree_items(weekly_section, tree_groups)
+			remove_unused_checkboxes(26)
 		"Daily":
 			create_group_roots(daily_groups, tree_groups, root_node)
 			create_tree_items(daily_section, tree_groups)
+			remove_unused_checkboxes(31 - days_in_month_finder())
 		_:
 			print("Assignment Error: No Section Match")
 	
@@ -118,6 +159,35 @@ func create_tree_items(current_section: Array, current_tree_groups: Dictionary):
 		var child: TreeItem = current_tree_groups[current_assignment_group].create_child()
 		for column_loop in current_section[row_loop].size():
 			child.set_text(column_loop, current_section[row_loop][column_loop])
+		if current_section[row_loop][MONTH_COLUMN] != current_toggled_month:
+			if current_section[row_loop][MONTH_COLUMN] != "All":
+				child.visible = false
+				prints("Hiding items from month:", current_section[row_loop][MONTH_COLUMN])
+
+
+func remove_unused_checkboxes(number_to_remove: int):
+	if current_toggled_mode == editor_modes["Info"]:
+		columns -= 31
+	else:
+		columns -= number_to_remove
+
+
+func days_in_month_finder() -> int:
+	match current_toggled_month: 
+		"February":
+			var leap_year_check = year_for_data % 4
+			if leap_year_check == 0:
+				return 29
+			else:
+				return 28
+		"April", "June", "September", "November":
+			return 30
+		"January", "March", "May", "July", "August", "October", "December":
+			return 31
+		_:
+			print("Days_in_month_finder match error")
+			return 6
+
 
 
 func get_all_tree_items(target: TreeItem = get_root(), level: int = 1):
@@ -136,10 +206,9 @@ func get_all_tree_items(target: TreeItem = get_root(), level: int = 1):
 
 func set_table_headers() -> void:
 	number_of_columns = column_header.size()
-	prints("Columns:", number_of_columns)
-	self.columns = number_of_columns
+	columns = number_of_columns
 	var current_column: int = 0
-	for header_string in column_header: #switch to default?
+	for header_string in column_header:
 		set_column_title(current_column, header_string)
 		current_column += 1
 
@@ -181,9 +250,6 @@ func dumb_to_smart_array(target: Array):
 					daily_groups.append(target[task_row][GROUP_COLUMN])
 			_:
 				print("You didn't say the magic word")
-
-
-
 
 
 func smart_to_dumb_array():
