@@ -160,17 +160,15 @@ func create_tree_items(current_section: Array, current_tree_groups: Dictionary) 
 		var child: TreeItem = current_tree_groups[current_assignment_group].create_child()
 		var info_offset: int = 0
 		var adjusted_column: int = 0
+		var adjusted_header_size = current_section[row_loop].size() - number_of_info_columns
 		
 		if current_toggled_mode == editor_modes["Checkbox"]:
-			for column_loop in (current_section[row_loop].size() - number_of_info_columns):
-				if info_columns.has(current_section[row_loop][column_loop]):
-#					current_column += 1
+			for column_loop in (adjusted_header_size):
+				if info_columns.has(column_loop):
 					info_offset += 1
-					prints("Offset increased to", info_offset)
 					continue
 				adjusted_column = column_loop - info_offset
-				prints("Set text for row", row_loop, "column", column_loop, "as column", adjusted_column)
-				child.set_text(adjusted_column, current_section[row_loop][adjusted_column])
+				child.set_text(adjusted_column, current_section[row_loop][column_loop])
 		elif current_toggled_mode == editor_modes["Info"]:
 			for column_loop in current_section[row_loop].size():
 				child.set_text(column_loop, current_section[row_loop][column_loop])
@@ -179,7 +177,6 @@ func create_tree_items(current_section: Array, current_tree_groups: Dictionary) 
 		if current_section[row_loop][MONTH_COLUMN] != current_toggled_month:
 			if current_section[row_loop][MONTH_COLUMN] != "All":
 				child.visible = false
-#				prints("Hiding items from month:", current_section[row_loop][MONTH_COLUMN])
 
 
 func remove_unused_checkboxes(number_to_remove: int) -> void:
