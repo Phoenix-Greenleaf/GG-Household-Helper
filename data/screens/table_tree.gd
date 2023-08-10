@@ -28,6 +28,9 @@ var current_toggled_month: String = "January"
 var last_toggled_month: int = 1
 
 
+var info_columns: Array = [5, 6, 7, 8, 9, 10, 11]
+var number_of_info_columns = info_columns.size()
+
 
 # arrays for the number of checkboxes
 var month_header: Array
@@ -109,10 +112,8 @@ func month_menu_switch(passed_id: int, month_text: String):
 func create_new_blank_tree(): #initializes on yearly, could be a setting
 	number_of_rows = default_data.size()
 	prints("Number of rows:", number_of_rows)
-#	DataGlobal.print_test_array()
 	dumb_to_smart_array(default_data)
 	set_table_headers()
-#	group_and_assign() #the previous version
 	new_assign_by_group("Yearly")
 	
 	
@@ -157,8 +158,24 @@ func create_tree_items(current_section: Array, current_tree_groups: Dictionary):
 	for row_loop in current_section.size():
 		var current_assignment_group = current_section[row_loop][GROUP_COLUMN]
 		var child: TreeItem = current_tree_groups[current_assignment_group].create_child()
-		for column_loop in current_section[row_loop].size():
-			child.set_text(column_loop, current_section[row_loop][column_loop])
+		var info_offset: int = 0
+		var adjusted_column: int = 0
+		
+		if current_toggled_mode == editor_modes["Checkbox"]:
+			for column_loop in (current_section[row_loop].size() - number_of_info_columns):
+				if info_columns.has(current_section[row_loop][column_loop]):
+#					current_column += 1
+					info_offset += 1
+					prints("Offset increased to", info_offset)
+					continue
+				adjusted_column = column_loop - info_offset
+				prints("Set text for row", row_loop, "column", column_loop, "as column", adjusted_column)
+				child.set_text(adjusted_column, current_section[row_loop][adjusted_column])
+		elif current_toggled_mode == editor_modes["Info"]:
+			for column_loop in current_section[row_loop].size():
+				child.set_text(column_loop, current_section[row_loop][column_loop])
+		else: print("create_tree_items error")
+		
 		if current_section[row_loop][MONTH_COLUMN] != current_toggled_month:
 			if current_section[row_loop][MONTH_COLUMN] != "All":
 				child.visible = false
@@ -205,12 +222,30 @@ func get_all_tree_items(target: TreeItem = get_root(), level: int = 1):
 
 
 func set_table_headers() -> void:
-	number_of_columns = column_header.size()
+	if current_toggled_mode == editor_modes["Checkbox"]:
+		number_of_columns = column_header.size() - number_of_info_columns
+	elif current_toggled_mode == editor_modes["Info"]:
+		number_of_columns = column_header.size()
+		
 	columns = number_of_columns
 	var current_column: int = 0
+	var info_offset: int = 0
+	var adjusted_column: int = 0
 	for header_string in column_header:
-		set_column_title(current_column, header_string)
-		current_column += 1
+		if current_toggled_mode == editor_modes["Checkbox"]:
+			if info_columns.has(current_column):
+				current_column += 1
+				info_offset += 1
+			else:
+				adjusted_column = current_column - info_offset
+				set_column_title(adjusted_column, header_string)
+				current_column += 1
+				prints("Printed column title - offset:", current_column, info_offset)
+		
+		elif current_toggled_mode == editor_modes["Info"]:
+			set_column_title(current_column, header_string)
+			current_column += 1
+		else: print("set_table_headers error")
 
 
 func clear_current_tree() -> void:
