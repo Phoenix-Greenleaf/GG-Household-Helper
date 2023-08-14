@@ -2,7 +2,7 @@ extends Control
 
 @onready var menu_button:= $MainMargin/MainHBox/SideMenuVBox/MenuButton as MenuButton
 @onready var current_date_label:= $MainMargin/MainHBox/NonSideVBox/TopMenuHBox/CurrentDateLabel as Label
-#@onready var current_section_button = 	$MainMargin/MainHBox/SideMenuVBox/YearlyButton
+
 
 var Weekday : Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 var Month : Array = ["Month Index", "January", "February", "March", "April", "May", "June", "July",

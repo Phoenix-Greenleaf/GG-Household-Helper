@@ -64,6 +64,11 @@ popup/item_4/id = 3
 [node name="HSeparator4" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 
+[node name="EditorModeToggleLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
+layout_mode = 2
+text = "Mode Toggle"
+horizontal_alignment = 1
+
 [node name="InfoModeButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 toggle_mode = true

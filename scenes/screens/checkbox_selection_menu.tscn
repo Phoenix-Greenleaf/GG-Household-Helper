@@ -1,0 +1,228 @@
+[gd_scene format=3 uid="uid://c7tqndbd8llst"]
+
+[node name="CheckboxSelectionMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CurrentCheckboxPanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+offset_right = 99.0
+offset_bottom = 148.0
+
+[node name="CurrentCheckboxMargin" type="MarginContainer" parent="CurrentCheckboxPanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="CurrentCheckboxVBox" type="VBoxContainer" parent="CurrentCheckboxPanelContainer/CurrentCheckboxMargin"]
+layout_mode = 2
+
+[node name="CurrentCheckboxLabel" type="Label" parent="CurrentCheckboxPanelContainer/CurrentCheckboxMargin/CurrentCheckboxVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Current
+Checkbox"
+horizontal_alignment = 1
+
+[node name="CurrentCheckboxColorRect" type="ColorRect" parent="CurrentCheckboxPanelContainer/CurrentCheckboxMargin/CurrentCheckboxVBox"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="CurrentCheckboxStatusLabel" type="Label" parent="CurrentCheckboxPanelContainer/CurrentCheckboxMargin/CurrentCheckboxVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Current Status"
+horizontal_alignment = 1
+
+[node name="CurrentCheckboxProfileLabel" type="Label" parent="CurrentCheckboxPanelContainer/CurrentCheckboxMargin/CurrentCheckboxVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Current Profile"
+horizontal_alignment = 1
+
+[node name="SelectionPopupPanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+offset_left = 104.0
+offset_right = 370.0
+offset_bottom = 148.0
+
+[node name="SelectionPopupMargin" type="MarginContainer" parent="SelectionPopupPanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="SelectionPopupVBox" type="VBoxContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin"]
+layout_mode = 2
+
+[node name="SelectionPopupStatusHBox" type="HBoxContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SelectionPopupStatusLabel" type="Label" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Status"
+horizontal_alignment = 1
+
+[node name="Status1PanelContainer" type="PanelContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+layout_mode = 2
+
+[node name="Status1VBox" type="VBoxContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/Status1VBox"]
+layout_mode = 2
+
+[node name="Status1ColorRect" type="ColorRect" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/Status1VBox"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Status1Label" type="Label" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/Status1VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Status 1"
+horizontal_alignment = 1
+
+[node name="Status2PanelContainer" type="PanelContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+layout_mode = 2
+
+[node name="Status2VBox" type="VBoxContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/Status2VBox"]
+layout_mode = 2
+
+[node name="Status2ColorRect" type="ColorRect" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/Status2VBox"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Status2Label" type="Label" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/Status2VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Status 2"
+horizontal_alignment = 1
+
+[node name="Status3PanelContainer" type="PanelContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+layout_mode = 2
+
+[node name="Status3VBox" type="VBoxContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/Status3VBox"]
+layout_mode = 2
+
+[node name="Status3ColorRect" type="ColorRect" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/Status3VBox"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Status3Label" type="Label" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/Status3VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Status 3"
+horizontal_alignment = 1
+
+[node name="Status4PanelContainer" type="PanelContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+layout_mode = 2
+
+[node name="Status4VBox" type="VBoxContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/Status4VBox"]
+layout_mode = 2
+
+[node name="Status4ColorRect" type="ColorRect" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/Status4VBox"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Status4Label" type="Label" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/Status4VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Status 4"
+horizontal_alignment = 1
+
+[node name="SelectionPopupProfileHBox" type="HBoxContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SelectionPopupProfileLabel" type="Label" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Profile"
+horizontal_alignment = 1
+
+[node name="Profile1PanelContainer" type="PanelContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox"]
+layout_mode = 2
+
+[node name="Profile1VBox" type="VBoxContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/Profile1PanelContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/Profile1PanelContainer/Profile1VBox"]
+layout_mode = 2
+
+[node name="Profile1ColorRect" type="ColorRect" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/Profile1PanelContainer/Profile1VBox"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Profile1Label" type="Label" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/Profile1PanelContainer/Profile1VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Profile 1"
+horizontal_alignment = 1
+
+[node name="Profile2PanelContainer" type="PanelContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox"]
+layout_mode = 2
+
+[node name="Profile2VBox" type="VBoxContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/Profile2PanelContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/Profile2PanelContainer/Profile2VBox"]
+layout_mode = 2
+
+[node name="Profile2ColorRect" type="ColorRect" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/Profile2PanelContainer/Profile2VBox"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Profile2Label" type="Label" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/Profile2PanelContainer/Profile2VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Profile 2"
+horizontal_alignment = 1
+
+[node name="NewProfilePanelContainer" type="PanelContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox"]
+layout_mode = 2
+
+[node name="NewProfileMargin" type="MarginContainer" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfilePanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="NewProfileLabel" type="Label" parent="SelectionPopupPanelContainer/SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfilePanelContainer/NewProfileMargin"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "New
+Profile"
+horizontal_alignment = 1
