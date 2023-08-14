@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=6 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scripts/screens/editor.gd" id="1_4kg36"]
 [ext_resource type="Script" path="res://data/screens/table_tree.gd" id="2_445hx"]
 [ext_resource type="ButtonGroup" uid="uid://dstnxfnckpqs0" path="res://scenes/screens/editor_mode_button_group.tres" id="2_ludcj"]
 [ext_resource type="ButtonGroup" uid="uid://tci5j17kmt8l" path="res://scenes/screens/section_button_group.tres" id="2_rjskt"]
+[ext_resource type="PackedScene" uid="uid://ds4yxf6rofxhb" path="res://scenes/screens/current_checkbox_button.tscn" id="3_droll"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -86,12 +87,8 @@ Mode"
 [node name="HSeparator5" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 
-[node name="CheckboxSelectionButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="CurrentCheckboxButton" parent="MainMargin/MainHBox/SideMenuVBox" instance=ExtResource("3_droll")]
 layout_mode = 2
-disabled = true
-text = "Checkbox
-Selection
-Menu"
 
 [node name="HSeparator" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2

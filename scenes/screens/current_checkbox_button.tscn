@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://ds4yxf6rofxhb"]
+
+[node name="CurrentCheckboxButton" type="PanelContainer"]
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+toggle_mode = true
+
+[node name="CurrentCheckboxMargin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="CurrentCheckboxVBox" type="VBoxContainer" parent="CurrentCheckboxMargin"]
+layout_mode = 2
+
+[node name="CurrentCheckboxLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Current
+Checkbox"
+horizontal_alignment = 1
+
+[node name="CurrentCheckboxColorRect" type="ColorRect" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="CurrentCheckboxStatusLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Current Status"
+horizontal_alignment = 1
+
+[node name="CurrentCheckboxProfileLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Current Profile"
+horizontal_alignment = 1
