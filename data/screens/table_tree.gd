@@ -315,7 +315,7 @@ func _on_column_title_clicked(column: int, _mouse_button_index: int) -> void:
 ## Section Selection signals
 
 func _on_yearly_button_toggled(button_pressed: bool) -> void:
-	if (button_pressed):
+	if (button_pressed): #check to see if this toggle/if statement is needed
 		if current_toggled_section != DataGlobal.Section.YEARLY:
 			current_toggled_section = DataGlobal.Section.YEARLY
 			switch_sections("Yearly")
