@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=7 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scripts/screens/editor.gd" id="1_4kg36"]
 [ext_resource type="Script" path="res://data/screens/table_tree.gd" id="2_445hx"]
 [ext_resource type="ButtonGroup" uid="uid://dstnxfnckpqs0" path="res://scenes/screens/editor_mode_button_group.tres" id="2_ludcj"]
 [ext_resource type="ButtonGroup" uid="uid://tci5j17kmt8l" path="res://scenes/screens/section_button_group.tres" id="2_rjskt"]
 [ext_resource type="PackedScene" uid="uid://ds4yxf6rofxhb" path="res://scenes/screens/current_checkbox_button.tscn" id="3_droll"]
+[ext_resource type="PackedScene" uid="uid://c7tqndbd8llst" path="res://scenes/screens/checkbox_selection_popup.tscn" id="6_okd6i"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -228,6 +229,14 @@ columns = 10
 column_titles_visible = true
 hide_root = true
 script = ExtResource("2_445hx")
+
+[node name="CheckboxSelectionPopup" parent="." node_paths=PackedStringArray("paired_checkbox_menu_button") instance=ExtResource("6_okd6i")]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 203.0
+offset_right = 383.0
+offset_bottom = 351.0
+paired_checkbox_menu_button = NodePath("../MainMargin/MainHBox/SideMenuVBox/CurrentCheckboxButton")
 
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/InfoModeButton" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_info_mode_button_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/CheckboxModeButton" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_checkbox_mode_button_toggled"]

@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://dy5a80ny2p05l"]
+
+[ext_resource type="Script" path="res://scripts/screens/checkbox_profile.gd" id="1_wtm7t"]
+
+[node name="ProfilePanelContainer" type="PanelContainer"]
+mouse_filter = 2
+script = ExtResource("1_wtm7t")
+
+[node name="ProfileButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+
+[node name="VBox" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ProfileColorRect" type="ColorRect" parent="Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+color = Color(0.611765, 0.470588, 0.137255, 1)
+
+[node name="ProfileLabel" type="Label" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Default 1"
+horizontal_alignment = 1

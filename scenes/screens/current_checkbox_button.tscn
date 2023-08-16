@@ -1,6 +1,10 @@
-[gd_scene format=3 uid="uid://ds4yxf6rofxhb"]
+[gd_scene load_steps=2 format=3 uid="uid://ds4yxf6rofxhb"]
+
+[ext_resource type="Script" path="res://scripts/screens/current_checkbox_button.gd" id="1_b84nq"]
 
 [node name="CurrentCheckboxButton" type="PanelContainer"]
+mouse_filter = 2
+script = ExtResource("1_b84nq")
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 2
@@ -8,13 +12,15 @@ toggle_mode = true
 
 [node name="CurrentCheckboxMargin" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 3
-theme_override_constants/margin_top = 3
-theme_override_constants/margin_right = 3
-theme_override_constants/margin_bottom = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
 [node name="CurrentCheckboxVBox" type="VBoxContainer" parent="CurrentCheckboxMargin"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="CurrentCheckboxLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
@@ -28,6 +34,7 @@ custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="CurrentCheckboxStatusLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2

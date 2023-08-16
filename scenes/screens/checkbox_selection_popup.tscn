@@ -1,0 +1,230 @@
+[gd_scene load_steps=4 format=3 uid="uid://c7tqndbd8llst"]
+
+[ext_resource type="Script" path="res://scripts/screens/checkbox_selection_popup.gd" id="1_5xlif"]
+[ext_resource type="ButtonGroup" uid="uid://ditpy2n3iaejt" path="res://scenes/screens/checkbox_status_group.tres" id="2_2tlyi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ui5rb"]
+
+[node name="CheckboxSelectionPopup" type="PanelContainer"]
+offset_right = 266.0
+offset_bottom = 148.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ui5rb")
+script = ExtResource("1_5xlif")
+
+[node name="SelectionPopupMargin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="SelectionPopupVBox" type="VBoxContainer" parent="SelectionPopupMargin"]
+layout_mode = 2
+
+[node name="SelectionPopupStatusHBox" type="HBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SelectionPopupStatusLabel" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 16
+text = "Status"
+horizontal_alignment = 1
+
+[node name="Status1PanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+layout_mode = 2
+
+[node name="ActiveButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer"]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("2_2tlyi")
+
+[node name="Status1Margin" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+
+[node name="Status1VBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/Status1Margin"]
+layout_mode = 2
+
+[node name="Status1ColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/Status1Margin/Status1VBox"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Status1Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/Status1Margin/Status1VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Active"
+horizontal_alignment = 1
+
+[node name="Status2PanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+layout_mode = 2
+
+[node name="InProgressButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer"]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("2_2tlyi")
+
+[node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+
+[node name="Status2VBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SplitRect" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer/Status2VBox"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="InProgressTopColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer/Status2VBox/SplitRect"]
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="InProgressBottomColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer/Status2VBox/SplitRect"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.609375, 0.46875, 0.136719, 1)
+
+[node name="Status2Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer/Status2VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "In Progress"
+horizontal_alignment = 1
+
+[node name="Status3PanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+layout_mode = 2
+
+[node name="CompletedButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer"]
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = ExtResource("2_2tlyi")
+
+[node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+
+[node name="Status3VBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="CompletedColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/MarginContainer/Status3VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.609375, 0.46875, 0.136719, 1)
+
+[node name="Status3Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/MarginContainer/Status3VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Completed"
+horizontal_alignment = 1
+
+[node name="Status4PanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+layout_mode = 2
+
+[node name="ExpiredButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer"]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("2_2tlyi")
+
+[node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+
+[node name="Status4VBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Status4ColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/MarginContainer/Status4VBox"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0, 0, 0, 1)
+
+[node name="Status4Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/MarginContainer/Status4VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Expired"
+horizontal_alignment = 1
+
+[node name="SelectionPopupProfileHBox" type="HBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SelectionPopupProfileLabel" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 16
+text = "Profile"
+horizontal_alignment = 1
+
+[node name="NewProfileButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "New
+Profile"
+
+[node name="NewProfileMenu" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="HBox" type="HBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin"]
+layout_mode = 2
+
+[node name="ProfileOptionsVBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox"]
+layout_mode = 2
+
+[node name="ProfileNameLineEdit" type="LineEdit" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileOptionsVBox"]
+layout_mode = 2
+placeholder_text = "Profile Name"
+alignment = 1
+expand_to_text_length = true
+
+[node name="ProfileColorPickerButton" type="ColorPickerButton" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileOptionsVBox"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Profile Color"
+color = Color(1, 1, 1, 1)
+edit_alpha = false
+
+[node name="ProfileMenuUIVBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox"]
+layout_mode = 2
+
+[node name="ProfileMenuAccept" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileMenuUIVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Accept"
+
+[node name="ProfileMenuCanel" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileMenuUIVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Cancel"
