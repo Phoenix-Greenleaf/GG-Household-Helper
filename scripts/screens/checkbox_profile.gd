@@ -9,7 +9,6 @@ extends PanelContainer
 func _ready() -> void:
 	var default_profile: Array = DataGlobal.user_profiles[0]
 	load_checkbox_profile(default_profile)
-#	profile_button.toggled.connect()
 
 func load_checkbox_profile(target_profile: Array) -> void:
 	profile_label.set_text(target_profile[0])

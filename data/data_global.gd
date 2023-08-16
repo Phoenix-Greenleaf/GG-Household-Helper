@@ -54,6 +54,7 @@ var user_profiles: Array = [
 	["Test 1", Color(0, 1, 0)],
 	["Test 2", Color(1, 0, 0)],
 	["Test 3", Color(0, 0, 1)],
+	["Test Four", Color(1, 0, 1)],
 ]
 
 var current_checkbox_state: int = Checkbox.COMPLETED

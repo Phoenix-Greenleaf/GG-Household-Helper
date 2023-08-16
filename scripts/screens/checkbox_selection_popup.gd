@@ -9,23 +9,27 @@ extends PanelContainer
 @onready var profile_name_line_edit: LineEdit = %ProfileNameLineEdit
 @onready var profile_color_picker_button: ColorPickerButton = %ProfileColorPickerButton
 
-
+@onready var active_button: Button = $SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/ActiveButton
+@onready var in_progress_button: Button = $SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/InProgressButton
+@onready var completed_button: Button = $SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/CompletedButton
+@onready var expired_button: Button = $SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/ExpiredButton
 
 
 @export var paired_checkbox_menu_button: Node
 
 var checkbox_profile = preload("res://scenes/screens/checkbox_profile.tscn")
 var profile_button_group = preload("res://scenes/screens/checkbox_profile_group.tres")
-
+var status_button_group = preload("res://scenes/screens/checkbox_status_group.tres")
  
 
 func _ready() -> void:
 	load_existing_profiles()
 	update_status_colors()
-	update_paired_menu_button()
+	update_paired_menu_all()
 	new_profile_menu.visible = false
 	self.visible = false
 	connect_paired_menu_button()
+	connect_status_button_group()
 	
 
 func add_profile(target_profile: Array) -> void:
@@ -66,19 +70,29 @@ func connect_paired_menu_button() -> void:
 		print("No menu button for visibility!")
 
 
-func _on_profile_button_toggled(button_pressed: bool, target_profile: Array) -> void:
-	if (button_pressed): # these toggle tests may not be needed, see _on_menu_button_toggled()
-		if target_profile != DataGlobal.current_checkbox_profile:
-			DataGlobal.current_checkbox_profile = target_profile
-			update_status_colors()
-			update_paired_menu_button()
-		else:
-			prints("ALREADY TOGGLED")
+func connect_status_button_group() -> void:
+	status_button_group.pressed.connect(_on_status_button_toggled)
 
 
-func update_paired_menu_button() -> void:
+func update_paired_menu_status() -> void:
+	if paired_checkbox_menu_button:
+		paired_checkbox_menu_button.update_status()
+		paired_checkbox_menu_button.update_checkbox_colors()
+	else:
+		print("No menu status to update!")
+
+func update_paired_menu_profile() -> void:
 	if paired_checkbox_menu_button:
 		paired_checkbox_menu_button.update_profile()
+		paired_checkbox_menu_button.update_checkbox_colors()
+	else:
+		print("No menu propfile to update!")
+
+func update_paired_menu_all() -> void:
+	if paired_checkbox_menu_button:
+		paired_checkbox_menu_button.update_profile()
+		paired_checkbox_menu_button.update_status()
+		paired_checkbox_menu_button.update_checkbox_colors()
 	else:
 		print("No menu button to update!")
 
@@ -88,6 +102,40 @@ func random_color() -> Color:
 	var green: float = randf()
 	var blue: float = randf()
 	return Color(red, green, blue)
+
+
+func status_change(new_state: DataGlobal.Checkbox) -> void:
+	if new_state != DataGlobal.current_checkbox_state:
+		DataGlobal.current_checkbox_state = new_state
+		update_paired_menu_status()
+	else: prints("STATUS ALREADY TOGGLED")
+		
+
+
+
+func _on_profile_button_toggled(button_pressed: bool, target_profile: Array) -> void:
+	if (button_pressed): # these toggle tests may not be needed, see _on_menu_button_toggled()
+		if target_profile != DataGlobal.current_checkbox_profile:
+			DataGlobal.current_checkbox_profile = target_profile
+			update_status_colors()
+			update_paired_menu_profile()
+		else:
+			prints("PROFILE ALREADY TOGGLED")
+
+func _on_status_button_toggled(button_pressed: BaseButton) -> void:
+	match button_pressed:
+		active_button:
+			status_change(DataGlobal.Checkbox.ACTIVE)
+		in_progress_button:
+			status_change(DataGlobal.Checkbox.IN_PROGRESS)
+		completed_button:
+			status_change(DataGlobal.Checkbox.COMPLETED)
+		expired_button:
+			status_change(DataGlobal.Checkbox.EXPIRED)
+		_:
+			prints("Status button error")
+
+
 
 
 func _on_menu_button_toggled(_button_pressed: bool) -> void:
@@ -113,3 +161,4 @@ func _on_profile_menu_accept_pressed() -> void:
 	new_profile_button.visible = true
 	new_profile_menu.visible = false
 	
+

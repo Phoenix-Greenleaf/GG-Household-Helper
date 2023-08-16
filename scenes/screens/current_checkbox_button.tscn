@@ -21,6 +21,7 @@ theme_override_constants/margin_bottom = 4
 [node name="CurrentCheckboxVBox" type="VBoxContainer" parent="CurrentCheckboxMargin"]
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/separation = 0
 
 [node name="CurrentCheckboxLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
@@ -29,8 +30,20 @@ text = "Current
 Checkbox"
 horizontal_alignment = 1
 
-[node name="CurrentCheckboxColorRect" type="ColorRect" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
-custom_minimum_size = Vector2(40, 40)
+[node name="VBox" type="VBoxContainer" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="CurrentCheckboxColorRectTop" type="ColorRect" parent="CurrentCheckboxMargin/CurrentCheckboxVBox/VBox"]
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="CurrentCheckboxColorRectBottom" type="ColorRect" parent="CurrentCheckboxMargin/CurrentCheckboxVBox/VBox"]
+custom_minimum_size = Vector2(40, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -44,6 +57,7 @@ horizontal_alignment = 1
 
 [node name="CurrentCheckboxProfileLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 12
 text = "Current Profile"
 horizontal_alignment = 1
+autowrap_mode = 3

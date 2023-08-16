@@ -35,6 +35,7 @@ horizontal_alignment = 1
 
 [node name="Status1PanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="ActiveButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer"]
 layout_mode = 2
@@ -43,18 +44,21 @@ button_group = ExtResource("2_2tlyi")
 
 [node name="Status1Margin" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 
 [node name="Status1VBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/Status1Margin"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="Status1ColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/Status1Margin/Status1VBox"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="Status1Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/Status1Margin/Status1VBox"]
 layout_mode = 2
@@ -64,6 +68,7 @@ horizontal_alignment = 1
 
 [node name="Status2PanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="InProgressButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer"]
 layout_mode = 2
@@ -72,15 +77,18 @@ button_group = ExtResource("2_2tlyi")
 
 [node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 
 [node name="Status2VBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="SplitRect" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer/Status2VBox"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="InProgressTopColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer/Status2VBox/SplitRect"]
@@ -88,6 +96,7 @@ custom_minimum_size = Vector2(40, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="InProgressBottomColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer/Status2VBox/SplitRect"]
 unique_name_in_owner = true
@@ -95,6 +104,7 @@ custom_minimum_size = Vector2(40, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 color = Color(0.609375, 0.46875, 0.136719, 1)
 
 [node name="Status2Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer/Status2VBox"]
@@ -105,6 +115,7 @@ horizontal_alignment = 1
 
 [node name="Status3PanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="CompletedButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer"]
 layout_mode = 2
@@ -114,12 +125,14 @@ button_group = ExtResource("2_2tlyi")
 
 [node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 
 [node name="Status3VBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="CompletedColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/MarginContainer/Status3VBox"]
 unique_name_in_owner = true
@@ -127,6 +140,7 @@ custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 color = Color(0.609375, 0.46875, 0.136719, 1)
 
 [node name="Status3Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/MarginContainer/Status3VBox"]
@@ -137,6 +151,7 @@ horizontal_alignment = 1
 
 [node name="Status4PanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="ExpiredButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer"]
 layout_mode = 2
@@ -145,18 +160,21 @@ button_group = ExtResource("2_2tlyi")
 
 [node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 
 [node name="Status4VBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="Status4ColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/MarginContainer/Status4VBox"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="Status4Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/MarginContainer/Status4VBox"]
