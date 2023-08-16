@@ -30,6 +30,7 @@ var last_toggled_month: int = 1
 
 var info_columns: Array = [5, 6, 7, 8, 9, 10, 11]
 var number_of_info_columns = info_columns.size()
+var first_checkbox_column: int = 12
 
 
 # arrays for the number of checkboxes
@@ -295,6 +296,24 @@ func section_enum_to_string() -> String:
 	return current_section_key.capitalize()
 
 
+
+func custom_drawing(_drawn_treeitem: TreeItem, position_and_size: Rect2):
+	var x_size = position_and_size.size.x
+	var y_size = position_and_size.size.y
+	var x_position = position_and_size.position.x
+	var y_position = position_and_size.position.y
+	var half_y_size = y_size / 2
+	var half_y_position = y_position + half_y_size
+	var half_size := Vector2(x_size, half_y_size)
+	var top_position := Vector2(x_position, y_position)
+	var bottom_position := Vector2(x_position, half_y_position)
+	var top_rect := Rect2(top_position, half_size)
+	var bottom_rect := Rect2(bottom_position, half_size)
+	var current_color: Color = DataGlobal.current_checkbox_profile[1]
+	var white := Color(1, 1, 1)
+	draw_rect(top_rect, white)
+	draw_rect(bottom_rect, current_color)
+
 ##signal town
 
 
@@ -304,6 +323,11 @@ func _on_cell_selected() -> void:
 	var selected_cell: TreeItem = get_selected()
 	var selected_cell_column: int = get_selected_column()
 	prints("Cell Selected:", selected_cell.get_text(selected_cell_column))
+	if selected_cell_column >= (first_checkbox_column - number_of_info_columns):
+		selected_cell.set_cell_mode(selected_cell_column, TreeItem.CELL_MODE_CUSTOM)
+		selected_cell.set_custom_draw(selected_cell_column, self, "custom_drawing")
+#		selected_cell.set_custom_color(selected_cell_column, DataGlobal.current_checkbox_profile[1])
+	
 	
 	
 func _on_column_title_clicked(column: int, _mouse_button_index: int) -> void:
