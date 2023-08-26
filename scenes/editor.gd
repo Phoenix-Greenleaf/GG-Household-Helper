@@ -35,7 +35,7 @@ func print_ready() -> void:
 func menu_button_actions(id: int) -> void:
 	match id:
 		0:
-			get_tree().change_scene_to_file("res://scenes/screens/main_menu.tscn")
+			get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 		1:
 			print("Save File Pressed")
 		2:

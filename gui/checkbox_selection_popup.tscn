@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c7tqndbd8llst"]
 
-[ext_resource type="Script" path="res://scripts/screens/checkbox_selection_popup.gd" id="1_5xlif"]
-[ext_resource type="ButtonGroup" uid="uid://ditpy2n3iaejt" path="res://scenes/screens/checkbox_status_group.tres" id="2_2tlyi"]
+[ext_resource type="Script" path="res://gui/checkbox_selection_popup.gd" id="1_wlqjm"]
+[ext_resource type="ButtonGroup" uid="uid://ditpy2n3iaejt" path="res://gui/checkbox_status_group.tres" id="2_ti3lp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ui5rb"]
 
@@ -9,7 +9,7 @@
 offset_right = 266.0
 offset_bottom = 148.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ui5rb")
-script = ExtResource("1_5xlif")
+script = ExtResource("1_wlqjm")
 
 [node name="SelectionPopupMargin" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -40,7 +40,7 @@ mouse_filter = 2
 [node name="ActiveButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer"]
 layout_mode = 2
 toggle_mode = true
-button_group = ExtResource("2_2tlyi")
+button_group = ExtResource("2_ti3lp")
 
 [node name="Status1Margin" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer"]
 layout_mode = 2
@@ -73,7 +73,7 @@ mouse_filter = 2
 [node name="InProgressButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer"]
 layout_mode = 2
 toggle_mode = true
-button_group = ExtResource("2_2tlyi")
+button_group = ExtResource("2_ti3lp")
 
 [node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer"]
 layout_mode = 2
@@ -121,7 +121,7 @@ mouse_filter = 2
 layout_mode = 2
 toggle_mode = true
 button_pressed = true
-button_group = ExtResource("2_2tlyi")
+button_group = ExtResource("2_ti3lp")
 
 [node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer"]
 layout_mode = 2
@@ -156,7 +156,7 @@ mouse_filter = 2
 [node name="ExpiredButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer"]
 layout_mode = 2
 toggle_mode = true
-button_group = ExtResource("2_2tlyi")
+button_group = ExtResource("2_ti3lp")
 
 [node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer"]
 layout_mode = 2

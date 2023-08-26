@@ -1,10 +1,10 @@
 [gd_scene load_steps=2 format=3 uid="uid://dy5a80ny2p05l"]
 
-[ext_resource type="Script" path="res://scripts/screens/checkbox_profile.gd" id="1_wtm7t"]
+[ext_resource type="Script" path="res://gui/checkbox_profile.gd" id="1_8egkx"]
 
 [node name="ProfilePanelContainer" type="PanelContainer"]
 mouse_filter = 2
-script = ExtResource("1_wtm7t")
+script = ExtResource("1_8egkx")
 
 [node name="ProfileButton" type="Button" parent="."]
 unique_name_in_owner = true

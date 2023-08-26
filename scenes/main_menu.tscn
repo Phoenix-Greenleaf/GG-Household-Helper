@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://be574yx4gi08t"]
 
-[ext_resource type="Script" path="res://scripts/screens/main_menu.gd" id="1_rl0tp"]
+[ext_resource type="Script" path="res://scenes/main_menu.gd" id="1_ei0oi"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -10,7 +10,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
-script = ExtResource("1_rl0tp")
+script = ExtResource("1_ei0oi")
 metadata/_edit_use_anchors_ = true
 
 [node name="BackgroundColorRect" type="ColorRect" parent="."]
