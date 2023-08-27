@@ -226,13 +226,13 @@ text = "Date Goes Here"
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TaskSpreadsheet" type="GridContainer" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer"]
+[node name="TaskSpreadsheetGridContainer" type="GridContainer" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("5_4xdyt")
 
-[node name="PanelContainer" type="PanelContainer" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheet"]
+[node name="PanelContainer" type="PanelContainer" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
