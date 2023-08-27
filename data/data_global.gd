@@ -16,7 +16,7 @@ enum Section {
 }
 
 enum Month {
-	ALL,
+	NONE,
 	JANUARY,
 	FEBRUARY,
 	MARCH,

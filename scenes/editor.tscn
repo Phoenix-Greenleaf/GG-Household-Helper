@@ -4,7 +4,7 @@
 [ext_resource type="ButtonGroup" uid="uid://dstnxfnckpqs0" path="res://gui/editor_mode_button_group.tres" id="2_ludcj"]
 [ext_resource type="ButtonGroup" uid="uid://tci5j17kmt8l" path="res://gui/section_button_group.tres" id="2_rjskt"]
 [ext_resource type="PackedScene" uid="uid://ds4yxf6rofxhb" path="res://gui/current_checkbox_button.tscn" id="3_droll"]
-[ext_resource type="Script" path="res://old_stuff/table_tree.gd" id="5_vlkkf"]
+[ext_resource type="Script" path="res://gui/task_spreadsheet/task_spreadsheet_grid_container.gd" id="5_4xdyt"]
 [ext_resource type="PackedScene" uid="uid://c7tqndbd8llst" path="res://gui/checkbox_selection_popup.tscn" id="6_okd6i"]
 
 [node name="Editor" type="Control"]
@@ -222,13 +222,21 @@ layout_mode = 2
 size_flags_horizontal = 10
 text = "Date Goes Here"
 
-[node name="TableTree" type="Tree" parent="MainMargin/MainHBox/NonSideVBox"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MainMargin/MainHBox/NonSideVBox"]
 layout_mode = 2
 size_flags_vertical = 3
-columns = 10
-column_titles_visible = true
-hide_root = true
-script = ExtResource("5_vlkkf")
+
+[node name="TaskSpreadsheet" type="GridContainer" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("5_4xdyt")
+
+[node name="PanelContainer" type="PanelContainer" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheet"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="CheckboxSelectionPopup" parent="." node_paths=PackedStringArray("paired_checkbox_menu_button") instance=ExtResource("6_okd6i")]
 layout_mode = 0
@@ -237,12 +245,3 @@ offset_top = 203.0
 offset_right = 383.0
 offset_bottom = 351.0
 paired_checkbox_menu_button = NodePath("../MainMargin/MainHBox/SideMenuVBox/CurrentCheckboxButton")
-
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/InfoModeButton" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_info_mode_button_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/CheckboxModeButton" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_checkbox_mode_button_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/YearlyButton" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_yearly_button_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/MonthlyButton" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_monthly_button_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/WeeklyButton" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_weekly_button_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/DailyButton" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_daily_button_toggled"]
-[connection signal="cell_selected" from="MainMargin/MainHBox/NonSideVBox/TableTree" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_cell_selected"]
-[connection signal="column_title_clicked" from="MainMargin/MainHBox/NonSideVBox/TableTree" to="MainMargin/MainHBox/NonSideVBox/TableTree" method="_on_column_title_clicked"]
