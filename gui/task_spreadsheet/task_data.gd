@@ -9,7 +9,7 @@ class_name TaskData
 @export var time_of_day = DataGlobal.TimeOfDay
 @export var priority = DataGlobal.Priority
 @export var location : String
-@export var cycle_time_unit : String
+@export var time_unit : String
 @export var units_per_cycle : int
 @export var units_added_when_skipped : int
 @export var last_completed : String
@@ -27,7 +27,7 @@ func _init(
 	time_of_day_parameter = DataGlobal.TimeOfDay.ANY,
 	priority_parameter = DataGlobal.Priority.NORMAL_PRIORITY,
 	location_parameter = "",
-	cycle_time_unit_parameter = "month",
+	time_unit_parameter = "month",
 	units_per_cycle_parameter = 1,
 	units_added_when_skipped_parameter = 1,
 	last_completed_parameter = "1990-12-31",
@@ -40,7 +40,7 @@ func _init(
 	time_of_day = time_of_day_parameter
 	priority = priority_parameter
 	location = location_parameter
-	cycle_time_unit = cycle_time_unit_parameter
+	time_unit = time_unit_parameter
 	units_per_cycle = units_per_cycle_parameter
 	units_added_when_skipped = units_added_when_skipped_parameter
 	last_completed = last_completed_parameter
@@ -60,8 +60,8 @@ func generate_months_from_global() -> void:
 		entry = entry.capitalize()
 		month_checkbox_dictionary[entry] = [] #is this adding to dictionary?
 	prints("Generated months from global!")
-	prints("Keys:", month_checkbox_dictionary.keys())
-	prints("Values:", month_checkbox_dictionary.values())
+#	prints("Keys:", month_checkbox_dictionary.keys())
+#	prints("Values:", month_checkbox_dictionary.values())
 
 func generate_checkboxes() -> void:
 	for month_iteration in month_checkbox_dictionary:
@@ -71,7 +71,7 @@ func generate_checkboxes() -> void:
 		for day_iteration in days:
 			var checkbox_iteration = CheckboxData.new()
 			month_checkbox_dictionary[month_iteration].append(checkbox_iteration)
-		prints("Checkboxes for", month_iteration, "total:", month_checkbox_dictionary[month_iteration].size())
+#		prints("Checkboxes generated for",
 
 
 
@@ -90,3 +90,29 @@ func days_in_month_finder(month_in_question: String) -> int:
 		_:
 			print("Days_in_month_finder match error")
 			return 6
+
+
+func print_task_data() -> void:
+	prints("Data for task:", name)
+	prints("Section:", enum_uno_reverse(section, DataGlobal.Section))
+	prints("Group:", group)
+	prints("User:", assigned_user[0])
+	prints("Time of day:", enum_uno_reverse(time_of_day, DataGlobal.TimeOfDay))
+	prints("Priority:", enum_uno_reverse(priority, DataGlobal.Priority))
+	prints("Location:", location)
+	prints("Time Unit:", time_unit)
+	prints("Units per cycle:", units_per_cycle)
+	prints("Units added when skipped:", units_added_when_skipped)
+	prints("ISO of last completion:", last_completed)
+	prints("Year:", task_year)
+	prints("Checkbox count by month:")
+	for month_iteration in month_checkbox_dictionary:
+		if month_iteration == "None":
+			continue
+		prints(month_iteration, ":", month_checkbox_dictionary[month_iteration].size())
+
+func enum_uno_reverse(target_value: int, target_enum: Dictionary) -> String:
+	var enum_keys = target_enum.keys()
+	var enum_text = enum_keys[target_value]
+	enum_text = enum_text.capitalize()
+	return enum_text
