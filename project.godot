@@ -19,12 +19,9 @@ config/icon="res://icon.svg"
 [autoload]
 
 DataGlobal="*res://data/data_global.gd"
+SignalBus="*res://data/signal_bus.gd"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/csv-data-importer/plugin.cfg")

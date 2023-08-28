@@ -2,6 +2,7 @@ extends Control
 
 @onready var menu_button:= $MainMargin/MainHBox/SideMenuVBox/MenuButton as MenuButton
 @onready var current_date_label:= $MainMargin/MainHBox/NonSideVBox/TopMenuHBox/CurrentDateLabel as Label
+@onready var data_manager_center: CenterContainer = $DataManagerCenter
 
 
 var Weekday : Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
@@ -11,9 +12,16 @@ var Month : Array = ["Month Index", "January", "February", "March", "April", "Ma
 
 func _ready() -> void:
 	connect_menu_button_popup()
+	connect_data_manager()
 	set_current_date_label()
 	print_ready()
-	
+
+
+
+
+func connect_data_manager() -> void:
+	SignalBus.data_manager_close.connect(close_data_manager_popup)
+	data_manager_center.visible = false
 
 
 func set_current_date_label() -> void:
@@ -42,5 +50,8 @@ func menu_button_actions(id: int) -> void:
 			print("Change Logs Pressed")
 		3:
 			get_tree().quit()
+		5:
+			data_manager_center.visible = true
 
-
+func close_data_manager_popup() -> void:
+	data_manager_center.visible = false
