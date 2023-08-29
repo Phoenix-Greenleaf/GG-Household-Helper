@@ -4,8 +4,17 @@
 
 [node name="DataManager" type="PanelContainer"]
 custom_minimum_size = Vector2(400, 400)
-offset_right = 256.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
 offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource("1_64y23")
@@ -17,96 +26,122 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="VBox" type="VBoxContainer" parent="MainMargin"]
+[node name="DataManagerVBox" type="VBoxContainer" parent="MainMargin"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="MainMargin/VBox"]
+[node name="DataManagerTitle" type="Label" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
 text = "Data Manager"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="MainMargin/VBox"]
+[node name="HSeparator" type="HSeparator" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
 
-[node name="ProfileLabel" type="Label" parent="MainMargin/VBox"]
+[node name="ProfileLabel" type="Label" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
 text = "Profile Data"
 horizontal_alignment = 1
 
-[node name="ProfileScrollContainer" type="ScrollContainer" parent="MainMargin/VBox"]
+[node name="ProfileScrollContainer" type="ScrollContainer" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ProfileGrid" type="GridContainer" parent="MainMargin/VBox/ProfileScrollContainer"]
+[node name="ProfileGrid" type="GridContainer" parent="MainMargin/DataManagerVBox/ProfileScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 6
 
-[node name="NewProfile" type="Button" parent="MainMargin/VBox/ProfileScrollContainer/ProfileGrid"]
+[node name="NewProfile" type="Button" parent="MainMargin/DataManagerVBox/ProfileScrollContainer/ProfileGrid"]
 layout_mode = 2
 disabled = true
 text = "New Profile Data"
 
-[node name="TestProfiles" type="Button" parent="MainMargin/VBox/ProfileScrollContainer/ProfileGrid"]
+[node name="TestProfiles" type="Button" parent="MainMargin/DataManagerVBox/ProfileScrollContainer/ProfileGrid"]
 layout_mode = 2
 mouse_filter = 2
 toggle_mode = true
 button_pressed = true
 text = "Test Profiles"
 
-[node name="HSeparator2" type="HSeparator" parent="MainMargin/VBox"]
+[node name="ProfileCSVHBox" type="HBoxContainer" parent="MainMargin/DataManagerVBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="ImportProfileCSV" type="Button" parent="MainMargin/DataManagerVBox/ProfileCSVHBox"]
+layout_mode = 2
+disabled = true
+text = "Import Profile CSV"
+
+[node name="ExportProfileCSV" type="Button" parent="MainMargin/DataManagerVBox/ProfileCSVHBox"]
+layout_mode = 2
+disabled = true
+text = "Export Profile CSV"
+
+[node name="HSeparator2" type="HSeparator" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
 
-[node name="TaskLabel" type="Label" parent="MainMargin/VBox"]
+[node name="TaskLabel" type="Label" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
 text = "Task Data"
 horizontal_alignment = 1
 
-[node name="TaskScrollContainer" type="ScrollContainer" parent="MainMargin/VBox"]
+[node name="TaskScrollContainer" type="ScrollContainer" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TaskGrid" type="GridContainer" parent="MainMargin/VBox/TaskScrollContainer"]
+[node name="TaskGrid" type="GridContainer" parent="MainMargin/DataManagerVBox/TaskScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 6
 
-[node name="NewTask" type="Button" parent="MainMargin/VBox/TaskScrollContainer/TaskGrid"]
+[node name="NewTask" type="Button" parent="MainMargin/DataManagerVBox/TaskScrollContainer/TaskGrid"]
 layout_mode = 2
 disabled = true
 text = "New Task Data"
 
-[node name="TestTask" type="Button" parent="MainMargin/VBox/TaskScrollContainer/TaskGrid"]
+[node name="TestTask" type="Button" parent="MainMargin/DataManagerVBox/TaskScrollContainer/TaskGrid"]
 layout_mode = 2
 mouse_filter = 2
 toggle_mode = true
 button_pressed = true
 text = "Test Data"
 
-[node name="HSeparator3" type="HSeparator" parent="MainMargin/VBox"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="MainMargin/VBox"]
+[node name="TaskCSVHBox" type="HBoxContainer" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
 alignment = 1
 
-[node name="ImportCSV" type="Button" parent="MainMargin/VBox/HBox"]
+[node name="ImportTaskCSV" type="Button" parent="MainMargin/DataManagerVBox/TaskCSVHBox"]
+layout_mode = 2
+text = "Import Task CSV"
+
+[node name="ExportTaskCSV" type="Button" parent="MainMargin/DataManagerVBox/TaskCSVHBox"]
 layout_mode = 2
 disabled = true
-text = "Import CSV"
+text = "Export Task CSV"
 
-[node name="ExportCSV" type="Button" parent="MainMargin/VBox/HBox"]
+[node name="HSeparator3" type="HSeparator" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
-disabled = true
-text = "Export CSV"
 
-[node name="CloseManager" type="Button" parent="MainMargin/VBox"]
+[node name="CloseManager" type="Button" parent="MainMargin/DataManagerVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Close Data Manager"
+
+[node name="ImportTaskFileDialog" type="FileDialog" parent="."]
+title = "Import Task Data CSV"
+initial_position = 2
+size = Vector2i(597, 337)
+visible = true
+ok_button_text = "Import Task CSV"
+mode_overrides_title = false
+file_mode = 0
+access = 1
+filters = PackedStringArray("*.csv ; Comma Separated Values")
+
+[connection signal="pressed" from="MainMargin/DataManagerVBox/TaskCSVHBox/ImportTaskCSV" to="." method="_on_import_task_csv_pressed"]

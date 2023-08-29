@@ -5,8 +5,8 @@ extends Tree
 @onready var month_menu_popup:= month_menu_button.get_popup()
 
 #var default_import = preload("user directory some day")
-var default_import = preload("res://data/default_input_1.csv") # but for now, just the res directory
-var default_data: Array = default_import.records
+#var default_import = preload("res://data/default_input_1.csv") # but for now, just the res directory
+var default_data: Array #= default_import.records
 
 
 var column_header: Array = []

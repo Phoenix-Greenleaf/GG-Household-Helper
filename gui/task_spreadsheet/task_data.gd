@@ -58,10 +58,9 @@ func generate_months_from_global() -> void:
 	var months_from_global = DataGlobal.Month.keys()
 	for entry in months_from_global:
 		entry = entry.capitalize()
-		month_checkbox_dictionary[entry] = [] #is this adding to dictionary?
+		month_checkbox_dictionary[entry] = []
 	prints("Generated months from global!")
-#	prints("Keys:", month_checkbox_dictionary.keys())
-#	prints("Values:", month_checkbox_dictionary.values())
+
 
 func generate_checkboxes() -> void:
 	for month_iteration in month_checkbox_dictionary:
@@ -71,7 +70,7 @@ func generate_checkboxes() -> void:
 		for day_iteration in days:
 			var checkbox_iteration = CheckboxData.new()
 			month_checkbox_dictionary[month_iteration].append(checkbox_iteration)
-#		prints("Checkboxes generated for",
+
 
 
 

@@ -13,7 +13,7 @@ script = ExtResource("1_fuc6o")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 2
-color = Color(0.101961, 0.54902, 0.286275, 1)
+color = Color(0.0705882, 0.415686, 0.211765, 1)
 
 [node name="DataManager" parent="." instance=ExtResource("2_glwho")]
 layout_mode = 2
