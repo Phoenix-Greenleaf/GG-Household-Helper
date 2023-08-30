@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=3 uid="uid://dyyf7omqhasxq"]
+
+[ext_resource type="Script" path="res://gui/data_manager/task_save_button.gd" id="1_4tmnx"]
+
+[node name="TaskSaveButton" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -86.0
+offset_top = -39.0
+offset_right = 86.0
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+script = ExtResource("1_4tmnx")
+
+[node name="FunctionalButton" type="Button" parent="."]
+layout_mode = 2
+toggle_mode = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="TaskSetNameLabel" type="Label" parent="MarginContainer/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "Task Set Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TaskSetYearLabel" type="Label" parent="MarginContainer/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "[YEAR]"
+horizontal_alignment = 1
+vertical_alignment = 1

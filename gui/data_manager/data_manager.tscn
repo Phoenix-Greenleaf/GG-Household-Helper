@@ -44,27 +44,16 @@ theme_override_font_sizes/font_size = 26
 text = "Profile Data"
 horizontal_alignment = 1
 
-[node name="ProfileScrollContainer" type="ScrollContainer" parent="MainMargin/DataManagerVBox"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="ProfileGrid" type="GridContainer" parent="MainMargin/DataManagerVBox/ProfileScrollContainer"]
+[node name="ProfileGrid" type="GridContainer" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 6
 
-[node name="NewProfile" type="Button" parent="MainMargin/DataManagerVBox/ProfileScrollContainer/ProfileGrid"]
+[node name="NewProfile" type="Button" parent="MainMargin/DataManagerVBox/ProfileGrid"]
 layout_mode = 2
 disabled = true
 text = "New Profile Data"
-
-[node name="TestProfiles" type="Button" parent="MainMargin/DataManagerVBox/ProfileScrollContainer/ProfileGrid"]
-layout_mode = 2
-mouse_filter = 2
-toggle_mode = true
-button_pressed = true
-text = "Test Profiles"
 
 [node name="ProfileCSVHBox" type="HBoxContainer" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
@@ -73,12 +62,12 @@ alignment = 1
 [node name="ImportProfileCSV" type="Button" parent="MainMargin/DataManagerVBox/ProfileCSVHBox"]
 layout_mode = 2
 disabled = true
-text = "Import Profile CSV"
+text = "Import Profile"
 
 [node name="ExportProfileCSV" type="Button" parent="MainMargin/DataManagerVBox/ProfileCSVHBox"]
 layout_mode = 2
 disabled = true
-text = "Export Profile CSV"
+text = "Export Profile"
 
 [node name="HSeparator2" type="HSeparator" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
@@ -89,27 +78,68 @@ theme_override_font_sizes/font_size = 26
 text = "Task Data"
 horizontal_alignment = 1
 
-[node name="TaskScrollContainer" type="ScrollContainer" parent="MainMargin/DataManagerVBox"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="TaskGrid" type="GridContainer" parent="MainMargin/DataManagerVBox/TaskScrollContainer"]
+[node name="TaskGrid" type="GridContainer" parent="MainMargin/DataManagerVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 6
 
-[node name="NewTask" type="Button" parent="MainMargin/DataManagerVBox/TaskScrollContainer/TaskGrid"]
+[node name="NewTaskButton" type="Button" parent="MainMargin/DataManagerVBox/TaskGrid"]
+unique_name_in_owner = true
 layout_mode = 2
-disabled = true
-text = "New Task Data"
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "New
+Data"
 
-[node name="TestTask" type="Button" parent="MainMargin/DataManagerVBox/TaskScrollContainer/TaskGrid"]
+[node name="NewTaskPanel" type="PanelContainer" parent="MainMargin/DataManagerVBox/TaskGrid"]
+unique_name_in_owner = true
 layout_mode = 2
-mouse_filter = 2
-toggle_mode = true
-button_pressed = true
-text = "Test Data"
+
+[node name="Margin" type="MarginContainer" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+
+[node name="VBox" type="VBoxContainer" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="TaskDataTitleLabel" type="Label" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox/HBox"]
+layout_mode = 2
+text = "Task Data Title"
+
+[node name="TaskDataTitleLineEdit" type="LineEdit" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Name Here"
+expand_to_text_length = true
+clear_button_enabled = true
+
+[node name="TaskAcceptButton" type="Button" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox/HBox"]
+layout_mode = 2
+text = "Accept"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="TaskDataYearLabel" type="Label" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox/HBoxContainer2"]
+layout_mode = 2
+text = "Task Data Year"
+
+[node name="TaskDataYearLineEdit" type="LineEdit" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "YEAR"
+
+[node name="TaskCancelButton" type="Button" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Cancel"
 
 [node name="TaskCSVHBox" type="HBoxContainer" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
@@ -117,12 +147,13 @@ alignment = 1
 
 [node name="ImportTaskCSV" type="Button" parent="MainMargin/DataManagerVBox/TaskCSVHBox"]
 layout_mode = 2
-text = "Import Task CSV"
+disabled = true
+text = "Import Task"
 
 [node name="ExportTaskCSV" type="Button" parent="MainMargin/DataManagerVBox/TaskCSVHBox"]
 layout_mode = 2
 disabled = true
-text = "Export Task CSV"
+text = "Export Task"
 
 [node name="HSeparator3" type="HSeparator" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
@@ -136,12 +167,15 @@ text = "Close Data Manager"
 [node name="ImportTaskFileDialog" type="FileDialog" parent="."]
 title = "Import Task Data CSV"
 initial_position = 2
-size = Vector2i(597, 337)
-visible = true
-ok_button_text = "Import Task CSV"
+size = Vector2i(600, 400)
+ok_button_text = "Open"
 mode_overrides_title = false
 file_mode = 0
 access = 1
 filters = PackedStringArray("*.csv ; Comma Separated Values")
 
+[connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/NewTaskButton" to="." method="_on_new_task_button_pressed"]
+[connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox/HBox/TaskAcceptButton" to="." method="_on_task_accept_button_pressed"]
+[connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox/HBoxContainer2/TaskCancelButton" to="." method="_on_task_cancel_button_pressed"]
 [connection signal="pressed" from="MainMargin/DataManagerVBox/TaskCSVHBox/ImportTaskCSV" to="." method="_on_import_task_csv_pressed"]
+[connection signal="file_selected" from="ImportTaskFileDialog" to="." method="_on_import_task_file_dialog_file_selected"]
