@@ -38,8 +38,9 @@ var error_keys : Array = [
 
 func _ready() -> void:
 	connect_signal_bus()
-	import_task_file_dialog.visible = false
-	new_task_panel.visible = false
+	starting_visibilities()
+	load_existing_tasksheets()
+
 
 func connect_signal_bus() -> void:
 	close_manager_button.pressed.connect(emit_exit_signal)
@@ -50,12 +51,36 @@ func emit_exit_signal() -> void:
 	SignalBus.emit_signal("data_manager_close")
 	prints("data manager close Emitted")
 
+
 func update_current_tasksheet_label() -> void:
 	var intro_text = "Current Data: "
 	var title = DataGlobal.current_tasksheet_data.spreadsheet_title
 	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
 	var new_label = intro_text + title + ": " + str(year)
 	current_tasksheet_label.text = new_label
+
+
+func starting_visibilities() -> void:
+	import_task_file_dialog.visible = false
+	new_task_panel.visible = false
+
+
+func load_existing_tasksheets() -> void:
+	if DirAccess.dir_exists_absolute(tasksheet_folder):
+		var existing_files = DirAccess.get_files_at(tasksheet_folder)
+		prints("Found files:", existing_files)
+		for file in existing_files:
+			var extension = file.get_extension()
+			if extension != "res":
+				prints("File", file, "is not of 'res'")
+				continue
+			var filepath = tasksheet_folder + file
+			var file_resource : TaskSpreadsheetData = ResourceLoader.load(filepath)
+			print(file_resource)
+			var loaded_name = file_resource.spreadsheet_title
+			var loaded_year = file_resource.spreadsheet_year
+			prints("Loaded:", loaded_name, loaded_year)
+			create_task_save_button(file_resource)
 
 
 func show_new_task_panel() -> void:
@@ -130,27 +155,33 @@ func create_task_save_button(target_resource: TaskSpreadsheetData) -> void:
 	var actual_task_button: Button = new_task_save_button.get_node("FunctionalButton")
 	actual_task_button.toggled.connect(_on_task_save_button_pressed.bind(target_resource))
 	actual_task_button.set_button_group(task_save_button_group)
-	prints("Created button for", target_resource.get_class(), target_resource)
+	
+	var target_name = target_resource.spreadsheet_title
+	var target_year = target_resource.spreadsheet_year
+	prints("Created button for", target_name, target_year, target_resource)
 	send_tasksheet_to_global(target_resource)
 
 
 
-func _on_task_save_button_pressed(button_pressed: bool, tasksheet: TaskSpreadsheetData):
+func _on_task_save_button_pressed(button_pressed: bool, pressed_tasksheet: TaskSpreadsheetData):
 	if not button_pressed:
 		return
-	if tasksheet == DataGlobal.current_tasksheet_data:
+	if pressed_tasksheet == DataGlobal.current_tasksheet_data:
 		prints("Tasksheet data already loaded, skipping.")
 		return
-	send_tasksheet_to_global(tasksheet)
+	var pressed_name = pressed_tasksheet.spreadsheet_title
+	var pressed_year = pressed_tasksheet.spreadsheet_year
+	prints("Switching Tasksheet to:", pressed_name, pressed_year, pressed_tasksheet)
+	send_tasksheet_to_global(pressed_tasksheet)
 
 
 
 func send_tasksheet_to_global(tasksheet_to_send) -> void:
-	prints("Button Tasksheet:", tasksheet_to_send)
 	DataGlobal.current_tasksheet_data = tasksheet_to_send
 	SignalBus.emit_signal("_on_current_tasksheet_data_changed")
 	var global_test : bool = DataGlobal.current_tasksheet_data == tasksheet_to_send
 	prints("Global Test:", global_test)
+	print("")
 
 
 
