@@ -17,6 +17,8 @@ func _ready() -> void:
 	connect_other_signal_bus()
 	set_current_date_label()
 	print_ready()
+	if DataGlobal.current_tasksheet_data:
+		update_current_tasksheet_label()
 
 
 

@@ -167,9 +167,8 @@ text = "Cancel"
 layout_mode = 2
 alignment = 1
 
-[node name="ImportTaskCSV" type="Button" parent="MainMargin/DataManagerVBox/TaskCSVHBox"]
+[node name="ImportTasksheet" type="Button" parent="MainMargin/DataManagerVBox/TaskCSVHBox"]
 layout_mode = 2
-disabled = true
 text = "Import Task"
 
 [node name="ExportTaskCSV" type="Button" parent="MainMargin/DataManagerVBox/TaskCSVHBox"]
@@ -199,5 +198,5 @@ filters = PackedStringArray("*.csv ; Comma Separated Values")
 [connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/NewTaskButton" to="." method="_on_new_task_button_pressed"]
 [connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox/HBox/TaskAcceptButton" to="." method="_on_task_accept_button_pressed"]
 [connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox/HBoxContainer2/TaskCancelButton" to="." method="_on_task_cancel_button_pressed"]
-[connection signal="pressed" from="MainMargin/DataManagerVBox/TaskCSVHBox/ImportTaskCSV" to="." method="_on_import_task_csv_pressed"]
+[connection signal="pressed" from="MainMargin/DataManagerVBox/TaskCSVHBox/ImportTasksheet" to="." method="_on_import_tasksheet_pressed"]
 [connection signal="file_selected" from="ImportTaskFileDialog" to="." method="_on_import_task_file_dialog_file_selected"]

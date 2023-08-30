@@ -20,6 +20,19 @@ var export_folder = "user://exports/"
 
 var task_button_count: int = 0
 
+var error_keys : Array = [
+	"OK", #0
+	"FAILED", #1
+	"ERR_UNAVAILABLE", #2
+	"ERR_UNCONFIGURED", #3
+	"ERR_UNAUTHORIZED", #4
+	"ERR_PARAMETER_RANGE_ERROR", #5
+	"ERR_OUT_OF_MEMORY", #6
+	"ERR_FILE_NOT_FOUND" #7
+]
+
+
+
 
 func _ready() -> void:
 	connect_signal_bus()
@@ -42,19 +55,6 @@ func update_current_tasksheet_label() -> void:
 	var new_label = intro_text + title + ": " + str(year)
 	current_tasksheet_label.text = new_label
 
-#func _task(save_path):
-#	pass
-#	var task_data = TaskData.new()
-#	spreadsheet_data.spreadsheet_data.append()
-#
-#
-#
-#	var filename = save_path + ".res"
-#	var save_error = ResourceSaver.save(spreadsheet_data, filename)
-#	if save_error != OK:
-#		printerr("Failed to save resource: ", save_error)
-#	return save_error
-
 
 func show_new_task_panel() -> void:
 	new_task_panel.visible = true
@@ -66,8 +66,6 @@ func show_new_task_button() -> void:
 	new_task_panel.visible = false
 
 func task_field_reset() -> void:
-#	var spin_line_edit = task_data_year_spinbox.get_line_edit()
-#	spin_line_edit.text = 2000
 	task_data_year_spinbox.value = 2000
 	task_data_title_line_edit.clear()
 
@@ -75,12 +73,8 @@ func task_field_reset() -> void:
 
 
 
-func _on_import_task_csv_pressed() -> void:
-	import_task_file_dialog.visible = true
-
-
 func _on_import_task_file_dialog_file_selected(path: String) -> void:
-	pass # Replace with function body.
+	prints("File Dialogue import:", path)
 
 
 func _on_new_task_button_pressed() -> void:
@@ -102,14 +96,18 @@ func _on_task_accept_button_pressed() -> void:
 
 
 func create_spreadsheet_data_and_save() -> void:
-	var tasksheet_year: int = task_data_year_spinbox.value
+	var tasksheet_year := int(task_data_year_spinbox.value)
 	var tasksheet_name: String = task_data_title_line_edit.text
 	var tasksheet_data := TaskSpreadsheetData.new(tasksheet_year, tasksheet_name)
 	var tasksheet_save_name = tasksheet_name + "_" + str(tasksheet_year)
 	var filepath: String = tasksheet_folder + tasksheet_save_name + ".res"
 	var save_error = ResourceSaver.save(tasksheet_data, filepath)
 	if save_error != OK:
-		printerr("Failed to save resource: ", save_error)
+		var error_highscore = error_keys.size() - 1
+		if save_error > error_highscore:
+			printerr("Failed to save resource: NEW HIGHSCORE! ", save_error, "!")
+		else:
+			printerr("Failed to save resource: ", error_keys[save_error], " ", save_error)
 	create_task_save_button(tasksheet_data)
 
 
@@ -125,7 +123,7 @@ func create_task_save_button(target_resource: TaskSpreadsheetData) -> void:
 	actual_task_button.set_button_group(task_save_button_group)
 	prints("Created button for", target_resource.get_class(), target_resource)
 	send_tasksheet_to_global(target_resource)
-	
+
 
 
 func _on_task_save_button_pressed(button_pressed: bool, tasksheet: TaskSpreadsheetData):
@@ -144,3 +142,8 @@ func send_tasksheet_to_global(tasksheet_to_send) -> void:
 	SignalBus.emit_signal("_on_current_tasksheet_data_changed")
 	var global_test : bool = DataGlobal.current_tasksheet_data == tasksheet_to_send
 	prints("Global Test:", global_test)
+
+
+
+func _on_import_tasksheet_pressed() -> void:
+	import_task_file_dialog.visible = true
