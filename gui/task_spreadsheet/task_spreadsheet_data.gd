@@ -4,7 +4,10 @@ class_name TaskSpreadsheetData
 
 @export var spreadsheet_year : int
 @export var spreadsheet_title : String
-@export var spreadsheet_data: Array[TaskData]
+@export var spreadsheet_year_data: Array[TaskData]
+@export var spreadsheet_month_data: Array[TaskData]
+@export var spreadsheet_week_data: Array[TaskData]
+@export var spreadsheet_day_data: Array[TaskData]
 
 
 func _init(
@@ -14,6 +17,18 @@ func _init(
 	spreadsheet_year = spreadsheet_year_parameter
 	spreadsheet_title = spreadsheet_title_parameter
 	prints("Spreadsheet initialized:", spreadsheet_title, spreadsheet_year)
+
+
+
+
+
+
+
+
+
+
+
+#func add_task()
 
 
 func initialization_test():
@@ -32,6 +47,3 @@ func initialization_test():
 		spreadsheet_year,
 		)
 	test_task.print_task_data()
-
-
-#func add_task()

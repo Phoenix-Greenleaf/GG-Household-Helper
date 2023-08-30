@@ -10,6 +10,8 @@ extends PanelContainer
 @onready var task_grid: GridContainer = %TaskGrid
 @onready var current_tasksheet_label: Label = %CurrentTasksheetLabel
 
+#@export var tasksheet_data : TaskSpreadsheetData 
+#@export var tasksheet_save_error : Error    #most recent @export in attempt to ResourceSaver successfully
 
 var task_save_button_group = preload("res://gui/data_manager/task_save_button_group.tres")
 var task_save_button = preload("res://gui/data_manager/task_save_button.tscn")
@@ -69,7 +71,12 @@ func task_field_reset() -> void:
 	task_data_year_spinbox.value = 2000
 	task_data_title_line_edit.clear()
 
-
+func directory_check(directory_to_check) -> void:
+	if not DirAccess.dir_exists_absolute(directory_to_check):
+		DirAccess.make_dir_absolute(directory_to_check)
+		prints("Created directory:", directory_to_check)
+	else:
+		prints("Directory Exists")
 
 
 
@@ -90,24 +97,26 @@ func _on_task_accept_button_pressed() -> void:
 		printerr("Task needs title, not accepted")
 #		show_new_task_button()
 		return
-	create_spreadsheet_data_and_save()
+	create_tasksheet_data_and_save()
 	task_field_reset()
 	show_new_task_button()
 
 
-func create_spreadsheet_data_and_save() -> void:
+func create_tasksheet_data_and_save() -> void:
 	var tasksheet_year := int(task_data_year_spinbox.value)
 	var tasksheet_name: String = task_data_title_line_edit.text
-	var tasksheet_data := TaskSpreadsheetData.new(tasksheet_year, tasksheet_name)
+	var tasksheet_data = TaskSpreadsheetData.new(tasksheet_year, tasksheet_name)
 	var tasksheet_save_name = tasksheet_name + "_" + str(tasksheet_year)
 	var filepath: String = tasksheet_folder + tasksheet_save_name + ".res"
-	var save_error = ResourceSaver.save(tasksheet_data, filepath)
-	if save_error != OK:
+	prints("Filepath for save:", filepath)
+	directory_check(tasksheet_folder)
+	var tasksheet_save_error = ResourceSaver.save(tasksheet_data, filepath)
+	if tasksheet_save_error != OK:
 		var error_highscore = error_keys.size() - 1
-		if save_error > error_highscore:
-			printerr("Failed to save resource: NEW HIGHSCORE! ", save_error, "!")
+		if tasksheet_save_error > error_highscore:
+			printerr("Failed to save resource: NEW HIGHSCORE! ", tasksheet_save_error, "!")
 		else:
-			printerr("Failed to save resource: ", error_keys[save_error], " ", save_error)
+			printerr("Failed to save resource: ", error_keys[tasksheet_save_error], " ", tasksheet_save_error)
 	create_task_save_button(tasksheet_data)
 
 

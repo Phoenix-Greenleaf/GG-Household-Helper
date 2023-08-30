@@ -255,6 +255,7 @@ offset_bottom = 351.0
 paired_checkbox_menu_button = NodePath("../MainMargin/MainHBox/SideMenuVBox/CurrentCheckboxButton")
 
 [node name="DataManagerCenter" type="CenterContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

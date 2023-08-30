@@ -18,7 +18,7 @@ func _ready() -> void:
 	set_current_date_label()
 	print_ready()
 	if DataGlobal.current_tasksheet_data:
-		update_current_tasksheet_label()
+		update_current_tasksheet()
 
 
 
@@ -42,7 +42,7 @@ func connect_menu_button_popup() -> void:
 	popup.connect("id_pressed", menu_button_actions)
 
 func connect_other_signal_bus() -> void:
-	SignalBus._on_current_tasksheet_data_changed.connect(update_current_tasksheet_label)
+	SignalBus._on_current_tasksheet_data_changed.connect(update_current_tasksheet)
 
 
 func print_ready() -> void:
@@ -64,9 +64,17 @@ func menu_button_actions(id: int) -> void:
 func close_data_manager_popup() -> void:
 	data_manager_center.visible = false
 
+func update_current_tasksheet() -> void:
+	update_current_tasksheet_label()
+	update_tasksheet_grid()
+
 
 func update_current_tasksheet_label() -> void:
 	var title = DataGlobal.current_tasksheet_data.spreadsheet_title
 	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
 	var new_label = title + ": " + str(year)
 	current_save_label.text = new_label
+
+
+func update_tasksheet_grid() -> void:
+	pass
