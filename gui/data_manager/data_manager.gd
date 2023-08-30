@@ -4,10 +4,12 @@ extends PanelContainer
 @onready var close_manager_button: Button = %CloseManager
 @onready var import_task_file_dialog: FileDialog = $ImportTaskFileDialog
 @onready var task_data_title_line_edit: LineEdit = %TaskDataTitleLineEdit
-@onready var task_data_year_line_edit: LineEdit = %TaskDataYearLineEdit
+@onready var task_data_year_spinbox: SpinBox = %TaskDataYearSpinbox
 @onready var new_task_panel: PanelContainer = %NewTaskPanel
 @onready var new_task_button: Button = %NewTaskButton
 @onready var task_grid: GridContainer = %TaskGrid
+@onready var current_tasksheet_label: Label = %CurrentTasksheetLabel
+
 
 var task_save_button_group = preload("res://gui/data_manager/task_save_button_group.tres")
 var task_save_button = preload("res://gui/data_manager/task_save_button.tscn")
@@ -19,40 +21,29 @@ var export_folder = "user://exports/"
 var task_button_count: int = 0
 
 
-
-var name_column: int = 0
-var section_column: int = 1
-var group_column: int = 2
-var user_column: int = 4
-var time_of_day_column: int 
-var priority_column: int 
-var location_column: int 
-var time_unit_column: int 
-var units_per_cycle_column: int 
-var units_added_when_skipped_column: int 
-var last_completed_column: int 
-var year_column: int 
-
-
-
-#var csv_conversion: Array = []
-
 func _ready() -> void:
-	close_manager_button.pressed.connect(emit_exit_signal)
+	connect_signal_bus()
 	import_task_file_dialog.visible = false
 	new_task_panel.visible = false
+
+func connect_signal_bus() -> void:
+	close_manager_button.pressed.connect(emit_exit_signal)
+	SignalBus._on_current_tasksheet_data_changed.connect(update_current_tasksheet_label)
 
 
 func emit_exit_signal() -> void:
 	SignalBus.emit_signal("data_manager_close")
 	prints("data manager close Emitted")
 
+func update_current_tasksheet_label() -> void:
+	var intro_text = "Current Data: "
+	var title = DataGlobal.current_tasksheet_data.spreadsheet_title
+	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
+	var new_label = intro_text + title + ": " + str(year)
+	current_tasksheet_label.text = new_label
 
-func _task(save_path):
-	pass
-
-
-
+#func _task(save_path):
+#	pass
 #	var task_data = TaskData.new()
 #	spreadsheet_data.spreadsheet_data.append()
 #
@@ -74,7 +65,11 @@ func show_new_task_button() -> void:
 	new_task_button.visible = true
 	new_task_panel.visible = false
 
-
+func task_field_reset() -> void:
+#	var spin_line_edit = task_data_year_spinbox.get_line_edit()
+#	spin_line_edit.text = 2000
+	task_data_year_spinbox.value = 2000
+	task_data_title_line_edit.clear()
 
 
 
@@ -97,19 +92,25 @@ func _on_task_cancel_button_pressed() -> void:
 
 
 func _on_task_accept_button_pressed() -> void:
-	if not task_data_year_line_edit.text or not task_data_title_line_edit.text:
-		printerr("Task needs title and year, not accepted")
-		show_new_task_button()
+	if not task_data_title_line_edit.text:
+		printerr("Task needs title, not accepted")
+#		show_new_task_button()
 		return
-	var tasksheet_year: String = task_data_year_line_edit.text
+	create_spreadsheet_data_and_save()
+	task_field_reset()
+	show_new_task_button()
+
+
+func create_spreadsheet_data_and_save() -> void:
+	var tasksheet_year: int = task_data_year_spinbox.value
 	var tasksheet_name: String = task_data_title_line_edit.text
-	var tasksheet_data := TaskSpreadsheetData.new(tasksheet_year as int, tasksheet_name)
-	var filepath: String = tasksheet_folder + tasksheet_name + tasksheet_year + ".res"
+	var tasksheet_data := TaskSpreadsheetData.new(tasksheet_year, tasksheet_name)
+	var tasksheet_save_name = tasksheet_name + "_" + str(tasksheet_year)
+	var filepath: String = tasksheet_folder + tasksheet_save_name + ".res"
 	var save_error = ResourceSaver.save(tasksheet_data, filepath)
 	if save_error != OK:
 		printerr("Failed to save resource: ", save_error)
 	create_task_save_button(tasksheet_data)
-	show_new_task_button()
 
 
 func create_task_save_button(target_resource: TaskSpreadsheetData) -> void:
@@ -117,18 +118,29 @@ func create_task_save_button(target_resource: TaskSpreadsheetData) -> void:
 	task_grid.add_child(new_task_save_button)
 	task_grid.move_child(new_task_save_button, task_button_count)
 	new_task_save_button.saved_resource = target_resource
-	new_task_save_button.update_button() #this failed and I don't understand why
-#	var task_title_label: Label = new_task_save_button.task_set_name_label
-#	var task_year_label: Label = new_task_save_button.task_set_year_label
-#	task_title_label.text = new_task_save_button.saved_resource.spreadsheet_title
-#	task_year_label.text = new_task_save_button.saved_resource.spreadsheet_year as String
-#	task_title_label.text = "testing"
-#	task_year_label.text = "1888"
-	
+	new_task_save_button.update_button() 
 	task_button_count += 1
 	var actual_task_button: Button = new_task_save_button.get_node("FunctionalButton")
 	actual_task_button.toggled.connect(_on_task_save_button_pressed.bind(target_resource))
 	actual_task_button.set_button_group(task_save_button_group)
+	prints("Created button for", target_resource.get_class(), target_resource)
+	send_tasksheet_to_global(target_resource)
+	
 
-func _on_task_save_button_pressed(tasksheet: TaskSpreadsheetData):
-	pass
+
+func _on_task_save_button_pressed(button_pressed: bool, tasksheet: TaskSpreadsheetData):
+	if not button_pressed:
+		return
+	if tasksheet == DataGlobal.current_tasksheet_data:
+		prints("Tasksheet data already loaded, skipping.")
+		return
+	send_tasksheet_to_global(tasksheet)
+
+
+
+func send_tasksheet_to_global(tasksheet_to_send) -> void:
+	prints("Button Tasksheet:", tasksheet_to_send)
+	DataGlobal.current_tasksheet_data = tasksheet_to_send
+	SignalBus.emit_signal("_on_current_tasksheet_data_changed")
+	var global_test : bool = DataGlobal.current_tasksheet_data == tasksheet_to_send
+	prints("Global Test:", global_test)

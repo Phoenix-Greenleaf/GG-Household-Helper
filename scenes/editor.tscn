@@ -189,6 +189,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 
+[node name="CurrentSaveLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Current File: YEAR"
+
 [node name="SaveWarningButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2
 disabled = true

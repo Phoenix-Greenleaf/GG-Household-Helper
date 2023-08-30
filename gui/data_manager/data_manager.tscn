@@ -31,6 +31,8 @@ layout_mode = 2
 
 [node name="DataManagerTitle" type="Label" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 36
 text = "Data Manager"
 horizontal_alignment = 1
@@ -40,9 +42,17 @@ layout_mode = 2
 
 [node name="ProfileLabel" type="Label" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 26
 text = "Profile Data"
 horizontal_alignment = 1
+
+[node name="CurrentProfileLabel" type="Label" parent="MainMargin/DataManagerVBox"]
+layout_mode = 2
+text = "Current Data: [Default]"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ProfileGrid" type="GridContainer" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
@@ -74,9 +84,18 @@ layout_mode = 2
 
 [node name="TaskLabel" type="Label" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 26
 text = "Task Data"
 horizontal_alignment = 1
+
+[node name="CurrentTasksheetLabel" type="Label" parent="MainMargin/DataManagerVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Current Data: [Default]: [YEAR]"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="TaskGrid" type="GridContainer" parent="MainMargin/DataManagerVBox"]
 unique_name_in_owner = true
@@ -130,11 +149,14 @@ layout_mode = 2
 layout_mode = 2
 text = "Task Data Year"
 
-[node name="TaskDataYearLineEdit" type="LineEdit" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox/HBoxContainer2"]
+[node name="TaskDataYearSpinbox" type="SpinBox" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "YEAR"
+min_value = 1000.0
+max_value = 3000.0
+value = 2000.0
+allow_greater = true
 
 [node name="TaskCancelButton" type="Button" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox/HBoxContainer2"]
 layout_mode = 2

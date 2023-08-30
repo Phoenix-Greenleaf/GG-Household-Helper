@@ -60,3 +60,5 @@ var user_profiles: Array = [
 var current_checkbox_state: int = Checkbox.COMPLETED
 var current_checkbox_profile: Array = user_profiles[1]
 
+var current_profile_data #waiting on that data/type
+var current_tasksheet_data : TaskSpreadsheetData

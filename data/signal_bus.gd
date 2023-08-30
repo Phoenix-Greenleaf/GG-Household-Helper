@@ -1,4 +1,5 @@
 extends Node
 
 signal data_manager_close
+signal _on_current_tasksheet_data_changed
 

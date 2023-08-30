@@ -13,7 +13,7 @@ func _init(
 	) -> void:
 	spreadsheet_year = spreadsheet_year_parameter
 	spreadsheet_title = spreadsheet_title_parameter
-	prints("Spreadsheet initialized:", spreadsheet_year, spreadsheet_title)
+	prints("Spreadsheet initialized:", spreadsheet_title, spreadsheet_year)
 
 
 func initialization_test():

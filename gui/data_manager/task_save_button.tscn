@@ -8,14 +8,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -86.0
-offset_top = -39.0
-offset_right = 86.0
-offset_bottom = 39.0
+offset_left = -61.5
+offset_top = -26.0
+offset_right = 61.5
+offset_bottom = 26.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 3
+size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("1_4tmnx")
 
@@ -25,22 +25,23 @@ toggle_mode = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 mouse_filter = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 4
 
 [node name="VBox" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
+theme_override_constants/separation = 0
 
 [node name="TaskSetNameLabel" type="Label" parent="MarginContainer/VBox"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 24
 text = "Task Set Name"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -48,7 +49,6 @@ vertical_alignment = 1
 [node name="TaskSetYearLabel" type="Label" parent="MarginContainer/VBox"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 24
 text = "[YEAR]"
 horizontal_alignment = 1
 vertical_alignment = 1
