@@ -4,6 +4,9 @@ extends Control
 @onready var current_date_label:= $MainMargin/MainHBox/NonSideVBox/TopMenuHBox/CurrentDateLabel as Label
 @onready var data_manager_center: CenterContainer = $DataManagerCenter
 @onready var current_save_label: Label = %CurrentSaveLabel
+@onready var task_spreadsheet_grid_container: GridContainer = %TaskSpreadsheetGridContainer
+@onready var create_new_task_button: Button = %CreateNewTaskButton
+
 
 
 var Weekday : Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]

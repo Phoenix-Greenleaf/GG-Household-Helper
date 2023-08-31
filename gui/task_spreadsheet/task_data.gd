@@ -3,8 +3,10 @@ extends Resource
 class_name TaskData
 
 @export var name : String
+
 @export var section = DataGlobal.Section
 @export var group : String
+
 @export var assigned_user : Array
 @export var time_of_day = DataGlobal.TimeOfDay
 @export var priority = DataGlobal.Priority
@@ -17,44 +19,18 @@ class_name TaskData
 @export var month_checkbox_dictionary : Dictionary
 
 
-var checkbox_status = DataGlobal.Checkbox #send to checkbox res
 
-func _init(
-	name_parameter = "Default",
-	section_parameter = DataGlobal.Section.MONTHLY,
-	group_parameter = "None",
-	assigned_user_parameter = DataGlobal.user_profiles[0],
-	time_of_day_parameter = DataGlobal.TimeOfDay.ANY,
-	priority_parameter = DataGlobal.Priority.NORMAL_PRIORITY,
-	location_parameter = "",
-	time_unit_parameter = "month",
-	units_per_cycle_parameter = 1,
-	units_added_when_skipped_parameter = 1,
-	last_completed_parameter = "1990-12-31",
-	task_year_parameter = 1990
-) -> void:
-	name = name_parameter
-	section = section_parameter
-	group = group_parameter
-	assigned_user = assigned_user_parameter
-	time_of_day = time_of_day_parameter
-	priority = priority_parameter
-	location = location_parameter
-	time_unit = time_unit_parameter
-	units_per_cycle = units_per_cycle_parameter
-	units_added_when_skipped = units_added_when_skipped_parameter
-	last_completed = last_completed_parameter
-	task_year = task_year_parameter
+
+func offbrand_init() -> void:
 	generate_months_from_global()
-	generate_checkboxes()
-
-
-
-
+	generate_all_checkboxes()
 
 
 
 func generate_months_from_global() -> void:
+	if month_checkbox_dictionary:
+		prints("Month Dictionary already exists")
+		return
 	var months_from_global = DataGlobal.Month.keys()
 	for entry in months_from_global:
 		entry = entry.capitalize()
@@ -62,16 +38,24 @@ func generate_months_from_global() -> void:
 	prints("Generated months from global!")
 
 
-func generate_checkboxes() -> void:
+func generate_all_checkboxes() -> void:
 	for month_iteration in month_checkbox_dictionary:
 		if month_iteration == "None":
 			continue
-		var days = days_in_month_finder(month_iteration)
-		for day_iteration in days:
+		match section:
+			DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+				generate_month_checkboxes(month_iteration, 1)
+			DataGlobal.Section.WEEKLY:
+				generate_month_checkboxes(month_iteration, 5)
+			DataGlobal.Section.DAILY:
+				var days : int = days_in_month_finder(month_iteration)
+				generate_month_checkboxes(month_iteration, days)
+
+
+func generate_month_checkboxes(month, number: int) -> void:
+		for iteration in number:
 			var checkbox_iteration = CheckboxData.new()
-			month_checkbox_dictionary[month_iteration].append(checkbox_iteration)
-
-
+			month_checkbox_dictionary[month].append(checkbox_iteration)
 
 
 func days_in_month_finder(month_in_question: String) -> int:
@@ -109,6 +93,7 @@ func print_task_data() -> void:
 		if month_iteration == "None":
 			continue
 		prints(month_iteration, ":", month_checkbox_dictionary[month_iteration].size())
+
 
 func enum_uno_reverse(target_value: int, target_enum: Dictionary) -> String:
 	var enum_keys = target_enum.keys()

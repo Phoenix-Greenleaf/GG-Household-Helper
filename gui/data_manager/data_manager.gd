@@ -9,6 +9,9 @@ extends PanelContainer
 @onready var new_task_button: Button = %NewTaskButton
 @onready var task_grid: GridContainer = %TaskGrid
 @onready var current_tasksheet_label: Label = %CurrentTasksheetLabel
+@onready var task_accept_button: Button = %TaskAcceptButton
+
+
 
 #@export var tasksheet_data : TaskSpreadsheetData 
 #@export var tasksheet_save_error : Error    #most recent @export in attempt to ResourceSaver successfully
@@ -67,7 +70,7 @@ func starting_visibilities() -> void:
 
 func load_existing_tasksheets() -> void:
 	if DirAccess.dir_exists_absolute(tasksheet_folder):
-		var existing_files = DirAccess.get_files_at(tasksheet_folder)
+		var existing_files = DirAccess.get_files_at(tasksheet_folder) #load(tasksheet_folder)
 		prints("Found files:", existing_files)
 		for file in existing_files:
 			var extension = file.get_extension()
@@ -120,17 +123,33 @@ func _on_task_cancel_button_pressed() -> void:
 func _on_task_accept_button_pressed() -> void:
 	if not task_data_title_line_edit.text:
 		printerr("Task needs title, not accepted")
-#		show_new_task_button()
+		button_based_message(task_accept_button, "Title Needed!")
 		return
 	create_tasksheet_data_and_save()
 	task_field_reset()
 	show_new_task_button()
 
 
+func button_based_message(target: Button, message: String, time: int = 2) -> void:
+	var original_text = target.text
+	target.text = message
+	var timer := Timer.new()
+	add_child(timer)
+	timer.wait_time = time
+	timer.one_shot
+	timer.start()
+	await timer.timeout
+	timer.queue_free()
+	target.text = original_text
+
+
 func create_tasksheet_data_and_save() -> void:
 	var tasksheet_year := int(task_data_year_spinbox.value)
 	var tasksheet_name: String = task_data_title_line_edit.text
-	var tasksheet_data = TaskSpreadsheetData.new(tasksheet_year, tasksheet_name)
+	tasksheet_name = tasksheet_name.to_snake_case() #not this time
+	var tasksheet_data = TaskSpreadsheetData.new()
+	tasksheet_data.spreadsheet_year = tasksheet_year
+	tasksheet_data.spreadsheet_title = tasksheet_name
 	var tasksheet_save_name = tasksheet_name + "_" + str(tasksheet_year)
 	var filepath: String = tasksheet_folder + tasksheet_save_name + ".res"
 	prints("Filepath for save:", filepath)

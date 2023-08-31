@@ -139,6 +139,7 @@ expand_to_text_length = true
 clear_button_enabled = true
 
 [node name="TaskAcceptButton" type="Button" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox/HBox"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Accept"
 

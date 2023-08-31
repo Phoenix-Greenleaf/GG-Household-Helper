@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://0t87rpa3w5bi"]
+
+[node name="NumberCell" type="SpinBox"]

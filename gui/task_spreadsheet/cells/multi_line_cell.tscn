@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://0c3p5j8fl75p"]
+
+[node name="MultiLineCell" type="TextEdit"]
