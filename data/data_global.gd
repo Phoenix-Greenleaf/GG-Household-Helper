@@ -48,7 +48,6 @@ enum Priority {
 	MAX_PRIORITY_OVERRIDE,
 }
 
-
 var user_profiles: Array = [
 	["Default", Color(1, 1, 0)],
 	["Test 1", Color(0, 1, 0)],
@@ -57,8 +56,30 @@ var user_profiles: Array = [
 	["Test Four", Color(1, 0, 1)],
 ]
 
-var current_checkbox_state: int = Checkbox.COMPLETED
-var current_checkbox_profile: Array = user_profiles[1]
+var editor_modes: Dictionary = {"Checkbox": 0, "Info": 1}
 
 var current_profile_data #waiting on that data/type
 var current_tasksheet_data : TaskSpreadsheetData
+
+var current_checkbox_state: int = Checkbox.COMPLETED
+var current_checkbox_profile: Array = user_profiles[1]
+
+var current_toggled_section : Section = Section.YEARLY
+var current_toggled_month : String = "January"
+var current_toggled_mode : int = editor_modes["Checkbox"]
+
+
+
+
+
+func button_based_message(target: Button, message: String, time: int = 2) -> void:
+	var original_text = target.text
+	target.text = message
+	var timer := Timer.new()
+	target.add_child(timer)
+	timer.wait_time = time
+	timer.one_shot = true
+	timer.start()
+	await timer.timeout
+	timer.queue_free()
+	target.text = original_text

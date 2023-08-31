@@ -32,19 +32,6 @@ func test_spreadsheet_initialization() -> void:
 	pass
 
 
-func button_based_message(target: Button, message: String, time: int = 2) -> void:
-	var original_text = target.text
-	target.text = message
-	var timer := Timer.new()
-	add_child(timer)
-	timer.wait_time = time
-	timer.one_shot
-	timer.start()
-	await timer.timeout
-	timer.queue_free()
-	target.text = original_text
-
-
 func update_grid_spreadsheet() -> void:
 	data_for_spreadsheet = DataGlobal.current_tasksheet_data
 	var title = DataGlobal.current_tasksheet_data.spreadsheet_title
@@ -89,8 +76,14 @@ func _on_sort_tasks_button_pressed() -> void:
 
 func _on_accept_new_task_button_pressed() -> void:
 	if not task_title_line_edit.text:
-		button_based_message(accept_new_task_button, "Title Needed!")
+		DataGlobal.button_based_message(accept_new_task_button, "Title Needed!")
 		return
+	
+	var new_task_title = task_title_line_edit.text
+	var new_task_group = "None"
+	if task_group_line_edit.text:
+		new_task_group = task_group_line_edit.text
+	var new_task_section
 	
 	#create new task
 	#use current sections as defaults
@@ -100,6 +93,13 @@ func _on_accept_new_task_button_pressed() -> void:
 
 func _on_existing_groups_option_item_selected(index: int) -> void:
 	pass # Replace with function body.
+
+
+
+
+
+
+
 
 
 

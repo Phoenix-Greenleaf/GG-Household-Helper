@@ -148,6 +148,7 @@ text = "Month"
 horizontal_alignment = 1
 
 [node name="MonthSelectionMenu" type="MenuButton" parent="MainMargin/MainHBox/SideMenuVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "January"
 flat = false
@@ -317,6 +318,12 @@ mouse_filter = 2
 [node name="DataManager" parent="DataManagerCenter" instance=ExtResource("7_io7f7")]
 layout_mode = 2
 
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/InfoModeButton" to="." method="_on_info_mode_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/CheckboxModeButton" to="." method="_on_checkbox_mode_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/YearlyButton" to="." method="_on_yearly_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/MonthlyButton" to="." method="_on_monthly_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/WeeklyButton" to="." method="_on_weekly_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/DailyButton" to="." method="_on_daily_button_toggled"]
 [connection signal="pressed" from="MainMargin/MainHBox/SideMenuVBox/SortTasksButton" to="MainMargin/MainHBox/NonSideVBox/PanelContainer/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_sort_tasks_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/PanelContainer/ScrollContainer/TaskSpreadsheetGridContainer/TaskAddPanel/HBox/AddTaskButton" to="MainMargin/MainHBox/NonSideVBox/PanelContainer/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_add_task_button_pressed"]
 [connection signal="item_selected" from="MainMargin/MainHBox/NonSideVBox/PanelContainer/ScrollContainer/TaskSpreadsheetGridContainer/TaskAddPanel/HBox/ExistingGroupsOption" to="MainMargin/MainHBox/NonSideVBox/PanelContainer/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_existing_groups_option_item_selected"]
