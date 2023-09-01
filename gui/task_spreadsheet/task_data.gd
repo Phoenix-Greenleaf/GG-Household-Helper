@@ -21,7 +21,10 @@ class_name TaskData
 
 
 
-func offbrand_init() -> void:
+func offbrand_init(name_parameter, section_parameter, group_parameter) -> void:
+	name = name_parameter
+	section = section_parameter
+	group = group_parameter
 	generate_months_from_global()
 	generate_all_checkboxes()
 

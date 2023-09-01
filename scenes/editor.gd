@@ -18,19 +18,36 @@ var Month : Array = ["Month Index", "January", "February", "March", "April", "Ma
 
 
 func _ready() -> void:
+	connection_cental()
+	set_current_date_label()
+	print_ready()
+	if DataGlobal.current_tasksheet_data:
+		update_current_tasksheet_label()
+
+
+func connection_cental() -> void:
 	connect_menu_button_popup()
 	connect_month_menu()
 	connect_data_manager()
 	connect_other_signal_bus()
-	set_current_date_label()
-	print_ready()
-	if DataGlobal.current_tasksheet_data:
-		update_current_tasksheet()
-
 
 func connect_data_manager() -> void:
 	SignalBus.data_manager_close.connect(close_data_manager_popup)
 	data_manager_center.visible = false
+
+func connect_other_signal_bus() -> void:
+	SignalBus._on_current_tasksheet_data_changed.connect(update_current_tasksheet_label)
+
+func connect_month_menu() -> void:
+	month_selection_menu_popup.connect("id_pressed", month_menu_button_actions)
+
+func connect_menu_button_popup() -> void:
+	var popup:= menu_button.get_popup()
+	popup.connect("id_pressed", menu_button_actions)
+
+
+func print_ready() -> void:
+	print("========= Editor Scene Ready! =========")
 
 
 func set_current_date_label() -> void:
@@ -41,19 +58,6 @@ func set_current_date_label() -> void:
 	var current_year: String = str(current_date["year"])
 	var current_label:= "Today: " + current_weekday + current_day + current_month + current_year
 	current_date_label.set_text(current_label)
-
-
-func connect_menu_button_popup() -> void:
-	var popup:= menu_button.get_popup()
-	popup.connect("id_pressed", menu_button_actions)
-
-
-func connect_other_signal_bus() -> void:
-	SignalBus._on_current_tasksheet_data_changed.connect(update_current_tasksheet)
-
-
-func print_ready() -> void:
-	print("========= Editor Scene Ready! =========")
 
 
 func menu_button_actions(id: int) -> void:
@@ -70,15 +74,6 @@ func menu_button_actions(id: int) -> void:
 			data_manager_center.visible = true
 
 
-func close_data_manager_popup() -> void:
-	data_manager_center.visible = false
-
-
-func update_current_tasksheet() -> void:
-	update_current_tasksheet_label()
-	update_tasksheet_grid()
-
-
 func update_current_tasksheet_label() -> void:
 	var title = DataGlobal.current_tasksheet_data.spreadsheet_title
 	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
@@ -86,17 +81,9 @@ func update_current_tasksheet_label() -> void:
 	current_save_label.text = new_label
 
 
-func update_tasksheet_grid() -> void:
-	pass
+func close_data_manager_popup() -> void:
+	data_manager_center.visible = false
 
-func switch_sections() -> void:
-	
-	
-	
-	
-	
-	pass
-	
 
 func section_enum_to_string() -> String:
 	var section_enum: int = DataGlobal.current_toggled_section
@@ -104,12 +91,6 @@ func section_enum_to_string() -> String:
 	var current_section_key: String = section_keys[section_enum]
 	return current_section_key.capitalize()
 
-
-
-
-
-func connect_month_menu() -> void:
-	month_selection_menu_popup.connect("id_pressed", month_menu_button_actions)
 
 func month_menu_button_actions(id: int) -> void:
 	var new_month : String = Month[id]
@@ -140,7 +121,11 @@ func month_menu_button_actions(id: int) -> void:
 			month_menu_switch(11, "November")
 		12:
 			month_menu_switch(12, "December")
-	switch_sections()
+	SignalBus.emit_signal("_on_editor_month_changed")
+
+
+func change_sections() -> void:
+	SignalBus.emit_signal("_on_editor_section_changed")
 
 
 func month_menu_switch(passed_id: int, month_text: String) -> void:
@@ -151,15 +136,11 @@ func month_menu_switch(passed_id: int, month_text: String) -> void:
 			last_toggled_month = passed_id
 
 
-
-
-
-
 func _on_yearly_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed): #check to see if this toggle/if statement is needed
 		if DataGlobal.current_toggled_section != DataGlobal.Section.YEARLY:
 			DataGlobal.current_toggled_section = DataGlobal.Section.YEARLY
-			switch_sections()
+			change_sections()
 			prints("Yearly Section Toggled")
 		else:
 			prints("Yearly Section ALREADY TOGGLED")
@@ -169,7 +150,7 @@ func _on_monthly_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
 		if DataGlobal.current_toggled_section != DataGlobal.Section.MONTHLY:
 			DataGlobal.current_toggled_section = DataGlobal.Section.MONTHLY
-			switch_sections()
+			change_sections()
 			prints("Monthly Section Toggled")
 		else:
 			prints("Monthly Section ALREADY TOGGLED")
@@ -179,7 +160,7 @@ func _on_weekly_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
 		if DataGlobal.current_toggled_section != DataGlobal.Section.WEEKLY:
 			DataGlobal.current_toggled_section = DataGlobal.Section.WEEKLY
-			switch_sections()
+			change_sections()
 			prints("Weekly Section Toggled")
 		else:
 			prints("Weekly Section ALREADY TOGGLED")
@@ -189,17 +170,21 @@ func _on_daily_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
 		if DataGlobal.current_toggled_section != DataGlobal.Section.DAILY:
 			DataGlobal.current_toggled_section = DataGlobal.Section.DAILY
-			switch_sections()
+			change_sections()
 			prints("Daily Section Toggled")
 		else:
 			prints("Daily Section ALREADY TOGGLED")
+
+
+func change_editor_mode() -> void:
+	SignalBus.emit_signal("_on_editor_mode_changed")
 
 
 func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
 		if DataGlobal.current_toggled_mode != DataGlobal.editor_modes["Checkbox"]:
 			DataGlobal.current_toggled_mode = DataGlobal.editor_modes["Checkbox"]
-			activate_checkbox_mode()
+			change_editor_mode()
 			prints("Checkbox Mode toggled")
 		else:
 			prints("Checkbox Mode ALREADY TOGGLED")
@@ -209,19 +194,9 @@ func _on_info_mode_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
 		if DataGlobal.current_toggled_mode != DataGlobal.editor_modes["Info"]:
 			DataGlobal.current_toggled_mode = DataGlobal.editor_modes["Info"]
-			activate_info_mode()
+			change_editor_mode()
 			prints("Info Mode toggled")
 		else:
 			prints("Info Mode ALREADY TOGGLED")
-
-func activate_checkbox_mode() -> void:
-	pass
-
-
-func activate_info_mode() -> void:
-	pass
-
-
-
 
 

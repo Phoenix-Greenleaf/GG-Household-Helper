@@ -2,4 +2,6 @@ extends Node
 
 signal data_manager_close
 signal _on_current_tasksheet_data_changed
-
+signal _on_editor_section_changed
+signal _on_editor_month_changed
+signal _on_editor_mode_changed
