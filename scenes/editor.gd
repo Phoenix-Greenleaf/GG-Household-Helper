@@ -1,12 +1,14 @@
 extends Control
 
 @onready var menu_button:= $MainMargin/MainHBox/SideMenuVBox/MenuButton as MenuButton
-@onready var current_date_label:= $MainMargin/MainHBox/NonSideVBox/TopMenuHBox/CurrentDateLabel as Label
+@onready var current_date_label:= %CurrentDateLabel as Label
 @onready var data_manager_center: CenterContainer = $DataManagerCenter
 @onready var current_save_label: Label = %CurrentSaveLabel
 @onready var task_spreadsheet_grid_container: GridContainer = %TaskSpreadsheetGridContainer
 @onready var month_selection_menu_button: MenuButton = %MonthSelectionMenu
 @onready var month_selection_menu_popup := month_selection_menu_button.get_popup()
+@onready var save_warning_button: Button = %SaveWarningButton
+
 
 
 var last_toggled_month : int = 1
@@ -37,6 +39,7 @@ func connect_data_manager() -> void:
 
 func connect_other_signal_bus() -> void:
 	SignalBus._on_current_tasksheet_data_changed.connect(update_current_tasksheet_label)
+	SignalBus.trigger_save_warning.connect(save_warning_triggered)
 
 func connect_month_menu() -> void:
 	month_selection_menu_popup.connect("id_pressed", month_menu_button_actions)
@@ -200,3 +203,15 @@ func _on_info_mode_button_toggled(button_pressed: bool) -> void:
 			prints("Info Mode ALREADY TOGGLED")
 
 
+func save_warning_triggered() -> void:
+	save_warning_button.text = "DATA NEEDS SAVING"
+
+
+func _on_save_warning_button_pressed() -> void:
+	if save_warning_button.text == "Data Saved":
+		DataGlobal.button_based_message(save_warning_button, "Already Saved!")
+		return
+	save_warning_button.text = "Data Saved"
+	var data_manager : Node = data_manager_center.get_child(0)
+	print(data_manager)
+	data_manager.save_current_tasksheet()

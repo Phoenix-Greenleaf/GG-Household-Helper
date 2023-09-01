@@ -7,7 +7,7 @@ extends GridContainer
 @onready var task_group_line_edit: LineEdit = %TaskGroupLineEdit
 @onready var existing_groups_option_button: OptionButton = %ExistingGroupsOption
 @onready var accept_new_task_button: Button = %AcceptNewTaskButton
-@onready var task_add_panel: PanelContainer = %TaskAddPanel
+
 
 
 var checkbox_cell = preload("res://gui/task_spreadsheet/cells/checkbox_cell.tscn")
@@ -49,6 +49,12 @@ func update_grid_spreadsheet() -> void:
 	var title = DataGlobal.current_tasksheet_data.spreadsheet_title
 	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
 	prints("TaskGrid updated:", title, ":", year)
+	var children = self.get_children()
+	var count = self.get_child_count()
+	for current_kiddo in children:
+		current_kiddo.queue_free()
+	prints(count, "children in line for freedom")
+	load_existing_data()
 
 
 func _on_add_task_button_pressed() -> void:
@@ -161,6 +167,7 @@ func _on_existing_groups_option_item_selected(index: int) -> void:
 	task_group_line_edit.text = group_text
 
 
+
 func create_task_row_cells(task_data : TaskData) -> void: #task "physical" nodes, display side
 	var info = "Info"
 	
@@ -204,7 +211,8 @@ func create_task_row_cells(task_data : TaskData) -> void: #task "physical" nodes
 	
 	var checkbox = "Checkbox"
 	pass #checkboxes
-	task_add_panel.move_to_front()
+
+
 
 func create_text_cell(text : String, column_group : String = "") -> void:
 	var cell = text_cell.instantiate()
@@ -214,7 +222,7 @@ func create_text_cell(text : String, column_group : String = "") -> void:
 	cell.add_to_group(row_group)
 	if column_group != "":
 		cell.add_to_group(column_group)
-	
+
 
 func create_dropdown_cell() -> void:
 	pass
@@ -222,6 +230,7 @@ func create_dropdown_cell() -> void:
 
 func create_multi_line_cell(long_text : String, column_group : String = "") -> void:
 	pass #only description uses it
+
 
 func create_number_cell(number : int, column_group : String = "") -> void:
 	pass

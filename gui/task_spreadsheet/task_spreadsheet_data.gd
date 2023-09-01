@@ -4,6 +4,7 @@ class_name TaskSpreadsheetData
 
 @export var spreadsheet_year : int
 @export var spreadsheet_title : String
+@export var spreadsheet_filepath : String
 
 @export var spreadsheet_year_data: Array[TaskData]
 @export var spreadsheet_month_data: Array[TaskData]

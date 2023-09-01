@@ -52,7 +52,6 @@ func connect_signal_bus() -> void:
 
 func emit_exit_signal() -> void:
 	SignalBus.emit_signal("data_manager_close")
-	prints("data manager close Emitted")
 
 
 func update_current_tasksheet_label() -> void:
@@ -133,22 +132,30 @@ func _on_task_accept_button_pressed() -> void:
 func create_tasksheet_data_and_save() -> void:
 	var tasksheet_year := int(task_data_year_spinbox.value)
 	var tasksheet_name: String = task_data_title_line_edit.text
-	var tasksheet_data = TaskSpreadsheetData.new()
+	var tasksheet_data := TaskSpreadsheetData.new()
 	tasksheet_data.spreadsheet_year = tasksheet_year
 	tasksheet_data.spreadsheet_title = tasksheet_name
-	var tasksheet_snake_name = tasksheet_name.to_snake_case() #now in the right spot
-	var tasksheet_save_name = tasksheet_snake_name + "_" + str(tasksheet_year)
+	var tasksheet_snake_name: String = tasksheet_name.to_snake_case()
+	var tasksheet_save_name: String = tasksheet_snake_name + "_" + str(tasksheet_year)
 	var filepath: String = tasksheet_folder + tasksheet_save_name + ".res"
 	prints("Filepath for save:", filepath)
+	tasksheet_data.spreadsheet_filepath = filepath
 	directory_check(tasksheet_folder)
-	var tasksheet_save_error = ResourceSaver.save(tasksheet_data, filepath)
+	create_task_save_button(tasksheet_data)
+	save_current_tasksheet()
+
+
+func save_current_tasksheet() -> void:
+	var current_tasksheet : TaskSpreadsheetData = DataGlobal.current_tasksheet_data
+	var current_filepath : String = current_tasksheet.spreadsheet_filepath
+	var tasksheet_save_error = ResourceSaver.save(current_tasksheet, current_filepath)
 	if tasksheet_save_error != OK:
-		var error_highscore = error_keys.size() - 1
+		var error_highscore : int = error_keys.size() - 1
 		if tasksheet_save_error > error_highscore:
 			printerr("Failed to save resource: NEW HIGHSCORE! ", tasksheet_save_error, "!")
 		else:
 			printerr("Failed to save resource: ", error_keys[tasksheet_save_error], " ", tasksheet_save_error)
-	create_task_save_button(tasksheet_data)
+
 
 
 func create_task_save_button(target_resource: TaskSpreadsheetData) -> void:
@@ -181,14 +188,9 @@ func _on_task_save_button_pressed(button_pressed: bool, pressed_tasksheet: TaskS
 	send_tasksheet_to_global(pressed_tasksheet)
 
 
-
 func send_tasksheet_to_global(tasksheet_to_send) -> void:
 	DataGlobal.current_tasksheet_data = tasksheet_to_send
 	SignalBus.emit_signal("_on_current_tasksheet_data_changed")
-	var global_test : bool = DataGlobal.current_tasksheet_data == tasksheet_to_send
-	prints("Global Test:", global_test)
-	print("")
-
 
 
 func _on_import_tasksheet_pressed() -> void:
