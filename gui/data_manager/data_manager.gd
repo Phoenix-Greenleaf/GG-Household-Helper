@@ -172,7 +172,7 @@ func create_task_save_button(target_resource: TaskSpreadsheetData) -> void:
 	var target_name = target_resource.spreadsheet_title
 	var target_year = target_resource.spreadsheet_year
 	prints("Created button for", target_name, target_year, target_resource)
-	send_tasksheet_to_global(target_resource)
+
 
 
 

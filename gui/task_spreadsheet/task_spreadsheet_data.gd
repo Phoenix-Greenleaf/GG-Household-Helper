@@ -16,6 +16,6 @@ class_name TaskSpreadsheetData
 @export var spreadsheet_week_groups: Array[String]
 @export var spreadsheet_day_groups: Array[String]
 
-func add_new_task() -> void:
-	var task := TaskData.new()
+#func add_new_task() -> void:
+#	var task := TaskData.new()
 	

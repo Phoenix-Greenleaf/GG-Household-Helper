@@ -17,14 +17,14 @@ var number_cell = preload("res://gui/task_spreadsheet/cells/number_cell.tscn")
 var text_cell = preload("res://gui/task_spreadsheet/cells/text_cell.tscn")
 
 var row_group : String = ""
-
+var header_size : int
+var blank_counter : int = 0
 
 
 
 func _ready() -> void:
 	ready_connections()
 	close_new_task_panel()
-	columns = 5
 	if !data_for_spreadsheet:
 		print("No Tasksheet found for TaskGrid....")
 	else:
@@ -52,6 +52,7 @@ func update_grid_spreadsheet() -> void:
 	var children = self.get_children()
 	var count = self.get_child_count()
 	for current_kiddo in children:
+		self.remove_child(current_kiddo)
 		current_kiddo.queue_free()
 	prints(count, "children in line for freedom")
 	load_existing_data()
@@ -90,6 +91,7 @@ func create_new_task_data() -> void: #task coded model, the data side
 	row_group = new_task_group
 	var new_task_section := DataGlobal.current_toggled_section
 	new_task.offbrand_init(new_task_title, new_task_section, new_task_group)
+	
 	match new_task_section:
 		DataGlobal.Section.YEARLY:
 			var current_group = data_for_spreadsheet.spreadsheet_year_groups
@@ -125,6 +127,7 @@ func create_task_group(task_group : String, section_groups : Array) -> void:
 
 
 func load_existing_data() -> void:
+	create_header_row()
 	match DataGlobal.current_toggled_section:
 		DataGlobal.Section.YEARLY:
 			for data_iteration in data_for_spreadsheet.spreadsheet_year_data:
@@ -148,6 +151,10 @@ func _on_accept_new_task_button_pressed() -> void:
 	if not task_title_line_edit.text:
 		DataGlobal.button_based_message(accept_new_task_button, "Title Needed!")
 		return
+	if self.get_child_count() == 0:
+		create_header_row()
+	else:
+		prints("Header Already Added; child count:", self.get_child_count())
 	create_new_task_data()
 	close_new_task_panel()
 	new_task_field_reset()
@@ -167,47 +174,96 @@ func _on_existing_groups_option_item_selected(index: int) -> void:
 	task_group_line_edit.text = group_text
 
 
+func create_header_row() -> void:
+	var info = "Info"
+	create_text_cell("Task") #1
+	create_text_cell("Section") #2
+	create_text_cell("Group") #3
+	create_text_cell("Assignment", info) #4
+	create_text_cell("Description", info) #5
+	create_text_cell("Time Of Day", info) #6
+	create_text_cell("Priority", info) #7
+	create_text_cell("Location", info) #8
+	create_text_cell("Cycle Time Unit", info) #9
+	create_text_cell("Time Units Per Cycle", info) #10
+	create_text_cell("Time Units Added When Skipped", info) #11
+	create_text_cell("Last Completed", info) #12
+	prints("Child Check: Self", self.get_child_count())
+	prints("Child Check: Other", get_child_count())
+
+	var checkbox = "Checkbox"
+	pass #checkboxes
+
+	header_size = self.get_child_count()
+	set_grid_columns()
+
+
+func set_grid_columns() -> void:
+	self.columns = header_size #change with info/cb toggle
+	prints("Setting grid to", header_size, "columns.")
+
 
 func create_task_row_cells(task_data : TaskData) -> void: #task "physical" nodes, display side
+	blank_counter = 0
 	var info = "Info"
 	
-	var task_name : String = task_data.name
+	var task_name : String = task_data.name #1
 	create_text_cell(task_name)
+	prints("1 is go")
 	
-	var section = task_data.section
+	var section = task_data.section #2
 	create_dropdown_cell()
+	prints("2 is go")
 	
-	var group : String = task_data.group
+	var group : String = task_data.group #3
 	create_text_cell(group)
+	prints("3 is go")
 	
-	var assignment : String = ""
+	var assignment : String = ""  #4
 	if task_data.assigned_user:
 		assignment = task_data.assigned_user[0]
-		create_text_cell(assignment, info)
+	else:
+		assignment = "No Assignment"
+	create_text_cell(assignment, info)
+	prints("4 is go")
 	
-#	var description = task_data
-#	create_multi_line_cell()
+	var description = task_data  #5
+	create_multi_line_cell()
+	prints("5 is go")
 	
-	var time_of_day = task_data.time_of_day
+	var time_of_day = task_data.time_of_day #6
 	create_dropdown_cell()
+	prints("6 is go")
 	
-	var priority = task_data.priority
+	var priority = task_data.priority #7
 	create_dropdown_cell()
+	prints("7 is go")
 	
-	var location : String = task_data.location
+	var location : String = task_data.location #8
+	if location == "":
+		location = "No Location"
 	create_text_cell(location, info)
+	prints("8 is go")
 	
-	var cycle_time_unit : String = task_data.time_unit
+	var cycle_time_unit : String = task_data.time_unit #9
+	if cycle_time_unit == "":
+		cycle_time_unit = "No Unit"
 	create_text_cell(cycle_time_unit, info)
+	prints("9 is go")
 	
-	var time_units_per_cycle = task_data.units_per_cycle
-	create_number_cell(time_units_per_cycle)
+	var time_units_per_cycle = task_data.units_per_cycle #10
+	create_number_cell(time_units_per_cycle, info)
+	prints("10 is go")
 	
-	var time_units_added_when_skipped = task_data.units_added_when_skipped
-	create_number_cell(time_units_added_when_skipped)
+	var time_units_added_when_skipped = task_data.units_added_when_skipped #11
+	create_number_cell(time_units_added_when_skipped, info)
+	prints("11 is go")
 	
-	var last_completed : String = task_data.last_completed
+	var last_completed : String = task_data.last_completed #12
+	if last_completed == "":
+		last_completed = "Never"
 	create_text_cell(last_completed, info)
+	prints("12 is go")
 	
 	var checkbox = "Checkbox"
 	pass #checkboxes
@@ -218,22 +274,33 @@ func create_text_cell(text : String, column_group : String = "") -> void:
 	var cell = text_cell.instantiate()
 	self.add_child(cell)
 	cell.text = text
-#	line_edit.text = text
-	cell.add_to_group(row_group)
+	
+	if row_group != "":
+		cell.add_to_group(row_group)
 	if column_group != "":
 		cell.add_to_group(column_group)
+	prints("Text", text)
+
+
+func blank_slug() -> void:
+	blank_counter += 1
+	var slug_imprint = "BLANK " + str(blank_counter)
+	create_text_cell(slug_imprint, "Info")
 
 
 func create_dropdown_cell() -> void:
-	pass
+	print("Drowpdown")
+	blank_slug()
 
 
-func create_multi_line_cell(long_text : String, column_group : String = "") -> void:
-	pass #only description uses it
+func create_multi_line_cell() -> void: #only description uses it
+	print("Multiline")
+	blank_slug() 
 
 
 func create_number_cell(number : int, column_group : String = "") -> void:
-	pass
+	print("Number")
+	blank_slug()
 
 
 func create_checkbox_cell() -> void:
