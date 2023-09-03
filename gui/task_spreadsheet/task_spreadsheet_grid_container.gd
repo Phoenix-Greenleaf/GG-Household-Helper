@@ -144,7 +144,7 @@ func load_existing_data() -> void:
 
 
 func _on_sort_tasks_button_pressed() -> void:
-	pass # Replace with function body.
+	pass
 
 
 func _on_accept_new_task_button_pressed() -> void:
@@ -170,7 +170,6 @@ func create_existing_groups_option_button_items(group) -> void:
 
 func _on_existing_groups_option_item_selected(index: int) -> void:
 	var group_text : String = existing_groups_option_button.get_item_text(index)
-#	task_group_line_edit.set_text(group_text)
 	task_group_line_edit.text = group_text
 
 
@@ -188,8 +187,6 @@ func create_header_row() -> void:
 	create_text_cell("Time Units Per Cycle", info) #10
 	create_text_cell("Time Units Added When Skipped", info) #11
 	create_text_cell("Last Completed", info) #12
-	prints("Child Check: Self", self.get_child_count())
-	prints("Child Check: Other", get_child_count())
 
 	var checkbox = "Checkbox"
 	pass #checkboxes
@@ -209,15 +206,15 @@ func create_task_row_cells(task_data : TaskData) -> void: #task "physical" nodes
 	
 	var task_name : String = task_data.name #1
 	create_text_cell(task_name)
-	prints("1 is go")
+#	prints("1 is go")
 	
 	var section = task_data.section #2
 	create_dropdown_cell()
-	prints("2 is go")
+#	prints("2 is go")
 	
 	var group : String = task_data.group #3
 	create_text_cell(group)
-	prints("3 is go")
+#	prints("3 is go")
 	
 	var assignment : String = ""  #4
 	if task_data.assigned_user:
@@ -225,61 +222,63 @@ func create_task_row_cells(task_data : TaskData) -> void: #task "physical" nodes
 	else:
 		assignment = "No Assignment"
 	create_text_cell(assignment, info)
-	prints("4 is go")
+#	prints("4 is go")
 	
 	var description = task_data  #5
 	create_multi_line_cell()
-	prints("5 is go")
+#	prints("5 is go")
 	
 	var time_of_day = task_data.time_of_day #6
 	create_dropdown_cell()
-	prints("6 is go")
+#	prints("6 is go")
 	
 	var priority = task_data.priority #7
 	create_dropdown_cell()
-	prints("7 is go")
+#	prints("7 is go")
 	
 	var location : String = task_data.location #8
 	if location == "":
 		location = "No Location"
 	create_text_cell(location, info)
-	prints("8 is go")
+#	prints("8 is go")
 	
 	var cycle_time_unit : String = task_data.time_unit #9
 	if cycle_time_unit == "":
 		cycle_time_unit = "No Unit"
 	create_text_cell(cycle_time_unit, info)
-	prints("9 is go")
+#	prints("9 is go")
 	
 	var time_units_per_cycle = task_data.units_per_cycle #10
 	create_number_cell(time_units_per_cycle, info)
-	prints("10 is go")
+#	prints("10 is go")
 	
 	var time_units_added_when_skipped = task_data.units_added_when_skipped #11
 	create_number_cell(time_units_added_when_skipped, info)
-	prints("11 is go")
+#	prints("11 is go")
 	
 	var last_completed : String = task_data.last_completed #12
 	if last_completed == "":
 		last_completed = "Never"
 	create_text_cell(last_completed, info)
-	prints("12 is go")
+#	prints("12 is go")
 	
 	var checkbox = "Checkbox"
 	pass #checkboxes
 
 
 
+func add_cell_to_groups(cell_parameter, column_group_parameter) -> void:
+	if row_group != "":
+		cell_parameter.add_to_group(row_group)
+	if column_group_parameter != "":
+		cell_parameter.add_to_group(column_group_parameter)
+
+
 func create_text_cell(text : String, column_group : String = "") -> void:
-	var cell = text_cell.instantiate()
+	var cell : LineEdit = text_cell.instantiate()
 	self.add_child(cell)
 	cell.text = text
-	
-	if row_group != "":
-		cell.add_to_group(row_group)
-	if column_group != "":
-		cell.add_to_group(column_group)
-	prints("Text", text)
+	add_cell_to_groups(cell, column_group)
 
 
 func blank_slug() -> void:
@@ -289,18 +288,18 @@ func blank_slug() -> void:
 
 
 func create_dropdown_cell() -> void:
-	print("Drowpdown")
 	blank_slug()
 
 
-func create_multi_line_cell() -> void: #only description uses it
-	print("Multiline")
+func create_multi_line_cell() -> void:
 	blank_slug() 
 
 
 func create_number_cell(number : int, column_group : String = "") -> void:
-	print("Number")
-	blank_slug()
+	var cell : SpinBox = number_cell.instantiate()
+	self.add_child(cell)
+	cell.value = number
+	add_cell_to_groups(cell, column_group)
 
 
 func create_checkbox_cell() -> void:

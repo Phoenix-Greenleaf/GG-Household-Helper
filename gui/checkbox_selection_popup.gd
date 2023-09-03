@@ -114,7 +114,7 @@ func status_change(new_state: DataGlobal.Checkbox) -> void:
 
 
 func _on_profile_button_toggled(button_pressed: bool, target_profile: Array) -> void:
-	if (button_pressed): # these toggle tests may not be needed, see _on_menu_button_toggled()
+	if (button_pressed):
 		if target_profile != DataGlobal.current_checkbox_profile:
 			DataGlobal.current_checkbox_profile = target_profile
 			update_status_colors()

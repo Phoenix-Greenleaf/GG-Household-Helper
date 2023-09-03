@@ -72,7 +72,10 @@ var current_toggled_mode : int = editor_modes["Checkbox"]
 
 
 
-func button_based_message(target: Button, message: String, time: int = 2) -> void:
+func button_based_message(target: Node, message: String, time: int = 2) -> void:
+	if target.text == message:
+		prints("Not today pal")
+		return
 	var original_text = target.text
 	target.text = message
 	var timer := Timer.new()

@@ -11,11 +11,6 @@ extends PanelContainer
 @onready var current_tasksheet_label: Label = %CurrentTasksheetLabel
 @onready var task_accept_button: Button = %TaskAcceptButton
 
-
-
-#@export var tasksheet_data : TaskSpreadsheetData 
-#@export var tasksheet_save_error : Error    #most recent @export in attempt to ResourceSaver successfully
-
 var task_save_button_group = preload("res://gui/data_manager/task_save_button_group.tres")
 var task_save_button = preload("res://gui/data_manager/task_save_button.tscn")
 
@@ -69,7 +64,7 @@ func starting_visibilities() -> void:
 
 func load_existing_tasksheets() -> void:
 	if DirAccess.dir_exists_absolute(tasksheet_folder):
-		var existing_files = DirAccess.get_files_at(tasksheet_folder) #load(tasksheet_folder)
+		var existing_files = DirAccess.get_files_at(tasksheet_folder)
 		prints("Found files:", existing_files)
 		for file in existing_files:
 			var extension = file.get_extension()
@@ -142,6 +137,7 @@ func create_tasksheet_data_and_save() -> void:
 	tasksheet_data.spreadsheet_filepath = filepath
 	directory_check(tasksheet_folder)
 	create_task_save_button(tasksheet_data)
+	send_tasksheet_to_global(tasksheet_data)
 	save_current_tasksheet()
 
 
@@ -181,10 +177,10 @@ func _on_task_save_button_pressed(button_pressed: bool, pressed_tasksheet: TaskS
 		return
 	if pressed_tasksheet == DataGlobal.current_tasksheet_data:
 		prints("Tasksheet data already loaded, skipping.")
+		DataGlobal.button_based_message(current_tasksheet_label, "Data Already Loaded!") 
 		return
 	var pressed_name = pressed_tasksheet.spreadsheet_title
 	var pressed_year = pressed_tasksheet.spreadsheet_year
-	prints("Switching Tasksheet to:", pressed_name, pressed_year, pressed_tasksheet)
 	send_tasksheet_to_global(pressed_tasksheet)
 
 

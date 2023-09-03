@@ -140,7 +140,7 @@ func month_menu_switch(passed_id: int, month_text: String) -> void:
 
 
 func _on_yearly_button_toggled(button_pressed: bool) -> void:
-	if (button_pressed): #check to see if this toggle/if statement is needed
+	if (button_pressed):
 		if DataGlobal.current_toggled_section != DataGlobal.Section.YEARLY:
 			DataGlobal.current_toggled_section = DataGlobal.Section.YEARLY
 			change_sections()

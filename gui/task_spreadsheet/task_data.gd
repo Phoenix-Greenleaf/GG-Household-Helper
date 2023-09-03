@@ -38,7 +38,6 @@ func generate_months_from_global() -> void:
 	for entry in months_from_global:
 		entry = entry.capitalize()
 		month_checkbox_dictionary[entry] = []
-	prints("Generated months from global!")
 
 
 func generate_all_checkboxes() -> void:
