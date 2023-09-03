@@ -17,6 +17,7 @@ class_name TaskData
 @export var last_completed : String
 @export var task_year : int
 @export var month_checkbox_dictionary : Dictionary
+@export var description : String
 
 
 

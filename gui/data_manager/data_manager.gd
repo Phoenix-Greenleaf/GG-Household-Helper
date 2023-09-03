@@ -179,8 +179,6 @@ func _on_task_save_button_pressed(button_pressed: bool, pressed_tasksheet: TaskS
 		prints("Tasksheet data already loaded, skipping.")
 		DataGlobal.button_based_message(current_tasksheet_label, "Data Already Loaded!") 
 		return
-	var pressed_name = pressed_tasksheet.spreadsheet_title
-	var pressed_year = pressed_tasksheet.spreadsheet_year
 	send_tasksheet_to_global(pressed_tasksheet)
 
 

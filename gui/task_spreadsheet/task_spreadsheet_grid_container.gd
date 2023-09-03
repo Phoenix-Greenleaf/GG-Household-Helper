@@ -8,8 +8,6 @@ extends GridContainer
 @onready var existing_groups_option_button: OptionButton = %ExistingGroupsOption
 @onready var accept_new_task_button: Button = %AcceptNewTaskButton
 
-
-
 var checkbox_cell = preload("res://gui/task_spreadsheet/cells/checkbox_cell.tscn")
 var dropdown_cell = preload("res://gui/task_spreadsheet/cells/dropdown_cell.tscn")
 var multi_line_cell = preload("res://gui/task_spreadsheet/cells/multi_line_cell.tscn")
@@ -19,12 +17,15 @@ var text_cell = preload("res://gui/task_spreadsheet/cells/text_cell.tscn")
 var row_group : String = ""
 var header_size : int
 var blank_counter : int = 0
-
+var section_dropdown_items : Array
+var time_of_day_dropdown_items : Array
+var priority_dropdown_items : Array
 
 
 func _ready() -> void:
 	ready_connections()
 	close_new_task_panel()
+	get_dropdown_items_from_global()
 	if !data_for_spreadsheet:
 		print("No Tasksheet found for TaskGrid....")
 	else:
@@ -42,6 +43,15 @@ func ready_connections() -> void:
 
 func test_spreadsheet_initialization() -> void:
 	pass
+
+
+func get_dropdown_items_from_global() -> void:
+	for item in DataGlobal.Section.keys():
+		section_dropdown_items.append(item.capitalize())
+	for item in DataGlobal.TimeOfDay.keys():
+		time_of_day_dropdown_items.append(item.capitalize())
+	for item in DataGlobal.Priority.keys():
+		priority_dropdown_items.append(item.capitalize())
 
 
 func update_grid_spreadsheet() -> void:
@@ -208,8 +218,9 @@ func create_task_row_cells(task_data : TaskData) -> void: #task "physical" nodes
 	create_text_cell(task_name)
 #	prints("1 is go")
 	
-	var section = task_data.section #2
-	create_dropdown_cell()
+	var section : int = task_data.section #2
+	prints("section dropdown:", section_dropdown_items)
+	create_dropdown_cell(section_dropdown_items, section)
 #	prints("2 is go")
 	
 	var group : String = task_data.group #3
@@ -224,16 +235,24 @@ func create_task_row_cells(task_data : TaskData) -> void: #task "physical" nodes
 	create_text_cell(assignment, info)
 #	prints("4 is go")
 	
-	var description = task_data  #5
-	create_multi_line_cell()
+	var description : String = task_data.description  #5
+	create_multi_line_cell(description, info)
 #	prints("5 is go")
 	
-	var time_of_day = task_data.time_of_day #6
-	create_dropdown_cell()
+	var time_of_day : int #6
+	if task_data.time_of_day is int:
+		time_of_day = task_data.time_of_day 
+	else:
+		time_of_day = 0
+	create_dropdown_cell(time_of_day_dropdown_items, time_of_day, info)
 #	prints("6 is go")
-	
-	var priority = task_data.priority #7
-	create_dropdown_cell()
+
+	var priority : int #7
+	if task_data.priority is int:
+		priority = task_data.priority 
+	else:
+		priority = 0
+	create_dropdown_cell(priority_dropdown_items, priority, info)
 #	prints("7 is go")
 	
 	var location : String = task_data.location #8
@@ -248,11 +267,11 @@ func create_task_row_cells(task_data : TaskData) -> void: #task "physical" nodes
 	create_text_cell(cycle_time_unit, info)
 #	prints("9 is go")
 	
-	var time_units_per_cycle = task_data.units_per_cycle #10
+	var time_units_per_cycle : int = task_data.units_per_cycle #10
 	create_number_cell(time_units_per_cycle, info)
 #	prints("10 is go")
 	
-	var time_units_added_when_skipped = task_data.units_added_when_skipped #11
+	var time_units_added_when_skipped : int = task_data.units_added_when_skipped #11
 	create_number_cell(time_units_added_when_skipped, info)
 #	prints("11 is go")
 	
@@ -287,12 +306,20 @@ func blank_slug() -> void:
 	create_text_cell(slug_imprint, "Info")
 
 
-func create_dropdown_cell() -> void:
-	blank_slug()
+func create_dropdown_cell(dropdown_items : Array, selected_item : int, column_group : String = "") -> void:
+	var cell : OptionButton = dropdown_cell.instantiate()
+	self.add_child(cell)
+	for item in dropdown_items:
+		cell.add_item(item)
+	cell.selected = selected_item
+	add_cell_to_groups(cell, column_group) 
 
 
-func create_multi_line_cell() -> void:
-	blank_slug() 
+func create_multi_line_cell(multi_text: String, column_group : String = "") -> void:
+	var cell : TextEdit = multi_line_cell.instantiate()
+	self.add_child(cell)
+	cell.text = multi_text
+	add_cell_to_groups(cell, column_group) 
 
 
 func create_number_cell(number : int, column_group : String = "") -> void:
