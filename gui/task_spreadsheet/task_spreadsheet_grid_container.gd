@@ -15,11 +15,13 @@ var number_cell = preload("res://gui/task_spreadsheet/cells/number_cell.tscn")
 var text_cell = preload("res://gui/task_spreadsheet/cells/text_cell.tscn")
 
 var row_group : String = ""
-var header_size : int
 var blank_counter : int = 0
 var section_dropdown_items : Array
 var time_of_day_dropdown_items : Array
 var priority_dropdown_items : Array
+var full_header_size : int 
+var info_header_size : int
+var checkbox_header_size : int
 
 
 func _ready() -> void:
@@ -39,10 +41,30 @@ func ready_connections() -> void:
 	if DataGlobal.current_tasksheet_data:
 		data_for_spreadsheet = DataGlobal.current_tasksheet_data
 	SignalBus._on_current_tasksheet_data_changed.connect(update_grid_spreadsheet)
+	SignalBus._on_editor_mode_changed.connect(toggle_info_checkbox_modes)
 
 
 func test_spreadsheet_initialization() -> void:
 	pass
+
+
+func toggle_info_checkbox_modes() -> void:
+	var info_group : Array[Node] = get_tree().get_nodes_in_group("Info")
+	var checkbox_group : Array[Node] = get_tree().get_nodes_in_group("Checkbox")
+	if DataGlobal.current_toggled_mode == DataGlobal.editor_modes["Info"]:
+		group_visibility(info_group, true)
+		group_visibility(checkbox_group, false)
+	elif DataGlobal.current_toggled_mode == DataGlobal.editor_modes["Checkbox"]:
+		group_visibility(checkbox_group, true)
+		group_visibility(info_group, false)
+	else:
+		prints("Mode toggle has gone wrong")
+	set_grid_columns()
+
+
+func group_visibility(target_group: Array[Node], visibility_bool: bool) -> void:
+	for node_iteration in target_group:
+		node_iteration.visible = visibility_bool
 
 
 func get_dropdown_items_from_global() -> void:
@@ -151,6 +173,7 @@ func load_existing_data() -> void:
 		DataGlobal.Section.DAILY:
 			for data_iteration in data_for_spreadsheet.spreadsheet_day_data:
 				create_task_row_cells(data_iteration)
+	toggle_info_checkbox_modes()
 
 
 func _on_sort_tasks_button_pressed() -> void:
@@ -168,6 +191,7 @@ func _on_accept_new_task_button_pressed() -> void:
 	create_new_task_data()
 	close_new_task_panel()
 	new_task_field_reset()
+	toggle_info_checkbox_modes()
 	
 
 
@@ -197,16 +221,26 @@ func create_header_row() -> void:
 	create_text_cell("Time Units Per Cycle", info) #10
 	create_text_cell("Time Units Added When Skipped", info) #11
 	create_text_cell("Last Completed", info) #12
-
 	var checkbox = "Checkbox"
-	pass #checkboxes
-
-	header_size = self.get_child_count()
+	
+	full_header_size = self.get_child_count()
+	info_header_size = get_tree().get_nodes_in_group("Info").size()
+	checkbox_header_size = get_tree().get_nodes_in_group("Checkbox").size()
 	set_grid_columns()
+	
+	
 
 
 func set_grid_columns() -> void:
-	self.columns = header_size #change with info/cb toggle
+	var header_size : int = 0
+	prints("Header Sizes, Full:", full_header_size, " Info:", info_header_size, " Checkbox:", checkbox_header_size)
+	if DataGlobal.current_toggled_mode == DataGlobal.editor_modes["Info"]:
+		header_size = full_header_size - checkbox_header_size
+	elif DataGlobal.current_toggled_mode == DataGlobal.editor_modes["Checkbox"]:
+		header_size = full_header_size - info_header_size
+	else:
+		prints("Header row size has gone wrong")
+	self.columns = header_size
 	prints("Setting grid to", header_size, "columns.")
 
 
@@ -331,4 +365,3 @@ func create_number_cell(number : int, column_group : String = "") -> void:
 
 func create_checkbox_cell() -> void:
 	pass
-
