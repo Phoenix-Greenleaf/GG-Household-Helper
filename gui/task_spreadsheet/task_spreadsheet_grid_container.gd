@@ -35,6 +35,7 @@ func _ready() -> void:
 		var year = DataGlobal.current_tasksheet_data.spreadsheet_year
 		prints("TaskGrid found:", title, ":", year)
 		load_existing_data()
+		existing_groups_option_section_picker()
 
 
 func ready_connections() -> void:
@@ -73,17 +74,36 @@ func get_dropdown_items_from_global() -> void:
 
 func update_grid_spreadsheet() -> void:
 	data_for_spreadsheet = DataGlobal.current_tasksheet_data
-	var title = DataGlobal.current_tasksheet_data.spreadsheet_title
-	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
+	var title = data_for_spreadsheet.spreadsheet_title
+	var year = data_for_spreadsheet.spreadsheet_year
 	prints("TaskGrid updated:", title, ":", year)
 	clear_grid_children()
 	load_existing_data()
+	existing_groups_option_section_picker()
 
 
 func section_or_month_changed() -> void:
 	clear_grid_children()
 	load_existing_data()
-	pass
+	existing_groups_option_section_picker()
+
+
+
+func existing_groups_option_section_picker() -> void:
+	var current_section = DataGlobal.current_toggled_section
+	match current_section:
+		DataGlobal.Section.YEARLY:
+			var yearly_section = data_for_spreadsheet.spreadsheet_year_groups
+			create_existing_groups_option_button_items(yearly_section)
+		DataGlobal.Section.MONTHLY:
+			var monthly_section = data_for_spreadsheet.spreadsheet_month_groups
+			create_existing_groups_option_button_items(monthly_section)
+		DataGlobal.Section.WEEKLY:
+			var weekly_section = data_for_spreadsheet.spreadsheet_week_groups
+			create_existing_groups_option_button_items(weekly_section)
+		DataGlobal.Section.DAILY:
+			var daily_section = data_for_spreadsheet.spreadsheet_day_groups
+			create_existing_groups_option_button_items(daily_section)
 
 
 func clear_grid_children() -> void:
@@ -131,25 +151,25 @@ func create_new_task_data() -> void: #task coded model, the data side
 	
 	match new_task_section:
 		DataGlobal.Section.YEARLY:
-			var current_group = data_for_spreadsheet.spreadsheet_year_groups
+			var current_section_group = data_for_spreadsheet.spreadsheet_year_groups
 			data_for_spreadsheet.spreadsheet_year_data.append(new_task)
-			create_task_group(new_task_group, current_group)
-			create_existing_groups_option_button_items(current_group)
+			create_task_group(new_task_group, current_section_group)
+			create_existing_groups_option_button_items(current_section_group)
 		DataGlobal.Section.MONTHLY:
-			var current_group = data_for_spreadsheet.spreadsheet_month_groups
+			var current_section_group = data_for_spreadsheet.spreadsheet_month_groups
 			data_for_spreadsheet.spreadsheet_month_data.append(new_task)
-			create_task_group(new_task_group, current_group)
-			create_existing_groups_option_button_items(current_group)
+			create_task_group(new_task_group, current_section_group)
+			create_existing_groups_option_button_items(current_section_group)
 		DataGlobal.Section.WEEKLY:
-			var current_group = data_for_spreadsheet.spreadsheet_week_groups
+			var current_section_group = data_for_spreadsheet.spreadsheet_week_groups
 			data_for_spreadsheet.spreadsheet_week_data.append(new_task)
-			create_task_group(new_task_group, current_group)
-			create_existing_groups_option_button_items(current_group)
+			create_task_group(new_task_group, current_section_group)
+			create_existing_groups_option_button_items(current_section_group)
 		DataGlobal.Section.DAILY:
-			var current_group = data_for_spreadsheet.spreadsheet_day_groups
+			var current_section_group = data_for_spreadsheet.spreadsheet_day_groups
 			data_for_spreadsheet.spreadsheet_day_data.append(new_task)
-			create_task_group(new_task_group, current_group)
-			create_existing_groups_option_button_items(current_group)
+			create_task_group(new_task_group, current_section_group)
+			create_existing_groups_option_button_items(current_section_group)
 	create_task_row_cells(new_task)
 
 
@@ -160,12 +180,11 @@ func new_task_field_reset() -> void:
 
 
 func create_task_group(task_group : String, section_groups : Array) -> void:
-			var groups : Array = section_groups
-			if groups.has(task_group):
+			if section_groups.has(task_group):
 				prints("Task group", task_group, "already exists.")
 			else:
-				groups.append(task_group)
-				groups.sort()
+				section_groups.append(task_group)
+				section_groups.sort()
 				prints("Created new task group:", task_group)
 
 

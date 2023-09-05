@@ -42,21 +42,30 @@ func generate_month_dictionary() -> void:
 
 
 func generate_all_checkboxes() -> void:
-	for month_iteration in month_checkbox_dictionary:
-		match section:
-			DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+	match section:
+		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+			for month_iteration in month_checkbox_dictionary:
 				generate_month_checkboxes(month_iteration, 1)
-			DataGlobal.Section.WEEKLY:
+		DataGlobal.Section.WEEKLY:
+			for month_iteration in month_checkbox_dictionary:
 				generate_month_checkboxes(month_iteration, 5)
-			DataGlobal.Section.DAILY:
+		DataGlobal.Section.DAILY:
+			for month_iteration in month_checkbox_dictionary:
 				var days : int = DataGlobal.days_in_month_finder(month_iteration, task_year)
 				generate_month_checkboxes(month_iteration, days)
 
+func test_print_checkboxes() -> void:
+	print()
+	prints("Task data", name, "checkbox check:")
+	for month_iteration in month_checkbox_dictionary:
+		prints("Iteration:", month_iteration, month_checkbox_dictionary[month_iteration].size())
 
 func generate_month_checkboxes(month, number: int) -> void:
 		for iteration in number:
 			var checkbox_iteration = CheckboxData.new()
-			checkbox_iteration.update_checkbox_data()
+			var checkbox_status = DataGlobal.Checkbox.ACTIVE
+			var assigned_user = DataGlobal.user_profiles[0]
+			checkbox_iteration.update_checkbox_data(checkbox_status, assigned_user)
 			month_checkbox_dictionary[month].append(checkbox_iteration)
 
 

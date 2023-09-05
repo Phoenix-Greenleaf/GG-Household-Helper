@@ -14,8 +14,7 @@ extends Control
 var last_toggled_month : int = 1
 
 var Weekday : Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-var Month : Array = ["Month Index", "January", "February", "March", "April", "May", "June", "July",
-		"August", "September", "October", "November", "December"]
+var month_strings = DataGlobal.month_strings
 
 
 
@@ -57,7 +56,7 @@ func set_current_date_label() -> void:
 	var current_date: Dictionary = Time.get_date_dict_from_system()
 	var current_weekday: String =  Weekday[current_date["weekday"]] + " "
 	var current_day: String = str(current_date["day"]) + ", "
-	var current_month: String = Month[current_date["month"]] + ", "
+	var current_month: String = month_strings[current_date["month"]] + ", "
 	var current_year: String = str(current_date["year"])
 	var current_label:= "Today: " + current_weekday + current_day + current_month + current_year
 	current_date_label.set_text(current_label)
@@ -96,8 +95,8 @@ func section_enum_to_string() -> String:
 
 
 func month_menu_button_actions(id: int) -> void:
-	var new_month : String = Month[id]
-	var old_month : String = Month[last_toggled_month]
+	var new_month : String = month_strings[id]
+	var old_month : String = month_strings[last_toggled_month]
 	prints("Switching from", old_month, "to", new_month)
 	match id:
 		1:

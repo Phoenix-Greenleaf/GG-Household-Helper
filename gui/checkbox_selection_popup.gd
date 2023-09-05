@@ -90,8 +90,8 @@ func update_paired_menu_profile() -> void:
 
 func update_paired_menu_all() -> void:
 	if paired_checkbox_menu_button:
-		paired_checkbox_menu_button.update_profile()
 		paired_checkbox_menu_button.update_status()
+		paired_checkbox_menu_button.update_profile()
 		paired_checkbox_menu_button.update_checkbox_colors()
 	else:
 		print("No menu button to update!")
