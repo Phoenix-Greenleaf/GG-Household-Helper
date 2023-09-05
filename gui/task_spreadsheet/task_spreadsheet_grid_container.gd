@@ -42,6 +42,8 @@ func ready_connections() -> void:
 		data_for_spreadsheet = DataGlobal.current_tasksheet_data
 	SignalBus._on_current_tasksheet_data_changed.connect(update_grid_spreadsheet)
 	SignalBus._on_editor_mode_changed.connect(toggle_info_checkbox_modes)
+	SignalBus._on_editor_section_changed.connect(section_or_month_changed)
+	SignalBus._on_editor_month_changed.connect(section_or_month_changed)
 
 
 func test_spreadsheet_initialization() -> void:
@@ -49,22 +51,15 @@ func test_spreadsheet_initialization() -> void:
 
 
 func toggle_info_checkbox_modes() -> void:
-	var info_group : Array[Node] = get_tree().get_nodes_in_group("Info")
-	var checkbox_group : Array[Node] = get_tree().get_nodes_in_group("Checkbox")
 	if DataGlobal.current_toggled_mode == DataGlobal.editor_modes["Info"]:
-		group_visibility(info_group, true)
-		group_visibility(checkbox_group, false)
+		get_tree().set_group("Info", "visible", true)
+		get_tree().set_group("Checkbox", "visible", false)
 	elif DataGlobal.current_toggled_mode == DataGlobal.editor_modes["Checkbox"]:
-		group_visibility(checkbox_group, true)
-		group_visibility(info_group, false)
+		get_tree().set_group("Checkbox", "visible", true)
+		get_tree().set_group("Info", "visible", false)
 	else:
 		prints("Mode toggle has gone wrong")
 	set_grid_columns()
-
-
-func group_visibility(target_group: Array[Node], visibility_bool: bool) -> void:
-	for node_iteration in target_group:
-		node_iteration.visible = visibility_bool
 
 
 func get_dropdown_items_from_global() -> void:
@@ -81,13 +76,23 @@ func update_grid_spreadsheet() -> void:
 	var title = DataGlobal.current_tasksheet_data.spreadsheet_title
 	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
 	prints("TaskGrid updated:", title, ":", year)
+	clear_grid_children()
+	load_existing_data()
+
+
+func section_or_month_changed() -> void:
+	clear_grid_children()
+	load_existing_data()
+	pass
+
+
+func clear_grid_children() -> void:
 	var children = self.get_children()
 	var count = self.get_child_count()
 	for current_kiddo in children:
 		self.remove_child(current_kiddo)
 		current_kiddo.queue_free()
 	prints(count, "children in line for freedom")
-	load_existing_data()
 
 
 func _on_add_task_button_pressed() -> void:
@@ -131,14 +136,20 @@ func create_new_task_data() -> void: #task coded model, the data side
 			create_task_group(new_task_group, current_group)
 			create_existing_groups_option_button_items(current_group)
 		DataGlobal.Section.MONTHLY:
+			var current_group = data_for_spreadsheet.spreadsheet_month_groups
 			data_for_spreadsheet.spreadsheet_month_data.append(new_task)
-			create_task_group(new_task_group, data_for_spreadsheet.spreadsheet_month_groups)
+			create_task_group(new_task_group, current_group)
+			create_existing_groups_option_button_items(current_group)
 		DataGlobal.Section.WEEKLY:
+			var current_group = data_for_spreadsheet.spreadsheet_week_groups
 			data_for_spreadsheet.spreadsheet_week_data.append(new_task)
-			create_task_group(new_task_group, data_for_spreadsheet.spreadsheet_week_groups)
+			create_task_group(new_task_group, current_group)
+			create_existing_groups_option_button_items(current_group)
 		DataGlobal.Section.DAILY:
+			var current_group = data_for_spreadsheet.spreadsheet_day_groups
 			data_for_spreadsheet.spreadsheet_day_data.append(new_task)
-			create_task_group(new_task_group, data_for_spreadsheet.spreadsheet_day_groups)
+			create_task_group(new_task_group, current_group)
+			create_existing_groups_option_button_items(current_group)
 	create_task_row_cells(new_task)
 
 
@@ -192,7 +203,6 @@ func _on_accept_new_task_button_pressed() -> void:
 	close_new_task_panel()
 	new_task_field_reset()
 	toggle_info_checkbox_modes()
-	
 
 
 func create_existing_groups_option_button_items(group) -> void:
@@ -222,18 +232,36 @@ func create_header_row() -> void:
 	create_text_cell("Time Units Added When Skipped", info) #11
 	create_text_cell("Last Completed", info) #12
 	var checkbox = "Checkbox"
+	var current_section = DataGlobal.current_toggled_section
+	var current_month = DataGlobal.current_toggled_month
+	var current_year = DataGlobal.current_tasksheet_data.spreadsheet_year
+	match current_section:
+		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+			for month in DataGlobal.month_strings:
+				if month == "None":
+					continue
+				create_text_cell(month, checkbox)
+		DataGlobal.Section.WEEKLY:
+			create_checkbox_header("Week", 5)
+		DataGlobal.Section.DAILY:
+			var days = DataGlobal.days_in_month_finder(current_month, current_year)
+			create_checkbox_header("Day", days)
 	
 	full_header_size = self.get_child_count()
 	info_header_size = get_tree().get_nodes_in_group("Info").size()
 	checkbox_header_size = get_tree().get_nodes_in_group("Checkbox").size()
+	prints("Header Sizes, Full:", full_header_size, " Info:", info_header_size, " Checkbox:", checkbox_header_size)
 	set_grid_columns()
-	
-	
+
+
+func create_checkbox_header(header_string : String, header_length : int) -> void:
+	for number in header_length:
+		var header_number = " " + str(number + 1)
+		create_text_cell(header_string + header_number, "Checkbox")
 
 
 func set_grid_columns() -> void:
 	var header_size : int = 0
-	prints("Header Sizes, Full:", full_header_size, " Info:", info_header_size, " Checkbox:", checkbox_header_size)
 	if DataGlobal.current_toggled_mode == DataGlobal.editor_modes["Info"]:
 		header_size = full_header_size - checkbox_header_size
 	elif DataGlobal.current_toggled_mode == DataGlobal.editor_modes["Checkbox"]:
@@ -247,13 +275,13 @@ func set_grid_columns() -> void:
 func create_task_row_cells(task_data : TaskData) -> void: #task "physical" nodes, display side
 	blank_counter = 0
 	var info = "Info"
+	var checkbox = "Checkbox"
 	
 	var task_name : String = task_data.name #1
 	create_text_cell(task_name)
 #	prints("1 is go")
 	
 	var section : int = task_data.section #2
-	prints("section dropdown:", section_dropdown_items)
 	create_dropdown_cell(section_dropdown_items, section)
 #	prints("2 is go")
 	
@@ -315,9 +343,22 @@ func create_task_row_cells(task_data : TaskData) -> void: #task "physical" nodes
 	create_text_cell(last_completed, info)
 #	prints("12 is go")
 	
-	var checkbox = "Checkbox"
-	pass #checkboxes
-
+	match section:
+		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+			for month_iteration in task_data.month_checkbox_dictionary:
+				if month_iteration == "None":
+					continue
+				var checkbox_data : CheckboxData = task_data.month_checkbox_dictionary[month_iteration][0]
+				var checkbox_state : DataGlobal.Checkbox = checkbox_data.checkbox_status
+				var checkbox_color : Color = checkbox_data.assigned_user[1]
+				create_checkbox_cell(checkbox_state, checkbox_color, checkbox)
+		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
+			var current_month = DataGlobal.current_toggled_month
+			var current_data : Array = task_data.month_checkbox_dictionary[current_month]
+			for checkbox_data in current_data:
+				var checkbox_state : DataGlobal.Checkbox = checkbox_data.checkbox_status
+				var checkbox_color : Color = checkbox_data.assigned_user[1]
+				create_checkbox_cell(checkbox_state, checkbox_color, "Checkbox")
 
 
 func add_cell_to_groups(cell_parameter, column_group_parameter) -> void:
@@ -363,5 +404,8 @@ func create_number_cell(number : int, column_group : String = "") -> void:
 	add_cell_to_groups(cell, column_group)
 
 
-func create_checkbox_cell() -> void:
-	pass
+func create_checkbox_cell(state, user_color, column_group : String = "") -> void:
+	var cell : Control = checkbox_cell.instantiate()
+	self.add_child(cell)
+	cell.update_checkbox_colors(state, user_color)
+	add_cell_to_groups(cell, column_group)

@@ -26,56 +26,38 @@ func offbrand_init(name_parameter, section_parameter, group_parameter) -> void:
 	name = name_parameter
 	section = section_parameter
 	group = group_parameter
-	generate_months_from_global()
+	generate_month_dictionary()
 	generate_all_checkboxes()
 
 
 
-func generate_months_from_global() -> void:
+func generate_month_dictionary() -> void:
 	if month_checkbox_dictionary:
 		prints("Month Dictionary already exists")
 		return
-	var months_from_global = DataGlobal.Month.keys()
-	for entry in months_from_global:
-		entry = entry.capitalize()
-		month_checkbox_dictionary[entry] = []
+	for month in DataGlobal.month_strings:
+		if month == "None":
+			continue
+		month_checkbox_dictionary[month] = []
 
 
 func generate_all_checkboxes() -> void:
 	for month_iteration in month_checkbox_dictionary:
-		if month_iteration == "None":
-			continue
 		match section:
 			DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
 				generate_month_checkboxes(month_iteration, 1)
 			DataGlobal.Section.WEEKLY:
 				generate_month_checkboxes(month_iteration, 5)
 			DataGlobal.Section.DAILY:
-				var days : int = days_in_month_finder(month_iteration)
+				var days : int = DataGlobal.days_in_month_finder(month_iteration, task_year)
 				generate_month_checkboxes(month_iteration, days)
 
 
 func generate_month_checkboxes(month, number: int) -> void:
 		for iteration in number:
 			var checkbox_iteration = CheckboxData.new()
+			checkbox_iteration.update_checkbox_data()
 			month_checkbox_dictionary[month].append(checkbox_iteration)
-
-
-func days_in_month_finder(month_in_question: String) -> int:
-	match month_in_question: 
-		"February":
-			var leap_year_check = task_year % 4
-			if leap_year_check == 0:
-				return 29
-			else:
-				return 28
-		"April", "June", "September", "November":
-			return 30
-		"January", "March", "May", "July", "August", "October", "December":
-			return 31
-		_:
-			print("Days_in_month_finder match error")
-			return 6
 
 
 func print_task_data() -> void:

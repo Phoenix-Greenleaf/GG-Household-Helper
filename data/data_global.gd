@@ -67,9 +67,13 @@ var current_checkbox_profile: Array = user_profiles[1]
 var current_toggled_section : Section = Section.YEARLY
 var current_toggled_month : String = "January"
 var current_toggled_mode : int = editor_modes["Checkbox"]
+var month_strings : Array[String]
 
 
-
+func _init() -> void:
+	var month_keys : Array = Month.keys()
+	for month in month_keys:
+		month_strings.append(month.capitalize())
 
 
 func button_based_message(target: Node, message: String, time: int = 2) -> void:
@@ -86,3 +90,22 @@ func button_based_message(target: Node, message: String, time: int = 2) -> void:
 	await timer.timeout
 	timer.queue_free()
 	target.text = original_text
+
+
+func days_in_month_finder(month_in_question: String, year_in_question) -> int:
+	match month_in_question: 
+		"February":
+			var leap_year_check = year_in_question % 4
+			if leap_year_check == 0:
+				return 29
+			else:
+				return 28
+		"April", "June", "September", "November":
+			return 30
+		"January", "March", "May", "July", "August", "October", "December":
+			return 31
+		_:
+			print("Days_in_month_finder match error")
+			return 6
+
+
