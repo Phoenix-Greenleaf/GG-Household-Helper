@@ -1,6 +1,7 @@
 extends Control
 
 @onready var menu_button:= $MainMargin/MainHBox/SideMenuVBox/MenuButton as MenuButton
+@onready var popup:= menu_button.get_popup()
 @onready var current_date_label:= %CurrentDateLabel as Label
 @onready var data_manager_center: CenterContainer = $DataManagerCenter
 @onready var current_save_label: Label = %CurrentSaveLabel
@@ -8,6 +9,8 @@ extends Control
 @onready var month_selection_menu_button: MenuButton = %MonthSelectionMenu
 @onready var month_selection_menu_popup := month_selection_menu_button.get_popup()
 @onready var save_warning_button: Button = %SaveWarningButton
+@onready var save_lock_label: Label = %SaveLockLabel
+
 
 
 
@@ -15,15 +18,19 @@ var last_toggled_month : int = 1
 
 var Weekday : Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 var month_strings = DataGlobal.month_strings
-
+var save_safety_nodes : Array
+var quit_counter : int = 0
 
 
 func _ready() -> void:
 	connection_cental()
 	set_current_date_label()
 	print_ready()
+	toggle_save_safety_feature(true)
+	popup.hide_on_item_selection = false
 	if DataGlobal.current_tasksheet_data:
 		update_current_tasksheet_label()
+		toggle_save_safety_feature(false)
 
 
 func connection_cental() -> void:
@@ -31,6 +38,7 @@ func connection_cental() -> void:
 	connect_month_menu()
 	connect_data_manager()
 	connect_other_signal_bus()
+	get_save_safety_group_nodes()
 
 func connect_data_manager() -> void:
 	SignalBus.data_manager_close.connect(close_data_manager_popup)
@@ -39,13 +47,16 @@ func connect_data_manager() -> void:
 func connect_other_signal_bus() -> void:
 	SignalBus._on_current_tasksheet_data_changed.connect(update_current_tasksheet_label)
 	SignalBus.trigger_save_warning.connect(save_warning_triggered)
+	SignalBus.reset_save_warning.connect(save_waring_reset)
 
 func connect_month_menu() -> void:
 	month_selection_menu_popup.connect("id_pressed", month_menu_button_actions)
 
 func connect_menu_button_popup() -> void:
-	var popup:= menu_button.get_popup()
 	popup.connect("id_pressed", menu_button_actions)
+
+func get_save_safety_group_nodes() -> void: 
+	save_safety_nodes = get_tree().get_nodes_in_group("save_safety")
 
 
 func print_ready() -> void:
@@ -68,12 +79,25 @@ func menu_button_actions(id: int) -> void:
 			get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 		1:
 			print("Save File Pressed")
+			popup.hide()
 		2:
 			print("Change Logs Pressed")
+			popup.hide()
 		3:
-			get_tree().quit()
+			if save_warning_button.text == "DATA NEEDS SAVING!":
+				match quit_counter:
+					0:
+						popup.set_item_text(5, "Not Saved!")
+					1:
+						popup.set_item_text(5, "Confirm Quit")
+					2:
+						get_tree().quit()
+				quit_counter += 1
+			else:
+				get_tree().quit()
 		5:
 			data_manager_center.visible = true
+			popup.hide()
 
 
 func update_current_tasksheet_label() -> void:
@@ -203,14 +227,36 @@ func _on_info_mode_button_toggled(button_pressed: bool) -> void:
 
 
 func save_warning_triggered() -> void:
-	save_warning_button.text = "DATA NEEDS SAVING"
+	print("Save Warning TRIGGERED")
+	save_warning_button.text = "DATA NEEDS SAVING!"
+	save_lock_label.text = "Save Lock On"
+	toggle_save_safety_feature(true)
+
+
+func save_waring_reset() -> void:
+	print("Save Warning RESET")
+	save_warning_button.text = "Data Saved"
+	save_lock_label.text = " "
+	toggle_save_safety_feature(false)
 
 
 func _on_save_warning_button_pressed() -> void:
 	if save_warning_button.text == "Data Saved":
 		DataGlobal.button_based_message(save_warning_button, "Already Saved!")
 		return
-	save_warning_button.text = "Data Saved"
-	var data_manager : Node = data_manager_center.get_child(0)
-	print(data_manager)
-	data_manager.save_current_tasksheet()
+	elif save_warning_button.text == "Already Saved!":
+		print("For real please stop")
+		return
+	else:
+		save_warning_button.text = "Data Saved"
+		var data_manager : Node = data_manager_center.get_child(0)
+		data_manager.save_current_tasksheet()
+
+func toggle_save_safety_feature(button_disabled_bool : bool) -> void:
+	for savety_node_iteration in save_safety_nodes:
+		savety_node_iteration.disabled = button_disabled_bool
+
+
+func _on_menu_button_pressed() -> void:
+	popup.set_item_text(5, "Quit")
+	quit_counter = 0

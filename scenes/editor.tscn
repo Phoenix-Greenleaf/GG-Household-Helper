@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=9 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scenes/editor.gd" id="1_nkaig"]
 [ext_resource type="ButtonGroup" uid="uid://dstnxfnckpqs0" path="res://gui/editor_mode_button_group.tres" id="2_ludcj"]
 [ext_resource type="ButtonGroup" uid="uid://tci5j17kmt8l" path="res://gui/section_button_group.tres" id="2_rjskt"]
 [ext_resource type="PackedScene" uid="uid://ds4yxf6rofxhb" path="res://gui/current_checkbox_button.tscn" id="3_droll"]
+[ext_resource type="ButtonGroup" uid="uid://c4hrg6nv6u6tb" path="res://gui/checkbox_toggle.tres" id="4_2dypo"]
 [ext_resource type="Script" path="res://gui/task_spreadsheet/task_spreadsheet_grid_container.gd" id="5_4xdyt"]
 [ext_resource type="PackedScene" uid="uid://c7tqndbd8llst" path="res://gui/checkbox_selection_popup.tscn" id="6_okd6i"]
 [ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/data_manager/data_manager.tscn" id="7_io7f7"]
@@ -68,6 +69,7 @@ popup/item_5/id = 3
 
 [node name="HSeparator4" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme_override_constants/separation = 40
 
 [node name="EditorModeToggleLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
@@ -90,6 +92,7 @@ Mode"
 
 [node name="HSeparator5" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme_override_constants/separation = 40
 
 [node name="CurrentCheckboxButton" parent="MainMargin/MainHBox/SideMenuVBox" instance=ExtResource("3_droll")]
 layout_mode = 2
@@ -97,43 +100,76 @@ layout_mode = 2
 [node name="HSeparator" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 
-[node name="EditingLockButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="Label" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-disabled = true
+text = "Checkbox
+Toggle"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CheckboxApplyToggle" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("4_2dypo")
+text = "Apply"
+
+[node name="CheckboxInspectToggle" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+unique_name_in_owner = true
+layout_mode = 2
 toggle_mode = true
 button_pressed = true
+button_group = ExtResource("4_2dypo")
+text = "Inspect"
+
+[node name="HSeparator7" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
+layout_mode = 2
+
+[node name="EditingLockButton" type="CheckButton" parent="MainMargin/MainHBox/SideMenuVBox"]
+layout_mode = 2
+disabled = true
+button_pressed = true
 text = "Editing
-Locked"
+Lock"
 
 [node name="HSeparator2" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 theme_override_constants/separation = 60
+
+[node name="SaveLockLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Load data with
+Data Manager"
+horizontal_alignment = 1
 
 [node name="SectionSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 text = "Section"
 horizontal_alignment = 1
 
-[node name="YearlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="YearlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox" groups=["save_safety"]]
 layout_mode = 2
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("2_rjskt")
 text = "Yearly"
 
-[node name="MonthlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="MonthlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox" groups=["save_safety"]]
 layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("2_rjskt")
 text = "Monthly"
 
-[node name="WeeklyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="WeeklyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox" groups=["save_safety"]]
 layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("2_rjskt")
 text = "Weekly"
 
-[node name="DailyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="DailyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox" groups=["save_safety"]]
 layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("2_rjskt")
@@ -147,7 +183,7 @@ layout_mode = 2
 text = "Month"
 horizontal_alignment = 1
 
-[node name="MonthSelectionMenu" type="MenuButton" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="MonthSelectionMenu" type="MenuButton" parent="MainMargin/MainHBox/SideMenuVBox" groups=["save_safety"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "January"
@@ -184,7 +220,7 @@ popup/item_12/id = 12
 
 [node name="HSeparator6" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-theme_override_constants/separation = 60
+theme_override_constants/separation = 40
 
 [node name="SortTasksButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
@@ -321,10 +357,10 @@ script = ExtResource("5_4xdyt")
 
 [node name="CheckboxSelectionPopup" parent="." node_paths=PackedStringArray("paired_checkbox_menu_button") instance=ExtResource("6_okd6i")]
 layout_mode = 0
-offset_left = 117.0
-offset_top = 203.0
-offset_right = 383.0
-offset_bottom = 351.0
+offset_left = 114.0
+offset_top = 275.0
+offset_right = 445.0
+offset_bottom = 428.0
 paired_checkbox_menu_button = NodePath("../MainMargin/MainHBox/SideMenuVBox/CurrentCheckboxButton")
 
 [node name="DataManagerCenter" type="CenterContainer" parent="."]
@@ -340,6 +376,7 @@ mouse_filter = 2
 [node name="DataManager" parent="DataManagerCenter" instance=ExtResource("7_io7f7")]
 layout_mode = 2
 
+[connection signal="pressed" from="MainMargin/MainHBox/SideMenuVBox/MenuButton" to="." method="_on_menu_button_pressed"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/InfoModeButton" to="." method="_on_info_mode_button_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/CheckboxModeButton" to="." method="_on_checkbox_mode_button_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/YearlyButton" to="." method="_on_yearly_button_toggled"]

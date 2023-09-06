@@ -204,6 +204,7 @@ func load_existing_data() -> void:
 			for data_iteration in data_for_spreadsheet.spreadsheet_day_data:
 				create_task_row_cells(data_iteration)
 	toggle_info_checkbox_modes()
+	SignalBus.emit_signal("reset_save_warning")
 
 
 func _on_sort_tasks_button_pressed() -> void:
@@ -222,6 +223,7 @@ func _on_accept_new_task_button_pressed() -> void:
 	close_new_task_panel()
 	new_task_field_reset()
 	toggle_info_checkbox_modes()
+	SignalBus.emit_signal("trigger_save_warning")
 
 
 func create_existing_groups_option_button_items(group) -> void:
@@ -265,7 +267,6 @@ func create_header_row() -> void:
 		DataGlobal.Section.DAILY:
 			var days = DataGlobal.days_in_month_finder(current_month, current_year)
 			create_checkbox_header("Day", days)
-	
 	full_header_size = self.get_child_count()
 	info_header_size = get_tree().get_nodes_in_group("Info").size()
 	checkbox_header_size = get_tree().get_nodes_in_group("Checkbox").size()
@@ -377,7 +378,7 @@ func create_task_row_cells(task_data : TaskData) -> void: #task "physical" nodes
 			for checkbox_data in current_data:
 				var checkbox_state : DataGlobal.Checkbox = checkbox_data.checkbox_status
 				var checkbox_color : Color = checkbox_data.assigned_user[1]
-				create_checkbox_cell(checkbox_state, checkbox_color, "Checkbox")
+				create_checkbox_cell(checkbox_state, checkbox_color, checkbox)
 
 
 func add_cell_to_groups(cell_parameter, column_group_parameter) -> void:

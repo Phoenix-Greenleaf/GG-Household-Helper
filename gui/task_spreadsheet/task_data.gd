@@ -64,8 +64,8 @@ func generate_month_checkboxes(month, number: int) -> void:
 		for iteration in number:
 			var checkbox_iteration = CheckboxData.new()
 			var checkbox_status = DataGlobal.Checkbox.ACTIVE
-			var assigned_user = DataGlobal.user_profiles[0]
-			checkbox_iteration.update_checkbox_data(checkbox_status, assigned_user)
+			var checkbox_assigned_user = DataGlobal.default_profile
+			checkbox_iteration.update_checkbox_data(checkbox_status, checkbox_assigned_user)
 			month_checkbox_dictionary[month].append(checkbox_iteration)
 
 

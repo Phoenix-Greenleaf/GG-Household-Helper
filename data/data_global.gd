@@ -48,8 +48,17 @@ enum Priority {
 	MAX_PRIORITY_OVERRIDE,
 }
 
+
+enum CurrentCheckboxToggle {
+	APPLY,
+	INSPECT
+}
+
+
+var default_profile: Array = ["No Profile", Color(1, 1, 1)]
+
 var user_profiles: Array = [
-	["Default", Color(1, 1, 0)],
+	["Old Default", Color(1, 1, 0)],
 	["Test 1", Color(0, 1, 0)],
 	["Test 2", Color(1, 0, 0)],
 	["Test 3", Color(0, 0, 1)],
@@ -57,6 +66,7 @@ var user_profiles: Array = [
 ]
 
 var editor_modes: Dictionary = {"Checkbox": 0, "Info": 1}
+var month_strings : Array[String]
 
 var current_profile_data #waiting on that data/type
 var current_tasksheet_data : TaskSpreadsheetData
@@ -67,7 +77,7 @@ var current_checkbox_profile: Array = user_profiles[1]
 var current_toggled_section : Section = Section.YEARLY
 var current_toggled_month : String = "January"
 var current_toggled_mode : int = editor_modes["Checkbox"]
-var month_strings : Array[String]
+var current_checkbox_mode : CurrentCheckboxToggle
 
 
 func _init() -> void:

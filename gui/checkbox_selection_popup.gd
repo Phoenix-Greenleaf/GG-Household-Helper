@@ -23,6 +23,7 @@ var status_button_group = preload("res://gui/checkbox_status_group.tres")
  
 
 func _ready() -> void:
+	add_default_profile()
 	load_existing_profiles()
 	update_status_colors()
 	update_paired_menu_all()
@@ -32,21 +33,24 @@ func _ready() -> void:
 	connect_status_button_group()
 	
 
+func load_existing_profiles() -> void:
+	for profile in DataGlobal.user_profiles:
+		add_profile(profile)
+
+
 func add_profile(target_profile: Array) -> void:
 	var new_profile = checkbox_profile.instantiate()
 	var profile_button = new_profile.get_node("ProfileButton")
 	profile_button.toggled.connect(_on_profile_button_toggled.bind(target_profile))
 	profile_button.set_button_group(profile_button_group)
-	
 	current_sibling.add_sibling(new_profile)
 	new_profile.load_checkbox_profile(target_profile)
 	current_sibling = new_profile
 
-func load_existing_profiles() -> void:
-	for profile in DataGlobal.user_profiles:
-		if profile[0] != "Default":
-			add_profile(profile)
 
+func add_default_profile() -> void:
+	add_profile(DataGlobal.default_profile)
+	#remove edit/delete buttons from default
 
 
 func update_status_colors() -> void:
