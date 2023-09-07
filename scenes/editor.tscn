@@ -95,6 +95,7 @@ layout_mode = 2
 theme_override_constants/separation = 40
 
 [node name="CurrentCheckboxButton" parent="MainMargin/MainHBox/SideMenuVBox" instance=ExtResource("3_droll")]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="HSeparator" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
@@ -356,6 +357,7 @@ columns = 2
 script = ExtResource("5_4xdyt")
 
 [node name="CheckboxSelectionPopup" parent="." node_paths=PackedStringArray("paired_checkbox_menu_button") instance=ExtResource("6_okd6i")]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 114.0
 offset_top = 275.0
@@ -379,6 +381,8 @@ layout_mode = 2
 [connection signal="pressed" from="MainMargin/MainHBox/SideMenuVBox/MenuButton" to="." method="_on_menu_button_pressed"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/InfoModeButton" to="." method="_on_info_mode_button_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/CheckboxModeButton" to="." method="_on_checkbox_mode_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/CheckboxApplyToggle" to="." method="_on_checkbox_apply_toggle_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/CheckboxInspectToggle" to="." method="_on_checkbox_inspect_toggle_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/YearlyButton" to="." method="_on_yearly_button_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/MonthlyButton" to="." method="_on_monthly_button_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/WeeklyButton" to="." method="_on_weekly_button_toggled"]

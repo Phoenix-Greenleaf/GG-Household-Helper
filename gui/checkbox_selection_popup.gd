@@ -26,7 +26,7 @@ func _ready() -> void:
 	add_default_profile()
 	load_existing_profiles()
 	update_status_colors()
-	update_paired_menu_all()
+	update_paired_menu()
 	new_profile_menu.visible = false
 	self.visible = false
 	connect_paired_menu_button()
@@ -66,39 +66,20 @@ func create_new_profile(profile_name: String, profile_color: Color) -> void:
 
 
 func connect_paired_menu_button() -> void:
-	if paired_checkbox_menu_button:
-		var menu_button = paired_checkbox_menu_button.get_node("Button")
-		menu_button.toggled.connect(_on_menu_button_toggled)
-	else:
+	if not paired_checkbox_menu_button:
 		self.visible = true
 		print("No menu button for visibility!")
+		return
+	var menu_button = paired_checkbox_menu_button.get_node("Button")
+	menu_button.toggled.connect(_on_menu_button_toggled)
 
 
 func connect_status_button_group() -> void:
 	status_button_group.pressed.connect(_on_status_button_toggled)
 
 
-func update_paired_menu_status() -> void:
-	if paired_checkbox_menu_button:
-		paired_checkbox_menu_button.update_status()
-		paired_checkbox_menu_button.update_checkbox_colors()
-	else:
-		print("No menu status to update!")
-
-func update_paired_menu_profile() -> void:
-	if paired_checkbox_menu_button:
-		paired_checkbox_menu_button.update_profile()
-		paired_checkbox_menu_button.update_checkbox_colors()
-	else:
-		print("No menu propfile to update!")
-
-func update_paired_menu_all() -> void:
-	if paired_checkbox_menu_button:
-		paired_checkbox_menu_button.update_status()
-		paired_checkbox_menu_button.update_profile()
-		paired_checkbox_menu_button.update_checkbox_colors()
-	else:
-		print("No menu button to update!")
+func update_paired_menu() -> void:
+	SignalBus.emit_signal("update_checkbox_button")
 
 
 func random_color() -> Color:
@@ -109,22 +90,23 @@ func random_color() -> Color:
 
 
 func status_change(new_state: DataGlobal.Checkbox) -> void:
-	if new_state != DataGlobal.current_checkbox_state:
-		DataGlobal.current_checkbox_state = new_state
-		update_paired_menu_status()
-	else: prints("STATUS ALREADY TOGGLED")
-		
-
+	if new_state == DataGlobal.current_checkbox_state:
+		prints("STATUS ALREADY TOGGLED")
+		return
+	DataGlobal.current_checkbox_state = new_state
+	update_paired_menu()
 
 
 func _on_profile_button_toggled(button_pressed: bool, target_profile: Array) -> void:
-	if (button_pressed):
-		if target_profile != DataGlobal.current_checkbox_profile:
-			DataGlobal.current_checkbox_profile = target_profile
-			update_status_colors()
-			update_paired_menu_profile()
-		else:
-			prints("PROFILE ALREADY TOGGLED")
+	if not button_pressed:
+		return
+	if target_profile == DataGlobal.current_checkbox_profile:
+		prints("PROFILE ALREADY TOGGLED")
+		return
+	DataGlobal.current_checkbox_profile = target_profile
+	update_status_colors()
+	update_paired_menu()
+
 
 func _on_status_button_toggled(button_pressed: BaseButton) -> void:
 	match button_pressed:
@@ -138,8 +120,6 @@ func _on_status_button_toggled(button_pressed: BaseButton) -> void:
 			status_change(DataGlobal.Checkbox.EXPIRED)
 		_:
 			prints("Status button error")
-
-
 
 
 func _on_menu_button_toggled(_button_pressed: bool) -> void:
@@ -164,5 +144,4 @@ func _on_profile_menu_accept_pressed() -> void:
 	create_new_profile(profile_name, profile_color)
 	new_profile_button.visible = true
 	new_profile_menu.visible = false
-	
 

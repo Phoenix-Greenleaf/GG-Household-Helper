@@ -47,6 +47,7 @@ func ready_connections() -> void:
 	SignalBus._on_editor_mode_changed.connect(toggle_info_checkbox_modes)
 	SignalBus._on_editor_section_changed.connect(section_or_month_changed)
 	SignalBus._on_editor_month_changed.connect(section_or_month_changed)
+#	SignalBus._on_checkbox_mode_changed.connect(sync_checkbox_menu_to_mode)
 	get_viewport().gui_focus_changed.connect(_on_focus_changed)
 	
 
@@ -56,10 +57,10 @@ func test_spreadsheet_initialization() -> void:
 
 
 func toggle_info_checkbox_modes() -> void:
-	if DataGlobal.current_toggled_mode == DataGlobal.editor_modes["Info"]:
+	if DataGlobal.current_toggled_editor_mode == DataGlobal.editor_modes["Info"]:
 		get_tree().set_group("Info", "visible", true)
 		get_tree().set_group("Checkbox", "visible", false)
-	elif DataGlobal.current_toggled_mode == DataGlobal.editor_modes["Checkbox"]:
+	elif DataGlobal.current_toggled_editor_mode == DataGlobal.editor_modes["Checkbox"]:
 		get_tree().set_group("Checkbox", "visible", true)
 		get_tree().set_group("Info", "visible", false)
 	else:
@@ -298,9 +299,9 @@ func create_checkbox_header(header_string : String, header_length : int) -> void
 
 func set_grid_columns() -> void:
 	var header_size : int = 0
-	if DataGlobal.current_toggled_mode == DataGlobal.editor_modes["Info"]:
+	if DataGlobal.current_toggled_editor_mode == DataGlobal.editor_modes["Info"]:
 		header_size = full_header_size - checkbox_header_size
-	elif DataGlobal.current_toggled_mode == DataGlobal.editor_modes["Checkbox"]:
+	elif DataGlobal.current_toggled_editor_mode == DataGlobal.editor_modes["Checkbox"]:
 		header_size = full_header_size - info_header_size
 	else:
 		prints("Header row size has gone wrong")
@@ -387,15 +388,15 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 					continue
 				var checkbox_data : CheckboxData = current_task.month_checkbox_dictionary[month_iteration][0]
 				var checkbox_state : DataGlobal.Checkbox = checkbox_data.checkbox_status
-				var checkbox_color : Color = checkbox_data.assigned_user[1]
-				create_checkbox_cell(checkbox_state, checkbox_color, checkbox_position, checkbox)
+				var checkbox_user : Array = checkbox_data.assigned_user
+				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
 			var current_month = DataGlobal.current_toggled_month
 			var current_data : Array = current_task.month_checkbox_dictionary[current_month]
 			for checkbox_data in current_data:
 				var checkbox_state : DataGlobal.Checkbox = checkbox_data.checkbox_status
-				var checkbox_color : Color = checkbox_data.assigned_user[1]
-				create_checkbox_cell(checkbox_state, checkbox_color, checkbox_position, checkbox)
+				var checkbox_user : Array = checkbox_data.assigned_user
+				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)
 				checkbox_position += 1
 
 
@@ -446,25 +447,43 @@ func create_number_cell(number : int, column_group : String = "") -> void:
 	add_cell_to_groups(cell, column_group)
 
 
-func create_checkbox_cell(state, user_color, cell_position, column_group : String = "") -> void:
+func create_checkbox_cell(state : DataGlobal.Checkbox, user_profile : Array, cell_position : int, column_group : String = "") -> void:
 	var cell : Control = checkbox_cell.instantiate()
 	self.add_child(cell)
-	cell.update_checkbox_colors(state, user_color)
 	cell.saved_position = cell_position
 	cell.saved_task = current_task
+	cell.saved_profile = user_profile 
+	cell.saved_state = state
+	cell.update_checkbox()
 	add_cell_to_groups(cell, column_group)
-
 
 
 
 func _on_focus_changed(control_node:Control) -> void:
 	if control_node == null:
 		return
+	current_focus = control_node
+	print()
 	prints("Focused", control_node.name)
 	if "CheckboxCell" in control_node.name:
 		prints("Task:", control_node.saved_task.name)
 		prints("Position:", control_node.saved_position)
+		DataGlobal.focus_checkbox_profile = control_node.saved_profile
+		DataGlobal.focus_checkbox_state = control_node.saved_state
+		selected_checkbox(control_node)
 	if ("TextCell" in control_node.name) or ("MultiLineCell"in control_node.name) or ("DropdownCell"in control_node.name) or ("NumberCell" in control_node.name):
 		prints("Task:", control_node.saved_task.name)
-	print()
+
+
+func selected_checkbox(target) -> void:
+	match DataGlobal.current_toggled_checkbox_mode:
+		DataGlobal.CheckboxToggle.APPLY:
+			target.saved_profile = DataGlobal.current_checkbox_profile
+			target.saved_state = DataGlobal.current_checkbox_state
+			target.update_checkbox()
+		DataGlobal.CheckboxToggle.INSPECT:
+			DataGlobal.current_checkbox_profile = target.saved_profile
+			DataGlobal.current_checkbox_state = target.saved_state
+			SignalBus.emit_signal("update_checkbox_button")
+
 

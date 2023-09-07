@@ -49,7 +49,7 @@ enum Priority {
 }
 
 
-enum CurrentCheckboxToggle {
+enum CheckboxToggle {
 	APPLY,
 	INSPECT
 }
@@ -73,11 +73,13 @@ var current_tasksheet_data : TaskSpreadsheetData
 
 var current_checkbox_state: int = Checkbox.COMPLETED
 var current_checkbox_profile: Array = user_profiles[1]
+var focus_checkbox_state: int
+var focus_checkbox_profile: Array
 
 var current_toggled_section : Section = Section.YEARLY
 var current_toggled_month : String = "January"
-var current_toggled_mode : int = editor_modes["Checkbox"]
-var current_checkbox_mode : CurrentCheckboxToggle
+var current_toggled_editor_mode : int = editor_modes["Checkbox"]
+var current_toggled_checkbox_mode : CheckboxToggle = CheckboxToggle.INSPECT
 
 
 func _init() -> void:

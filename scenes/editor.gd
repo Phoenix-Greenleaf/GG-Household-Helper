@@ -212,8 +212,8 @@ func change_editor_mode() -> void:
 
 func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
-		if DataGlobal.current_toggled_mode != DataGlobal.editor_modes["Checkbox"]:
-			DataGlobal.current_toggled_mode = DataGlobal.editor_modes["Checkbox"]
+		if DataGlobal.current_toggled_editor_mode != DataGlobal.editor_modes["Checkbox"]:
+			DataGlobal.current_toggled_editor_mode = DataGlobal.editor_modes["Checkbox"]
 			change_editor_mode()
 			prints("Checkbox Mode toggled")
 		else:
@@ -222,8 +222,8 @@ func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void:
 
 func _on_info_mode_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
-		if DataGlobal.current_toggled_mode != DataGlobal.editor_modes["Info"]:
-			DataGlobal.current_toggled_mode = DataGlobal.editor_modes["Info"]
+		if DataGlobal.current_toggled_editor_mode != DataGlobal.editor_modes["Info"]:
+			DataGlobal.current_toggled_editor_mode = DataGlobal.editor_modes["Info"]
 			change_editor_mode()
 			prints("Info Mode toggled")
 		else:
@@ -269,3 +269,25 @@ func toggle_save_safety_feature(button_disabled_bool : bool) -> void:
 func _on_menu_button_pressed() -> void:
 	popup.set_item_text(5, "Quit")
 	quit_counter = 0
+
+
+func _on_checkbox_apply_toggle_toggled(button_pressed: bool) -> void:
+	if not button_pressed:
+		return
+	if DataGlobal.current_toggled_checkbox_mode != DataGlobal.CheckboxToggle.APPLY:
+		DataGlobal.current_toggled_checkbox_mode = DataGlobal.CheckboxToggle.APPLY
+		SignalBus.emit_signal("_on_checkbox_mode_changed")
+		prints("Apply Mode toggled")
+	else:
+		prints("Apply Mode ALREADY TOGGLED")
+
+
+func _on_checkbox_inspect_toggle_toggled(button_pressed: bool) -> void:
+	if not button_pressed:
+		return
+	if DataGlobal.current_toggled_checkbox_mode != DataGlobal.CheckboxToggle.INSPECT:
+		DataGlobal.current_toggled_checkbox_mode = DataGlobal.CheckboxToggle.INSPECT
+		SignalBus.emit_signal("_on_checkbox_mode_changed")
+		prints("Inspect Mode toggled")
+	else:
+		prints("Inspect Mode ALREADY TOGGLED")

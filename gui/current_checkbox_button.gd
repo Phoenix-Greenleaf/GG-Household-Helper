@@ -6,19 +6,19 @@ extends PanelContainer
 @onready var current_checkbox_status_label: Label = $CurrentCheckboxMargin/CurrentCheckboxVBox/CurrentCheckboxStatusLabel
 @onready var current_checkbox_profile_label: Label = $CurrentCheckboxMargin/CurrentCheckboxVBox/CurrentCheckboxProfileLabel
 
-
 var checkbox_status_keys = DataGlobal.Checkbox.keys()
-
-
 
 
 func _ready() -> void:
 	disable_capslock()
+	SignalBus.update_checkbox_button.connect(update_all)
+	update_all()
+
+
+func update_all() -> void:
 	update_status()
 	update_profile()
 	update_checkbox_colors()
-
-
 
 
 func disable_capslock() -> void:
@@ -28,16 +28,17 @@ func disable_capslock() -> void:
 		checkbox_status_keys[status_number] = capitalized
 
 
-
 func update_status() -> void:
 	var new_status_enum = DataGlobal.current_checkbox_state
 	var new_status_text: String = checkbox_status_keys[new_status_enum]
 	current_checkbox_status_label.set_text(new_status_text)
 
+
 func update_profile() -> void:
 	var new_profile: Array = DataGlobal.current_checkbox_profile
 	var new_profile_text: String = new_profile[0]
 	current_checkbox_profile_label.set_text(new_profile_text)
+
 
 func update_checkbox_colors() -> void:
 	var profile_color: Color = DataGlobal.current_checkbox_profile[1]
@@ -58,3 +59,4 @@ func update_checkbox_colors() -> void:
 			current_checkbox_color_rect_bottom.set_color(black)
 		_:
 			print("update_checkbox_colors match failure!")
+

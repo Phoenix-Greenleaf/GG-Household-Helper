@@ -7,7 +7,7 @@ extends PanelContainer
 
 
 func _ready() -> void:
-	var default_profile: Array = DataGlobal.user_profiles[0]
+	var default_profile: Array = DataGlobal.default_profile
 	load_checkbox_profile(default_profile)
 
 func load_checkbox_profile(target_profile: Array) -> void:
