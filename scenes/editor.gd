@@ -10,6 +10,7 @@ extends Control
 @onready var month_selection_menu_popup := month_selection_menu_button.get_popup()
 @onready var save_warning_button: Button = %SaveWarningButton
 @onready var save_lock_label: Label = %SaveLockLabel
+@onready var add_task_button: Button = %AddTaskButton
 
 
 
@@ -27,10 +28,12 @@ func _ready() -> void:
 	set_current_date_label()
 	print_ready()
 	toggle_save_safety_feature(true)
+	add_task_button.disabled = true
 	popup.hide_on_item_selection = false
 	if DataGlobal.current_tasksheet_data:
 		update_current_tasksheet_label()
 		toggle_save_safety_feature(false)
+		add_task_button.disabled = false
 
 
 func connection_cental() -> void:
@@ -105,6 +108,7 @@ func update_current_tasksheet_label() -> void:
 	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
 	var new_label = title + ": " + str(year)
 	current_save_label.text = new_label
+	SignalBus.emit_signal("reset_save_warning")
 
 
 func close_data_manager_popup() -> void:
@@ -238,6 +242,8 @@ func save_waring_reset() -> void:
 	save_warning_button.text = "Data Saved"
 	save_lock_label.text = " "
 	toggle_save_safety_feature(false)
+	if add_task_button.disabled == true:
+		add_task_button.disabled = false
 
 
 func _on_save_warning_button_pressed() -> void:
@@ -246,6 +252,9 @@ func _on_save_warning_button_pressed() -> void:
 		return
 	elif save_warning_button.text == "Already Saved!":
 		print("For real please stop")
+		return
+	elif save_warning_button.text == "No Data Loaded!":
+		print("Nothing to save, love")
 		return
 	else:
 		save_warning_button.text = "Data Saved"

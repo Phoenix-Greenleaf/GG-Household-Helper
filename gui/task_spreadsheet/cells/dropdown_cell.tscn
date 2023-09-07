@@ -1,3 +1,6 @@
-[gd_scene format=3 uid="uid://cub23xm8nmtp6"]
+[gd_scene load_steps=2 format=3 uid="uid://cub23xm8nmtp6"]
+
+[ext_resource type="Script" path="res://gui/task_spreadsheet/cells/dropdown_cell.gd" id="1_qsxg2"]
 
 [node name="DropdownCell" type="OptionButton"]
+script = ExtResource("1_qsxg2")

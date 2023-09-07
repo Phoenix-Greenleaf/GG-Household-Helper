@@ -3,13 +3,17 @@
 [ext_resource type="Script" path="res://gui/task_spreadsheet/cells/checkbox_cell.gd" id="1_f00pp"]
 
 [node name="CheckboxCell" type="VBoxContainer"]
+focus_mode = 2
+mouse_filter = 0
 theme_override_constants/separation = 0
 script = ExtResource("1_f00pp")
 
 [node name="TopColorRect" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 2
+mouse_filter = 2
 
 [node name="BottomColorRect" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 2
+mouse_filter = 2

@@ -6,6 +6,7 @@ class_name CheckboxData
 @export var assigned_user : Array
 
 
+
 func update_checkbox_data(
 	checkbox_status_parameter : DataGlobal.Checkbox = DataGlobal.current_checkbox_state,
 	assigned_user_parameter : Array = DataGlobal.current_checkbox_profile,

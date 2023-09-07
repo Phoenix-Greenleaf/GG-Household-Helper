@@ -4,6 +4,12 @@ extends VBoxContainer
 #to reduce repeat code. Separate may have a benifit but we shall see. 
 
 
+@export var saved_position : int
+@export var saved_task : TaskData
+
+func _ready() -> void:
+	name = "CheckboxCell"
+
 
 func update_checkbox_colors(update_state: DataGlobal.Checkbox, update_color: Color) -> void:
 	var white := Color(1, 1, 1)

@@ -1,0 +1,6 @@
+extends TextEdit
+
+@export var saved_task : TaskData
+
+func _ready() -> void:
+	name = "MultiLineCell"

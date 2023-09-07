@@ -243,7 +243,7 @@ text = "Current File: YEAR"
 [node name="SaveWarningButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Save Warning"
+text = "No Data Loaded!"
 
 [node name="HBoxFarSide" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2

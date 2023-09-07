@@ -143,7 +143,7 @@ text = "Exit"
 
 [node name="Versoning" type="Label" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
 layout_mode = 2
-text = "Version 0.nothing.1"
+text = "Version 0.something.1"
 horizontal_alignment = 1
 
 [connection signal="pressed" from="MainMargin/MainVBox/MenuMargin/MenuVBox/ContinueMargin/NewContinueButton" to="." method="_on_new_continue_button_pressed"]
