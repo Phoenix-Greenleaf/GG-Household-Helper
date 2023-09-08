@@ -20,7 +20,7 @@ var export_folder = "user://exports/"
 
 var task_button_count: int = 0
 
-var error_keys : Array = [
+var error_keys: Array = [
 	"OK", #0
 	"FAILED", #1
 	"ERR_UNAVAILABLE", #2
@@ -72,7 +72,7 @@ func load_existing_tasksheets() -> void:
 				prints("File", file, "is not of 'res'")
 				continue
 			var filepath = tasksheet_folder + file
-			var file_resource : TaskSpreadsheetData = ResourceLoader.load(filepath)
+			var file_resource: TaskSpreadsheetData = ResourceLoader.load(filepath)
 			print(file_resource)
 			var loaded_name = file_resource.spreadsheet_title
 			var loaded_year = file_resource.spreadsheet_year
@@ -142,11 +142,11 @@ func create_tasksheet_data_and_save() -> void:
 
 
 func save_current_tasksheet() -> void:
-	var current_tasksheet : TaskSpreadsheetData = DataGlobal.current_tasksheet_data
-	var current_filepath : String = current_tasksheet.spreadsheet_filepath
+	var current_tasksheet: TaskSpreadsheetData = DataGlobal.current_tasksheet_data
+	var current_filepath: String = current_tasksheet.spreadsheet_filepath
 	var tasksheet_save_error = ResourceSaver.save(current_tasksheet, current_filepath)
 	if tasksheet_save_error != OK:
-		var error_highscore : int = error_keys.size() - 1
+		var error_highscore: int = error_keys.size() - 1
 		if tasksheet_save_error > error_highscore:
 			printerr("Failed to save resource: NEW HIGHSCORE! ", tasksheet_save_error, "!")
 		else:

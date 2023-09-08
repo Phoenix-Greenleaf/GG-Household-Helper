@@ -2,22 +2,22 @@ extends Resource
 
 class_name TaskData
 
-@export var name : String
+@export var name: String
 
-@export var section = DataGlobal.Section
-@export var group : String
+@export var section: DataGlobal.Section
+@export var group: String
 
-@export var assigned_user : Array
-@export var time_of_day = DataGlobal.TimeOfDay
-@export var priority = DataGlobal.Priority
-@export var location : String
-@export var time_unit : String
-@export var units_per_cycle : int
-@export var units_added_when_skipped : int
-@export var last_completed : String
-@export var task_year : int
-@export var month_checkbox_dictionary : Dictionary
-@export var description : String
+@export var assigned_user: Array
+@export var time_of_day: DataGlobal.TimeOfDay
+@export var priority: DataGlobal.Priority
+@export var location: String
+@export var time_unit: String
+@export var units_per_cycle: int
+@export var units_added_when_skipped: int
+@export var last_completed: String
+@export var task_year: int
+@export var month_checkbox_dictionary: Dictionary
+@export var description: String
 
 
 
@@ -51,7 +51,7 @@ func generate_all_checkboxes() -> void:
 				generate_month_checkboxes(month_iteration, 5)
 		DataGlobal.Section.DAILY:
 			for month_iteration in month_checkbox_dictionary:
-				var days : int = DataGlobal.days_in_month_finder(month_iteration, task_year)
+				var days: int = DataGlobal.days_in_month_finder(month_iteration, task_year)
 				generate_month_checkboxes(month_iteration, days)
 
 func test_print_checkboxes() -> void:

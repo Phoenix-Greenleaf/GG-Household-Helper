@@ -3,5 +3,7 @@
 [ext_resource type="Script" path="res://gui/task_spreadsheet/cells/text_cell.gd" id="1_6y60o"]
 
 [node name="TextCell" type="LineEdit"]
+alignment = 1
 expand_to_text_length = true
+select_all_on_focus = true
 script = ExtResource("1_6y60o")

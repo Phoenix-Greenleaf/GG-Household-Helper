@@ -4,7 +4,7 @@ extends PanelContainer
 @onready var task_set_year_label: Label = $MarginContainer/VBox/TaskSetYearLabel
 
 
-@export var saved_resource : TaskSpreadsheetData 
+@export var saved_resource: TaskSpreadsheetData 
 
 
 func _ready() -> void:

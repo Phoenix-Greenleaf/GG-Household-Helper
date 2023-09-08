@@ -15,12 +15,12 @@ extends Control
 
 
 
-var last_toggled_month : int = 1
+var last_toggled_month: int = 1
 
-var Weekday : Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+var Weekday: Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 var month_strings = DataGlobal.month_strings
-var save_safety_nodes : Array
-var quit_counter : int = 0
+var save_safety_nodes: Array
+var quit_counter: int = 0
 
 
 func _ready() -> void:
@@ -123,8 +123,8 @@ func section_enum_to_string() -> String:
 
 
 func month_menu_button_actions(id: int) -> void:
-	var new_month : String = month_strings[id]
-	var old_month : String = month_strings[last_toggled_month]
+	var new_month: String = month_strings[id]
+	var old_month: String = month_strings[last_toggled_month]
 	prints("Switching from", old_month, "to", new_month)
 	match id:
 		1:
@@ -258,10 +258,11 @@ func _on_save_warning_button_pressed() -> void:
 		return
 	else:
 		save_warning_button.text = "Data Saved"
-		var data_manager : Node = data_manager_center.get_child(0)
+		var data_manager: Node = data_manager_center.get_child(0)
 		data_manager.save_current_tasksheet()
+		SignalBus.emit_signal("reset_save_warning")
 
-func toggle_save_safety_feature(button_disabled_bool : bool) -> void:
+func toggle_save_safety_feature(button_disabled_bool: bool) -> void:
 	for savety_node_iteration in save_safety_nodes:
 		savety_node_iteration.disabled = button_disabled_bool
 

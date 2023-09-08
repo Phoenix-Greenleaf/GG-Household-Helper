@@ -1,6 +1,6 @@
 extends GridContainer
 
-@export var data_for_spreadsheet : TaskSpreadsheetData
+@export var data_for_spreadsheet: TaskSpreadsheetData
 
 @onready var add_task_button: Button = %AddTaskButton
 @onready var task_title_line_edit: LineEdit = %TaskTitleLineEdit
@@ -14,16 +14,34 @@ var multi_line_cell = preload("res://gui/task_spreadsheet/cells/multi_line_cell.
 var number_cell = preload("res://gui/task_spreadsheet/cells/number_cell.tscn")
 var text_cell = preload("res://gui/task_spreadsheet/cells/text_cell.tscn")
 
-var row_group : String = ""
-var blank_counter : int = 0
-var section_dropdown_items : Array
-var time_of_day_dropdown_items : Array
-var priority_dropdown_items : Array
-var full_header_size : int 
-var info_header_size : int
-var checkbox_header_size : int
-var current_task : TaskData
-var current_focus : Control
+var row_group: String = ""
+var blank_counter: int = 0
+var section_dropdown_items: Array
+var time_of_day_dropdown_items: Array
+var priority_dropdown_items: Array
+var full_header_size: int 
+var info_header_size: int
+var checkbox_header_size: int
+var current_task: TaskData
+var current_focus: Control
+
+var last_main_cell_position = 3
+var header_cell_array: Array = [
+	"Task", #1
+	"Section", #2
+	"Group", #3
+	"Assignment", #4
+	"Description", #5
+	"Time Of Day", #6
+	"Priority", #7
+	"Location", #8
+	"Cycle Time Unit", #9
+	"Time Units Per Cycle", #10
+	"Time Units Added When Skipped", #11
+	"Last Completed", #12
+]
+
+
 
 
 func _ready() -> void:
@@ -190,7 +208,7 @@ func new_task_field_reset() -> void:
 	existing_groups_option_button.select(0)
 
 
-func create_task_group(task_group : String, section_groups : Array) -> void:
+func create_task_group(task_group: String, section_groups: Array) -> void:
 			if section_groups.has(task_group):
 				prints("Task group", task_group, "already exists.")
 			else:
@@ -233,7 +251,7 @@ func _on_accept_new_task_button_pressed() -> void:
 	close_new_task_panel()
 	new_task_field_reset()
 	toggle_info_checkbox_modes()
-	SignalBus.emit_signal("trigger_save_warning")
+	_on_cells_edited()
 
 
 func create_existing_groups_option_button_items(group) -> void:
@@ -244,24 +262,17 @@ func create_existing_groups_option_button_items(group) -> void:
 
 
 func _on_existing_groups_option_item_selected(index: int) -> void:
-	var group_text : String = existing_groups_option_button.get_item_text(index)
+	var group_text: String = existing_groups_option_button.get_item_text(index)
 	task_group_line_edit.text = group_text
 
 
 func create_header_row() -> void:
-	var info = "Info"
-	create_text_cell("Task") #1
-	create_text_cell("Section") #2
-	create_text_cell("Group") #3
-	create_text_cell("Assignment", info) #4
-	create_text_cell("Description", info) #5
-	create_text_cell("Time Of Day", info) #6
-	create_text_cell("Priority", info) #7
-	create_text_cell("Location", info) #8
-	create_text_cell("Cycle Time Unit", info) #9
-	create_text_cell("Time Units Per Cycle", info) #10
-	create_text_cell("Time Units Added When Skipped", info) #11
-	create_text_cell("Last Completed", info) #12
+	var header_size = header_cell_array.size()
+	for iteration in header_size:
+		if iteration < last_main_cell_position:
+			create_header_cell(header_cell_array[iteration])
+		else:
+			create_header_cell(header_cell_array[iteration], "Info")
 	var checkbox = "Checkbox"
 	var current_section = DataGlobal.current_toggled_section
 	var current_month = DataGlobal.current_toggled_month
@@ -271,7 +282,7 @@ func create_header_row() -> void:
 			for month in DataGlobal.month_strings:
 				if month == "None":
 					continue
-				create_text_cell(month, checkbox)
+				create_header_cell(month, checkbox)
 		DataGlobal.Section.WEEKLY:
 			create_checkbox_header("Week", 5)
 		DataGlobal.Section.DAILY:
@@ -286,19 +297,19 @@ func create_header_row() -> void:
 
 
 func header_editing_prevention() -> void:
-	var header_nodes : Array[Node] = self.get_children()
+	var header_nodes: Array[Node] = self.get_children()
 	for child in header_nodes:
 		child.mouse_filter = 2
 
 
-func create_checkbox_header(header_string : String, header_length : int) -> void:
+func create_checkbox_header(header_string: String, header_length: int) -> void:
 	for number in header_length:
 		var header_number = " " + str(number + 1)
-		create_text_cell(header_string + header_number, "Checkbox")
+		create_header_cell(header_string + header_number, "Checkbox")
 
 
 func set_grid_columns() -> void:
-	var header_size : int = 0
+	var header_size: int = 0
 	if DataGlobal.current_toggled_editor_mode == DataGlobal.editor_modes["Info"]:
 		header_size = full_header_size - checkbox_header_size
 	elif DataGlobal.current_toggled_editor_mode == DataGlobal.editor_modes["Checkbox"]:
@@ -310,92 +321,37 @@ func set_grid_columns() -> void:
 
 
 func create_task_row_cells() -> void: #task "physical" nodes, display side
-	blank_counter = 0
+	create_text_cell(current_task.name, "Task Name")  #1
+	create_dropdown_cell(section_dropdown_items, current_task.section, "Section") #2
+	create_text_cell(current_task.group, "Group") #3
 	var info = "Info"
+	create_text_cell(assignment_finder(), "Assigned User", info) 
+	create_multi_line_cell(current_task.description, info) #5
+	create_dropdown_cell(time_of_day_dropdown_items, current_task.time_of_day, "Time Of Day", info) #6
+	create_dropdown_cell(priority_dropdown_items, current_task.priority, "Priority", info) #7
+	create_text_cell(current_task.location, "Location", info) #8
+	create_text_cell(current_task.time_unit, "Cycle Time Unit", info) #9
+	create_number_cell(current_task.units_per_cycle, "Units Per Cycle", info) #10
+	create_number_cell(current_task.units_added_when_skipped, "Units Added When Skipped", info) #11
+	create_text_cell(current_task.last_completed, "Last Completed",  info) #12
 	var checkbox = "Checkbox"
-	
-	var task_name : String = current_task.name #1
-	create_text_cell(task_name)
-#	prints("1 is go")
-	
-	var section : int = current_task.section #2
-	create_dropdown_cell(section_dropdown_items, section)
-#	prints("2 is go")
-	
-	var group : String = current_task.group #3
-	create_text_cell(group)
-#	prints("3 is go")
-	
-	var assignment : String = ""  #4
-	if current_task.assigned_user:
-		assignment = current_task.assigned_user[0]
-	else:
-		assignment = "No Assignment"
-	create_text_cell(assignment, info)
-#	prints("4 is go")
-	
-	var description : String = current_task.description  #5
-	create_multi_line_cell(description, info)
-#	prints("5 is go")
-	
-	var time_of_day : int #6
-	if current_task.time_of_day is int:
-		time_of_day = current_task.time_of_day 
-	else:
-		time_of_day = 0
-	create_dropdown_cell(time_of_day_dropdown_items, time_of_day, info)
-#	prints("6 is go")
-
-	var priority : int #7
-	if current_task.priority is int:
-		priority = current_task.priority 
-	else:
-		priority = 0
-	create_dropdown_cell(priority_dropdown_items, priority, info)
-#	prints("7 is go")
-	
-	var location : String = current_task.location #8
-	if location == "":
-		location = "No Location"
-	create_text_cell(location, info)
-#	prints("8 is go")
-	
-	var cycle_time_unit : String = current_task.time_unit #9
-	if cycle_time_unit == "":
-		cycle_time_unit = "No Unit"
-	create_text_cell(cycle_time_unit, info)
-#	prints("9 is go")
-	
-	var time_units_per_cycle : int = current_task.units_per_cycle #10
-	create_number_cell(time_units_per_cycle, info)
-#	prints("10 is go")
-	
-	var time_units_added_when_skipped : int = current_task.units_added_when_skipped #11
-	create_number_cell(time_units_added_when_skipped, info)
-#	prints("11 is go")
-	
-	var last_completed : String = current_task.last_completed #12
-	if last_completed == "":
-		last_completed = "Never"
-	create_text_cell(last_completed, info)
-#	prints("12 is go")
-	
 	var checkbox_position = 1
-	match section:
+	match current_task.section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
 			for month_iteration in current_task.month_checkbox_dictionary:
 				if month_iteration == "None":
 					continue
-				var checkbox_data : CheckboxData = current_task.month_checkbox_dictionary[month_iteration][0]
-				var checkbox_state : DataGlobal.Checkbox = checkbox_data.checkbox_status
-				var checkbox_user : Array = checkbox_data.assigned_user
+				var checkbox_data: CheckboxData = current_task.month_checkbox_dictionary[month_iteration][0]
+				var checkbox_state: DataGlobal.Checkbox = checkbox_data.checkbox_status
+				var checkbox_user: Array = checkbox_data.assigned_user
 				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)
+				checkbox_position += 1
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
 			var current_month = DataGlobal.current_toggled_month
-			var current_data : Array = current_task.month_checkbox_dictionary[current_month]
+			var current_data: Array = current_task.month_checkbox_dictionary[current_month]
 			for checkbox_data in current_data:
-				var checkbox_state : DataGlobal.Checkbox = checkbox_data.checkbox_status
-				var checkbox_user : Array = checkbox_data.assigned_user
+				var checkbox_state: DataGlobal.Checkbox = checkbox_data.checkbox_status
+				var checkbox_user: Array = checkbox_data.assigned_user
 				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)
 				checkbox_position += 1
 
@@ -407,48 +363,52 @@ func add_cell_to_groups(cell_parameter, column_group_parameter) -> void:
 		cell_parameter.add_to_group(column_group_parameter)
 
 
-func create_text_cell(text : String, column_group : String = "") -> void:
-	var cell : LineEdit = text_cell.instantiate()
+func create_text_cell(text: String, current_type: String, column_group: String = "") -> void:
+	var cell: LineEdit = text_cell.instantiate()
 	self.add_child(cell)
 	cell.text = text
 	cell.saved_task = current_task
+	cell.saved_type = current_type
 	add_cell_to_groups(cell, column_group)
 
 
-#func blank_slug() -> void:
-#	blank_counter += 1
-#	var slug_imprint = "BLANK " + str(blank_counter)
-#	create_text_cell(slug_imprint, "Info")
+func create_header_cell(text, column_group: String = "") -> void:
+	var cell: LineEdit = text_cell.instantiate()
+	self.add_child(cell)
+	cell.text = text
+	add_cell_to_groups(cell, column_group)
 
 
-func create_dropdown_cell(dropdown_items : Array, selected_item : int, column_group : String = "") -> void:
-	var cell : OptionButton = dropdown_cell.instantiate()
+func create_dropdown_cell(dropdown_items: Array, selected_item: int, current_type: String, column_group: String = "") -> void:
+	var cell: OptionButton = dropdown_cell.instantiate()
 	self.add_child(cell)
 	for item in dropdown_items:
 		cell.add_item(item)
 	cell.selected = selected_item
 	cell.saved_task = current_task
+	cell.saved_type = current_type
 	add_cell_to_groups(cell, column_group) 
 
 
-func create_multi_line_cell(multi_text: String, column_group : String = "") -> void:
-	var cell : TextEdit = multi_line_cell.instantiate()
+func create_multi_line_cell(multi_text: String, column_group: String = "") -> void:
+	var cell: TextEdit = multi_line_cell.instantiate()
 	self.add_child(cell)
 	cell.text = multi_text
 	cell.saved_task = current_task
 	add_cell_to_groups(cell, column_group) 
 
 
-func create_number_cell(number : int, column_group : String = "") -> void:
-	var cell : SpinBox = number_cell.instantiate()
+func create_number_cell(number: int, current_type: String, column_group: String = "") -> void:
+	var cell: SpinBox = number_cell.instantiate()
 	self.add_child(cell)
 	cell.value = number
 	cell.saved_task = current_task
+	cell.saved_type = current_type
 	add_cell_to_groups(cell, column_group)
 
 
-func create_checkbox_cell(state : DataGlobal.Checkbox, user_profile : Array, cell_position : int, column_group : String = "") -> void:
-	var cell : Control = checkbox_cell.instantiate()
+func create_checkbox_cell(state: DataGlobal.Checkbox, user_profile: Array, cell_position: int, column_group: String = "") -> void:
+	var cell: Control = checkbox_cell.instantiate()
 	self.add_child(cell)
 	cell.saved_position = cell_position
 	cell.saved_task = current_task
@@ -476,14 +436,40 @@ func _on_focus_changed(control_node:Control) -> void:
 
 
 func selected_checkbox(target) -> void:
+	var current_profile = DataGlobal.current_checkbox_profile
+	var current_state = DataGlobal.current_checkbox_state
+	var focus_profile = target.saved_profile
+	var focus_state = target.saved_state
 	match DataGlobal.current_toggled_checkbox_mode:
 		DataGlobal.CheckboxToggle.APPLY:
-			target.saved_profile = DataGlobal.current_checkbox_profile
-			target.saved_state = DataGlobal.current_checkbox_state
+			if ((current_profile == focus_profile) and (current_state == focus_state)):
+				prints("Checkbox already applied!")
+				return
+			target.saved_profile = current_profile
+			target.saved_state = current_state
+			prints("selected checkbox check")
 			target.update_checkbox()
+			target.update_active_data()
+#			_on_cells_edited()
 		DataGlobal.CheckboxToggle.INSPECT:
-			DataGlobal.current_checkbox_profile = target.saved_profile
-			DataGlobal.current_checkbox_state = target.saved_state
+			DataGlobal.current_checkbox_profile = focus_profile
+			DataGlobal.current_checkbox_state = focus_state
 			SignalBus.emit_signal("update_checkbox_button")
 
+func _on_cells_edited() -> void:
+	SignalBus.emit_signal("trigger_save_warning")
+
+func return_data_to_sender(data, return_address) -> void:
+	prints("Return:", data)
+	prints("Sender:", return_address)
+	return_address = data
+
+
+func assignment_finder() -> String:
+	var assignment: String
+	if current_task.assigned_user:
+		assignment = current_task.assigned_user[0]
+	else:
+		assignment = "No Assignment"
+	return assignment
 

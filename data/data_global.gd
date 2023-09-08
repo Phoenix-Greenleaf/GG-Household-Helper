@@ -66,24 +66,24 @@ var user_profiles: Array = [
 ]
 
 var editor_modes: Dictionary = {"Checkbox": 0, "Info": 1}
-var month_strings : Array[String]
+var month_strings: Array[String]
 
 var current_profile_data #waiting on that data/type
-var current_tasksheet_data : TaskSpreadsheetData
+var current_tasksheet_data: TaskSpreadsheetData
 
 var current_checkbox_state: int = Checkbox.COMPLETED
 var current_checkbox_profile: Array = user_profiles[1]
 var focus_checkbox_state: int
 var focus_checkbox_profile: Array
 
-var current_toggled_section : Section = Section.YEARLY
-var current_toggled_month : String = "January"
-var current_toggled_editor_mode : int = editor_modes["Checkbox"]
-var current_toggled_checkbox_mode : CheckboxToggle = CheckboxToggle.INSPECT
+var current_toggled_section: Section = Section.YEARLY
+var current_toggled_month: String = "January"
+var current_toggled_editor_mode: int = editor_modes["Checkbox"]
+var current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
 
 
 func _init() -> void:
-	var month_keys : Array = Month.keys()
+	var month_keys: Array = Month.keys()
 	for month in month_keys:
 		month_strings.append(month.capitalize())
 
