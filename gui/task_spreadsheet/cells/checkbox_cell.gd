@@ -26,6 +26,7 @@ func update_active_data() -> void:
 			year_and_month_updater()
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
 			day_and_week_updater()
+	SignalBus.trigger_save_warning.emit()
 
 
 func year_and_month_updater() -> void: 

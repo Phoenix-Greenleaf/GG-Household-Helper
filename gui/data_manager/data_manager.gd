@@ -10,6 +10,7 @@ extends PanelContainer
 @onready var task_grid: GridContainer = %TaskGrid
 @onready var current_tasksheet_label: Label = %CurrentTasksheetLabel
 @onready var task_accept_button: Button = %TaskAcceptButton
+var safe_lock_active: bool
 
 var task_save_button_group = preload("res://gui/data_manager/task_save_button_group.tres")
 var task_save_button = preload("res://gui/data_manager/task_save_button.tscn")
@@ -43,10 +44,15 @@ func _ready() -> void:
 func connect_signal_bus() -> void:
 	close_manager_button.pressed.connect(emit_exit_signal)
 	SignalBus._on_current_tasksheet_data_changed.connect(update_current_tasksheet_label)
+	SignalBus.trigger_save_warning.connect(safety_toggle.bind(true))
+	SignalBus.reset_save_warning.connect(safety_toggle.bind(false))
 
+
+func safety_toggle(new_bool) -> void:
+	safe_lock_active = new_bool
 
 func emit_exit_signal() -> void:
-	SignalBus.emit_signal("data_manager_close")
+	SignalBus.data_manager_close.emit()
 
 
 func update_current_tasksheet_label() -> void:
@@ -179,12 +185,14 @@ func _on_task_save_button_pressed(button_pressed: bool, pressed_tasksheet: TaskS
 		prints("Tasksheet data already loaded, skipping.")
 		DataGlobal.button_based_message(current_tasksheet_label, "Data Already Loaded!") 
 		return
+	if safe_lock_active:
+		save_current_tasksheet()
 	send_tasksheet_to_global(pressed_tasksheet)
 
 
 func send_tasksheet_to_global(tasksheet_to_send) -> void:
 	DataGlobal.current_tasksheet_data = tasksheet_to_send
-	SignalBus.emit_signal("_on_current_tasksheet_data_changed")
+	SignalBus._on_current_tasksheet_data_changed.emit()
 
 
 func _on_import_tasksheet_pressed() -> void:

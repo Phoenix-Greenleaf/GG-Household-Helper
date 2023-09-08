@@ -10,6 +10,7 @@ extends PanelContainer
 func _ready() -> void:
 	update_button()
 
+
 func update_button() -> void:
 	if saved_resource:
 		task_set_name_label.text = saved_resource.spreadsheet_title

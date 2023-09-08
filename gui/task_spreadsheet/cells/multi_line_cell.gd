@@ -10,3 +10,4 @@ func _ready() -> void:
 func update_active_data() -> void:
 	var text_parameter = self.text
 	saved_task.description = text_parameter
+	SignalBus.trigger_save_warning.emit()

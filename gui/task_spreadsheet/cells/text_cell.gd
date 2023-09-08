@@ -24,4 +24,5 @@ func update_active_data(text_parameter) -> void:
 			saved_task.last_completed = text_parameter
 		_:
 			prints("LineEdit active data update failed")
-		
+			return
+	SignalBus.trigger_save_warning.emit()

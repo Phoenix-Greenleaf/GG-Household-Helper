@@ -1,7 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://c7tqndbd8llst"]
+[gd_scene load_steps=8 format=3 uid="uid://c7tqndbd8llst"]
 
 [ext_resource type="Script" path="res://gui/checkbox_selection_popup.gd" id="1_wlqjm"]
 [ext_resource type="ButtonGroup" uid="uid://ditpy2n3iaejt" path="res://gui/checkbox_status_group.tres" id="2_ti3lp"]
+[ext_resource type="Script" path="res://gui/active_button.gd" id="3_o5t0w"]
+[ext_resource type="Script" path="res://gui/in_progress_button.gd" id="4_mewre"]
+[ext_resource type="Script" path="res://gui/completed_button.gd" id="5_8hqe5"]
+[ext_resource type="Script" path="res://gui/expired_button.gd" id="6_3ouw3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ui5rb"]
 
@@ -41,6 +45,7 @@ mouse_filter = 2
 layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("2_ti3lp")
+script = ExtResource("3_o5t0w")
 
 [node name="Status1Margin" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer"]
 layout_mode = 2
@@ -74,6 +79,7 @@ mouse_filter = 2
 layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("2_ti3lp")
+script = ExtResource("4_mewre")
 
 [node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer"]
 layout_mode = 2
@@ -122,6 +128,7 @@ layout_mode = 2
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("2_ti3lp")
+script = ExtResource("5_8hqe5")
 
 [node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer"]
 layout_mode = 2
@@ -157,6 +164,7 @@ mouse_filter = 2
 layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("2_ti3lp")
+script = ExtResource("6_3ouw3")
 
 [node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer"]
 layout_mode = 2

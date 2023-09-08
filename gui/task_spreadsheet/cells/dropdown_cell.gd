@@ -43,3 +43,5 @@ func update_active_data(index_parameter) -> void:
 			saved_task.priority = priority[index_parameter]
 		_:
 			prints("OptionButton active data update failed")
+			return
+	SignalBus.trigger_save_warning.emit()

@@ -137,40 +137,31 @@ Lock"
 layout_mode = 2
 theme_override_constants/separation = 60
 
-[node name="SaveLockLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 0, 1)
-theme_override_font_sizes/font_size = 14
-text = "Load data with
-Data Manager"
-horizontal_alignment = 1
-
 [node name="SectionSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 text = "Section"
 horizontal_alignment = 1
 
-[node name="YearlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox" groups=["save_safety"]]
+[node name="YearlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("2_rjskt")
 text = "Yearly"
 
-[node name="MonthlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox" groups=["save_safety"]]
+[node name="MonthlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("2_rjskt")
 text = "Monthly"
 
-[node name="WeeklyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox" groups=["save_safety"]]
+[node name="WeeklyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("2_rjskt")
 text = "Weekly"
 
-[node name="DailyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox" groups=["save_safety"]]
+[node name="DailyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("2_rjskt")
@@ -184,7 +175,7 @@ layout_mode = 2
 text = "Month"
 horizontal_alignment = 1
 
-[node name="MonthSelectionMenu" type="MenuButton" parent="MainMargin/MainHBox/SideMenuVBox" groups=["save_safety"]]
+[node name="MonthSelectionMenu" type="MenuButton" parent="MainMargin/MainHBox/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "January"

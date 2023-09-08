@@ -31,7 +31,8 @@ func _ready() -> void:
 	self.visible = false
 	connect_paired_menu_button()
 	connect_status_button_group()
-	
+	SignalBus.update_checkbox_button.connect(update_status_colors)
+
 
 func load_existing_profiles() -> void:
 	for profile in DataGlobal.user_profiles:
@@ -46,6 +47,7 @@ func add_profile(target_profile: Array) -> void:
 	current_sibling.add_sibling(new_profile)
 	new_profile.load_checkbox_profile(target_profile)
 	current_sibling = new_profile
+	
 
 
 func add_default_profile() -> void:
@@ -79,7 +81,7 @@ func connect_status_button_group() -> void:
 
 
 func update_paired_menu() -> void:
-	SignalBus.emit_signal("update_checkbox_button")
+	SignalBus.update_checkbox_button.emit()
 
 
 func random_color() -> Color:

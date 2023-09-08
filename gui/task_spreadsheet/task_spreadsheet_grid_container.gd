@@ -113,6 +113,9 @@ func section_or_month_changed() -> void:
 
 
 func existing_groups_option_section_picker() -> void:
+	if not data_for_spreadsheet:
+		prints("No existing groups to load")
+		return
 	var current_section = DataGlobal.current_toggled_section
 	match current_section:
 		DataGlobal.Section.YEARLY:
@@ -194,7 +197,6 @@ func create_new_task_data() -> void: #task coded model, the data side
 			create_task_group(new_task_group, current_section_group)
 			create_existing_groups_option_button_items(current_section_group)
 	process_task(new_task)
-	
 
 
 func process_task(target_task) -> void:
@@ -218,6 +220,9 @@ func create_task_group(task_group: String, section_groups: Array) -> void:
 
 
 func load_existing_data() -> void:
+	if not data_for_spreadsheet:
+		prints("No existing data to load")
+		return
 	create_header_row()
 	match DataGlobal.current_toggled_section:
 		DataGlobal.Section.YEARLY:
@@ -251,7 +256,7 @@ func _on_accept_new_task_button_pressed() -> void:
 	close_new_task_panel()
 	new_task_field_reset()
 	toggle_info_checkbox_modes()
-	_on_cells_edited()
+	SignalBus.trigger_save_warning.emit()
 
 
 func create_existing_groups_option_button_items(group) -> void:
@@ -293,7 +298,7 @@ func create_header_row() -> void:
 	info_header_size = get_tree().get_nodes_in_group("Info").size()
 	checkbox_header_size = get_tree().get_nodes_in_group("Checkbox").size()
 	prints("Header Sizes, Full:", full_header_size, " Info:", info_header_size, " Checkbox:", checkbox_header_size)
-	set_grid_columns()
+#	set_grid_columns()
 
 
 func header_editing_prevention() -> void:
@@ -309,6 +314,9 @@ func create_checkbox_header(header_string: String, header_length: int) -> void:
 
 
 func set_grid_columns() -> void:
+	if not data_for_spreadsheet:
+		prints("Columns not set")
+		return
 	var header_size: int = 0
 	if DataGlobal.current_toggled_editor_mode == DataGlobal.editor_modes["Info"]:
 		header_size = full_header_size - checkbox_header_size
@@ -418,7 +426,6 @@ func create_checkbox_cell(state: DataGlobal.Checkbox, user_profile: Array, cell_
 	add_cell_to_groups(cell, column_group)
 
 
-
 func _on_focus_changed(control_node:Control) -> void:
 	if control_node == null:
 		return
@@ -431,7 +438,12 @@ func _on_focus_changed(control_node:Control) -> void:
 		DataGlobal.focus_checkbox_profile = control_node.saved_profile
 		DataGlobal.focus_checkbox_state = control_node.saved_state
 		selected_checkbox(control_node)
-	if ("TextCell" in control_node.name) or ("MultiLineCell"in control_node.name) or ("DropdownCell"in control_node.name) or ("NumberCell" in control_node.name):
+	if (
+		"TextCell" in control_node.name
+		or "MultiLineCell"in control_node.name
+		or "DropdownCell"in control_node.name
+		or "NumberCell" in control_node.name
+		):
 		prints("Task:", control_node.saved_task.name)
 
 
@@ -450,14 +462,11 @@ func selected_checkbox(target) -> void:
 			prints("selected checkbox check")
 			target.update_checkbox()
 			target.update_active_data()
-#			_on_cells_edited()
 		DataGlobal.CheckboxToggle.INSPECT:
 			DataGlobal.current_checkbox_profile = focus_profile
 			DataGlobal.current_checkbox_state = focus_state
-			SignalBus.emit_signal("update_checkbox_button")
+			SignalBus.update_checkbox_button.emit()
 
-func _on_cells_edited() -> void:
-	SignalBus.emit_signal("trigger_save_warning")
 
 func return_data_to_sender(data, return_address) -> void:
 	prints("Return:", data)

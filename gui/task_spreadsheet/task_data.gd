@@ -6,6 +6,8 @@ class_name TaskData
 
 @export var section: DataGlobal.Section
 @export var group: String
+@export var previous_section: DataGlobal.Section
+@export var previous_group: String
 
 @export var assigned_user: Array
 @export var time_of_day: DataGlobal.TimeOfDay
@@ -26,6 +28,8 @@ func offbrand_init(name_parameter, section_parameter, group_parameter) -> void:
 	name = name_parameter
 	section = section_parameter
 	group = group_parameter
+	previous_section = section_parameter
+	previous_group = group_parameter
 	generate_month_dictionary()
 	generate_all_checkboxes()
 
