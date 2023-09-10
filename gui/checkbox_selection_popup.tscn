@@ -32,8 +32,8 @@ size_flags_vertical = 3
 [node name="SelectionPopupStatusLabel" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 16
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 21
 text = "Status"
 horizontal_alignment = 1
 
@@ -67,6 +67,8 @@ mouse_filter = 2
 
 [node name="Status1Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/Status1Margin/Status1VBox"]
 layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 6
 theme_override_font_sizes/font_size = 13
 text = "Active"
 horizontal_alignment = 1
@@ -115,6 +117,8 @@ color = Color(0.609375, 0.46875, 0.136719, 1)
 
 [node name="Status2Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer/Status2VBox"]
 layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 6
 theme_override_font_sizes/font_size = 13
 text = "In Progress"
 horizontal_alignment = 1
@@ -152,6 +156,8 @@ color = Color(0.609375, 0.46875, 0.136719, 1)
 
 [node name="Status3Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/MarginContainer/Status3VBox"]
 layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 6
 theme_override_font_sizes/font_size = 13
 text = "Completed"
 horizontal_alignment = 1
@@ -187,6 +193,8 @@ color = Color(0, 0, 0, 1)
 
 [node name="Status4Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/MarginContainer/Status4VBox"]
 layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 6
 theme_override_font_sizes/font_size = 13
 text = "Expired"
 horizontal_alignment = 1
@@ -200,14 +208,16 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 16
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 21
 text = "Profile"
 horizontal_alignment = 1
 
 [node name="NewProfileButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 14
 text = "New
 Profile"
@@ -249,11 +259,15 @@ layout_mode = 2
 
 [node name="ProfileMenuAccept" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileMenuUIVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 14
 text = "Accept"
 
 [node name="ProfileMenuCanel" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileMenuUIVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 14
 text = "Cancel"
 

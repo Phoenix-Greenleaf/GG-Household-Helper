@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://be574yx4gi08t"]
+[gd_scene load_steps=3 format=3 uid="uid://be574yx4gi08t"]
 
 [ext_resource type="Script" path="res://scenes/main_menu.gd" id="1_ei0oi"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_mrwxq"]
+thickness = 7
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -19,133 +22,158 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 color = Color(0.133333, 0.266667, 0.188235, 1)
 
-[node name="MainMargin" type="MarginContainer" parent="."]
+[node name="MenuCenter" type="CenterContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 100
-theme_override_constants/margin_top = 100
-theme_override_constants/margin_right = 100
-theme_override_constants/margin_bottom = 100
 
-[node name="MainVBox" type="VBoxContainer" parent="MainMargin"]
+[node name="MiddleManagement" type="VBoxContainer" parent="MenuCenter"]
 layout_mode = 2
+theme_override_constants/separation = 25
 
-[node name="TitleVBox" type="VBoxContainer" parent="MainMargin/MainVBox"]
+[node name="TitleVBox" type="VBoxContainer" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+size_flags_vertical = 0
 alignment = 1
 
-[node name="MainLabel" type="Label" parent="MainMargin/MainVBox/TitleVBox"]
+[node name="MainLabel" type="Label" parent="MenuCenter/MiddleManagement/TitleVBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 67
-text = "GG Household Helper"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 14
+theme_override_font_sizes/font_size = 80
+text = "Household Helper"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="SecondaryLabel" type="Label" parent="MainMargin/MainVBox/TitleVBox"]
+[node name="SecondaryLabel" type="Label" parent="MenuCenter/MiddleManagement/TitleVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 35
-text = "A productivity program"
+text = "Productivity Application Suite"
 horizontal_alignment = 1
 
-[node name="MenuMargin" type="MarginContainer" parent="MainMargin/MainVBox"]
+[node name="MenuVBox" type="VBoxContainer" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 400
-theme_override_constants/margin_right = 400
+theme_override_constants/separation = 14
 
-[node name="MenuVBox" type="VBoxContainer" parent="MainMargin/MainVBox/MenuMargin"]
+[node name="NewContinueButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
-
-[node name="ContinueMargin" type="MarginContainer" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="NewContinueButton" type="Button" parent="MainMargin/MainVBox/MenuMargin/MenuVBox/ContinueMargin"]
-layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 40
-text = "Continue"
+text = "Task Tracker"
 
-[node name="MetricsMargin" type="MarginContainer" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
+[node name="TaskMetricsButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="MetricsButton" type="Button" parent="MainMargin/MainVBox/MenuMargin/MenuVBox/MetricsMargin"]
-layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 40
 disabled = true
-text = "Metrics"
+text = "Task Metrics"
 
-[node name="ManageMargin" type="MarginContainer" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
+[node name="HouseholdHudButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="DataManagerButton" type="Button" parent="MainMargin/MainVBox/MenuMargin/MenuVBox/ManageMargin"]
-layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 40
-text = "Data Manager"
+disabled = true
+text = "Household Heads-Up-Display"
 
-[node name="SettingsMargin" type="MarginContainer" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
+[node name="HouseholdHandbookButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 40
+disabled = true
+text = "Household Handbook"
 
-[node name="SettingsButton" type="Button" parent="MainMargin/MainVBox/MenuMargin/MenuVBox/SettingsMargin"]
+[node name="StorageOrganizerButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 40
+disabled = true
+text = "Storage Organizer"
+
+[node name="DisplayScreensButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 40
+disabled = true
+text = "Display Screens"
+
+[node name="HSeparator" type="HSeparator" parent="MenuCenter/MiddleManagement/MenuVBox"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_mrwxq")
+
+[node name="SettingsButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 40
 disabled = true
 text = "Settings"
 
-[node name="HelpMargin" type="MarginContainer" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
+[node name="DataManagerButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 40
+text = "Data Manager"
 
-[node name="HelpButton" type="Button" parent="MainMargin/MainVBox/MenuMargin/MenuVBox/HelpMargin"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
+size_flags_vertical = 4
+
+[node name="HelpButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 40
 disabled = true
 text = "Help"
 
-[node name="ExitMargin" type="MarginContainer" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
+[node name="AboutButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox/HBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+size_flags_horizontal = 3
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 40
+disabled = true
+text = "About"
 
-[node name="ExitButton" type="Button" parent="MainMargin/MainVBox/MenuMargin/MenuVBox/ExitMargin"]
+[node name="FeedbackButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 40
+disabled = true
+text = "Feedback"
+
+[node name="ExitButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 40
 text = "Exit"
 
-[node name="Versoning" type="Label" parent="MainMargin/MainVBox/MenuMargin/MenuVBox"]
+[node name="Versoning" type="Label" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
-text = "Version 0.something.1"
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 6
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 20
+text = "Version 1.0.0
+Created by Greenleaf Galactic"
 horizontal_alignment = 1
 
-[connection signal="pressed" from="MainMargin/MainVBox/MenuMargin/MenuVBox/ContinueMargin/NewContinueButton" to="." method="_on_new_continue_button_pressed"]
-[connection signal="pressed" from="MainMargin/MainVBox/MenuMargin/MenuVBox/ManageMargin/DataManagerButton" to="." method="_on_data_manager_button_pressed"]
-[connection signal="pressed" from="MainMargin/MainVBox/MenuMargin/MenuVBox/ExitMargin/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/NewContinueButton" to="." method="_on_new_continue_button_pressed"]
+[connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/DataManagerButton" to="." method="_on_data_manager_button_pressed"]
+[connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/ExitButton" to="." method="_on_exit_button_pressed"]

@@ -21,9 +21,12 @@ size_flags_vertical = 3
 script = ExtResource("1_nkaig")
 
 [node name="BackgroundColorRect" type="ColorRect" parent="."]
-layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.133333, 0.266667, 0.188235, 1)
 
 [node name="MainMargin" type="MarginContainer" parent="."]
@@ -47,7 +50,10 @@ size_flags_horizontal = 0
 
 [node name="MenuButton" type="MenuButton" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-text = "Editor
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 20
+text = "Task Traker
 Menu"
 flat = false
 item_count = 6
@@ -73,17 +79,24 @@ theme_override_constants/separation = 40
 
 [node name="EditorModeToggleLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-text = "Mode Toggle"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 20
+text = "Editor Mode"
 horizontal_alignment = 1
 
 [node name="InfoModeButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 toggle_mode = true
 button_group = ExtResource("2_ludcj")
 text = "Info Mode"
 
 [node name="CheckboxModeButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("2_ludcj")
@@ -92,7 +105,7 @@ Mode"
 
 [node name="HSeparator5" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 15
 
 [node name="CurrentCheckboxButton" parent="MainMargin/MainHBox/SideMenuVBox" instance=ExtResource("3_droll")]
 unique_name_in_owner = true
@@ -103,14 +116,19 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-text = "Checkbox
-Toggle"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 15
+text = "Checkbox Mode"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="CheckboxApplyToggle" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 toggle_mode = true
 button_group = ExtResource("4_2dypo")
 text = "Apply"
@@ -118,32 +136,29 @@ text = "Apply"
 [node name="CheckboxInspectToggle" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("4_2dypo")
 text = "Inspect"
 
-[node name="HSeparator7" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
-layout_mode = 2
-
-[node name="EditingLockButton" type="CheckButton" parent="MainMargin/MainHBox/SideMenuVBox"]
-layout_mode = 2
-disabled = true
-button_pressed = true
-text = "Editing
-Lock"
-
 [node name="HSeparator2" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-theme_override_constants/separation = 60
+theme_override_constants/separation = 15
 
 [node name="SectionSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 20
 text = "Section"
 horizontal_alignment = 1
 
 [node name="YearlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("2_rjskt")
@@ -151,33 +166,45 @@ text = "Yearly"
 
 [node name="MonthlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 toggle_mode = true
 button_group = ExtResource("2_rjskt")
 text = "Monthly"
 
 [node name="WeeklyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 toggle_mode = true
 button_group = ExtResource("2_rjskt")
 text = "Weekly"
 
 [node name="DailyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 toggle_mode = true
 button_group = ExtResource("2_rjskt")
 text = "Daily"
 
 [node name="HSeparator3" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme_override_constants/separation = 0
 
 [node name="MonthSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 20
 text = "Month"
 horizontal_alignment = 1
 
 [node name="MonthSelectionMenu" type="MenuButton" parent="MainMargin/MainHBox/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 text = "January"
 flat = false
 item_count = 13
@@ -210,12 +237,21 @@ popup/item_11/id = 11
 popup/item_12/text = "December"
 popup/item_12/id = 12
 
-[node name="HSeparator6" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="HSeparator7" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 15
+
+[node name="EditingLockButton" type="CheckButton" parent="MainMargin/MainHBox/SideMenuVBox"]
+layout_mode = 2
+disabled = true
+button_pressed = true
+text = "Editing
+Lock"
 
 [node name="SortTasksButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 text = "Sort Tasks"
 
 [node name="NonSideVBox" type="VBoxContainer" parent="MainMargin/MainHBox"]
@@ -226,10 +262,14 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
+theme_override_constants/separation = 15
 
 [node name="CurrentSaveLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 20
 text = "Current File: YEAR"
 
 [node name="SaveWarningButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
@@ -278,6 +318,9 @@ size_flags_horizontal = 8
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 20
 text = "Date Goes Here"
 
 [node name="TaskAddPanel" type="PanelContainer" parent="MainMargin/MainHBox/NonSideVBox"]
@@ -350,10 +393,10 @@ script = ExtResource("5_4xdyt")
 [node name="CheckboxSelectionPopup" parent="." node_paths=PackedStringArray("paired_checkbox_menu_button") instance=ExtResource("6_okd6i")]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 114.0
-offset_top = 275.0
-offset_right = 445.0
-offset_bottom = 428.0
+offset_left = 131.0
+offset_top = 285.0
+offset_right = 476.0
+offset_bottom = 438.0
 paired_checkbox_menu_button = NodePath("../MainMargin/MainHBox/SideMenuVBox/CurrentCheckboxButton")
 
 [node name="DataManagerCenter" type="CenterContainer" parent="."]

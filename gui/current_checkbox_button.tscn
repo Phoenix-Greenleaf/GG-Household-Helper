@@ -25,10 +25,16 @@ theme_override_constants/separation = 0
 
 [node name="CurrentCheckboxLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 13
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 20
 text = "Current
 Checkbox"
 horizontal_alignment = 1
+
+[node name="HSeparator3" type="HSeparator" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
 
 [node name="VBox" type="VBoxContainer" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
@@ -49,15 +55,26 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
 
+[node name="HSeparator2" type="HSeparator" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
 [node name="CurrentCheckboxStatusLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 13
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
 text = "Current Status"
 horizontal_alignment = 1
 
+[node name="HSeparator" type="HSeparator" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
+layout_mode = 2
+
 [node name="CurrentCheckboxProfileLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
 text = "Current Profile"
 horizontal_alignment = 1
 autowrap_mode = 3
