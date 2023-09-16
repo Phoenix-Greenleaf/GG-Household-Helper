@@ -17,9 +17,9 @@ extends PanelContainer
 
 @export var paired_checkbox_menu_button: Node
 
-var checkbox_profile = preload("res://gui/checkbox_profile.tscn")
-var profile_button_group = preload("res://gui/checkbox_profile_group.tres")
-var status_button_group = preload("res://gui/checkbox_status_group.tres")
+var checkbox_profile = preload("res://gui/task_tracking/checkbox_profile.tscn")
+var profile_button_group = preload("res://gui/task_tracking/checkbox_profile_group.tres")
+var status_button_group = preload("res://gui/task_tracking/checkbox_status_group.tres")
  
 
 func _ready() -> void:

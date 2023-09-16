@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://0t87rpa3w5bi"]
 
-[ext_resource type="Script" path="res://gui/task_spreadsheet/cells/number_cell.gd" id="1_hy1wj"]
+[ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/cells/number_cell.gd" id="1_hy1wj"]
 
 [node name="NumberCell" type="SpinBox"]
 script = ExtResource("1_hy1wj")

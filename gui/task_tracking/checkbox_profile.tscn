@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dy5a80ny2p05l"]
 
-[ext_resource type="Script" path="res://gui/checkbox_profile.gd" id="1_8egkx"]
+[ext_resource type="Script" path="res://gui/task_tracking/checkbox_profile.gd" id="1_8egkx"]
 
 [node name="ProfilePanelContainer" type="PanelContainer"]
 mouse_filter = 2

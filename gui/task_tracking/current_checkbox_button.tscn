@@ -1,10 +1,10 @@
 [gd_scene load_steps=2 format=3 uid="uid://ds4yxf6rofxhb"]
 
-[ext_resource type="Script" path="res://gui/current_checkbox_button.gd" id="1_y7uvr"]
+[ext_resource type="Script" path="res://gui/task_tracking/current_checkbox_button.gd" id="1_116pv"]
 
 [node name="CurrentCheckboxButton" type="PanelContainer"]
 mouse_filter = 2
-script = ExtResource("1_y7uvr")
+script = ExtResource("1_116pv")
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 2

@@ -8,11 +8,11 @@ extends GridContainer
 @onready var existing_groups_option_button: OptionButton = %ExistingGroupsOption
 @onready var accept_new_task_button: Button = %AcceptNewTaskButton
 
-var checkbox_cell = preload("res://gui/task_spreadsheet/cells/checkbox_cell.tscn")
-var dropdown_cell = preload("res://gui/task_spreadsheet/cells/dropdown_cell.tscn")
-var multi_line_cell = preload("res://gui/task_spreadsheet/cells/multi_line_cell.tscn")
-var number_cell = preload("res://gui/task_spreadsheet/cells/number_cell.tscn")
-var text_cell = preload("res://gui/task_spreadsheet/cells/text_cell.tscn")
+var checkbox_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/checkbox_cell.tscn")
+var dropdown_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/dropdown_cell.tscn")
+var multi_line_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/multi_line_cell.tscn")
+var number_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/number_cell.tscn")
+var text_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/text_cell.tscn")
 
 var row_group: String = ""
 var blank_counter: int = 0

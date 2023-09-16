@@ -69,21 +69,28 @@ func starting_visibilities() -> void:
 
 
 func load_existing_tasksheets() -> void:
-	if DirAccess.dir_exists_absolute(tasksheet_folder):
-		var existing_files = DirAccess.get_files_at(tasksheet_folder)
-		prints("Found files:", existing_files)
-		for file in existing_files:
-			var extension = file.get_extension()
-			if extension != "res":
-				prints("File", file, "is not of 'res'")
-				continue
-			var filepath = tasksheet_folder + file
-			var file_resource: TaskSpreadsheetData = ResourceLoader.load(filepath)
-			print(file_resource)
-			var loaded_name = file_resource.spreadsheet_title
-			var loaded_year = file_resource.spreadsheet_year
-			prints("Loaded:", loaded_name, loaded_year)
-			create_task_save_button(file_resource)
+	if not DirAccess.dir_exists_absolute(tasksheet_folder):
+		prints("Error loading existing task sheets")
+		return
+	var existing_files = DirAccess.get_files_at(tasksheet_folder)
+	prints("Found files:", existing_files)
+	for file in existing_files:
+		prints("File Iteration:", file)
+		var extension = file.get_extension()
+		if extension != "res":
+			prints("ERROR: File", file, "is not of 'res'")
+			continue
+		prints("Extension:", extension)
+		var filepath_for_loading = tasksheet_folder + file
+		prints("Loading filepath:", filepath_for_loading)
+		var file_resource: TaskSpreadsheetData = ResourceLoader.load(filepath_for_loading)
+		
+		
+		print(file_resource)
+		var loaded_name = file_resource.spreadsheet_title
+		var loaded_year = file_resource.spreadsheet_year
+		prints("Loaded:", loaded_name, loaded_year)
+		create_task_save_button(file_resource)
 
 
 func show_new_task_panel() -> void:
@@ -138,9 +145,9 @@ func create_tasksheet_data_and_save() -> void:
 	tasksheet_data.spreadsheet_title = tasksheet_name
 	var tasksheet_snake_name: String = tasksheet_name.to_snake_case()
 	var tasksheet_save_name: String = tasksheet_snake_name + "_" + str(tasksheet_year)
-	var filepath: String = tasksheet_folder + tasksheet_save_name + ".res"
-	prints("Filepath for save:", filepath)
-	tasksheet_data.spreadsheet_filepath = filepath
+	var filepath_create_and_save: String = tasksheet_folder + tasksheet_save_name + ".res"
+	prints("Filepath for save:", filepath_create_and_save)
+	tasksheet_data.spreadsheet_filepath = filepath_create_and_save
 	directory_check(tasksheet_folder)
 	create_task_save_button(tasksheet_data)
 	send_tasksheet_to_global(tasksheet_data)
