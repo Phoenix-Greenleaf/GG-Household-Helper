@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://cmarrcbuuyj62"]
+
+[ext_resource type="Theme" uid="uid://dubk1ftmdlsay" path="res://themes/green_gal_main_menu_theme.tres" id="1_8di0x"]
+[ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/data_manager/data_manager.tscn" id="2_glwho"]
+[ext_resource type="Script" path="res://scenes/task_data_manager_screen.gd" id="2_wcbru"]
+
+[node name="DataManagerScreen" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_8di0x")
+script = ExtResource("2_wcbru")
+
+[node name="DataManager" parent="." instance=ExtResource("2_glwho")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4

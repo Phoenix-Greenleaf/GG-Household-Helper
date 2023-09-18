@@ -1,7 +1,7 @@
 extends PanelContainer
 
-@onready var current_checkbox_color_rect_top: ColorRect = $CurrentCheckboxMargin/CurrentCheckboxVBox/VBox/CurrentCheckboxColorRectTop
-@onready var current_checkbox_color_rect_bottom: ColorRect = $CurrentCheckboxMargin/CurrentCheckboxVBox/VBox/CurrentCheckboxColorRectBottom
+@onready var current_checkbox_color_rect_top: ColorRect = %CurrentCheckboxColorRectTop
+@onready var current_checkbox_color_rect_bottom: ColorRect = %CurrentCheckboxColorRectBottom
 
 @onready var current_checkbox_status_label: Label = $CurrentCheckboxMargin/CurrentCheckboxVBox/CurrentCheckboxStatusLabel
 @onready var current_checkbox_profile_label: Label = $CurrentCheckboxMargin/CurrentCheckboxVBox/CurrentCheckboxProfileLabel

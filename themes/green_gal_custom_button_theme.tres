@@ -1,0 +1,51 @@
+[gd_resource type="Theme" load_steps=14 format=3 uid="uid://b6r6dqju3145j"]
+
+[ext_resource type="FontFile" uid="uid://7jukdly5m5dl" path="res://fonts/font_otf/Gidolinya-Regular.otf" id="1_tub64"]
+[ext_resource type="StyleBox" uid="uid://bcqpnkgaub5eq" path="res://themes/theme_parts/gg_disabled_button_style_box_flat.tres" id="2_m0cgd"]
+[ext_resource type="StyleBox" uid="uid://bsl1gnk7iu4ua" path="res://themes/theme_parts/gg_focused_button_style_box_flat.tres" id="3_jhch0"]
+[ext_resource type="StyleBox" uid="uid://bakr6w60xl0kf" path="res://themes/theme_parts/gg_hover_button_style_box_flat.tres" id="4_jmyet"]
+[ext_resource type="StyleBox" uid="uid://brn84anymriv3" path="res://themes/theme_parts/gg_normal_button_style_box_flat.tres" id="5_nfffu"]
+[ext_resource type="StyleBox" uid="uid://cxwys7rfq1ygf" path="res://themes/theme_parts/gg_pressed_button_style_box_flat.tres" id="6_6ajko"]
+[ext_resource type="StyleBox" uid="uid://dvycb03hy4xdy" path="res://themes/theme_parts/gg_focused_custom_button_style_box_flat.tres" id="7_dht7r"]
+[ext_resource type="StyleBox" uid="uid://dpu0yb1nqqh5n" path="res://themes/theme_parts/gg_secondary_panel_style_box_flat.tres" id="7_jg6wy"]
+[ext_resource type="StyleBox" uid="uid://dcpfq0xquj5eb" path="res://themes/theme_parts/gg_background_panel_style_box_flat.tres" id="8_gqy1t"]
+[ext_resource type="StyleBox" uid="uid://3vsu36rovp61" path="res://themes/theme_parts/color_picker_hover_style_box_flat.tres" id="8_xodu3"]
+[ext_resource type="StyleBox" uid="uid://cuxxosctg642u" path="res://themes/theme_parts/color_picker_normal_style_box_flat.tres" id="9_53r0x"]
+[ext_resource type="StyleBox" uid="uid://2ygq2gloqq6" path="res://themes/theme_parts/gg_custom_button_grey_boarderless_style_box_flat.tres" id="10_qakyr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6a1et"]
+
+[resource]
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/constants/outline_size = 5
+Button/font_sizes/font_size = 20
+Button/fonts/font = ExtResource("1_tub64")
+Button/styles/disabled = ExtResource("2_m0cgd")
+Button/styles/focus = ExtResource("3_jhch0")
+Button/styles/hover = ExtResource("4_jmyet")
+Button/styles/normal = ExtResource("5_nfffu")
+Button/styles/pressed = ExtResource("6_6ajko")
+ColorPickerButton/colors/font_outline_color = Color(0, 0, 0, 1)
+ColorPickerButton/constants/outline_size = 4
+ColorPickerButton/font_sizes/font_size = 20
+ColorPickerButton/fonts/font = ExtResource("1_tub64")
+ColorPickerButton/styles/focus = ExtResource("7_dht7r")
+ColorPickerButton/styles/hover = ExtResource("8_xodu3")
+ColorPickerButton/styles/normal = ExtResource("9_53r0x")
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 4
+Label/font_sizes/font_size = 20
+Label/fonts/font = ExtResource("1_tub64")
+LineEdit/colors/font_outline_color = Color(0, 0, 0, 1)
+LineEdit/constants/outline_size = 2
+LineEdit/font_sizes/font_size = 25
+LineEdit/fonts/font = ExtResource("1_tub64")
+LineEdit/styles/focus = ExtResource("7_dht7r")
+LineEdit/styles/normal = ExtResource("10_qakyr")
+MarginContainer/constants/margin_left = 7
+MarginContainer/constants/margin_right = 7
+MarginContainer/constants/margin_top = 7
+Panel/styles/panel = ExtResource("7_jg6wy")
+PanelContainer/styles/panel = SubResource("StyleBoxEmpty_6a1et")
+ScrollContainer/styles/panel = ExtResource("8_gqy1t")
+VBoxContainer/constants/separation = 0

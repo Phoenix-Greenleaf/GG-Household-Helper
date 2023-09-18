@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=12 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scenes/editor.gd" id="1_nkaig"]
+[ext_resource type="Theme" uid="uid://djvo047swus7p" path="res://themes/green_gal_main_theme.tres" id="2_eeg3c"]
 [ext_resource type="ButtonGroup" uid="uid://dstnxfnckpqs0" path="res://gui/task_tracking/editor_mode_button_group.tres" id="2_ludcj"]
 [ext_resource type="ButtonGroup" uid="uid://tci5j17kmt8l" path="res://gui/task_tracking/section_button_group.tres" id="2_rjskt"]
 [ext_resource type="PackedScene" uid="uid://ds4yxf6rofxhb" path="res://gui/task_tracking/current_checkbox_button.tscn" id="3_droll"]
@@ -8,6 +9,8 @@
 [ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/task_spreadsheet_grid_container.gd" id="6_j3l32"]
 [ext_resource type="PackedScene" uid="uid://c7tqndbd8llst" path="res://gui/task_tracking/checkbox_selection_popup.tscn" id="6_okd6i"]
 [ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/data_manager/data_manager.tscn" id="7_io7f7"]
+[ext_resource type="Theme" uid="uid://b6r6dqju3145j" path="res://themes/green_gal_custom_button_theme.tres" id="7_pf33m"]
+[ext_resource type="StyleBox" uid="uid://b02yebbakhunc" path="res://themes/theme_parts/popup_panel_style_box_flat.tres" id="8_5cxxj"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -18,16 +21,17 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource("2_eeg3c")
 script = ExtResource("1_nkaig")
 
-[node name="BackgroundColorRect" type="ColorRect" parent="."]
+[node name="BackgroundPanel" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.133333, 0.266667, 0.188235, 1)
+theme = ExtResource("2_eeg3c")
 
 [node name="MainMargin" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -47,16 +51,17 @@ layout_mode = 2
 [node name="SideMenuVBox" type="VBoxContainer" parent="MainMargin/MainHBox"]
 layout_mode = 2
 size_flags_horizontal = 0
+theme_override_constants/separation = 3
 
 [node name="MenuButton" type="MenuButton" parent="MainMargin/MainHBox/SideMenuVBox"]
+z_index = 4
+z_as_relative = false
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 20
-text = "Task Traker
+theme_override_font_sizes/font_size = 26
+text = "Task Sheet
 Menu"
 flat = false
-item_count = 6
+item_count = 8
 popup/item_0/text = "Save Files"
 popup/item_0/id = 1
 popup/item_0/disabled = true
@@ -66,12 +71,17 @@ popup/item_1/disabled = true
 popup/item_2/text = ""
 popup/item_2/id = 4
 popup/item_2/separator = true
-popup/item_3/text = "Main Menu"
-popup/item_3/id = 0
-popup/item_4/text = "Data Manager"
-popup/item_4/id = 5
-popup/item_5/text = "Quit"
-popup/item_5/id = 3
+popup/item_3/text = "Task Data Manager"
+popup/item_3/id = 5
+popup/item_4/text = ""
+popup/item_4/id = 6
+popup/item_4/separator = true
+popup/item_5/text = "Task Tracking Menu"
+popup/item_5/id = 6
+popup/item_6/text = "Main Menu"
+popup/item_6/id = 0
+popup/item_7/text = "Quit"
+popup/item_7/id = 3
 
 [node name="HSeparator4" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
@@ -79,22 +89,20 @@ theme_override_constants/separation = 40
 
 [node name="EditorModeToggleLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 20
+theme = ExtResource("2_eeg3c")
 text = "Editor Mode"
 horizontal_alignment = 1
 
 [node name="InfoModeButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
+theme = ExtResource("2_eeg3c")
 toggle_mode = true
 button_group = ExtResource("2_ludcj")
 text = "Info Mode"
 
 [node name="CheckboxModeButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme = ExtResource("2_eeg3c")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 toggle_mode = true
@@ -109,6 +117,8 @@ theme_override_constants/separation = 15
 
 [node name="CurrentCheckboxButton" parent="MainMargin/MainHBox/SideMenuVBox" instance=ExtResource("3_droll")]
 unique_name_in_owner = true
+z_index = 3
+z_as_relative = false
 layout_mode = 2
 
 [node name="HSeparator" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
@@ -116,9 +126,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 15
+theme = ExtResource("2_eeg3c")
 text = "Checkbox Mode"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -127,6 +135,7 @@ autowrap_mode = 3
 [node name="CheckboxApplyToggle" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme = ExtResource("2_eeg3c")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 toggle_mode = true
@@ -136,6 +145,7 @@ text = "Apply"
 [node name="CheckboxInspectToggle" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme = ExtResource("2_eeg3c")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 toggle_mode = true
@@ -149,14 +159,13 @@ theme_override_constants/separation = 15
 
 [node name="SectionSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 20
+theme = ExtResource("2_eeg3c")
 text = "Section"
 horizontal_alignment = 1
 
 [node name="YearlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme = ExtResource("2_eeg3c")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 toggle_mode = true
@@ -166,6 +175,7 @@ text = "Yearly"
 
 [node name="MonthlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme = ExtResource("2_eeg3c")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 toggle_mode = true
@@ -174,6 +184,7 @@ text = "Monthly"
 
 [node name="WeeklyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme = ExtResource("2_eeg3c")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 toggle_mode = true
@@ -182,6 +193,7 @@ text = "Weekly"
 
 [node name="DailyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme = ExtResource("2_eeg3c")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 toggle_mode = true
@@ -194,9 +206,7 @@ theme_override_constants/separation = 0
 
 [node name="MonthSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 20
+theme = ExtResource("2_eeg3c")
 text = "Month"
 horizontal_alignment = 1
 
@@ -250,6 +260,7 @@ Lock"
 
 [node name="SortTasksButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
 layout_mode = 2
+theme = ExtResource("2_eeg3c")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 text = "Sort Tasks"
@@ -257,6 +268,7 @@ text = "Sort Tasks"
 [node name="NonSideVBox" type="VBoxContainer" parent="MainMargin/MainHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 3
 
 [node name="TopMenuHBox" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox"]
 layout_mode = 2
@@ -267,14 +279,13 @@ theme_override_constants/separation = 15
 [node name="CurrentSaveLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 20
+theme = ExtResource("2_eeg3c")
 text = "Current File: YEAR"
 
 [node name="SaveWarningButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme = ExtResource("2_eeg3c")
 text = "No Data Loaded!"
 
 [node name="HBoxFarSide" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
@@ -285,12 +296,14 @@ alignment = 2
 [node name="StandardNavigation" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/HBoxFarSide"]
 layout_mode = 2
 size_flags_horizontal = 8
+theme = ExtResource("2_eeg3c")
 disabled = true
 text = "Standard Navigation"
 
 [node name="SavedNavigation" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/HBoxFarSide"]
 layout_mode = 2
 size_flags_horizontal = 8
+theme = ExtResource("2_eeg3c")
 disabled = true
 text = "Saved Navigation"
 
@@ -301,12 +314,14 @@ size_flags_horizontal = 8
 [node name="StandardFilters" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/HBoxFarSide"]
 layout_mode = 2
 size_flags_horizontal = 8
+theme = ExtResource("2_eeg3c")
 disabled = true
 text = "Standard Filters"
 
 [node name="SavedFilters" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/HBoxFarSide"]
 layout_mode = 2
 size_flags_horizontal = 8
+theme = ExtResource("2_eeg3c")
 disabled = true
 text = "Saved Filters"
 
@@ -318,9 +333,7 @@ size_flags_horizontal = 8
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 20
+theme = ExtResource("2_eeg3c")
 text = "Date Goes Here"
 
 [node name="TaskAddPanel" type="PanelContainer" parent="MainMargin/MainHBox/NonSideVBox"]
@@ -328,37 +341,39 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme = ExtResource("7_pf33m")
+theme_override_styles/panel = ExtResource("8_5cxxj")
 
-[node name="Margin" type="MarginContainer" parent="MainMargin/MainHBox/NonSideVBox/TaskAddPanel"]
+[node name="TaskAddMargin" type="MarginContainer" parent="MainMargin/MainHBox/NonSideVBox/TaskAddPanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="HBox" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/Margin"]
+[node name="HBox" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/TaskAddMargin"]
 layout_mode = 2
 
-[node name="AddTaskButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/Margin/HBox"]
+[node name="AddTaskButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/TaskAddMargin/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Add Task"
 
-[node name="TaskTitleLineEdit" type="LineEdit" parent="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/Margin/HBox"]
+[node name="TaskTitleLineEdit" type="LineEdit" parent="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/TaskAddMargin/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "Task Title"
 expand_to_text_length = true
 clear_button_enabled = true
 
-[node name="TaskGroupLineEdit" type="LineEdit" parent="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/Margin/HBox"]
+[node name="TaskGroupLineEdit" type="LineEdit" parent="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/TaskAddMargin/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "Task Group"
 expand_to_text_length = true
 clear_button_enabled = true
 
-[node name="ExistingGroupsOption" type="OptionButton" parent="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/Margin/HBox"]
+[node name="ExistingGroupsOption" type="OptionButton" parent="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/TaskAddMargin/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 item_count = 1
@@ -367,36 +382,36 @@ fit_to_longest_item = false
 popup/item_0/text = "Existing Groups"
 popup/item_0/id = 0
 
-[node name="AcceptNewTaskButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/Margin/HBox"]
+[node name="AcceptNewTaskButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/TaskAddMargin/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Accept"
 
-[node name="PanelContainer" type="PanelContainer" parent="MainMargin/MainHBox/NonSideVBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-mouse_filter = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MainMargin/MainHBox/NonSideVBox/PanelContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MainMargin/MainHBox/NonSideVBox"]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_eeg3c")
 
-[node name="TaskSpreadsheetGridContainer" type="GridContainer" parent="MainMargin/MainHBox/NonSideVBox/PanelContainer/ScrollContainer"]
+[node name="TaskSpreadsheetGridContainer" type="GridContainer" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource("2_eeg3c")
 columns = 2
 script = ExtResource("6_j3l32")
 
 [node name="CheckboxSelectionPopup" parent="." node_paths=PackedStringArray("paired_checkbox_menu_button") instance=ExtResource("6_okd6i")]
 unique_name_in_owner = true
+z_index = 2
+z_as_relative = false
 layout_mode = 0
-offset_left = 131.0
-offset_top = 285.0
-offset_right = 476.0
-offset_bottom = 438.0
+offset_left = 114.0
+offset_top = 279.0
+offset_right = 558.0
+offset_bottom = 456.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
 paired_checkbox_menu_button = NodePath("../MainMargin/MainHBox/SideMenuVBox/CurrentCheckboxButton")
 
 [node name="DataManagerCenter" type="CenterContainer" parent="."]
@@ -410,6 +425,8 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="DataManager" parent="DataManagerCenter" instance=ExtResource("7_io7f7")]
+z_index = 5
+z_as_relative = false
 layout_mode = 2
 
 [connection signal="pressed" from="MainMargin/MainHBox/SideMenuVBox/MenuButton" to="." method="_on_menu_button_pressed"]
@@ -421,8 +438,8 @@ layout_mode = 2
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/MonthlyButton" to="." method="_on_monthly_button_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/WeeklyButton" to="." method="_on_weekly_button_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/DailyButton" to="." method="_on_daily_button_toggled"]
-[connection signal="pressed" from="MainMargin/MainHBox/SideMenuVBox/SortTasksButton" to="MainMargin/MainHBox/NonSideVBox/PanelContainer/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_sort_tasks_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainHBox/SideMenuVBox/SortTasksButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_sort_tasks_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/SaveWarningButton" to="." method="_on_save_warning_button_pressed"]
-[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/Margin/HBox/AddTaskButton" to="MainMargin/MainHBox/NonSideVBox/PanelContainer/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_add_task_button_pressed"]
-[connection signal="item_selected" from="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/Margin/HBox/ExistingGroupsOption" to="MainMargin/MainHBox/NonSideVBox/PanelContainer/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_existing_groups_option_item_selected"]
-[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/Margin/HBox/AcceptNewTaskButton" to="MainMargin/MainHBox/NonSideVBox/PanelContainer/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_accept_new_task_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/TaskAddMargin/HBox/AddTaskButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_add_task_button_pressed"]
+[connection signal="item_selected" from="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/TaskAddMargin/HBox/ExistingGroupsOption" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_existing_groups_option_item_selected"]
+[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/TaskAddMargin/HBox/AcceptNewTaskButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_accept_new_task_button_pressed"]

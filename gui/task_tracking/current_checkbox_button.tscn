@@ -1,9 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://ds4yxf6rofxhb"]
+[gd_scene load_steps=5 format=3 uid="uid://ds4yxf6rofxhb"]
 
 [ext_resource type="Script" path="res://gui/task_tracking/current_checkbox_button.gd" id="1_116pv"]
+[ext_resource type="Theme" uid="uid://djvo047swus7p" path="res://themes/green_gal_main_theme.tres" id="1_v11pb"]
+[ext_resource type="Theme" uid="uid://b6r6dqju3145j" path="res://themes/green_gal_custom_button_theme.tres" id="3_g425x"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_05o1u"]
 
 [node name="CurrentCheckboxButton" type="PanelContainer"]
 mouse_filter = 2
+theme = ExtResource("1_v11pb")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_05o1u")
 script = ExtResource("1_116pv")
 
 [node name="Button" type="Button" parent="."]
@@ -21,13 +27,10 @@ theme_override_constants/margin_bottom = 4
 [node name="CurrentCheckboxVBox" type="VBoxContainer" parent="CurrentCheckboxMargin"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 0
+theme = ExtResource("1_v11pb")
 
 [node name="CurrentCheckboxLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 20
 text = "Current
 Checkbox"
 horizontal_alignment = 1
@@ -36,19 +39,16 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="VBox" type="VBoxContainer" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 0
-
-[node name="CurrentCheckboxColorRectTop" type="ColorRect" parent="CurrentCheckboxMargin/CurrentCheckboxVBox/VBox"]
+[node name="CurrentCheckboxColorRectTop" type="ColorRect" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
 
-[node name="CurrentCheckboxColorRectBottom" type="ColorRect" parent="CurrentCheckboxMargin/CurrentCheckboxVBox/VBox"]
+[node name="CurrentCheckboxColorRectBottom" type="ColorRect" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -61,9 +61,7 @@ theme_override_constants/separation = 12
 
 [node name="CurrentCheckboxStatusLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 15
+theme = ExtResource("3_g425x")
 text = "Current Status"
 horizontal_alignment = 1
 
@@ -72,9 +70,7 @@ layout_mode = 2
 
 [node name="CurrentCheckboxProfileLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 15
+theme = ExtResource("3_g425x")
 text = "Current Profile"
 horizontal_alignment = 1
 autowrap_mode = 3

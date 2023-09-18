@@ -1,8 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://b2gi1xlrdmw1p"]
+[gd_scene load_steps=7 format=3 uid="uid://b2gi1xlrdmw1p"]
 
 [ext_resource type="Script" path="res://gui/data_manager/data_manager.gd" id="1_64y23"]
+[ext_resource type="Theme" uid="uid://b6r6dqju3145j" path="res://themes/green_gal_custom_button_theme.tres" id="1_hslla"]
+[ext_resource type="StyleBox" uid="uid://b02yebbakhunc" path="res://themes/theme_parts/popup_panel_style_box_flat.tres" id="2_hwu43"]
+[ext_resource type="Theme" uid="uid://c7ywbrtbx84q0" path="res://themes/green_gal_small_title_theme.tres" id="4_aj6aa"]
+[ext_resource type="Theme" uid="uid://0yiqrykg4xx2" path="res://themes/green_gal_tiny_text_theme.tres" id="5_csf0u"]
+[ext_resource type="StyleBox" uid="uid://5gbky82e7ys5" path="res://themes/theme_parts/popup_panel_2_style_box_flat.tres" id="6_i4o2f"]
 
 [node name="DataManager" type="PanelContainer"]
+clip_contents = true
 custom_minimum_size = Vector2(400, 400)
 anchors_preset = 8
 anchor_left = 0.5
@@ -17,6 +23,8 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 2
 size_flags_vertical = 2
+theme = ExtResource("1_hslla")
+theme_override_styles/panel = ExtResource("2_hwu43")
 script = ExtResource("1_64y23")
 
 [node name="MainMargin" type="MarginContainer" parent="."]
@@ -28,12 +36,11 @@ theme_override_constants/margin_bottom = 5
 
 [node name="DataManagerVBox" type="VBoxContainer" parent="MainMargin"]
 layout_mode = 2
+theme_override_constants/separation = 2
 
 [node name="DataManagerTitle" type="Label" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 36
+theme = ExtResource("4_aj6aa")
 text = "Data Manager"
 horizontal_alignment = 1
 
@@ -42,9 +49,7 @@ layout_mode = 2
 
 [node name="ProfileLabel" type="Label" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 26
+theme = ExtResource("5_csf0u")
 text = "Profile Data"
 horizontal_alignment = 1
 
@@ -84,9 +89,9 @@ layout_mode = 2
 
 [node name="TaskLabel" type="Label" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
+theme = ExtResource("5_csf0u")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 26
 text = "Task Data"
 horizontal_alignment = 1
 
@@ -115,13 +120,16 @@ Data"
 [node name="NewTaskPanel" type="PanelContainer" parent="MainMargin/DataManagerVBox/TaskGrid"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_styles/panel = ExtResource("6_i4o2f")
 
 [node name="Margin" type="MarginContainer" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
+theme_override_constants/margin_bottom = 4
 
 [node name="VBox" type="VBoxContainer" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin"]
 layout_mode = 2
+theme_override_constants/separation = 3
 
 [node name="HBox" type="HBoxContainer" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/VBox"]
 layout_mode = 2

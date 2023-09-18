@@ -17,6 +17,9 @@ var Weekday: Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "F
 var month_strings = DataGlobal.month_strings
 var save_safety_nodes: Array
 var quit_counter: int = 0
+var quit_index: int = 7
+var to_main_menu_index: int = 6
+var to_task_menu_index: int = 5
 
 
 func _ready() -> void:
@@ -78,7 +81,7 @@ func set_current_date_label() -> void:
 func menu_button_actions(id: int) -> void:
 	match id:
 		0:
-			get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+			menu_to_main_menu_with_save_protection()
 		1:
 			print("Save File Pressed")
 			popup.hide()
@@ -86,20 +89,54 @@ func menu_button_actions(id: int) -> void:
 			print("Change Logs Pressed")
 			popup.hide()
 		3:
-			if save_warning_button.text == "DATA NEEDS SAVING!":
-				match quit_counter:
-					0:
-						popup.set_item_text(5, "Not Saved!")
-					1:
-						popup.set_item_text(5, "Confirm Quit")
-					2:
-						get_tree().quit()
-				quit_counter += 1
-			else:
-				get_tree().quit()
+			menu_quit_with_save_protection()
 		5:
 			data_manager_center.visible = true
 			popup.hide()
+		6:
+			menu_to_task_menu_with_save_protection()
+
+
+func menu_quit_with_save_protection() -> void:
+	if save_warning_button.text == "DATA NEEDS SAVING!":
+		match quit_counter:
+			0:
+				popup.set_item_text(quit_index, "Not Saved!")
+			1:
+				popup.set_item_text(quit_index, "Confirm Quit")
+			2:
+				get_tree().quit()
+		quit_counter += 1
+	else:
+		get_tree().quit()
+
+
+func menu_to_main_menu_with_save_protection() -> void:
+	if save_warning_button.text == "DATA NEEDS SAVING!":
+		match quit_counter:
+			0:
+				popup.set_item_text(to_main_menu_index, "Not Saved!")
+			1:
+				popup.set_item_text(to_main_menu_index, "Confirm Quit")
+			2:
+				get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+		quit_counter += 1
+	else:
+		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
+
+func menu_to_task_menu_with_save_protection() -> void:
+	if save_warning_button.text == "DATA NEEDS SAVING!":
+		match quit_counter:
+			0:
+				popup.set_item_text(to_task_menu_index, "Not Saved!")
+			1:
+				popup.set_item_text(to_task_menu_index, "Confirm Quit")
+			2:
+				get_tree().change_scene_to_file("res://scenes/task_tracking_menu.tscn")
+		quit_counter += 1
+	else:
+		get_tree().change_scene_to_file("res://scenes/task_tracking_menu.tscn")
 
 
 func update_current_tasksheet_label() -> void:
@@ -255,7 +292,9 @@ func save_active_data() -> void:
 
 
 func _on_menu_button_pressed() -> void:
-	popup.set_item_text(5, "Quit")
+	popup.set_item_text(quit_index, "Quit")
+	popup.set_item_text(to_main_menu_index, "Main Menu")
+	popup.set_item_text(to_task_menu_index, "Task Tracking Menu")
 	quit_counter = 0
 
 

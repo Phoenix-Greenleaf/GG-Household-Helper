@@ -1,0 +1,102 @@
+[gd_scene load_steps=6 format=3 uid="uid://li02n4uj0qq0"]
+
+[ext_resource type="Theme" uid="uid://dubk1ftmdlsay" path="res://themes/green_gal_main_menu_theme.tres" id="1_86o0p"]
+[ext_resource type="Script" path="res://scenes/documents_menu.gd" id="1_xsqvf"]
+[ext_resource type="Theme" uid="uid://dsurd46r2nccp" path="res://themes/green_gal_large_title_theme.tres" id="2_p3uyg"]
+[ext_resource type="Theme" uid="uid://0yiqrykg4xx2" path="res://themes/green_gal_tiny_text_theme.tres" id="3_pm78x"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_855qo"]
+thickness = 7
+
+[node name="DocumentsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xsqvf")
+
+[node name="BackgroundPanel" type="Panel" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+theme = ExtResource("1_86o0p")
+
+[node name="MenuCenter" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MiddleManagement" type="VBoxContainer" parent="MenuCenter"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="MainLabel" type="Label" parent="MenuCenter/MiddleManagement"]
+layout_mode = 2
+theme = ExtResource("2_p3uyg")
+text = "Household Documents"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="HouseholdHandbook" type="Button" parent="MenuCenter/MiddleManagement"]
+layout_mode = 2
+theme = ExtResource("1_86o0p")
+disabled = true
+text = "Household Handbook"
+
+[node name="GuestGuidebook" type="Button" parent="MenuCenter/MiddleManagement"]
+layout_mode = 2
+theme = ExtResource("1_86o0p")
+disabled = true
+text = "Guest Guidebook"
+
+[node name="HouseholdRules" type="Button" parent="MenuCenter/MiddleManagement"]
+layout_mode = 2
+theme = ExtResource("1_86o0p")
+disabled = true
+text = "Household Rules"
+
+[node name="ImportantDocumentation" type="Button" parent="MenuCenter/MiddleManagement"]
+layout_mode = 2
+theme = ExtResource("1_86o0p")
+disabled = true
+text = "Important Documentation"
+
+[node name="HouseholdMap" type="Button" parent="MenuCenter/MiddleManagement"]
+layout_mode = 2
+theme = ExtResource("1_86o0p")
+disabled = true
+text = "Household Map"
+
+[node name="HSeparator" type="HSeparator" parent="MenuCenter/MiddleManagement"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_855qo")
+
+[node name="SettingsButton" type="Button" parent="MenuCenter/MiddleManagement"]
+layout_mode = 2
+theme = ExtResource("1_86o0p")
+disabled = true
+text = "Document Settings"
+
+[node name="DataManagerButton" type="Button" parent="MenuCenter/MiddleManagement"]
+layout_mode = 2
+theme = ExtResource("1_86o0p")
+disabled = true
+text = "Document Data Manager"
+
+[node name="BackButton" type="Button" parent="MenuCenter/MiddleManagement"]
+layout_mode = 2
+theme = ExtResource("1_86o0p")
+text = "Back to Main Menu"
+
+[node name="Notes" type="Label" parent="MenuCenter/MiddleManagement"]
+layout_mode = 2
+theme = ExtResource("3_pm78x")
+text = "Dev Notes: This section is second to last, priority 4. Rules and Docs are super important, but this module's management is not critical to me right now. I want to impliment some change logs, for records and accountablility. "
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[connection signal="pressed" from="MenuCenter/MiddleManagement/BackButton" to="." method="_on_back_button_pressed"]
