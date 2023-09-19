@@ -69,25 +69,21 @@ text = "Task Tracking"
 [node name="HouseholdDocumentsButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
 theme = ExtResource("2_2rtue")
-disabled = true
 text = "Household Documents"
 
 [node name="StorageOrganizerButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
 theme = ExtResource("2_2rtue")
-disabled = true
 text = "Storage Organizer"
 
 [node name="SensorNetworkButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
 theme = ExtResource("2_2rtue")
-disabled = true
 text = "Household Sensor Network"
 
 [node name="DisplayScreensButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
 theme = ExtResource("2_2rtue")
-disabled = true
 text = "Display Screens"
 
 [node name="HSeparator" type="HSeparator" parent="MenuCenter/MiddleManagement/MenuVBox"]
@@ -138,4 +134,8 @@ Created by Greenleaf Galactic"
 horizontal_alignment = 1
 
 [connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/TaskTrackingButton" to="." method="_on_task_tracking_button_pressed"]
+[connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/HouseholdDocumentsButton" to="." method="_on_household_documents_button_pressed"]
+[connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/StorageOrganizerButton" to="." method="_on_storage_organizer_button_pressed"]
+[connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/SensorNetworkButton" to="." method="_on_sensor_network_button_pressed"]
+[connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/DisplayScreensButton" to="." method="_on_display_screens_button_pressed"]
 [connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/ExitButton" to="." method="_on_exit_button_pressed"]

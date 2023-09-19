@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://ds4yxf6rofxhb"]
+[gd_scene load_steps=6 format=3 uid="uid://ds4yxf6rofxhb"]
 
 [ext_resource type="Script" path="res://gui/task_tracking/current_checkbox_button.gd" id="1_116pv"]
 [ext_resource type="Theme" uid="uid://djvo047swus7p" path="res://themes/green_gal_main_theme.tres" id="1_v11pb"]
 [ext_resource type="Theme" uid="uid://b6r6dqju3145j" path="res://themes/green_gal_custom_button_theme.tres" id="3_g425x"]
+[ext_resource type="Script" path="res://gui/task_tracking/checkbox_border_color_rect.gd" id="3_olb64"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_05o1u"]
 
@@ -37,6 +38,7 @@ horizontal_alignment = 1
 
 [node name="HSeparator3" type="HSeparator" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 12
 
 [node name="CurrentCheckboxColorRectTop" type="ColorRect" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
@@ -46,6 +48,16 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
+
+[node name="CurrentCheckboxBorderColorRect" type="ColorRect" parent="CurrentCheckboxMargin/CurrentCheckboxVBox/CurrentCheckboxColorRectTop"]
+unique_name_in_owner = true
+z_index = 2
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("3_olb64")
 
 [node name="CurrentCheckboxColorRectBottom" type="ColorRect" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 unique_name_in_owner = true
@@ -57,6 +69,7 @@ mouse_filter = 2
 
 [node name="HSeparator2" type="HSeparator" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 12
 
 [node name="CurrentCheckboxStatusLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
@@ -67,6 +80,7 @@ horizontal_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="CurrentCheckboxProfileLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2

@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends PanelContainer
 
 #debating on making the "Current checkbox button" into a checkbox_cell
 #to reduce repeat code. Separate may have a benifit but we shall see. 
@@ -10,8 +10,11 @@ extends VBoxContainer
 @export var saved_state: DataGlobal.Checkbox
 @export var saved_color: Color
 
-@onready var top := $TopColorRect
-@onready var bottom := $BottomColorRect
+@onready var top: ColorRect = %TopColorRect
+@onready var bottom: ColorRect = %BottomColorRect
+@onready var cell_checkbox_border_color_rect: ColorRect = %CellCheckboxBorderColorRect
+@onready var cell_x: float
+@onready var cell_y: float
 
 var white := Color(1, 1, 1)
 var black := Color(0, 0, 0)
@@ -53,14 +56,38 @@ func update_checkbox() -> void:
 		DataGlobal.Checkbox.ACTIVE:
 			top.set_color(white)
 			bottom.set_color(white)
+			update_current_border(saved_color)
 		DataGlobal.Checkbox.IN_PROGRESS:
 			top.set_color(white)
 			bottom.set_color(saved_color)
+			update_current_border(white)
 		DataGlobal.Checkbox.COMPLETED:
 			top.set_color(saved_color)
 			bottom.set_color(saved_color)
+			update_current_border(white)
 		DataGlobal.Checkbox.EXPIRED:
 			top.set_color(black)
 			bottom.set_color(black)
+			update_current_border(saved_color)
 		_:
 			print("Checkbox_cell update color match failure!")
+
+
+func update_current_border(color_parameter: Color) -> void:
+	if color_parameter == Color(1, 1, 1):
+		cell_checkbox_border_color_rect.update_border()
+		return
+	cell_checkbox_border_color_rect.update_border(color_parameter)
+
+
+func _on_resized() -> void:
+	cell_x = self.size.x
+	cell_y = self.size.y
+	prints("")
+	prints("Resized Check: Cell", name)
+	prints("X", cell_x, ", Y", cell_y)
+	if not cell_checkbox_border_color_rect:
+		prints("Too early to resize!")
+		return
+	cell_checkbox_border_color_rect.resize_border(cell_x, cell_y)
+

@@ -2,6 +2,7 @@ extends PanelContainer
 
 @onready var current_checkbox_color_rect_top: ColorRect = %CurrentCheckboxColorRectTop
 @onready var current_checkbox_color_rect_bottom: ColorRect = %CurrentCheckboxColorRectBottom
+@onready var current_checkbox_border_color_rect: ColorRect = %CurrentCheckboxBorderColorRect
 
 @onready var current_checkbox_status_label: Label = $CurrentCheckboxMargin/CurrentCheckboxVBox/CurrentCheckboxStatusLabel
 @onready var current_checkbox_profile_label: Label = $CurrentCheckboxMargin/CurrentCheckboxVBox/CurrentCheckboxProfileLabel
@@ -48,15 +49,25 @@ func update_checkbox_colors() -> void:
 		DataGlobal.Checkbox.ACTIVE:
 			current_checkbox_color_rect_top.set_color(white)
 			current_checkbox_color_rect_bottom.set_color(white)
+			update_current_border(profile_color)
 		DataGlobal.Checkbox.IN_PROGRESS:
 			current_checkbox_color_rect_top.set_color(white)
 			current_checkbox_color_rect_bottom.set_color(profile_color)
+			update_current_border(white)
 		DataGlobal.Checkbox.COMPLETED:
 			current_checkbox_color_rect_top.set_color(profile_color)
 			current_checkbox_color_rect_bottom.set_color(profile_color)
+			update_current_border(white)
 		DataGlobal.Checkbox.EXPIRED:
 			current_checkbox_color_rect_top.set_color(black)
 			current_checkbox_color_rect_bottom.set_color(black)
+			update_current_border(profile_color)
 		_:
 			print("update_checkbox_colors match failure!")
 
+
+func update_current_border(color_parameter: Color) -> void:
+	if color_parameter == Color(1, 1, 1):
+		current_checkbox_border_color_rect.update_border()
+		return
+	current_checkbox_border_color_rect.update_border(color_parameter)

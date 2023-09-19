@@ -416,7 +416,7 @@ func create_number_cell(number: int, current_type: String, column_group: String 
 
 
 func create_checkbox_cell(state: DataGlobal.Checkbox, user_profile: Array, cell_position: int, column_group: String = "") -> void:
-	var cell: Control = checkbox_cell.instantiate()
+	var cell: PanelContainer = checkbox_cell.instantiate()
 	self.add_child(cell)
 	cell.saved_position = cell_position
 	cell.saved_task = current_task

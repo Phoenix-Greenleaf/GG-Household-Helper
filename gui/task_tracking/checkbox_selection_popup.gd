@@ -8,12 +8,13 @@ extends PanelContainer
 @onready var current_sibling = selection_popup_profile_label
 @onready var profile_name_line_edit: LineEdit = %ProfileNameLineEdit
 @onready var profile_color_picker_button: ColorPickerButton = %ProfileColorPickerButton
+@onready var active_checkbox_border_color_rect: ColorRect = %ActiveCheckboxBorderColorRect
+@onready var expired_checkbox_border_color_rect: ColorRect = %ExpiredCheckboxBorderColorRect
 
-@onready var active_button: Button = $SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/ActiveButton
-@onready var in_progress_button: Button = $SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/InProgressButton
-@onready var completed_button: Button = $SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/CompletedButton
-@onready var expired_button: Button = $SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/ExpiredButton
-
+@onready var active_button: Button = %ActiveButton
+@onready var in_progress_button: Button = %InProgressButton
+@onready var completed_button: Button = %CompletedButton
+@onready var expired_button: Button = %ExpiredButton
 
 @export var paired_checkbox_menu_button: Node
 
@@ -56,9 +57,17 @@ func add_default_profile() -> void:
 
 
 func update_status_colors() -> void:
+	prints("Update status colors:")
 	var current_color = DataGlobal.current_checkbox_profile[1]
 	completed_color_rect.set_color(current_color)
 	in_progress_bottom_color_rect.set_color(current_color)
+	if current_color == Color(1, 1, 1):
+		active_checkbox_border_color_rect.update_border()
+		expired_checkbox_border_color_rect.update_border()
+		return
+	active_checkbox_border_color_rect.update_border(current_color)
+	expired_checkbox_border_color_rect.update_border(current_color)
+	
 
 
 func create_new_profile(profile_name: String, profile_color: Color) -> void:

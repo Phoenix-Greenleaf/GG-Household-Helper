@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c7tqndbd8llst"]
+[gd_scene load_steps=11 format=3 uid="uid://c7tqndbd8llst"]
 
 [ext_resource type="Theme" uid="uid://44pmlwjes22d" path="res://themes/green_gal_popup_theme.tres" id="1_11rmp"]
 [ext_resource type="Script" path="res://gui/task_tracking/checkbox_selection_popup.gd" id="1_sj3vj"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://gui/task_tracking/in_progress_button.gd" id="4_x1ajq"]
 [ext_resource type="Script" path="res://gui/task_tracking/completed_button.gd" id="5_evwea"]
 [ext_resource type="Script" path="res://gui/task_tracking/expired_button.gd" id="6_58rg5"]
+[ext_resource type="Script" path="res://gui/task_tracking/checkbox_border_color_rect.gd" id="6_m1npk"]
 [ext_resource type="StyleBox" uid="uid://b02yebbakhunc" path="res://themes/theme_parts/popup_panel_style_box_flat.tres" id="9_ymb7e"]
 
 [node name="CheckboxSelectionPopup" type="PanelContainer"]
@@ -27,6 +28,7 @@ theme_override_constants/margin_bottom = 3
 [node name="SelectionPopupVBox" type="VBoxContainer" parent="SelectionPopupMargin"]
 layout_mode = 2
 theme = ExtResource("1_11rmp")
+theme_override_constants/separation = 4
 
 [node name="SelectionPopupStatusHBox" type="HBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox"]
 layout_mode = 2
@@ -39,29 +41,30 @@ theme = ExtResource("1_11rmp")
 text = "Status"
 horizontal_alignment = 1
 
-[node name="Status1PanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+[node name="ActivePanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 
-[node name="ActiveButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer"]
+[node name="ActiveButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ActivePanelContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("3_v0hpi")
 toggle_mode = true
 button_group = ExtResource("2_snijd")
 script = ExtResource("3_hiv4p")
 
-[node name="Status1Margin" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer"]
+[node name="ActiveMargin" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ActivePanelContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 
-[node name="Status1VBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/Status1Margin"]
+[node name="ActiveVBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ActivePanelContainer/ActiveMargin"]
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 
-[node name="Status1ColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/Status1Margin/Status1VBox"]
+[node name="ActiveColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ActivePanelContainer/ActiveMargin/ActiveVBox"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -69,35 +72,45 @@ size_flags_vertical = 4
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 
-[node name="Status1Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status1PanelContainer/Status1Margin/Status1VBox"]
+[node name="ActiveCheckboxBorderColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ActivePanelContainer/ActiveMargin/ActiveVBox/ActiveColorRect"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("6_m1npk")
+
+[node name="ActiveLabel" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ActivePanelContainer/ActiveMargin/ActiveVBox"]
 layout_mode = 2
 theme = ExtResource("3_v0hpi")
 text = "Active"
 horizontal_alignment = 1
 
-[node name="Status2PanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+[node name="InProgressPanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 
-[node name="InProgressButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer"]
+[node name="InProgressButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/InProgressPanelContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("3_v0hpi")
 toggle_mode = true
 button_group = ExtResource("2_snijd")
 script = ExtResource("4_x1ajq")
 
-[node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer"]
+[node name="InProgressMarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/InProgressPanelContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 
-[node name="Status2VBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer"]
+[node name="InProgressVBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/InProgressPanelContainer/InProgressMarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 
-[node name="InProgressTopColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer/Status2VBox"]
+[node name="InProgressTopColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/InProgressPanelContainer/InProgressMarginContainer/InProgressVBox"]
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -105,7 +118,7 @@ size_flags_vertical = 4
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 
-[node name="InProgressBottomColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer/Status2VBox"]
+[node name="InProgressBottomColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/InProgressPanelContainer/InProgressMarginContainer/InProgressVBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 2
@@ -115,18 +128,19 @@ mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 color = Color(0.609375, 0.46875, 0.136719, 1)
 
-[node name="Status2Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status2PanelContainer/MarginContainer/Status2VBox"]
+[node name="InProgressLabel" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/InProgressPanelContainer/InProgressMarginContainer/InProgressVBox"]
 layout_mode = 2
 theme = ExtResource("3_v0hpi")
 text = "In Progress"
 horizontal_alignment = 1
 
-[node name="Status3PanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+[node name="CompletedPanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 
-[node name="CompletedButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer"]
+[node name="CompletedButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/CompletedPanelContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("3_v0hpi")
 toggle_mode = true
@@ -134,17 +148,17 @@ button_pressed = true
 button_group = ExtResource("2_snijd")
 script = ExtResource("5_evwea")
 
-[node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer"]
+[node name="CompletedMarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/CompletedPanelContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 
-[node name="Status3VBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/MarginContainer"]
+[node name="CompletedVBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/CompletedPanelContainer/CompletedMarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 
-[node name="CompletedColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/MarginContainer/Status3VBox"]
+[node name="CompletedColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/CompletedPanelContainer/CompletedMarginContainer/CompletedVBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -154,35 +168,36 @@ mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 color = Color(0.609375, 0.46875, 0.136719, 1)
 
-[node name="Status3Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status3PanelContainer/MarginContainer/Status3VBox"]
+[node name="CompletedLabel" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/CompletedPanelContainer/CompletedMarginContainer/CompletedVBox"]
 layout_mode = 2
 theme = ExtResource("3_v0hpi")
 text = "Completed"
 horizontal_alignment = 1
 
-[node name="Status4PanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+[node name="ExpiredPanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 
-[node name="ExpiredButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer"]
+[node name="ExpiredButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ExpiredPanelContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("3_v0hpi")
 toggle_mode = true
 button_group = ExtResource("2_snijd")
 script = ExtResource("6_58rg5")
 
-[node name="MarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer"]
+[node name="ExpiredMarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ExpiredPanelContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 
-[node name="Status4VBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/MarginContainer"]
+[node name="ExpiredVBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ExpiredPanelContainer/ExpiredMarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 
-[node name="Status4ColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/MarginContainer/Status4VBox"]
+[node name="ExpiredColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ExpiredPanelContainer/ExpiredMarginContainer/ExpiredVBox"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -191,7 +206,16 @@ mouse_filter = 2
 theme = ExtResource("3_v0hpi")
 color = Color(0, 0, 0, 1)
 
-[node name="Status4Label" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/Status4PanelContainer/MarginContainer/Status4VBox"]
+[node name="ExpiredCheckboxBorderColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ExpiredPanelContainer/ExpiredMarginContainer/ExpiredVBox/ExpiredColorRect"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("6_m1npk")
+
+[node name="ExpiredLabel" type="Label" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ExpiredPanelContainer/ExpiredMarginContainer/ExpiredVBox"]
 layout_mode = 2
 theme = ExtResource("3_v0hpi")
 text = "Expired"

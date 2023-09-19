@@ -39,6 +39,8 @@ func _ready() -> void:
 	connect_signal_bus()
 	starting_visibilities()
 	load_existing_tasksheets()
+	if DataGlobal.current_tasksheet_data:
+		update_current_tasksheet_label()
 
 
 func connect_signal_bus() -> void:

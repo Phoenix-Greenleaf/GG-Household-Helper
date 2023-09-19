@@ -1,19 +1,37 @@
-[gd_scene load_steps=2 format=3 uid="uid://dba2s613cjsxc"]
+[gd_scene load_steps=4 format=3 uid="uid://dba2s613cjsxc"]
 
 [ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/cells/checkbox_cell.gd" id="1_ejb78"]
+[ext_resource type="Script" path="res://gui/task_tracking/checkbox_border_color_rect.gd" id="2_4nxhp"]
 
-[node name="CheckboxCell" type="VBoxContainer"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1eff0"]
+
+[node name="CheckboxCell" type="PanelContainer"]
+clip_contents = true
 focus_mode = 2
-mouse_filter = 0
-theme_override_constants/separation = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_1eff0")
 script = ExtResource("1_ejb78")
 
-[node name="TopColorRect" type="ColorRect" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TopColorRect" type="ColorRect" parent="VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="BottomColorRect" type="ColorRect" parent="."]
+[node name="BottomColorRect" type="ColorRect" parent="VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 2
 mouse_filter = 2
+
+[node name="CellCheckboxBorderColorRect" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("2_4nxhp")
+
+[connection signal="resized" from="." to="." method="_on_resized"]
