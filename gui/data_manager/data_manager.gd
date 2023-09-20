@@ -202,6 +202,7 @@ func _on_task_save_button_pressed(button_pressed: bool, pressed_tasksheet: TaskS
 func send_tasksheet_to_global(tasksheet_to_send) -> void:
 	DataGlobal.current_tasksheet_data = tasksheet_to_send
 	SignalBus._on_current_tasksheet_data_changed.emit()
+	SignalBus.reload_profiles_triggered.emit()
 
 
 func _on_import_tasksheet_pressed() -> void:

@@ -1,20 +1,27 @@
 extends PanelContainer
 
-@onready var new_profile_button: Button = %NewProfileButton
 @onready var new_profile_menu: PanelContainer = %NewProfileMenu
-@onready var completed_color_rect: ColorRect = %CompletedColorRect
-@onready var in_progress_bottom_color_rect: ColorRect = %InProgressBottomColorRect
-@onready var selection_popup_profile_label: Label = %SelectionPopupProfileLabel
-@onready var current_sibling = selection_popup_profile_label
-@onready var profile_name_line_edit: LineEdit = %ProfileNameLineEdit
-@onready var profile_color_picker_button: ColorPickerButton = %ProfileColorPickerButton
-@onready var active_checkbox_border_color_rect: ColorRect = %ActiveCheckboxBorderColorRect
-@onready var expired_checkbox_border_color_rect: ColorRect = %ExpiredCheckboxBorderColorRect
+@onready var in_progress_panel_container: PanelContainer = %InProgressPanelContainer
+@onready var completed_panel_container: PanelContainer = %CompletedPanelContainer
 
+@onready var new_profile_button: Button = %NewProfileButton
 @onready var active_button: Button = %ActiveButton
 @onready var in_progress_button: Button = %InProgressButton
 @onready var completed_button: Button = %CompletedButton
 @onready var expired_button: Button = %ExpiredButton
+@onready var profile_menu_accept: Button = %ProfileMenuAccept
+
+@onready var completed_color_rect: ColorRect = %CompletedColorRect
+@onready var in_progress_bottom_color_rect: ColorRect = %InProgressBottomColorRect
+@onready var active_checkbox_border_color_rect: ColorRect = %ActiveCheckboxBorderColorRect
+@onready var expired_checkbox_border_color_rect: ColorRect = %ExpiredCheckboxBorderColorRect
+
+@onready var profile_name_line_edit: LineEdit = %ProfileNameLineEdit
+
+@onready var selection_popup_profile_label: Label = %SelectionPopupProfileLabel
+@onready var current_sibling = selection_popup_profile_label
+
+@onready var profile_color_picker_button: ColorPickerButton = %ProfileColorPickerButton
 
 @export var paired_checkbox_menu_button: Node
 
@@ -28,15 +35,28 @@ func _ready() -> void:
 	load_existing_profiles()
 	update_status_colors()
 	update_paired_menu()
-	new_profile_menu.visible = false
-	self.visible = false
 	connect_paired_menu_button()
 	connect_status_button_group()
+	new_profile_menu.visible = false
+	self.visible = false
+	in_progress_panel_container.visible = false
+	completed_panel_container.visible = false
+	new_profile_button.disabled = true
 	SignalBus.update_checkbox_button.connect(update_status_colors)
+	SignalBus.reload_profiles_triggered.connect(reload_profiles)
+	SignalBus.reset_save_warning.connect(unlock_new_profile)
 
 
 func load_existing_profiles() -> void:
-	for profile in DataGlobal.user_profiles:
+	if not DataGlobal.current_tasksheet_data:
+		prints("No Current Data to load profiles")
+		return
+	var current_profiles: Array = DataGlobal.current_tasksheet_data.user_profiles
+	if current_profiles.size() == 0:
+		prints("No profiles to load")
+		return
+	prints("Loading existing profiles:", current_profiles.size())
+	for profile in current_profiles:
 		add_profile(profile)
 
 
@@ -53,7 +73,7 @@ func add_profile(target_profile: Array) -> void:
 
 func add_default_profile() -> void:
 	add_profile(DataGlobal.default_profile)
-	#remove edit/delete buttons from default
+	#remove ability to edit the default
 
 
 func update_status_colors() -> void:
@@ -67,13 +87,13 @@ func update_status_colors() -> void:
 		return
 	active_checkbox_border_color_rect.update_border(current_color)
 	expired_checkbox_border_color_rect.update_border(current_color)
-	
 
 
 func create_new_profile(profile_name: String, profile_color: Color) -> void:
 	var new_profile: Array = [profile_name, profile_color]
-	DataGlobal.user_profiles.append(new_profile)
+	DataGlobal.current_tasksheet_data.user_profiles.append(new_profile)
 	add_profile(new_profile)
+	SignalBus.trigger_save_warning.emit()
 
 
 func connect_paired_menu_button() -> void:
@@ -114,6 +134,12 @@ func _on_profile_button_toggled(button_pressed: bool, target_profile: Array) -> 
 	if target_profile == DataGlobal.current_checkbox_profile:
 		prints("PROFILE ALREADY TOGGLED")
 		return
+	if target_profile == DataGlobal.default_profile:
+		in_progress_panel_container.visible = false
+		completed_panel_container.visible = false
+	else:
+		in_progress_panel_container.visible = true
+		completed_panel_container.visible = true
 	DataGlobal.current_checkbox_profile = target_profile
 	update_status_colors()
 	update_paired_menu()
@@ -151,8 +177,31 @@ func _on_profile_menu_canel_pressed() -> void:
 
 func _on_profile_menu_accept_pressed() -> void:
 	var profile_name: String = profile_name_line_edit.get_text()
+	if profile_name == "":
+		prints("Profiles need names!")
+		DataGlobal.button_based_message(profile_menu_accept, "Name Needed!")
+		return
 	var profile_color: Color = profile_color_picker_button.get_pick_color()
+	if profile_color == Color.WHITE:
+		prints("Profiles cannot be white!")
+		DataGlobal.button_based_message(profile_menu_accept, "Can't use White!")
+		profile_color_picker_button.set_pick_color(random_color())
+		return
 	create_new_profile(profile_name, profile_color)
 	new_profile_button.visible = true
 	new_profile_menu.visible = false
 
+
+func reload_profiles() -> void:
+	prints("Reloading Profiles")
+	get_tree().call_group("profile_button_group", "queue_free")
+	load_existing_profiles()
+
+
+func unlock_new_profile() -> void:
+	if new_profile_button.disabled:
+		new_profile_button.disabled = false
+
+
+func _on_random_color_button_pressed() -> void:
+	profile_color_picker_button.set_pick_color(random_color())

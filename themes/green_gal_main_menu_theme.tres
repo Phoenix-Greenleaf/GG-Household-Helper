@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://dubk1ftmdlsay"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://dubk1ftmdlsay"]
 
 [ext_resource type="FontFile" uid="uid://7jukdly5m5dl" path="res://fonts/font_otf/Gidolinya-Regular.otf" id="1_ifjm4"]
 [ext_resource type="StyleBox" uid="uid://bcqpnkgaub5eq" path="res://themes/theme_parts/gg_disabled_button_style_box_flat.tres" id="2_itehl"]
@@ -7,6 +7,7 @@
 [ext_resource type="StyleBox" uid="uid://brn84anymriv3" path="res://themes/theme_parts/gg_normal_button_style_box_flat.tres" id="5_wf56m"]
 [ext_resource type="StyleBox" uid="uid://cxwys7rfq1ygf" path="res://themes/theme_parts/gg_pressed_button_style_box_flat.tres" id="6_7o3he"]
 [ext_resource type="StyleBox" uid="uid://bgapt3etwn3va" path="res://themes/theme_parts/gg_main_panel_style_box_flat.tres" id="7_n0cxo"]
+[ext_resource type="StyleBox" uid="uid://cmoiollela6cr" path="res://themes/theme_parts/black_style_box_line.tres" id="7_p25qy"]
 [ext_resource type="StyleBox" uid="uid://dpu0yb1nqqh5n" path="res://themes/theme_parts/gg_secondary_panel_style_box_flat.tres" id="8_4qt41"]
 
 [resource]
@@ -19,5 +20,11 @@ Button/styles/focus = ExtResource("3_qnoqh")
 Button/styles/hover = ExtResource("4_7lhqa")
 Button/styles/normal = ExtResource("5_wf56m")
 Button/styles/pressed = ExtResource("6_7o3he")
+HSeparator/constants/separation = 20
+HSeparator/styles/separator = ExtResource("7_p25qy")
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 6
+Label/font_sizes/font_size = 60
+Label/fonts/font = ExtResource("1_ifjm4")
 Panel/styles/panel = ExtResource("7_n0cxo")
 PanelContainer/styles/panel = ExtResource("8_4qt41")

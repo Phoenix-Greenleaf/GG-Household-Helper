@@ -64,7 +64,6 @@ flat = false
 item_count = 8
 popup/item_0/text = "Save Files"
 popup/item_0/id = 1
-popup/item_0/disabled = true
 popup/item_1/text = "Change Logs"
 popup/item_1/id = 2
 popup/item_1/disabled = true

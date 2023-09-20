@@ -84,6 +84,7 @@ func menu_button_actions(id: int) -> void:
 			menu_to_main_menu_with_save_protection()
 		1:
 			print("Save File Pressed")
+			save_active_data()
 			popup.hide()
 		2:
 			print("Change Logs Pressed")

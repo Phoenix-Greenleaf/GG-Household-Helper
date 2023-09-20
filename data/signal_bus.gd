@@ -9,4 +9,4 @@ signal _on_checkbox_mode_changed
 signal trigger_save_warning
 signal reset_save_warning
 signal update_checkbox_button
-
+signal reload_profiles_triggered

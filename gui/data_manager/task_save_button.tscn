@@ -14,8 +14,8 @@ offset_right = 61.5
 offset_bottom = 26.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 4
+size_flags_vertical = 4
 mouse_filter = 2
 script = ExtResource("1_4tmnx")
 

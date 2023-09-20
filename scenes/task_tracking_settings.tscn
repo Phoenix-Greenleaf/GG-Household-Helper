@@ -1,0 +1,159 @@
+[gd_scene load_steps=5 format=3 uid="uid://dqqm4htlk2dxs"]
+
+[ext_resource type="Theme" uid="uid://dubk1ftmdlsay" path="res://themes/green_gal_main_menu_theme.tres" id="1_mhxpy"]
+[ext_resource type="Script" path="res://scenes/task_tracking_settings.gd" id="2_50fxw"]
+[ext_resource type="Theme" uid="uid://dsurd46r2nccp" path="res://themes/green_gal_large_title_theme.tres" id="2_g1yur"]
+[ext_resource type="StyleBox" uid="uid://drr0a8wi67h56" path="res://themes/theme_parts/popup_panel_3_style_box_flat.tres" id="4_ok60o"]
+
+[node name="TaskTrackingSettings" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_mhxpy")
+script = ExtResource("2_50fxw")
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center"]
+layout_mode = 2
+alignment = 1
+
+[node name="TaskSettingsTitle" type="Label" parent="Center/VBox"]
+layout_mode = 2
+theme = ExtResource("2_g1yur")
+theme_override_font_sizes/font_size = 80
+text = "Task Settings"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Center/VBox"]
+layout_mode = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 2
+
+[node name="DefaultDataPanelContainer" type="PanelContainer" parent="Center/VBox/GridContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("4_ok60o")
+
+[node name="DefaultDataVBox" type="VBoxContainer" parent="Center/VBox/GridContainer/DefaultDataPanelContainer"]
+layout_mode = 2
+
+[node name="DefaultDataLabel" type="Label" parent="Center/VBox/GridContainer/DefaultDataPanelContainer/DefaultDataVBox"]
+layout_mode = 2
+text = "Default Data"
+horizontal_alignment = 1
+
+[node name="SetDefaultDataButton" type="Button" parent="Center/VBox/GridContainer/DefaultDataPanelContainer/DefaultDataVBox"]
+layout_mode = 2
+disabled = true
+text = "Set Current Data as Default Data"
+
+[node name="DefaultDataDisplayButton" type="Button" parent="Center/VBox/GridContainer/DefaultDataPanelContainer/DefaultDataVBox"]
+layout_mode = 2
+mouse_filter = 2
+disabled = true
+text = "Data Not Set"
+
+[node name="AutoLoadCheckButton" type="CheckButton" parent="Center/VBox/GridContainer/DefaultDataPanelContainer/DefaultDataVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+disabled = true
+text = "Auto Load Default Data (Off)"
+
+[node name="NewCheckboxOptionsPanelContainer" type="PanelContainer" parent="Center/VBox/GridContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("4_ok60o")
+
+[node name="NewCheckboxOptionsVBox" type="VBoxContainer" parent="Center/VBox/GridContainer/NewCheckboxOptionsPanelContainer"]
+layout_mode = 2
+
+[node name="NewCheckboxOptionsLabel" type="Label" parent="Center/VBox/GridContainer/NewCheckboxOptionsPanelContainer/NewCheckboxOptionsVBox"]
+layout_mode = 2
+text = "New Checkbox Options"
+horizontal_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="Center/VBox/GridContainer/NewCheckboxOptionsPanelContainer/NewCheckboxOptionsVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="SetActiveButton" type="Button" parent="Center/VBox/GridContainer/NewCheckboxOptionsPanelContainer/NewCheckboxOptionsVBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+disabled = true
+text = "Set to Active"
+
+[node name="SetExpiredButton" type="Button" parent="Center/VBox/GridContainer/NewCheckboxOptionsPanelContainer/NewCheckboxOptionsVBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+disabled = true
+text = "Set to Expired"
+
+[node name="SetAssignedButton" type="Button" parent="Center/VBox/GridContainer/NewCheckboxOptionsPanelContainer/NewCheckboxOptionsVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+disabled = true
+text = "Set Active & Assigned Profile"
+
+[node name="DeletionPanelContainer" type="PanelContainer" parent="Center/VBox/GridContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("4_ok60o")
+
+[node name="DeletionVBox" type="VBoxContainer" parent="Center/VBox/GridContainer/DeletionPanelContainer"]
+layout_mode = 2
+
+[node name="DeletionLabel" type="Label" parent="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox"]
+layout_mode = 2
+text = "Profile and Data Deletion"
+horizontal_alignment = 1
+
+[node name="DeletionSafetyCheckButton" type="CheckButton" parent="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+disabled = true
+text = "Danger Buttons Disarmed"
+
+[node name="RemoveProfileButton" type="Button" parent="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+disabled = true
+text = "Remove Profile"
+
+[node name="DeleteTaskSheetButton" type="Button" parent="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+disabled = true
+text = "Delete Task Sheet Data"
+
+[node name="DefaultDataPanelContainer4" type="PanelContainer" parent="Center/VBox/GridContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("4_ok60o")
+
+[node name="DefaultDataVBox" type="VBoxContainer" parent="Center/VBox/GridContainer/DefaultDataPanelContainer4"]
+layout_mode = 2
+
+[node name="DeletionLabel" type="Label" parent="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox"]
+layout_mode = 2
+text = "Temporary Fixes"
+horizontal_alignment = 1
+
+[node name="RegenProfilesButton" type="Button" parent="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Regen Profiles"
+
+[node name="WipeProfilesButton" type="Button" parent="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Clear out profiles"
+
+[node name="BackButton" type="Button" parent="Center/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Back"
+
+[connection signal="pressed" from="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox/RegenProfilesButton" to="." method="_on_regen_profiles_button_pressed"]
+[connection signal="pressed" from="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox/WipeProfilesButton" to="." method="_on_wipe_profiles_button_pressed"]
+[connection signal="pressed" from="Center/VBox/BackButton" to="." method="_on_back_button_pressed"]

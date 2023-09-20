@@ -88,6 +88,7 @@ text = "Active"
 horizontal_alignment = 1
 
 [node name="InProgressPanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
@@ -135,6 +136,7 @@ text = "In Progress"
 horizontal_alignment = 1
 
 [node name="CompletedPanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("3_v0hpi")
@@ -269,7 +271,10 @@ placeholder_text = "Profile Name"
 alignment = 1
 expand_to_text_length = true
 
-[node name="ProfileColorPickerButton" type="ColorPickerButton" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileOptionsVBox"]
+[node name="HBoxContainer" type="HBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileOptionsVBox"]
+layout_mode = 2
+
+[node name="ProfileColorPickerButton" type="ColorPickerButton" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileOptionsVBox/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
@@ -277,6 +282,11 @@ theme = ExtResource("3_v0hpi")
 text = "Profile Color"
 color = Color(1, 1, 1, 1)
 edit_alpha = false
+
+[node name="RandomColorButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileOptionsVBox/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Random"
 
 [node name="ProfileMenuUIVBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox"]
 layout_mode = 2
@@ -286,6 +296,7 @@ theme_override_constants/separation = 2
 alignment = 1
 
 [node name="ProfileMenuAccept" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileMenuUIVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("3_v0hpi")
 text = "Accept"
@@ -296,5 +307,6 @@ theme = ExtResource("3_v0hpi")
 text = "Cancel"
 
 [connection signal="pressed" from="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileButton" to="." method="_on_new_profile_button_pressed"]
+[connection signal="pressed" from="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileOptionsVBox/HBoxContainer/RandomColorButton" to="." method="_on_random_color_button_pressed"]
 [connection signal="pressed" from="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileMenuUIVBox/ProfileMenuAccept" to="." method="_on_profile_menu_accept_pressed"]
 [connection signal="pressed" from="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileMenuUIVBox/ProfileMenuCanel" to="." method="_on_profile_menu_canel_pressed"]

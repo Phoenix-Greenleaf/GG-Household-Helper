@@ -1,0 +1,6 @@
+[gd_resource type="StyleBoxLine" format=3 uid="uid://cmoiollela6cr"]
+
+[resource]
+grow_begin = 20.0
+grow_end = 20.0
+thickness = 6

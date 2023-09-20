@@ -57,22 +57,13 @@ enum CheckboxToggle {
 
 var default_profile: Array = ["No Profile", Color(1, 1, 1)]
 
-var user_profiles: Array = [
-	["Old Default", Color(1, 1, 0)],
-	["Test 1", Color(0, 1, 0)],
-	["Test 2", Color(1, 0, 0)],
-	["Test 3", Color(0, 0, 1)],
-	["Test Four", Color(1, 0, 1)],
-]
-
 var editor_modes: Dictionary = {"Checkbox": 0, "Info": 1}
 var month_strings: Array[String]
 
-var current_profile_data #waiting on that data/type
 var current_tasksheet_data: TaskSpreadsheetData
 
-var current_checkbox_state: int = Checkbox.COMPLETED
-var current_checkbox_profile: Array = user_profiles[1]
+var current_checkbox_state: int = Checkbox.ACTIVE
+var current_checkbox_profile: Array = default_profile
 var focus_checkbox_state: int
 var focus_checkbox_profile: Array
 

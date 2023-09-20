@@ -1,9 +1,5 @@
 extends PanelContainer
 
-#debating on making the "Current checkbox button" into a checkbox_cell
-#to reduce repeat code. Separate may have a benifit but we shall see. 
-
-
 @export var saved_position: int
 @export var saved_task: TaskData
 @export var saved_profile: Array
@@ -83,11 +79,11 @@ func update_current_border(color_parameter: Color) -> void:
 func _on_resized() -> void:
 	cell_x = self.size.x
 	cell_y = self.size.y
-	prints("")
-	prints("Resized Check: Cell", name)
-	prints("X", cell_x, ", Y", cell_y)
+#	prints("")
+#	prints("Resized Check: Cell", name)
+#	prints("X", cell_x, ", Y", cell_y)
 	if not cell_checkbox_border_color_rect:
-		prints("Too early to resize!")
+#		prints("Too early to resize!")
 		return
 	cell_checkbox_border_color_rect.resize_border(cell_x, cell_y)
 
