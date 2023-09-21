@@ -48,14 +48,17 @@ func _ready() -> void:
 	ready_connections()
 	close_new_task_panel()
 	get_dropdown_items_from_global()
+	if DataGlobal.settings_file.task_enable_auto_load_default_data:
+		DataGlobal.current_tasksheet_data = DataGlobal.settings_file.task_default_data
+		data_for_spreadsheet = DataGlobal.settings_file.task_default_data
 	if !data_for_spreadsheet:
 		print("No Tasksheet found for TaskGrid....")
-	else:
-		var title = DataGlobal.current_tasksheet_data.spreadsheet_title
-		var year = DataGlobal.current_tasksheet_data.spreadsheet_year
-		prints("TaskGrid found:", title, ":", year)
-		load_existing_data()
-		existing_groups_option_section_picker()
+		return
+	var title = DataGlobal.current_tasksheet_data.spreadsheet_title
+	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
+	prints("TaskGrid found:", title, ":", year)
+	load_existing_data()
+	existing_groups_option_section_picker()
 
 
 func ready_connections() -> void:
@@ -65,7 +68,6 @@ func ready_connections() -> void:
 	SignalBus._on_editor_mode_changed.connect(toggle_info_checkbox_modes)
 	SignalBus._on_editor_section_changed.connect(section_or_month_changed)
 	SignalBus._on_editor_month_changed.connect(section_or_month_changed)
-#	SignalBus._on_checkbox_mode_changed.connect(sync_checkbox_menu_to_mode)
 	get_viewport().gui_focus_changed.connect(_on_focus_changed)
 	
 

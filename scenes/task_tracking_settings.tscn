@@ -48,19 +48,20 @@ horizontal_alignment = 1
 
 [node name="SetDefaultDataButton" type="Button" parent="Center/VBox/GridContainer/DefaultDataPanelContainer/DefaultDataVBox"]
 layout_mode = 2
-disabled = true
 text = "Set Current Data as Default Data"
 
 [node name="DefaultDataDisplayButton" type="Button" parent="Center/VBox/GridContainer/DefaultDataPanelContainer/DefaultDataVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 disabled = true
+toggle_mode = true
 text = "Data Not Set"
 
 [node name="AutoLoadCheckButton" type="CheckButton" parent="Center/VBox/GridContainer/DefaultDataPanelContainer/DefaultDataVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-disabled = true
 text = "Auto Load Default Data (Off)"
 
 [node name="NewCheckboxOptionsPanelContainer" type="PanelContainer" parent="Center/VBox/GridContainer"]
@@ -149,11 +150,23 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Clear out profiles"
 
-[node name="BackButton" type="Button" parent="Center/VBox"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Center/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 43
+alignment = 1
+
+[node name="ResetDefaultSettingsButton" type="Button" parent="Center/VBox/HBoxContainer"]
+layout_mode = 2
+text = "Reset Default Settings"
+
+[node name="BackButton" type="Button" parent="Center/VBox/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Back"
 
+[connection signal="pressed" from="Center/VBox/GridContainer/DefaultDataPanelContainer/DefaultDataVBox/SetDefaultDataButton" to="." method="_on_set_default_data_button_pressed"]
+[connection signal="toggled" from="Center/VBox/GridContainer/DefaultDataPanelContainer/DefaultDataVBox/AutoLoadCheckButton" to="." method="_on_auto_load_check_button_toggled"]
 [connection signal="pressed" from="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox/RegenProfilesButton" to="." method="_on_regen_profiles_button_pressed"]
 [connection signal="pressed" from="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox/WipeProfilesButton" to="." method="_on_wipe_profiles_button_pressed"]
-[connection signal="pressed" from="Center/VBox/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Center/VBox/HBoxContainer/ResetDefaultSettingsButton" to="." method="_on_reset_default_settings_button_pressed"]
+[connection signal="pressed" from="Center/VBox/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

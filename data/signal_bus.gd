@@ -10,3 +10,4 @@ signal trigger_save_warning
 signal reset_save_warning
 signal update_checkbox_button
 signal reload_profiles_triggered
+signal _on_settings_changed

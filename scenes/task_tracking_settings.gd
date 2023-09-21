@@ -1,15 +1,41 @@
 extends PanelContainer
 
-var scanned_profiles: Array
-var current_data: TaskSpreadsheetData
+var scanned_profiles: Array #temp
+var current_data: TaskSpreadsheetData #temp
 
+@onready var auto_load_check_button: CheckButton = %AutoLoadCheckButton
+@onready var default_data_display_button: Button = %DefaultDataDisplayButton
+
+
+func _ready() -> void:
+	load_settings()
+
+func load_settings() -> void:
+	var settings = DataGlobal.settings_file
+	if not settings.task_enable_auto_load_default_data:
+		auto_load_check_button.button_pressed = false
+		auto_load_check_button.text = "Auto Load Default Data (Off)"
+	if settings.task_enable_auto_load_default_data:
+		auto_load_check_button.button_pressed = true
+		auto_load_check_button.text = "Auto Load Default Data (On!)"
+	if settings.task_default_data:
+		var task_name = settings.task_default_data.spreadsheet_title
+		var task_year = str(settings.task_default_data.spreadsheet_year)
+		default_data_display_button.text = "Current Default: " + task_name + " " + task_year
+		default_data_display_button.disabled = false
+		default_data_display_button.button_pressed = true
+	if not settings.task_default_data:
+		default_data_display_button.text = "Data Not Set"
+		default_data_display_button.disabled = true
+		default_data_display_button.button_pressed = false
+	prints("Task Settings Loaded")
 
 
 func _on_back_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/task_tracking_menu.tscn")
 
 
-func _on_regen_profiles_button_pressed() -> void:
+func _on_regen_profiles_button_pressed() -> void: #temp
 	prints()
 #	prints("Regenerating Profiles")
 	scanned_profiles = []
@@ -32,7 +58,7 @@ func _on_regen_profiles_button_pressed() -> void:
 	prints("Profiles founds:", scanned_profiles.size())
 
 
-func scan_section(target_section) -> void:
+func scan_section(target_section) -> void: #temp
 #	prints("Section contains:", target_section.size(), target_section)
 	for task_iteration in target_section:
 #		prints("Scanning task:", task_iteration.name)
@@ -53,6 +79,27 @@ func scan_section(target_section) -> void:
 	SignalBus.reload_profiles_triggered.emit()
 
 
-func _on_wipe_profiles_button_pressed() -> void:
+func _on_wipe_profiles_button_pressed() -> void: #temp
 	DataGlobal.current_tasksheet_data.user_profiles.clear()
 	prints("Profiles got wiped")
+
+
+func _on_auto_load_check_button_toggled(button_pressed: bool) -> void:
+	if not button_pressed:
+		DataGlobal.settings_file.task_enable_auto_load_default_data = false
+	if button_pressed:
+		DataGlobal.settings_file.task_enable_auto_load_default_data = true
+	SignalBus._on_settings_changed.emit()
+	load_settings()
+
+
+func _on_reset_default_settings_button_pressed() -> void:
+	DataGlobal.settings_file.reset_task_tracking_settings()
+	SignalBus._on_settings_changed.emit()
+	load_settings()
+
+
+func _on_set_default_data_button_pressed() -> void:
+	DataGlobal.settings_file.task_default_data = DataGlobal.current_tasksheet_data
+	SignalBus._on_settings_changed.emit()
+	load_settings()

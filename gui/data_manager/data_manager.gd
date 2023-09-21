@@ -16,7 +16,6 @@ var task_save_button_group = preload("res://gui/data_manager/task_save_button_gr
 var task_save_button = preload("res://gui/data_manager/task_save_button.tscn")
 
 var tasksheet_folder = "user://task_data/"
-var profile_folder = "user://profile_data/"
 var export_folder = "user://exports/"
 
 var task_button_count: int = 0
