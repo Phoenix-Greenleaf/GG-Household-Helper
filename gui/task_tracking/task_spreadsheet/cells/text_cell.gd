@@ -15,7 +15,7 @@ func update_active_data(text_parameter) -> void:
 		"Group":
 			saved_task.group = text_parameter
 		"Assigned User":
-			saved_task.assigned_user = text_parameter
+			saved_task.assigned_user[0] = text_parameter
 		"Location":
 			saved_task.location = text_parameter
 		"Cycle Time Unit":

@@ -20,6 +20,7 @@ Button/styles/focus = ExtResource("3_qnoqh")
 Button/styles/hover = ExtResource("4_7lhqa")
 Button/styles/normal = ExtResource("5_wf56m")
 Button/styles/pressed = ExtResource("6_7o3he")
+CheckButton/styles/hover_pressed = ExtResource("4_7lhqa")
 HSeparator/constants/separation = 20
 HSeparator/styles/separator = ExtResource("7_p25qy")
 Label/colors/font_outline_color = Color(0, 0, 0, 1)

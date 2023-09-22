@@ -18,6 +18,7 @@ extends PanelContainer
 
 @onready var profile_name_line_edit: LineEdit = %ProfileNameLineEdit
 
+@onready var selection_popup_profile_h_box: HBoxContainer = %SelectionPopupProfileHBox
 @onready var selection_popup_profile_label: Label = %SelectionPopupProfileLabel
 @onready var current_sibling = selection_popup_profile_label
 
@@ -62,6 +63,7 @@ func load_existing_profiles() -> void:
 
 func add_profile(target_profile: Array) -> void:
 	var new_profile = checkbox_profile.instantiate()
+	new_profile.add_to_group("profile_children")
 	var profile_button = new_profile.get_node("ProfileButton")
 	profile_button.toggled.connect(_on_profile_button_toggled.bind(target_profile))
 	profile_button.set_button_group(profile_button_group)
@@ -134,15 +136,19 @@ func _on_profile_button_toggled(button_pressed: bool, target_profile: Array) -> 
 	if target_profile == DataGlobal.current_checkbox_profile:
 		prints("PROFILE ALREADY TOGGLED")
 		return
-	if target_profile == DataGlobal.default_profile:
+	default_profile_status_limiter(target_profile)
+	DataGlobal.current_checkbox_profile = target_profile
+	update_status_colors()
+	update_paired_menu()
+
+
+func default_profile_status_limiter(profile_parameter: Array) -> void:
+	if profile_parameter == DataGlobal.default_profile:
 		in_progress_panel_container.visible = false
 		completed_panel_container.visible = false
 	else:
 		in_progress_panel_container.visible = true
 		completed_panel_container.visible = true
-	DataGlobal.current_checkbox_profile = target_profile
-	update_status_colors()
-	update_paired_menu()
 
 
 func _on_status_button_toggled(button_pressed: BaseButton) -> void:
@@ -194,8 +200,17 @@ func _on_profile_menu_accept_pressed() -> void:
 
 func reload_profiles() -> void:
 	prints("Reloading Profiles")
-	get_tree().call_group("profile_button_group", "queue_free")
+	clear_profiles()
+	add_default_profile()
 	load_existing_profiles()
+
+
+func clear_profiles() -> void:
+	var children_to_clear = get_tree().get_nodes_in_group("profile_children")
+	for child_iteration in children_to_clear:
+		selection_popup_profile_h_box.remove_child(child_iteration)
+		child_iteration.queue_free()
+	prints("Profiles cleared")
 
 
 func unlock_new_profile() -> void:

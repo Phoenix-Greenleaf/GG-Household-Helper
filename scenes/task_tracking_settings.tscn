@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://dqqm4htlk2dxs"]
+[gd_scene load_steps=9 format=3 uid="uid://dqqm4htlk2dxs"]
 
 [ext_resource type="Theme" uid="uid://dubk1ftmdlsay" path="res://themes/green_gal_main_menu_theme.tres" id="1_mhxpy"]
 [ext_resource type="Script" path="res://scenes/task_tracking_settings.gd" id="2_50fxw"]
 [ext_resource type="Theme" uid="uid://dsurd46r2nccp" path="res://themes/green_gal_large_title_theme.tres" id="2_g1yur"]
 [ext_resource type="StyleBox" uid="uid://drr0a8wi67h56" path="res://themes/theme_parts/popup_panel_3_style_box_flat.tres" id="4_ok60o"]
+[ext_resource type="ButtonGroup" uid="uid://rtfa2yhtpxlw" path="res://data/setting_parts/task_new_checkbox_options_button_group.tres" id="5_pw0kc"]
+[ext_resource type="StyleBox" uid="uid://kshd0em2p28" path="res://themes/theme_parts/transpanency2_style_box_flat.tres" id="6_i4frn"]
+[ext_resource type="StyleBox" uid="uid://5gbky82e7ys5" path="res://themes/theme_parts/popup_panel_2_style_box_flat.tres" id="7_atkjp"]
+[ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/data_manager/data_manager.tscn" id="8_ru03e"]
 
 [node name="TaskTrackingSettings" type="PanelContainer"]
 anchors_preset = 15
@@ -81,21 +85,27 @@ layout_mode = 2
 size_flags_horizontal = 4
 
 [node name="SetActiveButton" type="Button" parent="Center/VBox/GridContainer/NewCheckboxOptionsPanelContainer/NewCheckboxOptionsVBox/HBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-disabled = true
+toggle_mode = true
+button_group = ExtResource("5_pw0kc")
 text = "Set to Active"
 
 [node name="SetExpiredButton" type="Button" parent="Center/VBox/GridContainer/NewCheckboxOptionsPanelContainer/NewCheckboxOptionsVBox/HBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-disabled = true
+toggle_mode = true
+button_group = ExtResource("5_pw0kc")
 text = "Set to Expired"
 
 [node name="SetAssignedButton" type="Button" parent="Center/VBox/GridContainer/NewCheckboxOptionsPanelContainer/NewCheckboxOptionsVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-disabled = true
+toggle_mode = true
+button_group = ExtResource("5_pw0kc")
 text = "Set Active & Assigned Profile"
 
 [node name="DeletionPanelContainer" type="PanelContainer" parent="Center/VBox/GridContainer"]
@@ -111,18 +121,26 @@ text = "Profile and Data Deletion"
 horizontal_alignment = 1
 
 [node name="DeletionSafetyCheckButton" type="CheckButton" parent="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-disabled = true
 text = "Danger Buttons Disarmed"
 
 [node name="RemoveProfileButton" type="Button" parent="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 disabled = true
-text = "Remove Profile"
+text = "Remove Profile from User List"
+
+[node name="PurgeProfileDataButton" type="Button" parent="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Purge Profile Data from Task Sheet"
 
 [node name="DeleteTaskSheetButton" type="Button" parent="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 disabled = true
@@ -137,7 +155,7 @@ layout_mode = 2
 
 [node name="DeletionLabel" type="Label" parent="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox"]
 layout_mode = 2
-text = "Temporary Fixes"
+text = "Other Options"
 horizontal_alignment = 1
 
 [node name="RegenProfilesButton" type="Button" parent="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox"]
@@ -145,28 +163,65 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Regen Profiles"
 
-[node name="WipeProfilesButton" type="Button" parent="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Clear out profiles"
-
 [node name="HBoxContainer" type="HBoxContainer" parent="Center/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 43
 alignment = 1
 
 [node name="ResetDefaultSettingsButton" type="Button" parent="Center/VBox/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Reset Default Settings"
 
-[node name="BackButton" type="Button" parent="Center/VBox/HBoxContainer"]
+[node name="MenuBackButton" type="Button" parent="Center/VBox/HBoxContainer"]
+layout_mode = 2
+text = "to Task Menu"
+
+[node name="SheetsBackButton" type="Button" parent="Center/VBox/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+text = "to Task Sheets"
+
+[node name="DeletionBackgroundPanelContainer" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_styles/panel = ExtResource("6_i4frn")
+
+[node name="DeletionCenterContainer" type="CenterContainer" parent="DeletionBackgroundPanelContainer"]
+layout_mode = 2
+
+[node name="DeletionPanelContainer" type="PanelContainer" parent="DeletionBackgroundPanelContainer/DeletionCenterContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("7_atkjp")
+
+[node name="DeletionVBox" type="VBoxContainer" parent="DeletionBackgroundPanelContainer/DeletionCenterContainer/DeletionPanelContainer"]
+layout_mode = 2
+
+[node name="DeletionLabel" type="Label" parent="DeletionBackgroundPanelContainer/DeletionCenterContainer/DeletionPanelContainer/DeletionVBox"]
+layout_mode = 2
+text = "Delete"
+
+[node name="DeletionHBox" type="HBoxContainer" parent="DeletionBackgroundPanelContainer/DeletionCenterContainer/DeletionPanelContainer/DeletionVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DeletionBackButton" type="Button" parent="DeletionBackgroundPanelContainer/DeletionCenterContainer/DeletionPanelContainer/DeletionVBox"]
+layout_mode = 2
 text = "Back"
+
+[node name="DataManager" parent="." instance=ExtResource("8_ru03e")]
+visible = false
+layout_mode = 2
 
 [connection signal="pressed" from="Center/VBox/GridContainer/DefaultDataPanelContainer/DefaultDataVBox/SetDefaultDataButton" to="." method="_on_set_default_data_button_pressed"]
 [connection signal="toggled" from="Center/VBox/GridContainer/DefaultDataPanelContainer/DefaultDataVBox/AutoLoadCheckButton" to="." method="_on_auto_load_check_button_toggled"]
+[connection signal="toggled" from="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox/DeletionSafetyCheckButton" to="." method="_on_deletion_safety_check_button_toggled"]
+[connection signal="pressed" from="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox/RemoveProfileButton" to="." method="_on_remove_profile_button_pressed"]
+[connection signal="pressed" from="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox/PurgeProfileDataButton" to="." method="_on_purge_profile_data_button_pressed"]
+[connection signal="pressed" from="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox/DeleteTaskSheetButton" to="." method="_on_delete_task_sheet_button_pressed"]
 [connection signal="pressed" from="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox/RegenProfilesButton" to="." method="_on_regen_profiles_button_pressed"]
-[connection signal="pressed" from="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox/WipeProfilesButton" to="." method="_on_wipe_profiles_button_pressed"]
 [connection signal="pressed" from="Center/VBox/HBoxContainer/ResetDefaultSettingsButton" to="." method="_on_reset_default_settings_button_pressed"]
-[connection signal="pressed" from="Center/VBox/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Center/VBox/HBoxContainer/MenuBackButton" to="." method="_on_menu_back_button_pressed"]
+[connection signal="pressed" from="Center/VBox/HBoxContainer/SheetsBackButton" to="." method="_on_sheets_back_button_pressed"]
+[connection signal="pressed" from="DeletionBackgroundPanelContainer/DeletionCenterContainer/DeletionPanelContainer/DeletionVBox/DeletionBackButton" to="." method="_on_deletion_back_button_pressed"]

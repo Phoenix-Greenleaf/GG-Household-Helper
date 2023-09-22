@@ -90,6 +90,7 @@ func _ready() -> void:
 
 
 func button_based_message(target: Node, message: String, time: int = 2) -> void:
+#	prints("Sending:", message, "to", target.name, "to replace:", target.text)
 	if target.text == message:
 		prints("Not today pal")
 		return

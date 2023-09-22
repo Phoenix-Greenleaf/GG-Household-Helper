@@ -7,6 +7,7 @@ extends GridContainer
 @onready var task_group_line_edit: LineEdit = %TaskGroupLineEdit
 @onready var existing_groups_option_button: OptionButton = %ExistingGroupsOption
 @onready var accept_new_task_button: Button = %AcceptNewTaskButton
+@onready var checkbox_selection_popup: PanelContainer = %CheckboxSelectionPopup
 
 var checkbox_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/checkbox_cell.tscn")
 var dropdown_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/dropdown_cell.tscn")
@@ -467,6 +468,7 @@ func selected_checkbox(target) -> void:
 		DataGlobal.CheckboxToggle.INSPECT:
 			DataGlobal.current_checkbox_profile = focus_profile
 			DataGlobal.current_checkbox_state = focus_state
+			checkbox_selection_popup.default_profile_status_limiter(focus_profile)
 			SignalBus.update_checkbox_button.emit()
 
 

@@ -4,6 +4,7 @@ extends Control
 @onready var popup:= menu_button.get_popup()
 @onready var current_date_label:= %CurrentDateLabel as Label
 @onready var data_manager_center: CenterContainer = $DataManagerCenter
+@onready var data_manager: PanelContainer = %DataManager
 @onready var current_save_label: Label = %CurrentSaveLabel
 @onready var task_spreadsheet_grid_container: GridContainer = %TaskSpreadsheetGridContainer
 @onready var month_selection_menu_button: MenuButton = %MonthSelectionMenu
@@ -17,9 +18,10 @@ var Weekday: Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "F
 var month_strings = DataGlobal.month_strings
 var save_safety_nodes: Array
 var quit_counter: int = 0
-var quit_index: int = 7
-var to_main_menu_index: int = 6
-var to_task_menu_index: int = 5
+var quit_index: int = 8
+var to_main_menu_index: int = 7
+var to_task_menu_index: int = 6
+var task_settings_index: int = 1
 
 
 func _ready() -> void:
@@ -96,6 +98,9 @@ func menu_button_actions(id: int) -> void:
 			popup.hide()
 		6:
 			menu_to_task_menu_with_save_protection()
+		8:
+			save_active_data()
+			get_tree().change_scene_to_file("res://scenes/task_tracking_settings.tscn")
 
 
 func menu_quit_with_save_protection() -> void:
@@ -287,7 +292,6 @@ func _on_save_warning_button_pressed() -> void:
 
 func save_active_data() -> void:
 		save_warning_button.text = "Data Saved"
-		var data_manager: Node = data_manager_center.get_child(0)
 		data_manager.save_current_tasksheet()
 		SignalBus.reset_save_warning.emit()
 
