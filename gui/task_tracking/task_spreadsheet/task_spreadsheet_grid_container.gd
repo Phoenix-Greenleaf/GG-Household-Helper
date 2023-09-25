@@ -25,6 +25,7 @@ var info_header_size: int
 var checkbox_header_size: int
 var current_task: TaskData
 var current_focus: Control
+var user_profiles_dropdown_items: Array
 
 var last_main_cell_position = 3
 var header_cell_array: Array = [
@@ -58,6 +59,7 @@ func _ready() -> void:
 	var title = DataGlobal.current_tasksheet_data.spreadsheet_title
 	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
 	prints("TaskGrid found:", title, ":", year)
+	update_user_profile_dropdown_items()
 	load_existing_data()
 	existing_groups_option_section_picker()
 
@@ -69,6 +71,7 @@ func ready_connections() -> void:
 	SignalBus._on_editor_mode_changed.connect(toggle_info_checkbox_modes)
 	SignalBus._on_editor_section_changed.connect(section_or_month_changed)
 	SignalBus._on_editor_month_changed.connect(section_or_month_changed)
+	SignalBus.reload_profiles_triggered.connect(update_user_profile_dropdown_items)
 	get_viewport().gui_focus_changed.connect(_on_focus_changed)
 	
 
@@ -177,7 +180,6 @@ func create_new_task_data() -> void: #task coded model, the data side
 	row_group = new_task_group
 	var new_task_section := DataGlobal.current_toggled_section
 	new_task.offbrand_init(new_task_title, new_task_section, new_task_group)
-	
 	match new_task_section:
 		DataGlobal.Section.YEARLY:
 			var current_section_group = data_for_spreadsheet.spreadsheet_year_groups
@@ -244,6 +246,7 @@ func load_existing_data() -> void:
 
 
 func _on_sort_tasks_button_pressed() -> void:
+	prints("Placeholder")
 	pass
 
 
@@ -301,7 +304,6 @@ func create_header_row() -> void:
 	info_header_size = get_tree().get_nodes_in_group("Info").size()
 	checkbox_header_size = get_tree().get_nodes_in_group("Checkbox").size()
 	prints("Header Sizes, Full:", full_header_size, " Info:", info_header_size, " Checkbox:", checkbox_header_size)
-#	set_grid_columns()
 
 
 func header_editing_prevention() -> void:
@@ -332,11 +334,13 @@ func set_grid_columns() -> void:
 
 
 func create_task_row_cells() -> void: #task "physical" nodes, display side
+	
 	create_text_cell(current_task.name, "Task Name")  #1
 	create_dropdown_cell(section_dropdown_items, current_task.section, "Section") #2
 	create_text_cell(current_task.group, "Group") #3
 	var info = "Info"
-	create_text_cell(assignment_finder(), "Assigned User", info) 
+	
+	create_dropdown_cell(user_profiles_dropdown_items, current_task.assigned_user, "Assigned User", info) #4
 	create_multi_line_cell(current_task.description, info) #5
 	create_dropdown_cell(time_of_day_dropdown_items, current_task.time_of_day, "Time Of Day", info) #6
 	create_dropdown_cell(priority_dropdown_items, current_task.priority, "Priority", info) #7
@@ -390,12 +394,29 @@ func create_header_cell(text, column_group: String = "") -> void:
 	add_cell_to_groups(cell, column_group)
 
 
-func create_dropdown_cell(dropdown_items: Array, selected_item: int, current_type: String, column_group: String = "") -> void:
+func create_dropdown_cell(dropdown_items: Array, selected_item, current_type: String, column_group: String = "") -> void:
 	var cell: OptionButton = dropdown_cell.instantiate()
 	self.add_child(cell)
-	for item in dropdown_items:
-		cell.add_item(item)
-	cell.selected = selected_item
+	var selection_index: int
+	if selected_item is int:
+		for item in dropdown_items:
+			cell.add_item(item)
+		selection_index = selected_item
+	else:
+		for profile in dropdown_items:
+			var profile_name = profile[0]
+			if profile_name == "No Profile":
+				profile_name = "Not Assigned"
+			cell.add_item(profile_name)
+		selection_index = dropdown_items.find(selected_item)
+		if selected_item == DataGlobal.default_profile:
+			selection_index = 0
+		if selection_index == -1:
+			prints("dropdown find error")
+			prints("Selected item:", selected_item)
+			prints("dropdown items:", dropdown_items)
+			prints("")
+	cell.selected = selection_index
 	cell.saved_task = current_task
 	cell.saved_type = current_type
 	add_cell_to_groups(cell, column_group) 
@@ -478,11 +499,26 @@ func return_data_to_sender(data, return_address) -> void:
 	return_address = data
 
 
-func assignment_finder() -> String:
-	var assignment: String
-	if current_task.assigned_user:
-		assignment = current_task.assigned_user[0]
-	else:
-		assignment = "No Assignment"
-	return assignment
+#func assignment_finder() -> String: #Pretty sure this can be deleted
+#	var assignment: String
+#	if current_task.assigned_user:
+#		assignment = current_task.assigned_user[0]
+#	else:
+#		assignment = "No Assignment"
+#	return assignment
 
+
+func update_user_profile_dropdown_items() -> void:
+	prints("Updating user profile dropdown.")
+	user_profiles_dropdown_items.clear()
+	prints("Clearned items, size is:", user_profiles_dropdown_items.size())
+	user_profiles_dropdown_items.append(DataGlobal.default_profile)
+	for profile in DataGlobal.current_tasksheet_data.user_profiles:
+		user_profiles_dropdown_items.append(profile)
+	prints("New Dropdown:")
+	print_profiles_dropdown()
+
+
+func print_profiles_dropdown() -> void:
+	for profile in user_profiles_dropdown_items:
+		prints(profile[0])

@@ -11,3 +11,4 @@ signal reset_save_warning
 signal update_checkbox_button
 signal reload_profiles_triggered
 signal _on_settings_changed
+signal assigned_user_dropdown_items_updated
