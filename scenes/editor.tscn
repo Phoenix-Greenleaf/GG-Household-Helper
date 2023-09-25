@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=13 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scenes/editor.gd" id="1_nkaig"]
 [ext_resource type="Theme" uid="uid://djvo047swus7p" path="res://themes/green_gal_main_theme.tres" id="2_eeg3c"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/data_manager/data_manager.tscn" id="7_io7f7"]
 [ext_resource type="Theme" uid="uid://b6r6dqju3145j" path="res://themes/green_gal_custom_button_theme.tres" id="7_pf33m"]
 [ext_resource type="StyleBox" uid="uid://b02yebbakhunc" path="res://themes/theme_parts/popup_panel_style_box_flat.tres" id="8_5cxxj"]
+[ext_resource type="StyleBox" uid="uid://5gbky82e7ys5" path="res://themes/theme_parts/popup_panel_2_style_box_flat.tres" id="12_dgyqq"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -431,6 +432,53 @@ z_index = 5
 z_as_relative = false
 layout_mode = 2
 
+[node name="MultiTextPopupCenter" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MultiTextPopupPanelContainer" type="PanelContainer" parent="MultiTextPopupCenter"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("12_dgyqq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="TaskTitle" type="Label" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox"]
+layout_mode = 2
+text = "Task:"
+
+[node name="TaskLabel" type="Label" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NOT LOADED"
+
+[node name="TextEdit" type="TextEdit" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(600, 600)
+layout_mode = 2
+text = "ALSO NOT LOADED"
+
+[node name="HBox2" type="HBoxContainer" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="AcceptMultiTextButton" type="Button" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2"]
+layout_mode = 2
+text = "Accept & Save"
+
+[node name="CancelMultiTextButton" type="Button" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2"]
+layout_mode = 2
+text = "Cancel"
+
 [connection signal="pressed" from="MainMargin/MainHBox/SideMenuVBox/MenuButton" to="." method="_on_menu_button_pressed"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/InfoModeButton" to="." method="_on_info_mode_button_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/CheckboxModeButton" to="." method="_on_checkbox_mode_button_toggled"]
@@ -445,3 +493,5 @@ layout_mode = 2
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/TaskAddMargin/HBox/AddTaskButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_add_task_button_pressed"]
 [connection signal="item_selected" from="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/TaskAddMargin/HBox/ExistingGroupsOption" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_existing_groups_option_item_selected"]
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/TaskAddMargin/HBox/AcceptNewTaskButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_accept_new_task_button_pressed"]
+[connection signal="pressed" from="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2/AcceptMultiTextButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_accept_multi_text_button_pressed"]
+[connection signal="pressed" from="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2/CancelMultiTextButton" to="." method="_on_cancel_multi_text_button_pressed"]

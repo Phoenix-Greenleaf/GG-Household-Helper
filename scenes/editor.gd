@@ -11,6 +11,8 @@ extends Control
 @onready var month_selection_menu_popup := month_selection_menu_button.get_popup()
 @onready var save_warning_button: Button = %SaveWarningButton
 @onready var add_task_button: Button = %AddTaskButton
+@onready var multi_text_popup_center: CenterContainer = %MultiTextPopupCenter
+@onready var text_edit: TextEdit = %TextEdit
 
 var last_toggled_month: int = 1
 
@@ -30,6 +32,7 @@ func _ready() -> void:
 	print_ready()
 	add_task_button.disabled = true
 	popup.hide_on_item_selection = false
+	multi_text_popup_center.visible = false
 	if DataGlobal.current_tasksheet_data:
 		update_current_tasksheet_label()
 		add_task_button.disabled = false
@@ -323,3 +326,8 @@ func _on_checkbox_inspect_toggle_toggled(button_pressed: bool) -> void:
 		prints("Inspect Mode toggled")
 	else:
 		prints("Inspect Mode ALREADY TOGGLED")
+
+
+func _on_cancel_multi_text_button_pressed() -> void:
+	multi_text_popup_center.visible = false
+	text_edit.clear()

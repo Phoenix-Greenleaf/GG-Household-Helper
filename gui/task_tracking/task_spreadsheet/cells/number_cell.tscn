@@ -3,4 +3,5 @@
 [ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/cells/number_cell.gd" id="1_hy1wj"]
 
 [node name="NumberCell" type="SpinBox"]
+alignment = 2
 script = ExtResource("1_hy1wj")

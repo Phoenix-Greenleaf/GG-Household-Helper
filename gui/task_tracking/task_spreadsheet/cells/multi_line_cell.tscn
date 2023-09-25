@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/cells/multi_line_cell.gd" id="1_vc24t"]
 
-[node name="MultiLineCell" type="TextEdit"]
+[node name="MultiLineCell" type="Button"]
 script = ExtResource("1_vc24t")

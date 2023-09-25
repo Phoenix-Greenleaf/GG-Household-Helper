@@ -8,6 +8,9 @@ extends GridContainer
 @onready var existing_groups_option_button: OptionButton = %ExistingGroupsOption
 @onready var accept_new_task_button: Button = %AcceptNewTaskButton
 @onready var checkbox_selection_popup: PanelContainer = %CheckboxSelectionPopup
+@onready var multi_text_popup_center: CenterContainer = %MultiTextPopupCenter
+@onready var task_label: Label = %TaskLabel
+@onready var text_edit: TextEdit = %TextEdit
 
 var checkbox_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/checkbox_cell.tscn")
 var dropdown_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/dropdown_cell.tscn")
@@ -26,6 +29,7 @@ var checkbox_header_size: int
 var current_task: TaskData
 var current_focus: Control
 var user_profiles_dropdown_items: Array
+var current_text_edit_cell: MultiLineCell
 
 var last_main_cell_position = 3
 var header_cell_array: Array = [
@@ -422,11 +426,12 @@ func create_dropdown_cell(dropdown_items: Array, selected_item, current_type: St
 	add_cell_to_groups(cell, column_group) 
 
 
-func create_multi_line_cell(multi_text: String, column_group: String = "") -> void:
-	var cell: TextEdit = multi_line_cell.instantiate()
+func create_multi_line_cell(multi_text_parameter: String, column_group: String = "") -> void:
+	var cell: Button = multi_line_cell.instantiate()
 	self.add_child(cell)
-	cell.text = multi_text
 	cell.saved_task = current_task
+	cell.update_data(multi_text_parameter)
+	cell.pressed.connect(_on_description_button_pressed.bind(cell))
 	add_cell_to_groups(cell, column_group) 
 
 
@@ -522,3 +527,17 @@ func update_user_profile_dropdown_items() -> void:
 func print_profiles_dropdown() -> void:
 	for profile in user_profiles_dropdown_items:
 		prints(profile[0])
+
+
+func _on_accept_multi_text_button_pressed() -> void:
+	multi_text_popup_center.visible = false
+	current_text_edit_cell.update_data(text_edit.text)
+	text_edit.clear()
+
+
+
+func _on_description_button_pressed(cell_parameter: MultiLineCell) -> void:
+	multi_text_popup_center.visible = true
+	current_text_edit_cell = cell_parameter
+	task_label.text = cell_parameter.saved_task.name
+	text_edit.text = cell_parameter.saved_task.description

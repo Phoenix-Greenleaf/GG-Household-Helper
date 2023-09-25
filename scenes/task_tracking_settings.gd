@@ -12,6 +12,7 @@ extends PanelContainer
 @onready var reset_default_settings_button: Button = %ResetDefaultSettingsButton
 @onready var deletion_background_panel_container: PanelContainer = %DeletionBackgroundPanelContainer
 @onready var deletion_h_box: HBoxContainer = %DeletionHBox
+@onready var description_preview_length_spin_box: SpinBox = %DescriptionPreviewLengthSpinBox
 
 @onready var data_manager: PanelContainer = $DataManager
 @onready var settings = DataGlobal.settings_file
@@ -31,6 +32,7 @@ func _ready() -> void:
 
 func establish_connections() -> void:
 	task_new_checkbox_options_button_group.pressed.connect(_on_task_new_checkbox_options_button_group_pressed)
+	
 
 
 func load_all_settings() -> void:
@@ -38,6 +40,7 @@ func load_all_settings() -> void:
 	load_default_task_data()
 	load_new_checkbox_setting()
 	load_deletion_armed_setting()
+	load_description_preview_length()
 	reset_buttons()
 
 
@@ -90,6 +93,11 @@ func load_deletion_armed_setting() -> void:
 		remove_profile_button.disabled = true
 		purge_profile_data_button.disabled = true
 		delete_task_sheet_button.disabled = true
+
+
+func load_description_preview_length() -> void:
+	description_preview_length_spin_box.set_value_no_signal(settings.task_description_preview_length)
+	
 
 
 func reset_buttons() -> void:
@@ -258,3 +266,10 @@ func _on_purge_profile_data_button_pressed() -> void:
 	full_scan()
 	for scanned_profile_iteration in scanned_profiles:
 		create_profile_deathrow_button(scanned_profile_iteration, "profile data")
+
+
+func _on_description_preview_length_spin_box_value_changed(value: float) -> void:
+	var int_value = value as int
+	prints("Preview Length:", int_value)
+	DataGlobal.settings_file.task_description_preview_length = int_value
+	reload_settings()
