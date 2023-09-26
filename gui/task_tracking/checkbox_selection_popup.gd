@@ -42,7 +42,7 @@ func _ready() -> void:
 	self.visible = false
 	in_progress_panel_container.visible = false
 	completed_panel_container.visible = false
-	new_profile_button.disabled = true
+	new_profile_button.text = "Task Data\nNeeded!"
 	SignalBus.update_checkbox_button.connect(update_status_colors)
 	SignalBus.reload_profiles_triggered.connect(reload_profiles)
 	SignalBus.reset_save_warning.connect(unlock_new_profile)
@@ -170,6 +170,9 @@ func _on_menu_button_toggled(_button_pressed: bool) -> void:
 
 
 func _on_new_profile_button_pressed() -> void:
+	if new_profile_button.text == "Task Data\nNeeded!":
+		SignalBus.task_editor_remote_open_data_manager.emit()
+		return
 	new_profile_button.visible = false
 	new_profile_menu.visible = true
 	profile_name_line_edit.clear()
@@ -215,8 +218,8 @@ func clear_profiles() -> void:
 
 
 func unlock_new_profile() -> void:
-	if new_profile_button.disabled:
-		new_profile_button.disabled = false
+	if new_profile_button.text == "Task Data\nNeeded!":
+		new_profile_button.text = "New\nProfile"
 
 
 func _on_random_color_button_pressed() -> void:

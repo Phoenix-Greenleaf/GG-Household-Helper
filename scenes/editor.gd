@@ -55,6 +55,7 @@ func connect_other_signal_bus() -> void:
 	SignalBus._on_current_tasksheet_data_changed.connect(update_current_tasksheet_label)
 	SignalBus.trigger_save_warning.connect(save_warning_triggered)
 	SignalBus.reset_save_warning.connect(save_waring_reset)
+	SignalBus.task_editor_remote_open_data_manager.connect(remote_open_data_manager)
 
 
 func connect_month_menu() -> void:
@@ -331,3 +332,7 @@ func _on_checkbox_inspect_toggle_toggled(button_pressed: bool) -> void:
 func _on_cancel_multi_text_button_pressed() -> void:
 	multi_text_popup_center.visible = false
 	text_edit.clear()
+
+
+func remote_open_data_manager() -> void:
+	data_manager_center.visible = true

@@ -12,3 +12,5 @@ signal update_checkbox_button
 signal reload_profiles_triggered
 signal _on_settings_changed
 signal assigned_user_dropdown_items_updated
+signal task_editor_remote_open_data_manager
+signal _on_task_delete_button_primed_and_pressed

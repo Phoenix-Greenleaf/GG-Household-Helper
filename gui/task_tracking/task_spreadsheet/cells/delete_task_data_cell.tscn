@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbrhopj7i01gc"]
+
+[ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/cells/delete_task_data_cell.gd" id="1_mnbcs"]
+
+[node name="DeleteTaskDataCell" type="Button"]
+script = ExtResource("1_mnbcs")

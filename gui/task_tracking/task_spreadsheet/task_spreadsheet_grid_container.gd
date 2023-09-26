@@ -17,6 +17,7 @@ var dropdown_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/drop
 var multi_line_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/multi_line_cell.tscn")
 var number_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/number_cell.tscn")
 var text_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/text_cell.tscn")
+var delete_task_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/delete_task_data_cell.tscn")
 
 var row_group: String = ""
 var blank_counter: int = 0
@@ -45,6 +46,7 @@ var header_cell_array: Array = [
 	"Time Units Per Cycle", #10
 	"Time Units Added When Skipped", #11
 	"Last Completed", #12
+	"Delete Task", #13
 ]
 
 
@@ -77,7 +79,7 @@ func ready_connections() -> void:
 	SignalBus._on_editor_month_changed.connect(section_or_month_changed)
 	SignalBus.reload_profiles_triggered.connect(update_user_profile_dropdown_items)
 	get_viewport().gui_focus_changed.connect(_on_focus_changed)
-	
+	SignalBus._on_task_delete_button_primed_and_pressed.connect(delete_task_row)
 
 
 func test_spreadsheet_initialization() -> void:
@@ -353,6 +355,7 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 	create_number_cell(current_task.units_per_cycle, "Units Per Cycle", info) #10
 	create_number_cell(current_task.units_added_when_skipped, "Units Added When Skipped", info) #11
 	create_text_cell(current_task.last_completed, "Last Completed",  info) #12
+	create_delete_task_cell("Delete Task", info) #13
 	var checkbox = "Checkbox"
 	var checkbox_position = 1
 	match current_task.section:
@@ -453,6 +456,33 @@ func create_checkbox_cell(state: DataGlobal.Checkbox, user_profile: Array, cell_
 	cell.saved_state = state
 	cell.update_checkbox()
 	add_cell_to_groups(cell, column_group)
+
+
+func create_delete_task_cell(current_type: String, column_group: String = "") -> void:
+	var cell: Button = delete_task_cell.instantiate()
+	self.add_child(cell)
+	cell.saved_type = current_type
+	cell.saved_task = current_task
+	cell.prep_delete_button()
+	add_cell_to_groups(cell, column_group)
+
+
+func delete_task_row(target_task: TaskData) -> void:
+	var current_grid_children = self.get_children()
+	for current_child in current_grid_children:
+		if current_child.saved_task == target_task:
+			self.remove_child(current_child)
+			current_child.queue_free()
+	match DataGlobal.current_toggled_section:
+		DataGlobal.Section.YEARLY:
+			DataGlobal.current_tasksheet_data.spreadsheet_year_data.erase(target_task)
+		DataGlobal.Section.MONTHLY:
+			DataGlobal.current_tasksheet_data.spreadsheet_month_data.erase(target_task)
+		DataGlobal.Section.WEEKLY:
+			DataGlobal.current_tasksheet_data.spreadsheet_week_data.erase(target_task)
+		DataGlobal.Section.DAILY:
+			DataGlobal.current_tasksheet_data.spreadsheet_day_data.erase(target_task)
+	SignalBus.trigger_save_warning.emit()
 
 
 func _on_focus_changed(control_node:Control) -> void:
