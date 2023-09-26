@@ -85,8 +85,6 @@ func load_existing_tasksheets() -> void:
 		var filepath_for_loading = tasksheet_folder + file
 		prints("Loading filepath:", filepath_for_loading)
 		var file_resource: TaskSpreadsheetData = ResourceLoader.load(filepath_for_loading)
-		
-		
 		print(file_resource)
 		var loaded_name = file_resource.spreadsheet_title
 		var loaded_year = file_resource.spreadsheet_year
@@ -156,6 +154,9 @@ func create_tasksheet_data_and_save() -> void:
 
 
 func save_current_tasksheet() -> void:
+	if not DataGlobal.current_tasksheet_data:
+		prints("Nothing to save")
+		return
 	var current_tasksheet: TaskSpreadsheetData = DataGlobal.current_tasksheet_data
 	var current_filepath: String = current_tasksheet.spreadsheet_filepath
 	var tasksheet_save_error = ResourceSaver.save(current_tasksheet, current_filepath)

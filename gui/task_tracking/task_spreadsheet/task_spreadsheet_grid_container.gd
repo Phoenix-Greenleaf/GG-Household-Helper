@@ -535,7 +535,6 @@ func _on_accept_multi_text_button_pressed() -> void:
 	text_edit.clear()
 
 
-
 func _on_description_button_pressed(cell_parameter: MultiLineCell) -> void:
 	multi_text_popup_center.visible = true
 	current_text_edit_cell = cell_parameter

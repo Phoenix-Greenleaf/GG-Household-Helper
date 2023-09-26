@@ -125,11 +125,12 @@ func days_in_month_finder(month_in_question: String, year_in_question) -> int:
 
 func load_settings() -> void:
 	if settings_file:
+		prints("Settings exist")
 		return
 	if not FileAccess.file_exists(settings_filepath):
 		create_settings()
 		return
-	settings_file = ResourceLoader.load(settings_filepath)
+	settings_file = ResourceLoader.load(settings_filepath)  #, "Resource", ResourceLoader.CACHE_MODE_REPLACE
 
 
 func create_settings() -> void:

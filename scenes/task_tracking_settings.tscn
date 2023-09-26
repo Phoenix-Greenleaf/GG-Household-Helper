@@ -262,6 +262,7 @@ theme_override_styles/panel = ExtResource("7_atkjp")
 
 [node name="DeletionVBox" type="VBoxContainer" parent="DeletionBackgroundPanelContainer/DeletionCenterContainer/DeletionPanelContainer"]
 layout_mode = 2
+alignment = 1
 
 [node name="DeletionLabel" type="Label" parent="DeletionBackgroundPanelContainer/DeletionCenterContainer/DeletionPanelContainer/DeletionVBox"]
 layout_mode = 2

@@ -210,6 +210,7 @@ func clear_profiles() -> void:
 	for child_iteration in children_to_clear:
 		selection_popup_profile_h_box.remove_child(child_iteration)
 		child_iteration.queue_free()
+	current_sibling = selection_popup_profile_label
 	prints("Profiles cleared")
 
 

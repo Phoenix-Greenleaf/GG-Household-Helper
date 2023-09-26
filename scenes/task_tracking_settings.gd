@@ -22,10 +22,12 @@ var task_new_checkbox_options_button_group: ButtonGroup = preload("res://data/se
 var scanned_profiles: Array
 var current_data: TaskSpreadsheetData
 var new_checkbox_options := DataGlobal.settings_file.NEW_CHECKBOX_OPTION
+var tasksheet_folder = "user://task_data/"
 
 
 func _ready() -> void:
 	establish_connections()
+	disarm_danger_buttons()
 	load_all_settings()
 	deletion_background_panel_container.visible = false
 
@@ -33,6 +35,9 @@ func _ready() -> void:
 func establish_connections() -> void:
 	task_new_checkbox_options_button_group.pressed.connect(_on_task_new_checkbox_options_button_group_pressed)
 	
+
+func disarm_danger_buttons() -> void:
+		settings.task_enable_deletion_buttons = false
 
 
 func load_all_settings() -> void:
@@ -60,11 +65,12 @@ func load_default_task_data() -> void:
 		default_data_display_button.text = "Current Default: " + task_name + " " + task_year
 		default_data_display_button.set_pressed_no_signal(true)
 		default_data_display_button.disabled = false
-		DataGlobal.current_tasksheet_data = settings.task_default_data
 	if not settings.task_default_data:
 		default_data_display_button.text = "Data Not Set"
 		default_data_display_button.set_pressed_no_signal(false)
 		default_data_display_button.disabled = true
+		auto_load_check_button.button_pressed = false
+		auto_load_check_button.text = "Auto Load Default Data (Off)"
 
 
 func load_new_checkbox_setting() -> void:
@@ -237,6 +243,22 @@ func _on_remove_profile_button_pressed() -> void:
 
 func _on_delete_task_sheet_button_pressed() -> void:
 	deletion_background_panel_container.visible = true
+	var existing_files = DirAccess.get_files_at(tasksheet_folder)
+	for file in existing_files:
+		var filepath_for_loading = tasksheet_folder + file
+		var file_resource: TaskSpreadsheetData = ResourceLoader.load(filepath_for_loading)
+		create_sheet_data_deathrow_button(file_resource, filepath_for_loading)
+
+
+func create_sheet_data_deathrow_button(target_sheet_data: TaskSpreadsheetData, sheet_data_path: String) -> void:
+	var deathrow_button : Button = Button.new()
+	var type: String = "sheet data"
+	deletion_h_box.add_child(deathrow_button)
+	var loaded_name: String = target_sheet_data.spreadsheet_title
+	var loaded_year := str(target_sheet_data.spreadsheet_year)
+	deathrow_button.text = loaded_name + "\n" + loaded_year
+	deathrow_button.pressed.connect(_on_deathrow_button_pressed.bind(deathrow_button, type, sheet_data_path))
+	
 
 
 func create_profile_deathrow_button(target_profile: Array, type: String) -> void:
@@ -258,7 +280,14 @@ func _on_deathrow_button_pressed(pressed_button: Button, remove_type: String, ta
 			full_purge(target)
 			data_manager.save_current_tasksheet()
 		"sheet data":
-			pass
+			var file_resource: TaskSpreadsheetData = ResourceLoader.load(target)
+			if DataGlobal.settings_file.task_default_data == file_resource:
+				DataGlobal.settings_file.task_default_data = null
+			if DataGlobal.current_tasksheet_data == file_resource:
+				DataGlobal.current_tasksheet_data = null
+			reload_settings()
+			OS.move_to_trash(ProjectSettings.globalize_path(target))
+			
 
 
 func _on_purge_profile_data_button_pressed() -> void:
