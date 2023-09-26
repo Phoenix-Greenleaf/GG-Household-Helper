@@ -192,33 +192,38 @@ size_flags_horizontal = 4
 disabled = true
 text = "Delete Task Sheet Data"
 
-[node name="DefaultDataPanelContainer4" type="PanelContainer" parent="Center/VBox/GridContainer"]
+[node name="OtherOptionsPanelContainer" type="PanelContainer" parent="Center/VBox/GridContainer"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("4_ok60o")
 
-[node name="DefaultDataVBox" type="VBoxContainer" parent="Center/VBox/GridContainer/DefaultDataPanelContainer4"]
+[node name="OtherOptionsVBox" type="VBoxContainer" parent="Center/VBox/GridContainer/OtherOptionsPanelContainer"]
 layout_mode = 2
 
-[node name="DeletionLabel" type="Label" parent="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox"]
+[node name="OtherOptionsLabel" type="Label" parent="Center/VBox/GridContainer/OtherOptionsPanelContainer/OtherOptionsVBox"]
 layout_mode = 2
 text = "Other Options"
 horizontal_alignment = 1
 
-[node name="RegenProfilesButton" type="Button" parent="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox"]
+[node name="RegenProfilesButton" type="Button" parent="Center/VBox/GridContainer/OtherOptionsPanelContainer/OtherOptionsVBox"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Regen Profiles"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox"]
+[node name="UnloadCurrentDataButton" type="Button" parent="Center/VBox/GridContainer/OtherOptionsPanelContainer/OtherOptionsVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Unload Current Data"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Center/VBox/GridContainer/OtherOptionsPanelContainer/OtherOptionsVBox"]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox/HBoxContainer"]
+[node name="Label" type="Label" parent="Center/VBox/GridContainer/OtherOptionsPanelContainer/OtherOptionsVBox/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "Description Preview Length"
 
-[node name="DescriptionPreviewLengthSpinBox" type="SpinBox" parent="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox/HBoxContainer"]
+[node name="DescriptionPreviewLengthSpinBox" type="SpinBox" parent="Center/VBox/GridContainer/OtherOptionsPanelContainer/OtherOptionsVBox/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -286,8 +291,9 @@ layout_mode = 2
 [connection signal="pressed" from="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox/RemoveProfileButton" to="." method="_on_remove_profile_button_pressed"]
 [connection signal="pressed" from="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox/PurgeProfileDataButton" to="." method="_on_purge_profile_data_button_pressed"]
 [connection signal="pressed" from="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox/DeleteTaskSheetButton" to="." method="_on_delete_task_sheet_button_pressed"]
-[connection signal="pressed" from="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox/RegenProfilesButton" to="." method="_on_regen_profiles_button_pressed"]
-[connection signal="value_changed" from="Center/VBox/GridContainer/DefaultDataPanelContainer4/DefaultDataVBox/HBoxContainer/DescriptionPreviewLengthSpinBox" to="." method="_on_description_preview_length_spin_box_value_changed"]
+[connection signal="pressed" from="Center/VBox/GridContainer/OtherOptionsPanelContainer/OtherOptionsVBox/RegenProfilesButton" to="." method="_on_regen_profiles_button_pressed"]
+[connection signal="pressed" from="Center/VBox/GridContainer/OtherOptionsPanelContainer/OtherOptionsVBox/UnloadCurrentDataButton" to="." method="_on_unload_current_data_button_pressed"]
+[connection signal="value_changed" from="Center/VBox/GridContainer/OtherOptionsPanelContainer/OtherOptionsVBox/HBoxContainer/DescriptionPreviewLengthSpinBox" to="." method="_on_description_preview_length_spin_box_value_changed"]
 [connection signal="pressed" from="Center/VBox/HBoxContainer/ResetDefaultSettingsButton" to="." method="_on_reset_default_settings_button_pressed"]
 [connection signal="pressed" from="Center/VBox/HBoxContainer/MenuBackButton" to="." method="_on_menu_back_button_pressed"]
 [connection signal="pressed" from="Center/VBox/HBoxContainer/SheetsBackButton" to="." method="_on_sheets_back_button_pressed"]

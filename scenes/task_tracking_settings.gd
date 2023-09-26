@@ -302,3 +302,10 @@ func _on_description_preview_length_spin_box_value_changed(value: float) -> void
 	prints("Preview Length:", int_value)
 	DataGlobal.settings_file.task_description_preview_length = int_value
 	reload_settings()
+
+
+func _on_unload_current_data_button_pressed() -> void:
+	DataGlobal.current_tasksheet_data = null
+	if DataGlobal.settings_file.task_enable_auto_load_default_data:
+		DataGlobal.settings_file.task_enable_auto_load_default_data = false
+	reload_settings()
