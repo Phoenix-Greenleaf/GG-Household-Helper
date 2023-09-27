@@ -280,7 +280,12 @@ func _on_edit_profile_menu_accept_pressed() -> void:
 			profile.load_checkbox_profile(edited_profile)
 	edit_profile_button.visible = true
 	edit_profile_menu.visible = false
+	replacement_scan(previous_profile, edited_profile)
+	DataGlobal.current_checkbox_profile = edited_profile
 	SignalBus.remote_active_data_save.emit()
+	SignalBus._on_current_tasksheet_data_changed.emit()
+	update_edit_profile_menu()
+	SignalBus.update_checkbox_button.emit()
 	reload_profiles()
 
 
@@ -303,6 +308,8 @@ func update_edit_profile_menu() -> void:
 		edit_profile_button.visible = false
 	else:
 		edit_profile_button.visible = true
+	if edit_profile_menu.visible:
+		edit_profile_button.visible = false
 	edit_profile_name_line_edit.text = DataGlobal.current_checkbox_profile[0]
 	edit_profile_color_picker_button.set_pick_color(DataGlobal.current_checkbox_profile[1])
 	edit_profile_button.add_theme_color_override("font_color", DataGlobal.current_checkbox_profile[1])
