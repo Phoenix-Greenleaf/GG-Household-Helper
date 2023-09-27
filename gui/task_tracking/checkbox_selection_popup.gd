@@ -26,6 +26,16 @@ extends PanelContainer
 
 @export var paired_checkbox_menu_button: Node
 
+
+@onready var edit_profile_button: Button = %EditProfileButton
+@onready var edit_profile_menu: PanelContainer = %EditProfileMenu
+@onready var edit_profile_name_line_edit: LineEdit = %EditProfileNameLineEdit
+@onready var edit_profile_color_picker_button: ColorPickerButton = %EditProfileColorPickerButton
+@onready var edit_profile_menu_accept: Button = %EditProfileMenuAccept
+
+
+
+
 var checkbox_profile = preload("res://gui/task_tracking/checkbox_profile.tscn")
 var profile_button_group = preload("res://gui/task_tracking/checkbox_profile_group.tres")
 var status_button_group = preload("res://gui/task_tracking/checkbox_status_group.tres")
@@ -38,14 +48,25 @@ func _ready() -> void:
 	update_paired_menu()
 	connect_paired_menu_button()
 	connect_status_button_group()
+	starting_visibilities()
+	new_profile_button.text = "Task Data\nNeeded!"
+	signal_bus_connections()
+
+
+func signal_bus_connections() -> void:
+	SignalBus.update_checkbox_button.connect(update_status_colors)
+	SignalBus.reload_profiles_triggered.connect(reload_profiles)
+	SignalBus.reset_save_warning.connect(unlock_new_profile)
+
+
+func starting_visibilities() -> void:
 	new_profile_menu.visible = false
 	self.visible = false
 	in_progress_panel_container.visible = false
 	completed_panel_container.visible = false
-	new_profile_button.text = "Task Data\nNeeded!"
-	SignalBus.update_checkbox_button.connect(update_status_colors)
-	SignalBus.reload_profiles_triggered.connect(reload_profiles)
-	SignalBus.reset_save_warning.connect(unlock_new_profile)
+	edit_profile_button.visible = false
+	edit_profile_menu.visible = false
+
 
 
 func load_existing_profiles() -> void:
@@ -140,15 +161,19 @@ func _on_profile_button_toggled(button_pressed: bool, target_profile: Array) -> 
 	DataGlobal.current_checkbox_profile = target_profile
 	update_status_colors()
 	update_paired_menu()
+	update_edit_profile_menu()
 
 
 func default_profile_status_limiter(profile_parameter: Array) -> void:
 	if profile_parameter == DataGlobal.default_profile:
 		in_progress_panel_container.visible = false
 		completed_panel_container.visible = false
+		edit_profile_button.visible = false
 	else:
 		in_progress_panel_container.visible = true
 		completed_panel_container.visible = true
+		edit_profile_button.visible = true
+		
 
 
 func _on_status_button_toggled(button_pressed: BaseButton) -> void:
@@ -179,7 +204,7 @@ func _on_new_profile_button_pressed() -> void:
 	profile_color_picker_button.set_pick_color(random_color())
 
 
-func _on_profile_menu_canel_pressed() -> void:
+func _on_profile_menu_cancel_pressed() -> void:
 	new_profile_button.visible = true
 	new_profile_menu.visible = false
 
@@ -224,3 +249,81 @@ func unlock_new_profile() -> void:
 
 func _on_random_color_button_pressed() -> void:
 	profile_color_picker_button.set_pick_color(random_color())
+
+
+func _on_edit_profile_menu_accept_pressed() -> void:
+	var profile_name: String = edit_profile_name_line_edit.get_text()
+	if profile_name == "":
+		prints("Profiles need names!")
+		DataGlobal.button_based_message(edit_profile_menu_accept, "Name Needed!")
+		return
+	var profile_color: Color = edit_profile_color_picker_button.get_pick_color()
+	if profile_color == Color.WHITE:
+		prints("Profiles cannot be white!")
+		DataGlobal.button_based_message(edit_profile_menu_accept, "Can't use White!")
+		edit_profile_color_picker_button.set_pick_color(random_color())
+		return
+	var edited_profile: Array = [profile_name, profile_color]
+	var previous_profile: Array = DataGlobal.current_checkbox_profile
+	if edited_profile == previous_profile:
+		prints("No changes made to profile!")
+		DataGlobal.button_based_message(edit_profile_menu_accept, "No changes!")
+		return
+	var profile_index = DataGlobal.current_tasksheet_data.user_profiles.find(previous_profile)
+	if profile_index == -1:
+		prints("Error locating previous profile for replacement!")
+	prints("Replacing", DataGlobal.current_tasksheet_data.user_profiles[profile_index], "with", edited_profile)
+	DataGlobal.current_tasksheet_data.user_profiles[profile_index] = edited_profile
+	var profile_buttons = get_tree().get_nodes_in_group("profile_children")
+	for profile in profile_buttons:
+		if profile.saved_profile == previous_profile:
+			profile.load_checkbox_profile(edited_profile)
+	edit_profile_button.visible = true
+	edit_profile_menu.visible = false
+	SignalBus.remote_active_data_save.emit()
+	reload_profiles()
+
+
+func _on_edit_profile_menu_cancel_pressed() -> void:
+	edit_profile_button.visible = true
+	edit_profile_menu.visible = false
+
+
+func _on_edit_random_color_button_pressed() -> void:
+	edit_profile_color_picker_button.set_pick_color(random_color())
+
+
+func _on_edit_profile_button_pressed() -> void:
+	edit_profile_button.visible = false
+	edit_profile_menu.visible = true
+
+
+func update_edit_profile_menu() -> void:
+	if DataGlobal.current_checkbox_profile == DataGlobal.default_profile:
+		edit_profile_button.visible = false
+	else:
+		edit_profile_button.visible = true
+	edit_profile_name_line_edit.text = DataGlobal.current_checkbox_profile[0]
+	edit_profile_color_picker_button.set_pick_color(DataGlobal.current_checkbox_profile[1])
+	edit_profile_button.add_theme_color_override("font_color", DataGlobal.current_checkbox_profile[1])
+
+
+func replacement_scan(previous_profile, new_profile) -> void:
+	var current_data = DataGlobal.current_tasksheet_data
+	scan_section(current_data.spreadsheet_year_data, previous_profile, new_profile)
+	scan_section(current_data.spreadsheet_month_data, previous_profile, new_profile)
+	scan_section(current_data.spreadsheet_week_data, previous_profile, new_profile)
+	scan_section(current_data.spreadsheet_day_data, previous_profile, new_profile)
+	prints("Purge complete")
+
+
+func scan_section(target_section, previous_profile_parameter, new_profile_parameter) -> void:
+	for task_iteration in target_section:
+		if task_iteration.assigned_user == previous_profile_parameter:
+			task_iteration.assigned_user = new_profile_parameter
+		for month_iteration in task_iteration.month_checkbox_dictionary:
+			var checkbox_array = task_iteration.month_checkbox_dictionary[month_iteration]
+			for checkbox_iteration in checkbox_array:
+				var profile_iteration: Array = checkbox_iteration.assigned_user
+				if profile_iteration == previous_profile_parameter:
+					checkbox_iteration.assigned_user = new_profile_parameter

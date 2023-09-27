@@ -306,6 +306,8 @@ func _on_description_preview_length_spin_box_value_changed(value: float) -> void
 
 func _on_unload_current_data_button_pressed() -> void:
 	DataGlobal.current_tasksheet_data = null
+	DataGlobal.current_checkbox_profile = DataGlobal.default_profile
+	DataGlobal.current_checkbox_state = DataGlobal.Checkbox.ACTIVE
 	if DataGlobal.settings_file.task_enable_auto_load_default_data:
 		DataGlobal.settings_file.task_enable_auto_load_default_data = false
 	reload_settings()

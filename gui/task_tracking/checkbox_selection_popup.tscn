@@ -301,7 +301,79 @@ layout_mode = 2
 theme = ExtResource("3_v0hpi")
 text = "Accept"
 
-[node name="ProfileMenuCanel" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileMenuUIVBox"]
+[node name="ProfileMenuCancel" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileMenuUIVBox"]
+layout_mode = 2
+theme = ExtResource("3_v0hpi")
+text = "Cancel"
+
+[node name="EditProfileButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_v0hpi")
+text = "Edit
+Current
+Profile"
+
+[node name="EditProfileMenu" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_v0hpi")
+theme_override_styles/panel = ExtResource("9_ymb7e")
+
+[node name="Margin" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/EditProfileMenu"]
+layout_mode = 2
+theme = ExtResource("3_v0hpi")
+theme_override_constants/margin_bottom = 2
+
+[node name="HBox" type="HBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/EditProfileMenu/Margin"]
+layout_mode = 2
+theme = ExtResource("3_v0hpi")
+
+[node name="EditProfileOptionsVBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/EditProfileMenu/Margin/HBox"]
+layout_mode = 2
+theme = ExtResource("3_v0hpi")
+theme_override_constants/separation = 2
+
+[node name="EditProfileNameLineEdit" type="LineEdit" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/EditProfileMenu/Margin/HBox/EditProfileOptionsVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_v0hpi")
+text = "Unloaded!"
+placeholder_text = "Profile Name"
+alignment = 1
+expand_to_text_length = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/EditProfileMenu/Margin/HBox/EditProfileOptionsVBox"]
+layout_mode = 2
+
+[node name="EditProfileColorPickerButton" type="ColorPickerButton" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/EditProfileMenu/Margin/HBox/EditProfileOptionsVBox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("3_v0hpi")
+text = "Profile Color"
+color = Color(1, 1, 1, 1)
+edit_alpha = false
+
+[node name="EditRandomColorButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/EditProfileMenu/Margin/HBox/EditProfileOptionsVBox/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Random"
+
+[node name="ProfileMenuUIVBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/EditProfileMenu/Margin/HBox"]
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("3_v0hpi")
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="EditProfileMenuAccept" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/EditProfileMenu/Margin/HBox/ProfileMenuUIVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_v0hpi")
+text = "Accept"
+
+[node name="EditProfileMenuCancel" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/EditProfileMenu/Margin/HBox/ProfileMenuUIVBox"]
 layout_mode = 2
 theme = ExtResource("3_v0hpi")
 text = "Cancel"
@@ -309,4 +381,8 @@ text = "Cancel"
 [connection signal="pressed" from="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileButton" to="." method="_on_new_profile_button_pressed"]
 [connection signal="pressed" from="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileOptionsVBox/HBoxContainer/RandomColorButton" to="." method="_on_random_color_button_pressed"]
 [connection signal="pressed" from="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileMenuUIVBox/ProfileMenuAccept" to="." method="_on_profile_menu_accept_pressed"]
-[connection signal="pressed" from="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileMenuUIVBox/ProfileMenuCanel" to="." method="_on_profile_menu_canel_pressed"]
+[connection signal="pressed" from="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/NewProfileMenu/Margin/HBox/ProfileMenuUIVBox/ProfileMenuCancel" to="." method="_on_profile_menu_cancel_pressed"]
+[connection signal="pressed" from="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/EditProfileButton" to="." method="_on_edit_profile_button_pressed"]
+[connection signal="pressed" from="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/EditProfileMenu/Margin/HBox/EditProfileOptionsVBox/HBoxContainer/EditRandomColorButton" to="." method="_on_edit_random_color_button_pressed"]
+[connection signal="pressed" from="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/EditProfileMenu/Margin/HBox/ProfileMenuUIVBox/EditProfileMenuAccept" to="." method="_on_edit_profile_menu_accept_pressed"]
+[connection signal="pressed" from="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupProfileHBox/EditProfileMenu/Margin/HBox/ProfileMenuUIVBox/EditProfileMenuCancel" to="." method="_on_edit_profile_menu_cancel_pressed"]

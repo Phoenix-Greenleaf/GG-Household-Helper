@@ -526,6 +526,7 @@ func selected_checkbox(target) -> void:
 			DataGlobal.current_checkbox_state = focus_state
 			checkbox_selection_popup.default_profile_status_limiter(focus_profile)
 			SignalBus.update_checkbox_button.emit()
+			checkbox_selection_popup.update_edit_profile_menu()
 
 
 func return_data_to_sender(data, return_address) -> void:

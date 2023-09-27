@@ -416,7 +416,8 @@ size_flags_horizontal = 0
 size_flags_vertical = 4
 paired_checkbox_menu_button = NodePath("../MainMargin/MainHBox/SideMenuVBox/CurrentCheckboxButton")
 
-[node name="DataManagerCenter" type="CenterContainer" parent="."]
+[node name="MultiTextPopupCenter" type="CenterContainer" parent="."]
+unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -425,21 +426,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-
-[node name="DataManager" parent="DataManagerCenter" instance=ExtResource("7_io7f7")]
-unique_name_in_owner = true
-z_index = 5
-z_as_relative = false
-layout_mode = 2
-
-[node name="MultiTextPopupCenter" type="CenterContainer" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="MultiTextPopupPanelContainer" type="PanelContainer" parent="MultiTextPopupCenter"]
 layout_mode = 2
@@ -478,6 +464,22 @@ text = "Accept & Save"
 [node name="CancelMultiTextButton" type="Button" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2"]
 layout_mode = 2
 text = "Cancel"
+
+[node name="DataManagerCenter" type="CenterContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="DataManager" parent="DataManagerCenter" instance=ExtResource("7_io7f7")]
+unique_name_in_owner = true
+z_index = 5
+z_as_relative = false
+layout_mode = 2
 
 [connection signal="pressed" from="MainMargin/MainHBox/SideMenuVBox/MenuButton" to="." method="_on_menu_button_pressed"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/InfoModeButton" to="." method="_on_info_mode_button_toggled"]

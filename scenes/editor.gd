@@ -56,6 +56,7 @@ func connect_other_signal_bus() -> void:
 	SignalBus.trigger_save_warning.connect(save_warning_triggered)
 	SignalBus.reset_save_warning.connect(save_waring_reset)
 	SignalBus.task_editor_remote_open_data_manager.connect(remote_open_data_manager)
+	SignalBus.remote_active_data_save.connect(save_active_data)
 
 
 func connect_month_menu() -> void:
