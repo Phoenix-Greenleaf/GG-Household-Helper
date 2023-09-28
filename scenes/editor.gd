@@ -106,6 +106,7 @@ func menu_button_actions(id: int) -> void:
 		8:
 			save_active_data()
 			get_tree().change_scene_to_file("res://scenes/task_tracking_settings.tscn")
+			SignalBus.remote_task_settings_reload.emit()
 
 
 func menu_quit_with_save_protection() -> void:

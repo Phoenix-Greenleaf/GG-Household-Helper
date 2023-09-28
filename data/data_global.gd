@@ -86,6 +86,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	SignalBus._on_settings_changed.connect(save_settings)
+	SignalBus._on_current_tasksheet_data_changed.connect(load_settings)
 	load_settings()
 
 
@@ -130,7 +131,8 @@ func load_settings() -> void:
 	if not FileAccess.file_exists(settings_filepath):
 		create_settings()
 		return
-	settings_file = ResourceLoader.load(settings_filepath)  #, "Resource", ResourceLoader.CACHE_MODE_REPLACE
+	settings_file = ResourceLoader.load(settings_filepath)
+	SignalBus.remote_task_settings_reload.emit()
 
 
 func create_settings() -> void:

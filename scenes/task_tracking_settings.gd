@@ -34,6 +34,7 @@ func _ready() -> void:
 
 func establish_connections() -> void:
 	task_new_checkbox_options_button_group.pressed.connect(_on_task_new_checkbox_options_button_group_pressed)
+	SignalBus.remote_task_settings_reload.connect(reload_settings)
 	
 
 func disarm_danger_buttons() -> void:

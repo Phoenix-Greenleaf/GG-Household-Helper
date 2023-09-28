@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=14 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scenes/editor.gd" id="1_nkaig"]
 [ext_resource type="Theme" uid="uid://djvo047swus7p" path="res://themes/green_gal_main_theme.tres" id="2_eeg3c"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/data_manager/data_manager.tscn" id="7_io7f7"]
 [ext_resource type="Theme" uid="uid://b6r6dqju3145j" path="res://themes/green_gal_custom_button_theme.tres" id="7_pf33m"]
 [ext_resource type="StyleBox" uid="uid://b02yebbakhunc" path="res://themes/theme_parts/popup_panel_style_box_flat.tres" id="8_5cxxj"]
+[ext_resource type="Theme" uid="uid://dy4c7wbsik73v" path="res://themes/task_grid_theme.tres" id="9_o5o1x"]
 [ext_resource type="StyleBox" uid="uid://5gbky82e7ys5" path="res://themes/theme_parts/popup_panel_2_style_box_flat.tres" id="12_dgyqq"]
 
 [node name="Editor" type="Control"]
@@ -254,8 +255,8 @@ layout_mode = 2
 theme_override_constants/separation = 15
 
 [node name="EditingLockButton" type="CheckButton" parent="MainMargin/MainHBox/SideMenuVBox"]
+unique_name_in_owner = true
 layout_mode = 2
-disabled = true
 button_pressed = true
 text = "Editing
 Lock"
@@ -399,7 +400,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = ExtResource("2_eeg3c")
+theme = ExtResource("9_o5o1x")
 columns = 2
 script = ExtResource("6_j3l32")
 
@@ -490,6 +491,7 @@ layout_mode = 2
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/MonthlyButton" to="." method="_on_monthly_button_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/WeeklyButton" to="." method="_on_weekly_button_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/DailyButton" to="." method="_on_daily_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/EditingLockButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_editing_lock_button_toggled"]
 [connection signal="pressed" from="MainMargin/MainHBox/SideMenuVBox/SortTasksButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_sort_tasks_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/SaveWarningButton" to="." method="_on_save_warning_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TaskAddPanel/TaskAddMargin/HBox/AddTaskButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_add_task_button_pressed"]

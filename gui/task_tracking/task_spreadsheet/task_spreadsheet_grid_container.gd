@@ -11,6 +11,10 @@ extends GridContainer
 @onready var multi_text_popup_center: CenterContainer = %MultiTextPopupCenter
 @onready var task_label: Label = %TaskLabel
 @onready var text_edit: TextEdit = %TextEdit
+@onready var editing_lock_button: CheckButton = %EditingLockButton
+@onready var checkbox_apply_toggle: Button = %CheckboxApplyToggle
+@onready var checkbox_inspect_toggle: Button = %CheckboxInspectToggle
+
 
 var checkbox_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/checkbox_cell.tscn")
 var dropdown_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/dropdown_cell.tscn")
@@ -56,6 +60,7 @@ func _ready() -> void:
 	ready_connections()
 	close_new_task_panel()
 	get_dropdown_items_from_global()
+	SignalBus.remote_task_settings_reload.emit()
 	if DataGlobal.settings_file.task_enable_auto_load_default_data:
 		DataGlobal.current_tasksheet_data = DataGlobal.settings_file.task_default_data
 		data_for_spreadsheet = DataGlobal.settings_file.task_default_data
@@ -68,6 +73,7 @@ func _ready() -> void:
 	update_user_profile_dropdown_items()
 	load_existing_data()
 	existing_groups_option_section_picker()
+	editing_lock_button.button_pressed = false
 
 
 func ready_connections() -> void:
@@ -571,3 +577,25 @@ func _on_description_button_pressed(cell_parameter: MultiLineCell) -> void:
 	current_text_edit_cell = cell_parameter
 	task_label.text = cell_parameter.saved_task.name
 	text_edit.text = cell_parameter.saved_task.description
+
+
+func _on_editing_lock_button_toggled(button_pressed: bool) -> void:
+	if not button_pressed:
+		grid_editable(true)
+		editing_lock_button.text = "Editing\nLock Off"
+		checkbox_apply_toggle.disabled = false
+	if button_pressed:
+		grid_editable(false)
+		editing_lock_button.text = "Editing\nLock ON!"
+		checkbox_apply_toggle.disabled = true
+		checkbox_inspect_toggle.button_pressed = true
+
+
+
+func grid_editable(editable_bool: bool) -> void:
+	var current_grid_children = self.get_children()
+	for item_iteration in current_grid_children:
+		if "editable" in item_iteration:
+			item_iteration.editable = editable_bool
+		if item_iteration is Button:
+			item_iteration.disabled = not editable_bool

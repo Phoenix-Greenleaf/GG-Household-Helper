@@ -1,0 +1,51 @@
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://dy4c7wbsik73v"]
+
+[ext_resource type="FontFile" uid="uid://7jukdly5m5dl" path="res://fonts/font_otf/Gidolinya-Regular.otf" id="1_b8mcy"]
+[ext_resource type="StyleBox" uid="uid://bcqpnkgaub5eq" path="res://themes/theme_parts/gg_disabled_button_style_box_flat.tres" id="2_82rag"]
+[ext_resource type="StyleBox" uid="uid://c6mui2b243i00" path="res://themes/theme_parts/diabled_button_full_alpha_style_box_flat.tres" id="2_oures"]
+[ext_resource type="StyleBox" uid="uid://bsl1gnk7iu4ua" path="res://themes/theme_parts/gg_focused_button_style_box_flat.tres" id="3_0r63s"]
+[ext_resource type="StyleBox" uid="uid://bakr6w60xl0kf" path="res://themes/theme_parts/gg_hover_button_style_box_flat.tres" id="4_bhc47"]
+[ext_resource type="StyleBox" uid="uid://brn84anymriv3" path="res://themes/theme_parts/gg_normal_button_style_box_flat.tres" id="5_xewr4"]
+[ext_resource type="StyleBox" uid="uid://cxwys7rfq1ygf" path="res://themes/theme_parts/gg_pressed_button_style_box_flat.tres" id="6_361hm"]
+[ext_resource type="StyleBox" uid="uid://dpu0yb1nqqh5n" path="res://themes/theme_parts/gg_secondary_panel_style_box_flat.tres" id="7_r0rqo"]
+[ext_resource type="StyleBox" uid="uid://dcpfq0xquj5eb" path="res://themes/theme_parts/gg_background_panel_style_box_flat.tres" id="8_ixd1o"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j1wvg"]
+
+[resource]
+Button/colors/font_disabled_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/constants/outline_size = 6
+Button/font_sizes/font_size = 20
+Button/fonts/font = ExtResource("1_b8mcy")
+Button/styles/disabled = ExtResource("2_oures")
+Button/styles/focus = ExtResource("3_0r63s")
+Button/styles/hover = ExtResource("4_bhc47")
+Button/styles/normal = ExtResource("5_xewr4")
+Button/styles/pressed = ExtResource("6_361hm")
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 6
+Label/font_sizes/font_size = 25
+Label/fonts/font = ExtResource("1_b8mcy")
+LineEdit/colors/font_outline_color = Color(0, 0, 0, 1)
+LineEdit/colors/font_uneditable_color = Color(1, 1, 1, 1)
+LineEdit/constants/outline_size = 5
+LineEdit/font_sizes/font_size = 20
+LineEdit/fonts/font = ExtResource("1_b8mcy")
+LineEdit/styles/focus = ExtResource("3_0r63s")
+LineEdit/styles/normal = ExtResource("6_361hm")
+LineEdit/styles/read_only = ExtResource("2_oures")
+Panel/styles/panel = ExtResource("7_r0rqo")
+PanelContainer/styles/panel = SubResource("StyleBoxEmpty_j1wvg")
+PopupMenu/font_sizes/font_size = 25
+PopupMenu/fonts/font = ExtResource("1_b8mcy")
+PopupMenu/styles/panel = ExtResource("4_bhc47")
+ScrollContainer/styles/panel = ExtResource("8_ixd1o")
+TextEdit/colors/font_outline_color = Color(0, 0, 0, 1)
+TextEdit/constants/outline_size = 5
+TextEdit/font_sizes/font_size = 20
+TextEdit/fonts/font = ExtResource("1_b8mcy")
+TextEdit/styles/focus = ExtResource("3_0r63s")
+TextEdit/styles/normal = ExtResource("6_361hm")
+TextEdit/styles/read_only = ExtResource("2_82rag")
+VBoxContainer/constants/separation = 0
