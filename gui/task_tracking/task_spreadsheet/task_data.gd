@@ -67,10 +67,26 @@ func test_print_checkboxes() -> void:
 func generate_month_checkboxes(month, number: int) -> void:
 		for iteration in number:
 			var checkbox_iteration = CheckboxData.new()
-			var checkbox_status = DataGlobal.Checkbox.ACTIVE
-			var checkbox_assigned_user = DataGlobal.default_profile
+			var checkbox_options = new_checkbox_option()
+			var checkbox_status = checkbox_options[0]
+			var checkbox_assigned_user = checkbox_options[1]
 			checkbox_iteration.update_checkbox_data(checkbox_status, checkbox_assigned_user)
 			month_checkbox_dictionary[month].append(checkbox_iteration)
+
+
+func new_checkbox_option() -> Array:
+	var settings: SettingsData = DataGlobal.settings_file
+	var status: DataGlobal.Checkbox = DataGlobal.Checkbox.ACTIVE
+	var user: Array = DataGlobal.default_profile
+	match settings.task_current_new_checkbox_option:
+		settings.NEW_CHECKBOX_OPTION.ACTIVE:
+			pass
+		settings.NEW_CHECKBOX_OPTION.EXPIRED:
+			status = DataGlobal.Checkbox.EXPIRED
+		settings.NEW_CHECKBOX_OPTION.ASSIGNED:
+			if assigned_user:
+				user = assigned_user
+	return [status, user]
 
 
 func print_task_data() -> void:

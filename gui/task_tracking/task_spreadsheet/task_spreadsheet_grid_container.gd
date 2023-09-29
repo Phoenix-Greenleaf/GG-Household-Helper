@@ -73,6 +73,7 @@ func _ready() -> void:
 	update_user_profile_dropdown_items()
 	load_existing_data()
 	existing_groups_option_section_picker()
+	editing_lock_button.button_pressed = true
 	editing_lock_button.button_pressed = false
 
 
@@ -589,7 +590,6 @@ func _on_editing_lock_button_toggled(button_pressed: bool) -> void:
 		editing_lock_button.text = "Editing\nLock ON!"
 		checkbox_apply_toggle.disabled = true
 		checkbox_inspect_toggle.button_pressed = true
-
 
 
 func grid_editable(editable_bool: bool) -> void:

@@ -1,7 +1,7 @@
 extends PanelContainer
 
-@onready var task_set_name_label: Label = $MarginContainer/VBox/TaskSetNameLabel
-@onready var task_set_year_label: Label = $MarginContainer/VBox/TaskSetYearLabel
+@onready var task_set_name_label: Label = %TaskSetNameLabel
+@onready var task_set_year_label: Label = %TaskSetYearLabel
 @onready var functional_button: Button = $FunctionalButton
 
 

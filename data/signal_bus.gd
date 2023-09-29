@@ -16,3 +16,4 @@ signal task_editor_remote_open_data_manager
 signal _on_task_delete_button_primed_and_pressed
 signal remote_active_data_save
 signal remote_task_settings_reload
+

@@ -14,8 +14,6 @@ offset_right = 61.5
 offset_bottom = 26.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 mouse_filter = 2
 script = ExtResource("1_4tmnx")
 
@@ -25,30 +23,33 @@ toggle_mode = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 mouse_filter = 2
 theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 0
+theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
-[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/CenterContainer"]
+layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="TaskSetNameLabel" type="Label" parent="MarginContainer/VBox"]
+[node name="TaskSetNameLabel" type="Label" parent="MarginContainer/CenterContainer/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_vertical = 1
 text = "Task Set Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TaskSetYearLabel" type="Label" parent="MarginContainer/VBox"]
+[node name="TaskSetYearLabel" type="Label" parent="MarginContainer/CenterContainer/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_vertical = 1
 text = "[YEAR]"
 horizontal_alignment = 1
 vertical_alignment = 1

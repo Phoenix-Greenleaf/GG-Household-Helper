@@ -25,7 +25,7 @@ var tasksheet_folder = "user://task_data/"
 var export_folder = "user://exports/"
 
 var safe_lock_active: bool
-var task_button_count: int = 2
+var task_button_count: int = 4
 
 var error_keys: Array = [
 	"OK", #0

@@ -11,8 +11,9 @@ extends PanelContainer
 @onready var delete_task_sheet_button: Button = %DeleteTaskSheetButton
 @onready var reset_default_settings_button: Button = %ResetDefaultSettingsButton
 @onready var deletion_background_panel_container: PanelContainer = %DeletionBackgroundPanelContainer
-@onready var deletion_h_box: HBoxContainer = %DeletionHBox
+@onready var deletion_grid_container: GridContainer = %DeletionGridContainer
 @onready var description_preview_length_spin_box: SpinBox = %DescriptionPreviewLengthSpinBox
+@onready var reset_checkboxes_button: Button = %ResetCheckboxesButton
 
 @onready var data_manager: PanelContainer = $DataManager
 @onready var settings = DataGlobal.settings_file
@@ -94,12 +95,14 @@ func load_deletion_armed_setting() -> void:
 		remove_profile_button.disabled = false
 		purge_profile_data_button.disabled = false
 		delete_task_sheet_button.disabled = false
+		reset_checkboxes_button.disabled = false
 	if not settings.task_enable_deletion_buttons:
 		deletion_safety_check_button.text = "Danger Buttons Disarmed"
 		deletion_safety_check_button.set_pressed_no_signal(false)
 		remove_profile_button.disabled = true
 		purge_profile_data_button.disabled = true
 		delete_task_sheet_button.disabled = true
+		reset_checkboxes_button.disabled = true
 
 
 func load_description_preview_length() -> void:
@@ -230,13 +233,17 @@ func _on_deletion_safety_check_button_toggled(button_pressed: bool) -> void:
 
 func _on_deletion_back_button_pressed() -> void:
 	deletion_background_panel_container.visible = false
-	var deletion_children = deletion_h_box.get_children()
+	var deletion_children = deletion_grid_container.get_children()
 	for child_iteration in deletion_children:
-		deletion_h_box.remove_child(child_iteration)
+		deletion_grid_container.remove_child(child_iteration)
 		child_iteration.queue_free()
 
 
 func _on_remove_profile_button_pressed() -> void:
+	if not DataGlobal.current_tasksheet_data:
+		prints("Remove Profile Error: No data to load profiles from")
+		DataGlobal.button_based_message(remove_profile_button, "Error: No data to load profiles from!")
+		return
 	deletion_background_panel_container.visible = true
 	for profile_iteration in DataGlobal.current_tasksheet_data.user_profiles:
 		create_profile_deathrow_button(profile_iteration, "profile")
@@ -254,7 +261,7 @@ func _on_delete_task_sheet_button_pressed() -> void:
 func create_sheet_data_deathrow_button(target_sheet_data: TaskSpreadsheetData, sheet_data_path: String) -> void:
 	var deathrow_button : Button = Button.new()
 	var type: String = "sheet data"
-	deletion_h_box.add_child(deathrow_button)
+	deletion_grid_container.add_child(deathrow_button)
 	var loaded_name: String = target_sheet_data.spreadsheet_title
 	var loaded_year := str(target_sheet_data.spreadsheet_year)
 	deathrow_button.text = loaded_name + "\n" + loaded_year
@@ -264,7 +271,7 @@ func create_sheet_data_deathrow_button(target_sheet_data: TaskSpreadsheetData, s
 
 func create_profile_deathrow_button(target_profile: Array, type: String) -> void:
 	var deathrow_button : Button = Button.new()
-	deletion_h_box.add_child(deathrow_button)
+	deletion_grid_container.add_child(deathrow_button)
 	deathrow_button.text = target_profile[0]
 	deathrow_button.add_theme_color_override("font_color", target_profile[1])
 	deathrow_button.pressed.connect(_on_deathrow_button_pressed.bind(deathrow_button, type, target_profile))
@@ -292,6 +299,10 @@ func _on_deathrow_button_pressed(pressed_button: Button, remove_type: String, ta
 
 
 func _on_purge_profile_data_button_pressed() -> void:
+	if not DataGlobal.current_tasksheet_data:
+		prints("Purge Profile Data Error: No data to load profiles from")
+		DataGlobal.button_based_message(purge_profile_data_button, "Error: No data to load profiles from!")
+		return
 	deletion_background_panel_container.visible = true
 	full_scan()
 	for scanned_profile_iteration in scanned_profiles:
@@ -312,3 +323,32 @@ func _on_unload_current_data_button_pressed() -> void:
 	if DataGlobal.settings_file.task_enable_auto_load_default_data:
 		DataGlobal.settings_file.task_enable_auto_load_default_data = false
 	reload_settings()
+
+
+func _on_reset_checkboxes_button_pressed() -> void:
+	if reset_checkboxes_button.text == "Reset Current Checkboxes":
+		DataGlobal.button_based_message(reset_checkboxes_button, "CONFIRM Clear and Reset?", 5)
+		return
+	if reset_checkboxes_button.text == "CONFIRM Clear and Reset?":
+		reset_checkboxes_button.text = "Reset Current Checkboxes"
+		regen_all_checkboxes()
+		data_manager.save_current_tasksheet()
+		DataGlobal.button_based_message(reset_checkboxes_button, "RESET SUCCESSFUL!")
+
+
+
+func regen_all_checkboxes() -> void:
+	prints("Checkbox Regen Signal recieved")
+	regen_section_checkboxes(DataGlobal.current_tasksheet_data.spreadsheet_year_data)
+	regen_section_checkboxes(DataGlobal.current_tasksheet_data.spreadsheet_month_data)
+	regen_section_checkboxes(DataGlobal.current_tasksheet_data.spreadsheet_week_data)
+	regen_section_checkboxes(DataGlobal.current_tasksheet_data.spreadsheet_day_data)
+
+
+func regen_section_checkboxes(section) -> void:
+	for task_data in section:
+		var month_checkbox_dictionary = task_data.month_checkbox_dictionary
+		for month_iteration in month_checkbox_dictionary:
+			task_data.month_checkbox_dictionary[month_iteration].clear()
+		task_data.generate_all_checkboxes()
+

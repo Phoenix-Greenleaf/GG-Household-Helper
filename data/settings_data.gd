@@ -2,10 +2,11 @@ extends Resource
 
 class_name SettingsData
 
+enum NEW_CHECKBOX_OPTION {ACTIVE, EXPIRED, ASSIGNED}
+
 @export var task_enable_auto_load_default_data: bool
 @export var task_default_data: TaskSpreadsheetData
 @export var task_enable_deletion_buttons: bool
-enum NEW_CHECKBOX_OPTION {ACTIVE, EXPIRED, ASSIGNED}
 @export var task_current_new_checkbox_option: NEW_CHECKBOX_OPTION
 @export var task_description_preview_length: int
 
