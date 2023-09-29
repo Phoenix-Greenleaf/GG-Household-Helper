@@ -9,6 +9,8 @@ enum NEW_CHECKBOX_OPTION {ACTIVE, EXPIRED, ASSIGNED}
 @export var task_enable_deletion_buttons: bool
 @export var task_current_new_checkbox_option: NEW_CHECKBOX_OPTION
 @export var task_description_preview_length: int
+@export var task_reset_current_checkboxes_section: int
+@export var task_reset_current_checkboxes_month: int
 
 
 func reset_all_default_settings() -> void:
@@ -22,4 +24,6 @@ func reset_task_tracking_settings() -> void:
 	task_enable_deletion_buttons = false
 	task_current_new_checkbox_option = NEW_CHECKBOX_OPTION.ASSIGNED
 	task_description_preview_length = 50
+	task_reset_current_checkboxes_section = 0
+	task_reset_current_checkboxes_month = 0
 	prints("Task Tracking Settings reset to defaults.")

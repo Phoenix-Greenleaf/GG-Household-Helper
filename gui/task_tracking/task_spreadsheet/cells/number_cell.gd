@@ -12,10 +12,10 @@ func _ready() -> void:
 func update_active_data(number_parameter: float) -> void:
 	var int_number: int = number_parameter as int
 	match saved_type:
-		"Units Per Cycle":
+		"Units/Cycle":
 			saved_task.units_per_cycle = int_number
-		"Units Added When Skipped":
-			saved_task.units_added_when_skipped = int_number
+		"Schedule Start":
+			saved_task.scheduling_start = int_number
 		_:
 			prints("SpinBox active data update failed")
 			return

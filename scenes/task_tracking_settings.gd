@@ -14,6 +14,8 @@ extends PanelContainer
 @onready var deletion_grid_container: GridContainer = %DeletionGridContainer
 @onready var description_preview_length_spin_box: SpinBox = %DescriptionPreviewLengthSpinBox
 @onready var reset_checkboxes_button: Button = %ResetCheckboxesButton
+@onready var reset_checkboxes_section_option_button: OptionButton = %ResetCheckboxesSectionOptionButton
+@onready var reset_checkboxes_month_option_button: OptionButton = %ResetCheckboxesMonthOptionButton
 
 @onready var data_manager: PanelContainer = $DataManager
 @onready var settings = DataGlobal.settings_file
@@ -48,6 +50,7 @@ func load_all_settings() -> void:
 	load_new_checkbox_setting()
 	load_deletion_armed_setting()
 	load_description_preview_length()
+	load_reset_current_checkbox_options()
 	reset_buttons()
 
 
@@ -96,6 +99,8 @@ func load_deletion_armed_setting() -> void:
 		purge_profile_data_button.disabled = false
 		delete_task_sheet_button.disabled = false
 		reset_checkboxes_button.disabled = false
+		reset_checkboxes_section_option_button.disabled = false
+		reset_checkboxes_month_option_button.disabled = false
 	if not settings.task_enable_deletion_buttons:
 		deletion_safety_check_button.text = "Danger Buttons Disarmed"
 		deletion_safety_check_button.set_pressed_no_signal(false)
@@ -103,11 +108,12 @@ func load_deletion_armed_setting() -> void:
 		purge_profile_data_button.disabled = true
 		delete_task_sheet_button.disabled = true
 		reset_checkboxes_button.disabled = true
+		reset_checkboxes_section_option_button.disabled = true
+		reset_checkboxes_month_option_button.disabled = true
 
 
 func load_description_preview_length() -> void:
 	description_preview_length_spin_box.set_value_no_signal(settings.task_description_preview_length)
-	
 
 
 func reset_buttons() -> void:
@@ -352,3 +358,24 @@ func regen_section_checkboxes(section) -> void:
 			task_data.month_checkbox_dictionary[month_iteration].clear()
 		task_data.generate_all_checkboxes()
 
+
+func load_reset_current_checkbox_options() -> void:
+	reset_checkboxes_section_option_button.select(settings.task_reset_current_checkboxes_section)
+	match settings.task_reset_current_checkboxes_section:
+		0, 1, 2:
+			settings.task_reset_current_checkboxes_month = 0
+			reset_checkboxes_month_option_button.disabled = true
+		_:
+			pass
+	reset_checkboxes_month_option_button.select(settings.task_reset_current_checkboxes_month)
+
+
+func _on_reset_checkboxes_section_option_button_item_selected(index: int) -> void:
+	DataGlobal.settings_file.task_reset_current_checkboxes_section = index
+	prints("Reset Checkboxes Section selected:", reset_checkboxes_section_option_button.get_item_text(index), index)
+	reload_settings()
+
+func _on_reset_checkboxes_month_option_button_item_selected(index: int) -> void:
+	DataGlobal.settings_file.task_reset_current_checkboxes_month = index
+	prints("Reset Checkboxes Month selected:", reset_checkboxes_month_option_button.get_item_text(index), index)
+	reload_settings()

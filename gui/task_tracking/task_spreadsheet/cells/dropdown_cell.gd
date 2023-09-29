@@ -4,7 +4,6 @@ extends OptionButton
 @export var saved_type: String
 
 
-
 var section: Array = [
 	DataGlobal.Section.YEARLY,
 	DataGlobal.Section.MONTHLY,

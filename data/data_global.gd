@@ -48,7 +48,6 @@ enum Priority {
 	MAX_PRIORITY_OVERRIDE,
 }
 
-
 enum CheckboxToggle {
 	APPLY,
 	INSPECT

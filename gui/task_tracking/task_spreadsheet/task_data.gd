@@ -13,15 +13,14 @@ class_name TaskData
 @export var time_of_day: DataGlobal.TimeOfDay
 @export var priority: DataGlobal.Priority
 @export var location: String
-@export var time_unit: String
+@export var scheduling_start: int
 @export var units_per_cycle: int
-@export var units_added_when_skipped: int
-@export var last_completed: String
 @export var task_year: int
 @export var month_checkbox_dictionary: Dictionary
 @export var description: String
 
-
+var scheduling_array: Array
+var currently_scheduling: int
 
 
 func offbrand_init(name_parameter, section_parameter, group_parameter) -> void:
@@ -32,7 +31,6 @@ func offbrand_init(name_parameter, section_parameter, group_parameter) -> void:
 	previous_group = group_parameter
 	generate_month_dictionary()
 	generate_all_checkboxes()
-
 
 
 func generate_month_dictionary() -> void:
@@ -57,12 +55,8 @@ func generate_all_checkboxes() -> void:
 			for month_iteration in month_checkbox_dictionary:
 				var days: int = DataGlobal.days_in_month_finder(month_iteration, task_year)
 				generate_month_checkboxes(month_iteration, days)
+	apply_scheduling()
 
-func test_print_checkboxes() -> void:
-	print()
-	prints("Task data", name, "checkbox check:")
-	for month_iteration in month_checkbox_dictionary:
-		prints("Iteration:", month_iteration, month_checkbox_dictionary[month_iteration].size())
 
 func generate_month_checkboxes(month, number: int) -> void:
 		for iteration in number:
@@ -89,18 +83,57 @@ func new_checkbox_option() -> Array:
 	return [status, user]
 
 
+func apply_scheduling() -> void:
+	scheduling_array.clear()
+	currently_scheduling = 1
+	if scheduling_start == 0:
+		return
+	match section:
+		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+			generate_schedule(12)
+			for month_iteration in month_checkbox_dictionary:
+				blackout_unscheduled(month_iteration)
+		DataGlobal.Section.WEEKLY:
+			generate_schedule(5)
+			for month_iteration in month_checkbox_dictionary:
+				blackout_unscheduled(month_iteration)
+		DataGlobal.Section.DAILY:
+			generate_schedule(31)
+			for month_iteration in month_checkbox_dictionary:
+				blackout_unscheduled(month_iteration)
+
+
+func blackout_unscheduled(month_parameter) -> void:
+	for data_iteration in month_checkbox_dictionary[month_parameter]:
+		if currently_scheduling in scheduling_array:
+			currently_scheduling += 1
+			continue
+		data_iteration.checkbox_status = DataGlobal.Checkbox.EXPIRED
+		data_iteration.assigned_user = DataGlobal.default_profile
+		currently_scheduling += 1
+
+
+func generate_schedule(schedule_length: int) -> void:
+	var schedule_iteration = scheduling_start
+	if units_per_cycle < 1:
+		units_per_cycle = 1
+	while schedule_iteration <= schedule_length:
+		scheduling_array.append(schedule_iteration)
+		schedule_iteration += units_per_cycle
+	prints("Schedule:", scheduling_array)
+
+
 func print_task_data() -> void:
+	prints("\nPrinting Task Data:")
 	prints("Data for task:", name)
 	prints("Section:", enum_uno_reverse(section, DataGlobal.Section))
 	prints("Group:", group)
-	prints("User:", assigned_user[0])
+	prints("Assigned User:", assigned_user[0])
 	prints("Time of day:", enum_uno_reverse(time_of_day, DataGlobal.TimeOfDay))
 	prints("Priority:", enum_uno_reverse(priority, DataGlobal.Priority))
 	prints("Location:", location)
-	prints("Time Unit:", time_unit)
+	prints("Scheduling Start:", scheduling_start)
 	prints("Units per cycle:", units_per_cycle)
-	prints("Units added when skipped:", units_added_when_skipped)
-	prints("ISO of last completion:", last_completed)
 	prints("Year:", task_year)
 	prints("Checkbox count by month:")
 	for month_iteration in month_checkbox_dictionary:

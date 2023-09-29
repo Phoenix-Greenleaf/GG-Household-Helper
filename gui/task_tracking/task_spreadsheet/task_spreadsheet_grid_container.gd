@@ -28,12 +28,12 @@ var blank_counter: int = 0
 var section_dropdown_items: Array
 var time_of_day_dropdown_items: Array
 var priority_dropdown_items: Array
+var user_profiles_dropdown_items: Array
 var full_header_size: int 
 var info_header_size: int
 var checkbox_header_size: int
 var current_task: TaskData
 var current_focus: Control
-var user_profiles_dropdown_items: Array
 var current_text_edit_cell: MultiLineCell
 
 var last_main_cell_position = 3
@@ -46,11 +46,9 @@ var header_cell_array: Array = [
 	"Time Of Day", #6
 	"Priority", #7
 	"Location", #8
-	"Cycle Time Unit", #9
-	"Time Units Per Cycle", #10
-	"Time Units Added When Skipped", #11
-	"Last Completed", #12
-	"Delete Task", #13
+	"Schedule Start", #9
+	"Units/Cycle", #10
+	"Delete Task", #11
 ]
 
 
@@ -347,22 +345,18 @@ func set_grid_columns() -> void:
 
 
 func create_task_row_cells() -> void: #task "physical" nodes, display side
-	
 	create_text_cell(current_task.name, "Task Name")  #1
 	create_dropdown_cell(section_dropdown_items, current_task.section, "Section") #2
 	create_text_cell(current_task.group, "Group") #3
 	var info = "Info"
-	
 	create_dropdown_cell(user_profiles_dropdown_items, current_task.assigned_user, "Assigned User", info) #4
 	create_multi_line_cell(current_task.description, info) #5
 	create_dropdown_cell(time_of_day_dropdown_items, current_task.time_of_day, "Time Of Day", info) #6
 	create_dropdown_cell(priority_dropdown_items, current_task.priority, "Priority", info) #7
 	create_text_cell(current_task.location, "Location", info) #8
-	create_text_cell(current_task.time_unit, "Cycle Time Unit", info) #9
-	create_number_cell(current_task.units_per_cycle, "Units Per Cycle", info) #10
-	create_number_cell(current_task.units_added_when_skipped, "Units Added When Skipped", info) #11
-	create_text_cell(current_task.last_completed, "Last Completed",  info) #12
-	create_delete_task_cell("Delete Task", info) #13
+	create_number_cell(current_task.scheduling_start, "Schedule Start", info) #9
+	create_number_cell(current_task.units_per_cycle, "Units/Cycle", info) #10
+	create_delete_task_cell("Delete Task", info) #11
 	var checkbox = "Checkbox"
 	var checkbox_position = 1
 	match current_task.section:
@@ -541,14 +535,6 @@ func return_data_to_sender(data, return_address) -> void:
 	prints("Sender:", return_address)
 	return_address = data
 
-
-#func assignment_finder() -> String: #Pretty sure this can be deleted
-#	var assignment: String
-#	if current_task.assigned_user:
-#		assignment = current_task.assigned_user[0]
-#	else:
-#		assignment = "No Assignment"
-#	return assignment
 
 
 func update_user_profile_dropdown_items() -> void:
