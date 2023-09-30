@@ -16,7 +16,7 @@ enum Section {
 }
 
 enum Month {
-	NONE,
+	ALL,
 	JANUARY,
 	FEBRUARY,
 	MARCH,
@@ -68,7 +68,7 @@ var focus_checkbox_state: int
 var focus_checkbox_profile: Array
 
 var current_toggled_section: Section = Section.YEARLY
-var current_toggled_month: String = "January"
+var current_toggled_month: Month = Month.JANUARY
 var current_toggled_editor_mode: int = editor_modes["Checkbox"]
 var current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
 

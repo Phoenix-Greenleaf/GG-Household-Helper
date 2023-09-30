@@ -26,6 +26,7 @@ func update_active_data() -> void:
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
 			day_and_week_updater()
 	SignalBus.trigger_save_warning.emit()
+	prints("CheckboxCell", saved_task.name, saved_position, "func update_active_data emits 'trigger_save_warning'")
 
 
 func year_and_month_updater() -> void: 
@@ -39,8 +40,9 @@ func year_and_month_updater() -> void:
 
 func day_and_week_updater() -> void: 
 	var current_month = DataGlobal.current_toggled_month
+	var month_key = DataGlobal.Month.find_key(current_month).capitalize()
 	var current_position = saved_position - 1 
-	var current_data: CheckboxData = saved_task.month_checkbox_dictionary[current_month][current_position]
+	var current_data: CheckboxData = saved_task.month_checkbox_dictionary[month_key][current_position]
 	current_data.checkbox_status = saved_state
 	current_data.assigned_user = saved_profile
 	prints("Active data for checkbox", saved_position, "saved!")

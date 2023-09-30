@@ -117,6 +117,7 @@ func create_new_profile(profile_name: String, profile_color: Color) -> void:
 	DataGlobal.current_tasksheet_data.user_profiles.append(new_profile)
 	add_profile(new_profile)
 	SignalBus.trigger_save_warning.emit()
+	prints(self, "func create_new_profile emits 'trigger_save_warning'")
 
 
 func connect_paired_menu_button() -> void:

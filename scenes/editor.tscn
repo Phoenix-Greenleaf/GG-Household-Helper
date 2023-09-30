@@ -97,6 +97,7 @@ text = "Editor Mode"
 horizontal_alignment = 1
 
 [node name="InfoModeButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_eeg3c")
 toggle_mode = true
@@ -104,6 +105,7 @@ button_group = ExtResource("2_ludcj")
 text = "Info Mode"
 
 [node name="CheckboxModeButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_eeg3c")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -167,6 +169,7 @@ text = "Section"
 horizontal_alignment = 1
 
 [node name="YearlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_eeg3c")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -177,6 +180,7 @@ button_group = ExtResource("2_rjskt")
 text = "Yearly"
 
 [node name="MonthlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_eeg3c")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -186,6 +190,7 @@ button_group = ExtResource("2_rjskt")
 text = "Monthly"
 
 [node name="WeeklyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_eeg3c")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -195,6 +200,7 @@ button_group = ExtResource("2_rjskt")
 text = "Weekly"
 
 [node name="DailyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_eeg3c")
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -370,12 +376,18 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Add Task"
 
+[node name="VSeparator6" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+layout_mode = 2
+
 [node name="TaskTitleLineEdit" type="LineEdit" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "Task Title"
 expand_to_text_length = true
 clear_button_enabled = true
+
+[node name="VSeparator5" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+layout_mode = 2
 
 [node name="TaskGroupLineEdit" type="LineEdit" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
 unique_name_in_owner = true
@@ -392,6 +404,41 @@ selected = 0
 fit_to_longest_item = false
 popup/item_0/text = "Existing Groups"
 popup/item_0/id = 0
+
+[node name="VSeparator4" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+layout_mode = 2
+item_count = 1
+selected = 0
+popup/item_0/text = "No Assigned User"
+popup/item_0/id = 0
+
+[node name="VSeparator3" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+layout_mode = 2
+text = "Schedule Start:"
+
+[node name="SpinBox" type="SpinBox" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+layout_mode = 2
+text = "Units per Cycle:"
+
+[node name="SpinBox2" type="SpinBox" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+layout_mode = 2
 
 [node name="AcceptNewTaskButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
 unique_name_in_owner = true

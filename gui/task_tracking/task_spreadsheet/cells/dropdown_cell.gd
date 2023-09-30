@@ -64,3 +64,4 @@ func _on_dropdown_item_selected(index_parameter) -> void:
 			prints("OptionButton active data update failed")
 			return
 	SignalBus.trigger_save_warning.emit()
+	prints("DropdownCell", saved_task.name, "func _on_dropdown_item_selected emits 'trigger_save_warning'")

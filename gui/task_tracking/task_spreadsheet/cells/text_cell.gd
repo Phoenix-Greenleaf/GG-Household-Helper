@@ -26,3 +26,4 @@ func update_active_data(text_parameter) -> void:
 			prints("LineEdit active data update failed")
 			return
 	SignalBus.trigger_save_warning.emit()
+	prints("TextCell", saved_task.name, "func update_active_data emits 'trigger_save_warning'")

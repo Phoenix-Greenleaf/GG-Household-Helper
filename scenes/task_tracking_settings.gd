@@ -272,7 +272,6 @@ func create_sheet_data_deathrow_button(target_sheet_data: TaskSpreadsheetData, s
 	var loaded_year := str(target_sheet_data.spreadsheet_year)
 	deathrow_button.text = loaded_name + "\n" + loaded_year
 	deathrow_button.pressed.connect(_on_deathrow_button_pressed.bind(deathrow_button, type, sheet_data_path))
-	
 
 
 func create_profile_deathrow_button(target_profile: Array, type: String) -> void:
@@ -301,7 +300,6 @@ func _on_deathrow_button_pressed(pressed_button: Button, remove_type: String, ta
 				DataGlobal.current_tasksheet_data = null
 			reload_settings()
 			OS.move_to_trash(ProjectSettings.globalize_path(target))
-			
 
 
 func _on_purge_profile_data_button_pressed() -> void:
@@ -317,7 +315,6 @@ func _on_purge_profile_data_button_pressed() -> void:
 
 func _on_description_preview_length_spin_box_value_changed(value: float) -> void:
 	var int_value = value as int
-	prints("Preview Length:", int_value)
 	DataGlobal.settings_file.task_description_preview_length = int_value
 	reload_settings()
 
@@ -333,7 +330,7 @@ func _on_unload_current_data_button_pressed() -> void:
 
 func _on_reset_checkboxes_button_pressed() -> void:
 	if reset_checkboxes_button.text == "Reset Current Checkboxes":
-		DataGlobal.button_based_message(reset_checkboxes_button, "CONFIRM Clear and Reset?", 5)
+		DataGlobal.button_based_message(reset_checkboxes_button, "CONFIRM Clear and Reset?", 6)
 		return
 	if reset_checkboxes_button.text == "CONFIRM Clear and Reset?":
 		reset_checkboxes_button.text = "Reset Current Checkboxes"
@@ -345,18 +342,66 @@ func _on_reset_checkboxes_button_pressed() -> void:
 
 func regen_all_checkboxes() -> void:
 	prints("Checkbox Regen Signal recieved")
-	regen_section_checkboxes(DataGlobal.current_tasksheet_data.spreadsheet_year_data)
-	regen_section_checkboxes(DataGlobal.current_tasksheet_data.spreadsheet_month_data)
-	regen_section_checkboxes(DataGlobal.current_tasksheet_data.spreadsheet_week_data)
-	regen_section_checkboxes(DataGlobal.current_tasksheet_data.spreadsheet_day_data)
+	if settings.task_reset_current_checkboxes_section == 0 or settings.task_reset_current_checkboxes_section == 1: 
+		regen_section_checkboxes(DataGlobal.current_tasksheet_data.spreadsheet_year_data)
+		prints("Year Regened")
+	if settings.task_reset_current_checkboxes_section == 0 or settings.task_reset_current_checkboxes_section == 2: 
+		regen_section_checkboxes(DataGlobal.current_tasksheet_data.spreadsheet_month_data)
+		prints("Month Regened")
+	if settings.task_reset_current_checkboxes_section == 0 or settings.task_reset_current_checkboxes_section == 3: 
+		regen_section_checkboxes(DataGlobal.current_tasksheet_data.spreadsheet_week_data)
+		prints("Week Regened")
+	if settings.task_reset_current_checkboxes_section == 0 or settings.task_reset_current_checkboxes_section == 4: 
+		regen_section_checkboxes(DataGlobal.current_tasksheet_data.spreadsheet_day_data)
+		prints("Day Regened")
 
 
 func regen_section_checkboxes(section) -> void:
 	for task_data in section:
 		var month_checkbox_dictionary = task_data.month_checkbox_dictionary
 		for month_iteration in month_checkbox_dictionary:
-			task_data.month_checkbox_dictionary[month_iteration].clear()
+			match month_iteration:
+				"All":
+					continue
+				"January":
+					if settings.task_reset_current_checkboxes_month == 0 or settings.task_reset_current_checkboxes_month == 1:
+						task_data.month_checkbox_dictionary[month_iteration].clear()
+				"February":
+					if settings.task_reset_current_checkboxes_month == 0 or settings.task_reset_current_checkboxes_month == 2:
+						task_data.month_checkbox_dictionary[month_iteration].clear()
+				"March":
+					if settings.task_reset_current_checkboxes_month == 0 or settings.task_reset_current_checkboxes_month == 3:
+						task_data.month_checkbox_dictionary[month_iteration].clear()
+				"April":
+					if settings.task_reset_current_checkboxes_month == 0 or settings.task_reset_current_checkboxes_month == 4:
+						task_data.month_checkbox_dictionary[month_iteration].clear()
+				"May":
+					if settings.task_reset_current_checkboxes_month == 0 or settings.task_reset_current_checkboxes_month == 5:
+						task_data.month_checkbox_dictionary[month_iteration].clear()
+				"June":
+					if settings.task_reset_current_checkboxes_month == 0 or settings.task_reset_current_checkboxes_month == 6:
+						task_data.month_checkbox_dictionary[month_iteration].clear()
+				"July":
+					if settings.task_reset_current_checkboxes_month == 0 or settings.task_reset_current_checkboxes_month == 7:
+						task_data.month_checkbox_dictionary[month_iteration].clear()
+				"August":
+					if settings.task_reset_current_checkboxes_month == 0 or settings.task_reset_current_checkboxes_month == 8:
+						task_data.month_checkbox_dictionary[month_iteration].clear()
+				"September":
+					if settings.task_reset_current_checkboxes_month == 0 or settings.task_reset_current_checkboxes_month == 9:
+						task_data.month_checkbox_dictionary[month_iteration].clear()
+				"October":
+					if settings.task_reset_current_checkboxes_month == 0 or settings.task_reset_current_checkboxes_month == 10:
+						task_data.month_checkbox_dictionary[month_iteration].clear()
+				"November":
+					if settings.task_reset_current_checkboxes_month == 0 or settings.task_reset_current_checkboxes_month == 11:
+						task_data.month_checkbox_dictionary[month_iteration].clear()
+				"December":
+					if settings.task_reset_current_checkboxes_month == 0 or settings.task_reset_current_checkboxes_month == 12:
+						task_data.month_checkbox_dictionary[month_iteration].clear()
 		task_data.generate_all_checkboxes()
+
+
 
 
 func load_reset_current_checkbox_options() -> void:

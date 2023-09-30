@@ -27,6 +27,8 @@ func offbrand_init(name_parameter, section_parameter, group_parameter) -> void:
 	name = name_parameter
 	section = section_parameter
 	group = group_parameter
+	task_year = DataGlobal.current_tasksheet_data.spreadsheet_year
+	prints("offbrand init year:", task_year)
 	previous_section = section_parameter
 	previous_group = group_parameter
 	generate_month_dictionary()
@@ -38,34 +40,46 @@ func generate_month_dictionary() -> void:
 		prints("Month Dictionary already exists")
 		return
 	for month in DataGlobal.month_strings:
-		if month == "None":
-			continue
-		month_checkbox_dictionary[month] = []
+		var capital_month = month.capitalize()
+		month_checkbox_dictionary[capital_month] = []
 
 
 func generate_all_checkboxes() -> void:
+	scheduling_array.clear()
+	currently_scheduling = 1
 	match section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+			generate_schedule(12)
 			for month_iteration in month_checkbox_dictionary:
+				if month_iteration == "All":
+					continue
 				generate_month_checkboxes(month_iteration, 1)
 		DataGlobal.Section.WEEKLY:
+			generate_schedule(5)
 			for month_iteration in month_checkbox_dictionary:
+				if month_iteration == "All":
+					continue
 				generate_month_checkboxes(month_iteration, 5)
 		DataGlobal.Section.DAILY:
+			generate_schedule(31)
 			for month_iteration in month_checkbox_dictionary:
+				if month_iteration == "All":
+					continue
 				var days: int = DataGlobal.days_in_month_finder(month_iteration, task_year)
 				generate_month_checkboxes(month_iteration, days)
-	apply_scheduling()
 
 
 func generate_month_checkboxes(month, number: int) -> void:
-		for iteration in number:
-			var checkbox_iteration = CheckboxData.new()
-			var checkbox_options = new_checkbox_option()
-			var checkbox_status = checkbox_options[0]
-			var checkbox_assigned_user = checkbox_options[1]
-			checkbox_iteration.update_checkbox_data(checkbox_status, checkbox_assigned_user)
-			month_checkbox_dictionary[month].append(checkbox_iteration)
+	if month_checkbox_dictionary[month].size() != 0:
+		return
+	for iteration in number:
+		var checkbox_iteration = CheckboxData.new()
+		var checkbox_options = new_checkbox_option()
+		var checkbox_status = checkbox_options[0]
+		var checkbox_assigned_user = checkbox_options[1]
+		checkbox_iteration.update_checkbox_data(checkbox_status, checkbox_assigned_user)
+		month_checkbox_dictionary[month].append(checkbox_iteration)
+	blackout_unscheduled(month)
 
 
 func new_checkbox_option() -> Array:
@@ -83,27 +97,10 @@ func new_checkbox_option() -> Array:
 	return [status, user]
 
 
-func apply_scheduling() -> void:
-	scheduling_array.clear()
-	currently_scheduling = 1
-	if scheduling_start == 0:
-		return
-	match section:
-		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
-			generate_schedule(12)
-			for month_iteration in month_checkbox_dictionary:
-				blackout_unscheduled(month_iteration)
-		DataGlobal.Section.WEEKLY:
-			generate_schedule(5)
-			for month_iteration in month_checkbox_dictionary:
-				blackout_unscheduled(month_iteration)
-		DataGlobal.Section.DAILY:
-			generate_schedule(31)
-			for month_iteration in month_checkbox_dictionary:
-				blackout_unscheduled(month_iteration)
-
-
 func blackout_unscheduled(month_parameter) -> void:
+	if scheduling_start == 0:
+		prints("No scheduling")
+		return
 	for data_iteration in month_checkbox_dictionary[month_parameter]:
 		if currently_scheduling in scheduling_array:
 			currently_scheduling += 1
@@ -114,13 +111,14 @@ func blackout_unscheduled(month_parameter) -> void:
 
 
 func generate_schedule(schedule_length: int) -> void:
+	if scheduling_start == 0:
+		return
 	var schedule_iteration = scheduling_start
 	if units_per_cycle < 1:
 		units_per_cycle = 1
 	while schedule_iteration <= schedule_length:
 		scheduling_array.append(schedule_iteration)
 		schedule_iteration += units_per_cycle
-	prints("Schedule:", scheduling_array)
 
 
 func print_task_data() -> void:

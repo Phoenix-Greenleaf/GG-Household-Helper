@@ -13,6 +13,14 @@ extends Control
 @onready var add_task_button: Button = %AddTaskButton
 @onready var multi_text_popup_center: CenterContainer = %MultiTextPopupCenter
 @onready var text_edit: TextEdit = %TextEdit
+@onready var yearly_button: Button = %YearlyButton
+@onready var monthly_button: Button = %MonthlyButton
+@onready var weekly_button: Button = %WeeklyButton
+@onready var daily_button: Button = %DailyButton
+@onready var checkbox_apply_toggle: Button = %CheckboxApplyToggle
+@onready var checkbox_inspect_toggle: Button = %CheckboxInspectToggle
+@onready var info_mode_button: Button = %InfoModeButton
+@onready var checkbox_mode_button: Button = %CheckboxModeButton
 
 var last_toggled_month: int = 1
 
@@ -29,6 +37,7 @@ var task_settings_index: int = 1
 func _ready() -> void:
 	connection_cental()
 	set_current_date_label()
+	set_buttons()
 	print_ready()
 	add_task_button.disabled = true
 	popup.hide_on_item_selection = false
@@ -70,6 +79,54 @@ func connect_menu_button_popup() -> void:
 func get_save_safety_group_nodes() -> void: 
 	save_safety_nodes = get_tree().get_nodes_in_group("save_safety")
 
+
+func set_buttons() -> void:
+	set_section_buttons()
+	set_checkbox_mode_buttons()
+	set_editor_mode_buttons()
+	set_month_selection_menu()
+
+
+func set_section_buttons() -> void:
+	yearly_button.set_pressed_no_signal(false)
+	monthly_button.set_pressed_no_signal(false)
+	weekly_button.set_pressed_no_signal(false)
+	daily_button.set_pressed_no_signal(false)
+	match DataGlobal.current_toggled_section:
+		DataGlobal.Section.YEARLY:
+			yearly_button.set_pressed_no_signal(true)
+		DataGlobal.Section.MONTHLY:
+			monthly_button.set_pressed_no_signal(true)
+		DataGlobal.Section.WEEKLY:
+			weekly_button.set_pressed_no_signal(true)
+		DataGlobal.Section.DAILY:
+			daily_button.set_pressed_no_signal(true)
+
+
+func set_checkbox_mode_buttons() -> void:
+	checkbox_apply_toggle.set_pressed_no_signal(false)
+	checkbox_inspect_toggle.set_pressed_no_signal(false)
+	match DataGlobal.current_toggled_checkbox_mode:
+		DataGlobal.CheckboxToggle.APPLY:
+			checkbox_apply_toggle.set_pressed_no_signal(true)
+		DataGlobal.CheckboxToggle.INSPECT:
+			checkbox_inspect_toggle.set_pressed_no_signal(true)
+
+
+func set_editor_mode_buttons() -> void:
+	info_mode_button.set_pressed_no_signal(false)
+	checkbox_mode_button.set_pressed_no_signal(false)
+	match DataGlobal.current_toggled_editor_mode:
+		1: #"Info"
+			info_mode_button.set_pressed_no_signal(true)
+		0: #"Checkbox"
+			checkbox_mode_button.set_pressed_no_signal(true)
+
+
+func set_month_selection_menu() -> void:
+	var selected_month = DataGlobal.current_toggled_month
+	month_selection_menu_button.text = DataGlobal.month_strings[selected_month]
+	month_selection_menu_popup.set_item_disabled(selected_month, true)
 
 func print_ready() -> void:
 	print("========= Editor Scene Ready! =========")
@@ -176,36 +233,37 @@ func month_menu_button_actions(id: int) -> void:
 	prints("Switching from", old_month, "to", new_month)
 	match id:
 		1:
-			month_menu_switch(1, "January")
+			month_menu_switch(1, DataGlobal.Month.JANUARY)
 		2:
-			month_menu_switch(2, "February")
+			month_menu_switch(2, DataGlobal.Month.FEBRUARY)
 		3:
-			month_menu_switch(3, "March")
+			month_menu_switch(3, DataGlobal.Month.MARCH)
 		4:
-			month_menu_switch(4, "April")
+			month_menu_switch(4, DataGlobal.Month.APRIL)
 		5:
-			month_menu_switch(5, "May")
+			month_menu_switch(5, DataGlobal.Month.MAY)
 		6:
-			month_menu_switch(6, "June")
+			month_menu_switch(6, DataGlobal.Month.JUNE)
 		7:
-			month_menu_switch(7, "July")
+			month_menu_switch(7, DataGlobal.Month.JULY)
 		8:
-			month_menu_switch(8, "August")
+			month_menu_switch(8, DataGlobal.Month.AUGUST)
 		9:
-			month_menu_switch(9, "September")
+			month_menu_switch(9, DataGlobal.Month.SEPTEMBER)
 		10:
-			month_menu_switch(10, "October")
+			month_menu_switch(10, DataGlobal.Month.OCTOBER)
 		11:
-			month_menu_switch(11, "November")
+			month_menu_switch(11, DataGlobal.Month.NOVEMBER)
 		12:
-			month_menu_switch(12, "December")
+			month_menu_switch(12, DataGlobal.Month.DECEMBER)
 	SignalBus._on_editor_month_changed.emit()
 
 
-func month_menu_switch(passed_id: int, month_text: String) -> void:
-			month_selection_menu_button.text = month_text
+func month_menu_switch(passed_id: int, passed_month: DataGlobal.Month) -> void:
+			var month_keys = DataGlobal.Month.keys()
+			month_selection_menu_button.text = month_keys[passed_id].capitalize()
 			month_selection_menu_popup.set_item_disabled(passed_id, true)
-			DataGlobal.current_toggled_month =  month_text
+			DataGlobal.current_toggled_month = passed_month
 			month_selection_menu_popup.set_item_disabled(last_toggled_month, false)
 			last_toggled_month = passed_id
 

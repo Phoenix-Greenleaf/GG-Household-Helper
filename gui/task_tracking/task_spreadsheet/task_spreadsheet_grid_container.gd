@@ -50,7 +50,7 @@ var header_cell_array: Array = [
 	"Units/Cycle", #10
 	"Delete Task", #11
 ]
-
+#var month_dictionary: Dictionary
 
 
 
@@ -69,6 +69,7 @@ func _ready() -> void:
 	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
 	prints("TaskGrid found:", title, ":", year)
 	update_user_profile_dropdown_items()
+#	ready_month_dictionary()
 	load_existing_data()
 	existing_groups_option_section_picker()
 	editing_lock_button.button_pressed = true
@@ -87,8 +88,11 @@ func ready_connections() -> void:
 	SignalBus._on_task_delete_button_primed_and_pressed.connect(delete_task_row)
 
 
-func test_spreadsheet_initialization() -> void:
-	pass
+#func ready_month_dictionary() -> void:
+#	for constant in DataGlobal.Month.keys():
+#		if constant == "NONE":
+#			month_dictionary["All"] = []
+#		month_dictionary[constant.capitalize()] = []
 
 
 func toggle_info_checkbox_modes() -> void:
@@ -274,6 +278,7 @@ func _on_accept_new_task_button_pressed() -> void:
 	new_task_field_reset()
 	toggle_info_checkbox_modes()
 	SignalBus.trigger_save_warning.emit()
+	prints(self, "func _on_accept_new_task_button_pressed emits 'trigger_save_warning'")
 
 
 func create_existing_groups_option_button_items(group) -> void:
@@ -297,12 +302,12 @@ func create_header_row() -> void:
 			create_header_cell(header_cell_array[iteration], "Info")
 	var checkbox = "Checkbox"
 	var current_section = DataGlobal.current_toggled_section
-	var current_month = DataGlobal.current_toggled_month
+	var current_month = DataGlobal.Month.find_key(DataGlobal.current_toggled_month).capitalize()
 	var current_year = DataGlobal.current_tasksheet_data.spreadsheet_year
 	match current_section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
 			for month in DataGlobal.month_strings:
-				if month == "None":
+				if month == "All":
 					continue
 				create_header_cell(month, checkbox)
 		DataGlobal.Section.WEEKLY:
@@ -345,6 +350,7 @@ func set_grid_columns() -> void:
 
 
 func create_task_row_cells() -> void: #task "physical" nodes, display side
+	prints(current_task.name)
 	create_text_cell(current_task.name, "Task Name")  #1
 	create_dropdown_cell(section_dropdown_items, current_task.section, "Section") #2
 	create_text_cell(current_task.group, "Group") #3
@@ -362,7 +368,7 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 	match current_task.section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
 			for month_iteration in current_task.month_checkbox_dictionary:
-				if month_iteration == "None":
+				if month_iteration == "All":
 					continue
 				var checkbox_data: CheckboxData = current_task.month_checkbox_dictionary[month_iteration][0]
 				var checkbox_state: DataGlobal.Checkbox = checkbox_data.checkbox_status
@@ -371,7 +377,9 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 				checkbox_position += 1
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
 			var current_month = DataGlobal.current_toggled_month
-			var current_data: Array = current_task.month_checkbox_dictionary[current_month]
+			var month_key = DataGlobal.Month.find_key(current_month).capitalize()
+			prints("Month Key:", month_key, "   Current month:", current_month)
+			var current_data: Array = current_task.month_checkbox_dictionary[month_key]
 			for checkbox_data in current_data:
 				var checkbox_state: DataGlobal.Checkbox = checkbox_data.checkbox_status
 				var checkbox_user: Array = checkbox_data.assigned_user
@@ -434,7 +442,7 @@ func create_multi_line_cell(multi_text_parameter: String, column_group: String =
 	var cell: Button = multi_line_cell.instantiate()
 	self.add_child(cell)
 	cell.saved_task = current_task
-	cell.update_data(multi_text_parameter)
+	cell.initialize_data(multi_text_parameter)
 	cell.pressed.connect(_on_description_button_pressed.bind(cell))
 	add_cell_to_groups(cell, column_group) 
 
@@ -445,6 +453,7 @@ func create_number_cell(number: int, current_type: String, column_group: String 
 	cell.value = number
 	cell.saved_task = current_task
 	cell.saved_type = current_type
+	cell.connect_spinbox_update()
 	add_cell_to_groups(cell, column_group)
 
 
@@ -484,6 +493,7 @@ func delete_task_row(target_task: TaskData) -> void:
 		DataGlobal.Section.DAILY:
 			DataGlobal.current_tasksheet_data.spreadsheet_day_data.erase(target_task)
 	SignalBus.trigger_save_warning.emit()
+	prints(self, "func delete_task_row emits 'trigger_save_warning'")
 
 
 func _on_focus_changed(control_node:Control) -> void:
@@ -536,11 +546,9 @@ func return_data_to_sender(data, return_address) -> void:
 	return_address = data
 
 
-
 func update_user_profile_dropdown_items() -> void:
 	prints("Updating user profile dropdown.")
 	user_profiles_dropdown_items.clear()
-	prints("Clearned items, size is:", user_profiles_dropdown_items.size())
 	user_profiles_dropdown_items.append(DataGlobal.default_profile)
 	for profile in DataGlobal.current_tasksheet_data.user_profiles:
 		user_profiles_dropdown_items.append(profile)
