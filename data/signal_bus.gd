@@ -17,3 +17,4 @@ signal _on_task_delete_button_primed_and_pressed
 signal remote_active_data_save
 signal remote_task_settings_reload
 signal remote_spreadsheet_grid_reload
+signal _on_update_task_group_dropdown_items_activated

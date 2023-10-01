@@ -7,7 +7,6 @@ class_name TaskData
 @export var section: DataGlobal.Section
 @export var group: String
 @export var previous_section: DataGlobal.Section
-@export var previous_group: String #previous items for switching sections and such. May not get use. 
 
 @export var assigned_user: Array
 @export var time_of_day: DataGlobal.TimeOfDay

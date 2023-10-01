@@ -12,7 +12,7 @@ class_name TaskSpreadsheetData
 @export var spreadsheet_week_data: Array[TaskData]
 @export var spreadsheet_day_data: Array[TaskData]
 
-@export var spreadsheet_year_groups: Array[String]
-@export var spreadsheet_month_groups: Array[String]
-@export var spreadsheet_week_groups: Array[String]
-@export var spreadsheet_day_groups: Array[String]
+#@export var spreadsheet_year_groups: Array[String]
+#@export var spreadsheet_month_groups: Array[String]
+#@export var spreadsheet_week_groups: Array[String]
+#@export var spreadsheet_day_groups: Array[String]

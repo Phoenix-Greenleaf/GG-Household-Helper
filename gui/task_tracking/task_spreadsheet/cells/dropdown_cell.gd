@@ -2,7 +2,7 @@ extends OptionButton
 
 @export var saved_task: TaskData
 @export var saved_type: String
-
+@export var dropdown_items: Array
 
 var section: Array = [
 	DataGlobal.Section.YEARLY,
@@ -29,20 +29,56 @@ var priority: Array = [
 ]
 
 var profile_names: Array
+var selected_item
+
 
 func _ready() -> void:
 	name = "DropdownCell"
 	self.item_selected.connect(_on_dropdown_item_selected)
 
 
+func update_dropdown_items(selected_item_parameter = selected_item) -> void:
+	clear()
+	if selected_item != selected_item_parameter:
+		selected_item = selected_item_parameter
+	var selection_index: int
+	match saved_type:
+		"Section", "Time Of Day", "Priority":
+			for item in dropdown_items:
+				add_item(item)
+			selection_index = selected_item
+		"Group":
+			for item in dropdown_items:
+				add_item(item)
+			selection_index = dropdown_items.find(selected_item)
+		"Assigned User":
+			for profile in dropdown_items:
+				var profile_name = profile[0]
+				if profile_name == "No Profile":
+					profile_name = "Not Assigned"
+				add_item(profile_name)
+			selection_index = dropdown_items.find(selected_item)
+			if selected_item == DataGlobal.default_profile:
+				selection_index = 0
+			if selection_index == -1:
+				prints("dropdown find error")
+				prints("Selected item:", selected_item)
+				prints("dropdown items:", dropdown_items)
+				prints("")
+	selected = selection_index
+
+
 func _on_dropdown_item_selected(index_parameter) -> void:
 	match saved_type:
 		"Section":
-			prints("Section selected:", section[index_parameter])
+			prints("Section selected:", get_item_text(index_parameter), section[index_parameter])
 			saved_task.section = section[index_parameter]
 			saved_task.section_transfer()
+		"Group":
+			saved_task.group = get_item_text(index_parameter)
+			prints("Group selected:", saved_task.group)
 		"Time Of Day":
-			prints("Time of Day selected:", time_of_day[index_parameter])
+			prints("Time of Day selected:", get_item_text(index_parameter), time_of_day[index_parameter])
 			saved_task.time_of_day = time_of_day[index_parameter]
 		"Priority":
 			prints("Priority selected:", DataGlobal.Priority.find_key(index_parameter), "index", index_parameter)
@@ -66,3 +102,24 @@ func _on_dropdown_item_selected(index_parameter) -> void:
 			return
 	SignalBus.trigger_save_warning.emit()
 	prints("DropdownCell", saved_task.name, "func _on_dropdown_item_selected emits 'trigger_save_warning'")
+
+
+func connect_type_updates() -> void:
+	match saved_type:
+		"Section":
+			pass
+		"Group":
+			SignalBus._on_update_task_group_dropdown_items_activated.connect(update_type_group)
+		"Time Of Day":
+			pass
+		"Priority":
+			pass
+		"Assigned User":
+			pass
+		_:
+			pass
+
+
+func update_type_group(new_group_items: Array) -> void:
+	dropdown_items = new_group_items
+	update_dropdown_items()

@@ -41,6 +41,7 @@ var delete_task_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/d
 var row_group: String = ""
 var blank_counter: int = 0
 var section_dropdown_items: Array
+var task_group_dropdown_items: Array 
 var time_of_day_dropdown_items: Array
 var priority_dropdown_items: Array
 var user_profiles_dropdown_items: Array
@@ -65,7 +66,6 @@ var header_cell_array: Array = [
 	"Units/Cycle", #10
 	"Delete Task", #11
 ]
-#var month_dictionary: Dictionary
 
 
 
@@ -137,6 +137,35 @@ func get_dropdown_items_from_global() -> void:
 		priority_dropdown_items.append(item.capitalize())
 
 
+func update_task_group_dropdown_items() -> void:
+	task_group_dropdown_items.clear()
+	match DataGlobal.current_toggled_section:
+		DataGlobal.Section.YEARLY:
+			for task_iteration in data_for_spreadsheet.spreadsheet_year_data:
+				scan_task_for_group(task_iteration)
+		DataGlobal.Section.MONTHLY:
+			for task_iteration in data_for_spreadsheet.spreadsheet_month_data:
+				scan_task_for_group(task_iteration)
+		DataGlobal.Section.WEEKLY:
+			for task_iteration in data_for_spreadsheet.spreadsheet_week_data:
+				scan_task_for_group(task_iteration)
+		DataGlobal.Section.DAILY:
+			for task_iteration in data_for_spreadsheet.spreadsheet_day_data:
+				scan_task_for_group(task_iteration)
+	task_group_dropdown_items.insert(0, "None")
+	SignalBus._on_update_task_group_dropdown_items_activated.emit(task_group_dropdown_items)
+	update_existing_groups_option_button_items()
+
+
+func scan_task_for_group(scan_task: TaskData) -> void:
+	if scan_task.group == "None":
+		return
+	if task_group_dropdown_items.has(scan_task.group):
+		return
+	task_group_dropdown_items.append(scan_task.group)
+	task_group_dropdown_items.sort()
+
+
 func reload_grid() -> void:
 	clear_grid_children()
 	load_existing_data()
@@ -156,28 +185,8 @@ func update_grid_spreadsheet() -> void:
 
 
 func update_task_add_options() -> void:
-	existing_groups_option_section_picker()
+	update_existing_groups_option_button_items()
 	update_task_add_assigned_users()
-
-
-func existing_groups_option_section_picker() -> void:
-	if not data_for_spreadsheet:
-		prints("No existing groups to load")
-		return
-	var current_section = DataGlobal.current_toggled_section
-	match current_section:
-		DataGlobal.Section.YEARLY:
-			var yearly_section = data_for_spreadsheet.spreadsheet_year_groups
-			create_existing_groups_option_button_items(yearly_section)
-		DataGlobal.Section.MONTHLY:
-			var monthly_section = data_for_spreadsheet.spreadsheet_month_groups
-			create_existing_groups_option_button_items(monthly_section)
-		DataGlobal.Section.WEEKLY:
-			var weekly_section = data_for_spreadsheet.spreadsheet_week_groups
-			create_existing_groups_option_button_items(weekly_section)
-		DataGlobal.Section.DAILY:
-			var daily_section = data_for_spreadsheet.spreadsheet_day_groups
-			create_existing_groups_option_button_items(daily_section)
 
 
 func update_task_add_assigned_users() -> void:
@@ -263,29 +272,18 @@ func create_new_task_data() -> void: #task coded model, the data side
 		new_task_group = task_group_line_edit.text
 	row_group = new_task_group
 	new_task.group = new_task_group
-	new_task.previous_group = new_task_group
 	new_task.offbrand_init()
 	match new_task_section:
 		DataGlobal.Section.YEARLY:
-			var current_section_group = data_for_spreadsheet.spreadsheet_year_groups
 			data_for_spreadsheet.spreadsheet_year_data.append(new_task)
-			create_task_group(new_task_group, current_section_group)
-			create_existing_groups_option_button_items(current_section_group)
 		DataGlobal.Section.MONTHLY:
-			var current_section_group = data_for_spreadsheet.spreadsheet_month_groups
 			data_for_spreadsheet.spreadsheet_month_data.append(new_task)
-			create_task_group(new_task_group, current_section_group)
-			create_existing_groups_option_button_items(current_section_group)
 		DataGlobal.Section.WEEKLY:
-			var current_section_group = data_for_spreadsheet.spreadsheet_week_groups
 			data_for_spreadsheet.spreadsheet_week_data.append(new_task)
-			create_task_group(new_task_group, current_section_group)
-			create_existing_groups_option_button_items(current_section_group)
 		DataGlobal.Section.DAILY:
-			var current_section_group = data_for_spreadsheet.spreadsheet_day_groups
 			data_for_spreadsheet.spreadsheet_day_data.append(new_task)
-			create_task_group(new_task_group, current_section_group)
-			create_existing_groups_option_button_items(current_section_group)
+	scan_task_for_group(new_task)
+	update_existing_groups_option_button_items()
 	process_task(new_task)
 
 
@@ -303,21 +301,13 @@ func new_task_field_reset() -> void:
 	task_add_units_per_cycle_spin_box.value = 0
 
 
-func create_task_group(task_group: String, section_groups: Array) -> void:
-			if section_groups.has(task_group):
-				prints("Task group", task_group, "already exists.")
-			else:
-				section_groups.append(task_group)
-				section_groups.sort()
-				prints("Created new task group:", task_group)
-
-
 func load_existing_data() -> void:
 	if not data_for_spreadsheet:
 		prints("No existing data to load")
 		return
 	set_time_unit()
 	create_header_row()
+	update_task_group_dropdown_items()
 	match DataGlobal.current_toggled_section:
 		DataGlobal.Section.YEARLY:
 			for data_iteration in data_for_spreadsheet.spreadsheet_year_data:
@@ -355,10 +345,10 @@ func _on_accept_new_task_button_pressed() -> void:
 	prints(self, "func _on_accept_new_task_button_pressed emits 'trigger_save_warning'")
 
 
-func create_existing_groups_option_button_items(group) -> void:
+func update_existing_groups_option_button_items() -> void:
 	existing_groups_option_button.clear()
 	existing_groups_option_button.add_item("Existing Groups")
-	for item in group:
+	for item in task_group_dropdown_items:
 		existing_groups_option_button.add_item(item)
 
 
@@ -430,7 +420,7 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 	prints(current_task.name)
 	create_text_cell(current_task.name, "Task Name")  #1
 	create_dropdown_cell(section_dropdown_items, current_task.section, "Section") #2
-	create_text_cell(current_task.group, "Group") #3
+	create_dropdown_cell(task_group_dropdown_items, current_task.group, "Group") #3
 	var info = "Info"
 	create_dropdown_cell(user_profiles_dropdown_items, current_task.assigned_user, "Assigned User", info) #4
 	create_multi_line_cell(current_task.description, info) #5
@@ -492,28 +482,11 @@ func create_header_cell(text, column_group: String = "") -> void:
 func create_dropdown_cell(dropdown_items: Array, selected_item, current_type: String, column_group: String = "") -> void:
 	var cell: OptionButton = dropdown_cell.instantiate()
 	self.add_child(cell)
-	var selection_index: int
-	if selected_item is int:
-		for item in dropdown_items:
-			cell.add_item(item)
-		selection_index = selected_item
-	else:
-		for profile in dropdown_items:
-			var profile_name = profile[0]
-			if profile_name == "No Profile":
-				profile_name = "Not Assigned"
-			cell.add_item(profile_name)
-		selection_index = dropdown_items.find(selected_item)
-		if selected_item == DataGlobal.default_profile:
-			selection_index = 0
-		if selection_index == -1:
-			prints("dropdown find error")
-			prints("Selected item:", selected_item)
-			prints("dropdown items:", dropdown_items)
-			prints("")
-	cell.selected = selection_index
 	cell.saved_task = current_task
 	cell.saved_type = current_type
+	cell.dropdown_items = dropdown_items
+	cell.update_dropdown_items(selected_item)
+	cell.connect_type_updates()
 	add_cell_to_groups(cell, column_group) 
 
 
@@ -579,6 +552,7 @@ func delete_task_row(target_task: TaskData) -> void:
 			DataGlobal.current_tasksheet_data.spreadsheet_week_data.erase(target_task)
 		DataGlobal.Section.DAILY:
 			DataGlobal.current_tasksheet_data.spreadsheet_day_data.erase(target_task)
+	update_task_group_dropdown_items()
 	SignalBus.trigger_save_warning.emit()
 	prints(self, "func delete_task_row emits 'trigger_save_warning'")
 
