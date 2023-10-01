@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqpi8jatc8h7f"]
+
+[ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/cells/task_checkbox_clear_button_cell.gd" id="1_n8axc"]
+
+[node name="TaskCheckboxClearButtonCell" type="Button"]
+text = "CLEAR"
+script = ExtResource("1_n8axc")

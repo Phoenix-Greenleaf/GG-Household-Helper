@@ -35,6 +35,7 @@ var dropdown_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/drop
 var multi_line_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/multi_line_cell.tscn")
 var number_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/number_cell.tscn")
 var text_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/text_cell.tscn")
+var task_checkbox_clear_button_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/task_checkbox_clear_button_cell.tscn")
 var delete_task_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/delete_task_data_cell.tscn")
 
 var row_group: String = ""
@@ -99,6 +100,7 @@ func ready_connections() -> void:
 	SignalBus.reload_profiles_triggered.connect(update_user_profile_dropdown_items)
 	get_viewport().gui_focus_changed.connect(_on_focus_changed)
 	SignalBus._on_task_delete_button_primed_and_pressed.connect(delete_task_row)
+	SignalBus.remote_spreadsheet_grid_reload.connect(reload_grid)
 
 
 func set_time_unit() -> void:
@@ -135,20 +137,22 @@ func get_dropdown_items_from_global() -> void:
 		priority_dropdown_items.append(item.capitalize())
 
 
+func reload_grid() -> void:
+	clear_grid_children()
+	load_existing_data()
+
+
+func section_or_month_changed() -> void:
+	reload_grid()
+	update_task_add_options()
+
+
 func update_grid_spreadsheet() -> void:
 	data_for_spreadsheet = DataGlobal.current_tasksheet_data
 	var title = data_for_spreadsheet.spreadsheet_title
 	var year = data_for_spreadsheet.spreadsheet_year
 	prints("TaskGrid updated:", title, ":", year)
-	clear_grid_children()
-	load_existing_data()
-	update_task_add_options()
-
-
-func section_or_month_changed() -> void:
-	clear_grid_children()
-	load_existing_data()
-	update_task_add_options()
+	section_or_month_changed()
 
 
 func update_task_add_options() -> void:
@@ -380,11 +384,14 @@ func create_header_row() -> void:
 				if month == "All":
 					continue
 				create_header_cell(month, checkbox)
+			create_header_cell("Reset Task Checkboxes", "Checkbox")
 		DataGlobal.Section.WEEKLY:
 			create_checkbox_header("Week", 5)
+			create_header_cell("Reset " + current_month + " Checkboxes", "Checkbox")
 		DataGlobal.Section.DAILY:
 			var days = DataGlobal.days_in_month_finder(current_month, current_year)
 			create_checkbox_header("Day", days)
+			create_header_cell("Reset " + current_month + " Checkboxes", "Checkbox")
 	header_editing_prevention()
 	full_header_size = self.get_child_count()
 	info_header_size = get_tree().get_nodes_in_group("Info").size()
@@ -445,6 +452,7 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 				var checkbox_user: Array = checkbox_data.assigned_user
 				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)
 				checkbox_position += 1
+			create_checkbox_clear_cell(checkbox)
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
 			var current_month = DataGlobal.current_toggled_month
 			var month_key = DataGlobal.Month.find_key(current_month).capitalize()
@@ -455,6 +463,7 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 				var checkbox_user: Array = checkbox_data.assigned_user
 				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)
 				checkbox_position += 1
+			create_checkbox_clear_cell(checkbox)
 
 
 func add_cell_to_groups(cell_parameter, column_group_parameter) -> void:
@@ -535,6 +544,14 @@ func create_checkbox_cell(state: DataGlobal.Checkbox, user_profile: Array, cell_
 	cell.saved_profile = user_profile 
 	cell.saved_state = state
 	cell.update_checkbox()
+	add_cell_to_groups(cell, column_group)
+
+
+func create_checkbox_clear_cell(column_group: String = "") -> void:
+	var cell: Button = task_checkbox_clear_button_cell.instantiate()
+	self.add_child(cell)
+	cell.saved_task = current_task
+	cell.prep_button()
 	add_cell_to_groups(cell, column_group)
 
 

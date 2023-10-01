@@ -138,3 +138,38 @@ func enum_uno_reverse(target_value: int, target_enum: Dictionary) -> String:
 	var enum_text = enum_keys[target_value]
 	enum_text = enum_text.capitalize()
 	return enum_text
+
+
+func clear_self_checkboxes() -> void:
+	prints("Clearing Self Checkboxes")
+	match DataGlobal.current_toggled_section:
+		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+			for month_iteration in month_checkbox_dictionary:
+				month_checkbox_dictionary[month_iteration].clear()
+		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
+			match DataGlobal.current_toggled_month:
+				DataGlobal.Month.JANUARY:
+					month_checkbox_dictionary["January"].clear()
+				DataGlobal.Month.FEBRUARY:
+					month_checkbox_dictionary["February"].clear()
+				DataGlobal.Month.MARCH:
+					month_checkbox_dictionary["March"].clear()
+				DataGlobal.Month.APRIL:
+					month_checkbox_dictionary["April"].clear()
+				DataGlobal.Month.MAY:
+					month_checkbox_dictionary["May"].clear()
+				DataGlobal.Month.JUNE:
+					month_checkbox_dictionary["June"].clear()
+				DataGlobal.Month.JULY:
+					month_checkbox_dictionary["July"].clear()
+				DataGlobal.Month.AUGUST:
+					month_checkbox_dictionary["August"].clear()
+				DataGlobal.Month.SEPTEMBER:
+					month_checkbox_dictionary["September"].clear()
+				DataGlobal.Month.OCTOBER:
+					month_checkbox_dictionary["October"].clear()
+				DataGlobal.Month.NOVEMBER:
+					month_checkbox_dictionary["November"].clear()
+				DataGlobal.Month.DECEMBER:
+					month_checkbox_dictionary["December"].clear()
+	generate_all_checkboxes()
