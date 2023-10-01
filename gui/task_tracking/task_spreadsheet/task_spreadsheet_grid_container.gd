@@ -6,7 +6,20 @@ extends GridContainer
 @onready var task_title_line_edit: LineEdit = %TaskTitleLineEdit
 @onready var task_group_line_edit: LineEdit = %TaskGroupLineEdit
 @onready var existing_groups_option_button: OptionButton = %ExistingGroupsOption
+@onready var task_add_assigned_user_label: Label = %TaskAddAssignedUserLabel
+@onready var task_add_assigned_user_option_button: OptionButton = %TaskAddAssignedUserOptionButton
+@onready var task_add_schedule_start_label: Label = %TaskAddScheduleStartLabel
+@onready var task_add_schedule_start_spin_box: SpinBox = %TaskAddScheduleStartSpinBox
+@onready var task_add_units_per_cycle_label: Label = %TaskAddUnitsPerCycleLabel
+@onready var task_add_units_per_cycle_spin_box: SpinBox = %TaskAddUnitsPerCycleSpinBox
 @onready var accept_new_task_button: Button = %AcceptNewTaskButton
+@onready var v_separator_6: VSeparator = %VSeparator6
+@onready var v_separator_5: VSeparator = %VSeparator5
+@onready var v_separator_4: VSeparator = %VSeparator4
+@onready var v_separator_3: VSeparator = %VSeparator3
+@onready var v_separator_2: VSeparator = %VSeparator2
+@onready var v_separator: VSeparator = %VSeparator
+
 @onready var checkbox_selection_popup: PanelContainer = %CheckboxSelectionPopup
 @onready var multi_text_popup_center: CenterContainer = %MultiTextPopupCenter
 @onready var task_label: Label = %TaskLabel
@@ -14,6 +27,7 @@ extends GridContainer
 @onready var editing_lock_button: CheckButton = %EditingLockButton
 @onready var checkbox_apply_toggle: Button = %CheckboxApplyToggle
 @onready var checkbox_inspect_toggle: Button = %CheckboxInspectToggle
+
 
 
 var checkbox_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/checkbox_cell.tscn")
@@ -69,9 +83,8 @@ func _ready() -> void:
 	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
 	prints("TaskGrid found:", title, ":", year)
 	update_user_profile_dropdown_items()
-#	ready_month_dictionary()
 	load_existing_data()
-	existing_groups_option_section_picker()
+	update_task_add_options()
 	editing_lock_button.button_pressed = true
 	editing_lock_button.button_pressed = false
 
@@ -88,11 +101,17 @@ func ready_connections() -> void:
 	SignalBus._on_task_delete_button_primed_and_pressed.connect(delete_task_row)
 
 
-#func ready_month_dictionary() -> void:
-#	for constant in DataGlobal.Month.keys():
-#		if constant == "NONE":
-#			month_dictionary["All"] = []
-#		month_dictionary[constant.capitalize()] = []
+func set_time_unit() -> void:
+	match DataGlobal.current_toggled_section:
+		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+			header_cell_array[9] = "Months/Cycle"
+			task_add_units_per_cycle_label.text = "Months per Cycle:"
+		DataGlobal.Section.WEEKLY:
+			header_cell_array[9] = "Weeks/Cycle"
+			task_add_units_per_cycle_label.text = "Weeks per Cycle:"
+		DataGlobal.Section.DAILY:
+			header_cell_array[9] = "Days/Cycle"
+			task_add_units_per_cycle_label.text = "Days per Cycle:"
 
 
 func toggle_info_checkbox_modes() -> void:
@@ -123,14 +142,18 @@ func update_grid_spreadsheet() -> void:
 	prints("TaskGrid updated:", title, ":", year)
 	clear_grid_children()
 	load_existing_data()
-	existing_groups_option_section_picker()
+	update_task_add_options()
 
 
 func section_or_month_changed() -> void:
 	clear_grid_children()
 	load_existing_data()
-	existing_groups_option_section_picker()
+	update_task_add_options()
 
+
+func update_task_add_options() -> void:
+	existing_groups_option_section_picker()
+	update_task_add_assigned_users()
 
 
 func existing_groups_option_section_picker() -> void:
@@ -151,6 +174,12 @@ func existing_groups_option_section_picker() -> void:
 		DataGlobal.Section.DAILY:
 			var daily_section = data_for_spreadsheet.spreadsheet_day_groups
 			create_existing_groups_option_button_items(daily_section)
+
+
+func update_task_add_assigned_users() -> void:
+	task_add_assigned_user_option_button.clear()
+	for item in user_profiles_dropdown_items:
+		task_add_assigned_user_option_button.add_item(item[0])
 
 
 func clear_grid_children() -> void:
@@ -176,6 +205,18 @@ func open_new_task_panel() -> void:
 	task_group_line_edit.visible = true
 	existing_groups_option_button.visible = true
 	accept_new_task_button.visible = true
+	task_add_assigned_user_label.visible = true
+	task_add_assigned_user_option_button.visible = true
+	task_add_schedule_start_label.visible = true
+	task_add_schedule_start_spin_box.visible = true
+	task_add_units_per_cycle_label.visible = true
+	task_add_units_per_cycle_spin_box.visible = true
+	v_separator_6.visible = true
+	v_separator_5.visible = true
+	v_separator_4.visible = true
+	v_separator_3.visible = true
+	v_separator_2.visible = true
+	v_separator.visible = true
 
 
 func close_new_task_panel() -> void:
@@ -184,17 +225,42 @@ func close_new_task_panel() -> void:
 	task_group_line_edit.visible = false
 	existing_groups_option_button.visible = false
 	accept_new_task_button.visible = false
+	task_add_assigned_user_label.visible = false
+	task_add_assigned_user_option_button.visible = false
+	task_add_schedule_start_label.visible = false
+	task_add_schedule_start_spin_box.visible = false
+	task_add_units_per_cycle_label.visible = false
+	task_add_units_per_cycle_spin_box.visible = false
+	v_separator_6.visible = false
+	v_separator_5.visible = false
+	v_separator_4.visible = false
+	v_separator_3.visible = false
+	v_separator_2.visible = false
+	v_separator.visible = false
 
 
 func create_new_task_data() -> void: #task coded model, the data side
 	var new_task = TaskData.new()
 	var new_task_title = task_title_line_edit.text
+	new_task.name = new_task_title
+	var new_task_year = DataGlobal.current_tasksheet_data.spreadsheet_year
+	new_task.task_year = new_task_year
+	var new_task_section := DataGlobal.current_toggled_section
+	new_task.section = new_task_section
+	new_task.previous_section = new_task_section
+	var new_task_assigned_user: Array = user_profiles_dropdown_items[task_add_assigned_user_option_button.selected]
+	new_task.assigned_user = new_task_assigned_user
+	var new_task_schedule_start: float = task_add_schedule_start_spin_box.value
+	new_task.scheduling_start = new_task_schedule_start
+	var new_task_units_per_cycle: float = task_add_units_per_cycle_spin_box.value
+	new_task.units_per_cycle = new_task_units_per_cycle
 	var new_task_group = "None"
 	if task_group_line_edit.text:
 		new_task_group = task_group_line_edit.text
 	row_group = new_task_group
-	var new_task_section := DataGlobal.current_toggled_section
-	new_task.offbrand_init(new_task_title, new_task_section, new_task_group)
+	new_task.group = new_task_group
+	new_task.previous_group = new_task_group
+	new_task.offbrand_init()
 	match new_task_section:
 		DataGlobal.Section.YEARLY:
 			var current_section_group = data_for_spreadsheet.spreadsheet_year_groups
@@ -228,6 +294,9 @@ func new_task_field_reset() -> void:
 	task_title_line_edit.clear()
 	task_group_line_edit.clear()
 	existing_groups_option_button.select(0)
+	task_add_assigned_user_option_button.select(0)
+	task_add_schedule_start_spin_box.value = 0
+	task_add_units_per_cycle_spin_box.value = 0
 
 
 func create_task_group(task_group: String, section_groups: Array) -> void:
@@ -243,6 +312,7 @@ func load_existing_data() -> void:
 	if not data_for_spreadsheet:
 		prints("No existing data to load")
 		return
+	set_time_unit()
 	create_header_row()
 	match DataGlobal.current_toggled_section:
 		DataGlobal.Section.YEARLY:

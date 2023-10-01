@@ -7,7 +7,7 @@ class_name TaskData
 @export var section: DataGlobal.Section
 @export var group: String
 @export var previous_section: DataGlobal.Section
-@export var previous_group: String
+@export var previous_group: String #previous items for switching sections and such. May not get use. 
 
 @export var assigned_user: Array
 @export var time_of_day: DataGlobal.TimeOfDay
@@ -23,14 +23,7 @@ var scheduling_array: Array
 var currently_scheduling: int
 
 
-func offbrand_init(name_parameter, section_parameter, group_parameter) -> void:
-	name = name_parameter
-	section = section_parameter
-	group = group_parameter
-	task_year = DataGlobal.current_tasksheet_data.spreadsheet_year
-	prints("offbrand init year:", task_year)
-	previous_section = section_parameter
-	previous_group = group_parameter
+func offbrand_init() -> void:
 	generate_month_dictionary()
 	generate_all_checkboxes()
 
