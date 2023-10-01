@@ -173,3 +173,32 @@ func clear_self_checkboxes() -> void:
 				DataGlobal.Month.DECEMBER:
 					month_checkbox_dictionary["December"].clear()
 	generate_all_checkboxes()
+
+
+func section_transfer() -> void:
+	if section == previous_section:
+		return
+	prints("Transfering from", DataGlobal.Section.keys()[previous_section], "to", DataGlobal.Section.keys()[section])
+	match previous_section:
+		DataGlobal.Section.YEARLY:
+			DataGlobal.current_tasksheet_data.spreadsheet_year_data.erase(self)
+		DataGlobal.Section.MONTHLY:
+			DataGlobal.current_tasksheet_data.spreadsheet_month_data.erase(self)
+		DataGlobal.Section.WEEKLY:
+			DataGlobal.current_tasksheet_data.spreadsheet_week_data.erase(self)
+		DataGlobal.Section.DAILY:
+			DataGlobal.current_tasksheet_data.spreadsheet_day_data.erase(self)
+	match section:
+		DataGlobal.Section.YEARLY:
+			DataGlobal.current_tasksheet_data.spreadsheet_year_data.append(self)
+		DataGlobal.Section.MONTHLY:
+			DataGlobal.current_tasksheet_data.spreadsheet_month_data.append(self)
+		DataGlobal.Section.WEEKLY:
+			DataGlobal.current_tasksheet_data.spreadsheet_week_data.append(self)
+		DataGlobal.Section.DAILY:
+			DataGlobal.current_tasksheet_data.spreadsheet_day_data.append(self)
+	for month_iteration in month_checkbox_dictionary:
+		month_checkbox_dictionary[month_iteration].clear()
+	previous_section = section
+	generate_all_checkboxes()
+	SignalBus.remote_spreadsheet_grid_reload.emit()

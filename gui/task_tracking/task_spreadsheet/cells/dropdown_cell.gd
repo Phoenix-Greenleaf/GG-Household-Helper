@@ -40,6 +40,7 @@ func _on_dropdown_item_selected(index_parameter) -> void:
 		"Section":
 			prints("Section selected:", section[index_parameter])
 			saved_task.section = section[index_parameter]
+			saved_task.section_transfer()
 		"Time Of Day":
 			prints("Time of Day selected:", time_of_day[index_parameter])
 			saved_task.time_of_day = time_of_day[index_parameter]
