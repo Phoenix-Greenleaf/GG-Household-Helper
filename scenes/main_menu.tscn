@@ -129,8 +129,7 @@ text = "Exit"
 [node name="Versoning" type="Label" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
 theme = ExtResource("5_0v4fq")
-text = "Version 1.0.1
-Created by Greenleaf Galactic"
+text = "Version 1.5.0"
 horizontal_alignment = 1
 
 [connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/TaskTrackingButton" to="." method="_on_task_tracking_button_pressed"]
