@@ -29,3 +29,7 @@ Label/font_sizes/font_size = 60
 Label/fonts/font = ExtResource("1_ifjm4")
 Panel/styles/panel = ExtResource("7_n0cxo")
 PanelContainer/styles/panel = ExtResource("8_4qt41")
+TabContainer/colors/font_outline_color = Color(0, 0, 0, 1)
+TabContainer/constants/outline_size = 5
+TabContainer/font_sizes/font_size = 35
+TabContainer/fonts/font = ExtResource("1_ifjm4")

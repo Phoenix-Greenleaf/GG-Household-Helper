@@ -20,9 +20,17 @@ config/icon="res://icon.svg"
 
 DataGlobal="*res://data/data_global.gd"
 SignalBus="*res://data/signal_bus.gd"
+sp="*res://addons/awesome_splash/utils_splash.gd"
+gd="*res://addons/godot-action/utils_gd_action.tscn"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/mode=3
+window/energy_saving/keep_screen_on=false
+window/stretch/aspect="ignore"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/awesome_splash/plugin.cfg", "res://addons/godot-action/plugin.cfg")

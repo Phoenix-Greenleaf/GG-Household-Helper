@@ -1,0 +1,414 @@
+[gd_scene load_steps=5 format=3 uid="uid://esmp6jtqggdn"]
+
+[ext_resource type="Script" path="res://gui/main_helper/main_settings.gd" id="1_2sqv7"]
+[ext_resource type="Theme" uid="uid://djvo047swus7p" path="res://themes/green_gal_main_theme.tres" id="1_6tiax"]
+[ext_resource type="StyleBox" uid="uid://5gbky82e7ys5" path="res://themes/theme_parts/popup_panel_2_style_box_flat.tres" id="2_g6pu6"]
+[ext_resource type="StyleBox" uid="uid://cmoiollela6cr" path="res://themes/theme_parts/black_style_box_line.tres" id="4_5yysd"]
+
+[node name="MainSettings" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+script = ExtResource("1_2sqv7")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -248.0
+offset_top = -172.5
+offset_right = 248.0
+offset_bottom = 172.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_6tiax")
+theme_override_styles/panel = ExtResource("2_g6pu6")
+
+[node name="SettingsVBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 3
+alignment = 1
+
+[node name="MainSettingsTitleLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 35
+text = "Main Settings"
+horizontal_alignment = 1
+
+[node name="MainSettingsTabContainer" type="TabContainer" parent="PanelContainer/SettingsVBoxContainer"]
+layout_mode = 2
+tab_alignment = 1
+clip_tabs = false
+use_hidden_tabs_for_min_size = true
+
+[node name="Display" type="PanelContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer"]
+layout_mode = 2
+
+[node name="DisplayMarginContainer" type="MarginContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="DisplayVBoxContainer" type="VBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer"]
+layout_mode = 2
+
+[node name="StandardOptions" type="VBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="ResolutionHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions"]
+layout_mode = 2
+alignment = 1
+
+[node name="ResolutionWidthLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ResolutionHBoxContainer"]
+layout_mode = 2
+text = "Resolution:  Width"
+
+[node name="ResolutionWidthOptionButton" type="OptionButton" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ResolutionHBoxContainer" groups=["fullscreen_lock", "testing_lock"]]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+item_count = 1
+selected = 0
+popup/item_0/text = "1920"
+popup/item_0/id = 0
+
+[node name="ResolutionHeightLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ResolutionHBoxContainer"]
+layout_mode = 2
+text = "  Height"
+
+[node name="ResolutionHeightOptionButton" type="OptionButton" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ResolutionHBoxContainer" groups=["fullscreen_lock", "testing_lock"]]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+item_count = 1
+selected = 0
+popup/item_0/text = "1080"
+popup/item_0/id = 0
+
+[node name="ResolutionSwapButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ResolutionHBoxContainer" groups=["fullscreen_lock", "testing_lock"]]
+layout_mode = 2
+text = "Swap"
+
+[node name="CustomResolutionHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+
+[node name="CustomWidthLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/CustomResolutionHBoxContainer"]
+layout_mode = 2
+text = "Custom Width"
+
+[node name="CustomWidthSpinBox" type="SpinBox" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/CustomResolutionHBoxContainer" groups=["testing_lock"]]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 500.0
+max_value = 50000.0
+value = 500.0
+
+[node name="CustomHeightLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/CustomResolutionHBoxContainer"]
+layout_mode = 2
+text = "Custom Height"
+
+[node name="CustomHeightSpinBox" type="SpinBox" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/CustomResolutionHBoxContainer" groups=["testing_lock"]]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 500.0
+max_value = 50000.0
+value = 500.0
+
+[node name="AspectRatioHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="AspectRatioLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/AspectRatioHBoxContainer"]
+layout_mode = 2
+text = "Aspect Ratio:"
+
+[node name="AspectRatioWholeValue" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/AspectRatioHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "16:9"
+
+[node name="AspectRatioSingleValue" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/AspectRatioHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "(1.77:1)"
+
+[node name="DisplayPreferenceHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions"]
+layout_mode = 2
+alignment = 1
+
+[node name="DisplayPreferenceLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayPreferenceHBoxContainer"]
+layout_mode = 2
+text = "Display Preference"
+
+[node name="DisplayPreferenceOptionButton" type="OptionButton" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayPreferenceHBoxContainer" groups=["testing_lock"]]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DisplayModeHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions"]
+layout_mode = 2
+alignment = 1
+
+[node name="DisplayModeLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayModeHBoxContainer"]
+layout_mode = 2
+text = "Display Mode"
+
+[node name="DisplayModeOptionButton" type="OptionButton" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayModeHBoxContainer" groups=["testing_lock"]]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+item_count = 2
+selected = 0
+popup/item_0/text = "Windowed"
+popup/item_0/id = 0
+popup/item_1/text = "Fullscreen"
+popup/item_1/id = 1
+
+[node name="BorderlessLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayModeHBoxContainer"]
+layout_mode = 2
+text = "  Borderless"
+
+[node name="BorderlessCheckButton" type="CheckButton" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayModeHBoxContainer" groups=["testing_lock"]]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BorderlessStatusLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayModeHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Off"
+
+[node name="StretchModeHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions"]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="StretchModeLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/StretchModeHBoxContainer"]
+layout_mode = 2
+text = "Stretch Mode"
+
+[node name="StretchModeOptionButton" type="OptionButton" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/StretchModeHBoxContainer"]
+layout_mode = 2
+alignment = 1
+item_count = 5
+selected = 4
+popup/item_0/text = "Ignore"
+popup/item_0/id = 0
+popup/item_1/text = "Keep"
+popup/item_1/id = 1
+popup/item_2/text = "Keep Width"
+popup/item_2/id = 2
+popup/item_3/text = "Keep Height"
+popup/item_3/id = 3
+popup/item_4/text = "Expand"
+popup/item_4/id = 4
+
+[node name="RotationLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/StretchModeHBoxContainer"]
+layout_mode = 2
+text = "  Rotation"
+
+[node name="RotationOptionButton" type="OptionButton" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/StretchModeHBoxContainer"]
+layout_mode = 2
+item_count = 4
+selected = 0
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "90"
+popup/item_1/id = 1
+popup/item_2/text = "180"
+popup/item_2/id = 2
+popup/item_3/text = "-90"
+popup/item_3/id = 3
+
+[node name="ScaleHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions"]
+visible = false
+layout_mode = 2
+
+[node name="ScaleLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ScaleHBoxContainer"]
+layout_mode = 2
+text = "  Scale"
+
+[node name="ScaleHSlider" type="HSlider" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ScaleHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 50.0
+max_value = 200.0
+value = 50.0
+rounded = true
+
+[node name="ScaleSpinBox" type="SpinBox" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ScaleHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+min_value = 50.0
+max_value = 200.0
+value = 100.0
+suffix = "%"
+
+[node name="GUIMarginHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions"]
+visible = false
+layout_mode = 2
+
+[node name="GUIMarginLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/GUIMarginHBoxContainer"]
+layout_mode = 2
+text = "  Margin"
+
+[node name="GUIMarginCheckBox" type="CheckBox" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/GUIMarginHBoxContainer"]
+layout_mode = 2
+
+[node name="GUIMarginHSlider" type="HSlider" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/GUIMarginHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="GUIMarginSpinBox" type="SpinBox" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/GUIMarginHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TestHSeparator" type="HSeparator" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 13
+theme_override_styles/separator = ExtResource("4_5yysd")
+
+[node name="TestButtonsHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+
+[node name="TestButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Test Changes"
+
+[node name="SaveWarningLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Changes not saved!"
+horizontal_alignment = 1
+
+[node name="CancelChangesButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer" groups=["testing_lock"]]
+layout_mode = 2
+text = "Cancel Changes"
+
+[node name="3dOptions" type="VBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="GUIMaxAspectHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/3dOptions"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/3dOptions/GUIMaxAspectHBoxContainer"]
+layout_mode = 2
+text = "GUI Max Aspect Ratio"
+
+[node name="OptionButton" type="OptionButton" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/3dOptions/GUIMaxAspectHBoxContainer"]
+layout_mode = 2
+
+[node name="VsyncHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/3dOptions/GUIMaxAspectHBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="VsyncLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/3dOptions/GUIMaxAspectHBoxContainer/VsyncHBoxContainer"]
+layout_mode = 2
+text = "   Vsync"
+
+[node name="VsyncCheckButton" type="CheckButton" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/3dOptions/GUIMaxAspectHBoxContainer/VsyncHBoxContainer"]
+layout_mode = 2
+
+[node name="VsyncStatusLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/3dOptions/GUIMaxAspectHBoxContainer/VsyncHBoxContainer"]
+layout_mode = 2
+text = "Off"
+
+[node name="Audio" type="PanelContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="AudioMarginContainer" type="MarginContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Audio"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Audio/AudioMarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Audio/AudioMarginContainer/CenterContainer"]
+layout_mode = 2
+text = "Under Construction"
+
+[node name="Interface" type="PanelContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="InterfaceMarginContainer" type="MarginContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Interface"]
+layout_mode = 2
+
+[node name="CenterContainer2" type="CenterContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Interface/InterfaceMarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Interface/InterfaceMarginContainer/CenterContainer2"]
+layout_mode = 2
+text = "Under Construction"
+
+[node name="Keybindings" type="PanelContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="KeybindingsMarginContainer" type="MarginContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Keybindings"]
+layout_mode = 2
+
+[node name="CenterContainer2" type="CenterContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Keybindings/KeybindingsMarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Keybindings/KeybindingsMarginContainer/CenterContainer2"]
+layout_mode = 2
+text = "Under Construction"
+
+[node name="StandardButtonsHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="AcceptButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Accept"
+
+[node name="ResetButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer" groups=["testing_lock"]]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reset to Defaults"
+
+[node name="BackButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer" groups=["testing_lock"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Back"
+
+[connection signal="item_selected" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ResolutionHBoxContainer/ResolutionWidthOptionButton" to="." method="_on_resolution_width_option_button_item_selected"]
+[connection signal="item_selected" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ResolutionHBoxContainer/ResolutionHeightOptionButton" to="." method="_on_resolution_height_option_button_item_selected"]
+[connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ResolutionHBoxContainer/ResolutionSwapButton" to="." method="_on_resolution_swap_button_pressed"]
+[connection signal="value_changed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/CustomResolutionHBoxContainer/CustomWidthSpinBox" to="." method="_on_custom_width_spin_box_value_changed"]
+[connection signal="value_changed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/CustomResolutionHBoxContainer/CustomHeightSpinBox" to="." method="_on_custom_height_spin_box_value_changed"]
+[connection signal="item_selected" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayPreferenceHBoxContainer/DisplayPreferenceOptionButton" to="." method="_on_display_preference_option_button_item_selected"]
+[connection signal="item_selected" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayModeHBoxContainer/DisplayModeOptionButton" to="." method="_on_display_mode_option_button_item_selected"]
+[connection signal="toggled" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayModeHBoxContainer/BorderlessCheckButton" to="." method="_on_borderless_check_button_toggled"]
+[connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer/TestButton" to="." method="_on_test_button_pressed"]
+[connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
+[connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]

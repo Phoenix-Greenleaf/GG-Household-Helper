@@ -87,6 +87,7 @@ func _ready() -> void:
 	SignalBus._on_settings_changed.connect(save_settings)
 	SignalBus._on_current_tasksheet_data_changed.connect(load_settings)
 	load_settings()
+	DisplayServer.window_set_min_size(Vector2i(500, 500))
 
 
 func button_based_message(target: Node, message: String, time: int = 2) -> void:
