@@ -45,6 +45,9 @@ func _ready() -> void:
 	if DataGlobal.current_tasksheet_data:
 		update_current_tasksheet_label()
 		add_task_button.disabled = false
+	SceneTransition.fade_from_black()
+
+
 
 
 func connection_cental() -> void:
@@ -162,7 +165,8 @@ func menu_button_actions(id: int) -> void:
 			menu_to_task_menu_with_save_protection()
 		8:
 			save_active_data()
-			get_tree().change_scene_to_file("res://scenes/task_tracking_settings.tscn")
+			popup.visible = false
+			SceneTransition.fade_to_black("res://scenes/task_tracking_settings.tscn")
 			SignalBus.remote_task_settings_reload.emit()
 
 
@@ -174,10 +178,12 @@ func menu_quit_with_save_protection() -> void:
 			1:
 				popup.set_item_text(quit_index, "Confirm Quit")
 			2:
-				get_tree().quit()
+				popup.visible = false
+				SceneTransition.fade_quit()
 		quit_counter += 1
 	else:
-		get_tree().quit()
+		popup.visible = false
+		SceneTransition.fade_quit()
 
 
 func menu_to_main_menu_with_save_protection() -> void:
@@ -188,10 +194,12 @@ func menu_to_main_menu_with_save_protection() -> void:
 			1:
 				popup.set_item_text(to_main_menu_index, "Confirm Quit")
 			2:
-				get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+				popup.visible = false
+				SceneTransition.fade_to_black("res://scenes/main_menu.tscn")
 		quit_counter += 1
 	else:
-		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+		popup.visible = false
+		SceneTransition.fade_to_black("res://scenes/main_menu.tscn")
 
 
 func menu_to_task_menu_with_save_protection() -> void:
@@ -202,10 +210,12 @@ func menu_to_task_menu_with_save_protection() -> void:
 			1:
 				popup.set_item_text(to_task_menu_index, "Confirm Quit")
 			2:
-				get_tree().change_scene_to_file("res://scenes/task_tracking_menu.tscn")
+				popup.visible = false
+				SceneTransition.fade_to_black("res://scenes/task_tracking_menu.tscn")
 		quit_counter += 1
 	else:
-		get_tree().change_scene_to_file("res://scenes/task_tracking_menu.tscn")
+		popup.visible = false
+		SceneTransition.fade_to_black("res://scenes/task_tracking_menu.tscn")
 
 
 func update_current_tasksheet_label() -> void:

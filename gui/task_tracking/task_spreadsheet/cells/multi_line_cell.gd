@@ -20,7 +20,7 @@ func initialize_data(text_parameter: String) -> void:
 
 
 func update_button() -> void:
-	var description_preview_length: int = DataGlobal.settings_file.task_description_preview_length
+	var description_preview_length: int = DataGlobal.settings_file.task_setting_description_preview_length
 	var button_text := ""
 	if saved_task.description.length() > description_preview_length:
 		button_text = saved_task.description.left(description_preview_length) + "..."

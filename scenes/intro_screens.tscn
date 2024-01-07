@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://rwg6xp1eflba"]
+
+[ext_resource type="Script" path="res://addons/awesome_splash/core/SplashContainer.gd" id="1_2bbsg"]
+[ext_resource type="PackedScene" uid="uid://be574yx4gi08t" path="res://scenes/main_menu.tscn" id="2_686r4"]
+[ext_resource type="PackedScene" uid="uid://b5aj1thqf6837" path="res://src/demo_collection/zoom/splash_screen.tscn" id="2_v3tc2"]
+[ext_resource type="PackedScene" uid="uid://nlsdl5ae6346" path="res://scenes/greenleaf_galactic_intro_screen.tscn" id="4_xwp53"]
+
+[node name="Splash" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -2
+
+[node name="FlashFixColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="SplashContainer" type="Node2D" parent="."]
+script = ExtResource("1_2bbsg")
+custom_node/type = 0
+custom_node/default_time = 2.0
+skip/type = 2
+move_to_scene = ExtResource("2_686r4")
+trainsition_type = 5
+min_pixel = 1.0
+max_pixel = 128.0
+transition_time = 1.0
+
+[node name="GodotSplashZoom" parent="SplashContainer" instance=ExtResource("2_v3tc2")]
+
+[node name="GreenleafGalacticIntroScreen" parent="SplashContainer" instance=ExtResource("4_xwp53")]

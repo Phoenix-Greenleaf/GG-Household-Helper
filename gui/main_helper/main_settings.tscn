@@ -98,10 +98,6 @@ selected = 0
 popup/item_0/text = "1080"
 popup/item_0/id = 0
 
-[node name="ResolutionSwapButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ResolutionHBoxContainer" groups=["fullscreen_lock", "testing_lock"]]
-layout_mode = 2
-text = "Swap"
-
 [node name="CustomResolutionHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -304,7 +300,18 @@ layout_mode = 2
 text = "Changes not saved!"
 horizontal_alignment = 1
 
+[node name="TestChangeTimerLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "#"
+
+[node name="TestChangeTimer" type="Timer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer/TestChangeTimerLabel"]
+unique_name_in_owner = true
+wait_time = 10.0
+one_shot = true
+
 [node name="CancelChangesButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer" groups=["testing_lock"]]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Cancel Changes"
 
@@ -403,12 +410,13 @@ text = "Back"
 
 [connection signal="item_selected" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ResolutionHBoxContainer/ResolutionWidthOptionButton" to="." method="_on_resolution_width_option_button_item_selected"]
 [connection signal="item_selected" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ResolutionHBoxContainer/ResolutionHeightOptionButton" to="." method="_on_resolution_height_option_button_item_selected"]
-[connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ResolutionHBoxContainer/ResolutionSwapButton" to="." method="_on_resolution_swap_button_pressed"]
 [connection signal="value_changed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/CustomResolutionHBoxContainer/CustomWidthSpinBox" to="." method="_on_custom_width_spin_box_value_changed"]
 [connection signal="value_changed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/CustomResolutionHBoxContainer/CustomHeightSpinBox" to="." method="_on_custom_height_spin_box_value_changed"]
 [connection signal="item_selected" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayPreferenceHBoxContainer/DisplayPreferenceOptionButton" to="." method="_on_display_preference_option_button_item_selected"]
 [connection signal="item_selected" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayModeHBoxContainer/DisplayModeOptionButton" to="." method="_on_display_mode_option_button_item_selected"]
 [connection signal="toggled" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayModeHBoxContainer/BorderlessCheckButton" to="." method="_on_borderless_check_button_toggled"]
 [connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer/TestButton" to="." method="_on_test_button_pressed"]
+[connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer/CancelChangesButton" to="." method="_on_cancel_changes_button_pressed"]
 [connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
 [connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
+[connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

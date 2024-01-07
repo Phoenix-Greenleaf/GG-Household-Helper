@@ -27,6 +27,7 @@ func _skip_awe_splash_by_event(event) -> bool:
 # Todo: move to other screen here:
 func _on_finished_all_splash_screen():
 	if move_to_scene != null:
+		SceneTransition.black_color_rect.visible = true
 		get_tree().change_scene_to_packed(move_to_scene)
 	else:
 		push_error("Please set move_to_scene in SplashContainer")

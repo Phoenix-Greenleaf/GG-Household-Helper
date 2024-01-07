@@ -1,38 +1,7 @@
 """
 PLANNING
 
-find current dimensions
-check if dimensions are on the list
-select if so, select Custom if not
-if custom, set spin number
-and show / enable customs in question
-
-swap numbers / custom
-
-test options
-appear only when needed
-
-
-save options
-save all
-save display safe options
-save display unsafe options
-
-detect monitors
-populate monitor list
-select monitor Option
-if missing:
-
-window resizing
-dragging
-aspect ratio
-
-display mode
-disabling borderless switch
-
-borderless switch
-
-
+dragging / position
 """
 extends Control
 
@@ -54,6 +23,10 @@ extends Control
 @onready var test_buttons_h_box_container: HBoxContainer = %TestButtonsHBoxContainer
 @onready var test_button: Button = %TestButton
 @onready var save_warning_label: Label = %SaveWarningLabel
+@onready var test_change_timer_label: Label = %TestChangeTimerLabel
+@onready var test_change_timer: Timer = %TestChangeTimer
+@onready var cancel_changes_button: Button = %CancelChangesButton
+
 @onready var current_scene: Control
 
 @onready var settings = DataGlobal.settings_file
@@ -71,7 +44,9 @@ var window_width: int
 var window_height: int
 
 var testing_active: bool = false
-var test_time: int = 10
+var test_time: int = 13
+
+var ignore_window_resize: bool = true
 
 
 var resolution_list: Array = [
@@ -112,6 +87,14 @@ func _ready() -> void:
 	initialize_option_buttons()
 	apply_settings_to_menu()
 	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
+	toggle_changed_settings_section()
+	connect_signals()
+
+
+
+func _process(delta: float) -> void:
+	if testing_active:
+		test_change_timer_label.set_text(str(int(test_change_timer.time_left)))
 
 
 func get_display_data() -> void:
@@ -128,6 +111,7 @@ func initialize_option_buttons() -> void:
 	initialize_resolution_lists(resolution_width_option_button, screen_native_width)
 	initialize_resolution_lists(resolution_height_option_button, screen_native_height)
 	initialize_display_preference_options()
+	test_change_timer_label.text = ""
 
 
 func initialize_resolution_lists(button_parameter: OptionButton, native_resolution_paramter: int) -> void:
@@ -149,6 +133,10 @@ func initialize_display_preference_options() -> void:
 		display_preference_option_button.add_item(monitor_name + monitor_size_string)
 
 
+func connect_signals() -> void:
+	test_change_timer.timeout.connect(test_changes_end)
+	get_tree().get_root().size_changed.connect(window_resized)
+
 
 func load_settings() -> void:
 	window_width = settings.main_setting_window_width
@@ -161,7 +149,6 @@ func load_settings() -> void:
 
 func apply_settings_to_menu() -> void:
 	apply_both_resolutions(window_width, window_height)
-	apply_aspect_ratio()
 	apply_display_preference()
 	apply_display_mode()
 	apply_borderless()
@@ -201,12 +188,14 @@ func toggle_custom_dimension_disable(option_button_parameter: OptionButton, spin
 		spin_box_parameter.editable = false
 
 
-func apply_aspect_ratio() -> void:
-	pass
-
-
 func apply_display_preference() -> void:
 	display_preference_option_button.select(current_screen)
+	toggle_display_preference_option_button()
+
+
+func toggle_display_preference_option_button() -> void:
+	if display_preference_option_button.item_count < 2:
+		display_preference_option_button.disabled = true
 
 
 func apply_display_mode() -> void:
@@ -227,7 +216,17 @@ func apply_borderless() -> void:
 		borderless_check_button.set_pressed_no_signal(true)
 		borderless_status_label.text = "On"
 		return
-	prints("apply_display_mode ERROR!")
+	prints("apply_borderless ERROR!")
+
+
+func toggle_borderless_button() -> void:
+	if display_mode_option_button.selected == 0:
+		borderless_check_button.disabled = false
+		return
+	if display_mode_option_button.selected == 1:
+		borderless_check_button.disabled = true
+		return
+	prints("Toggle_borderless ERROR!")
 
 
 func toggle_changed_settings_section() -> void:
@@ -273,9 +272,9 @@ func test_changes_start() -> void:
 	test_mass_disable(true)
 	set_window(display_preference_option_button.selected, display_mode_option_button.selected, borderless_check_button.button_pressed, custom_width_spin_box.value, custom_height_spin_box.value)
 	test_button.text = "Cancel Test"
-	save_warning_label.text = "Test Active, will revert shortly..."
+	save_warning_label.text = "Test Active, will revert in:"
 	testing_active = true
-	get_tree().create_timer(test_time).timeout.connect(test_changes_end)
+	test_change_timer.start(test_time)
 
 
 func test_mass_disable(disabled_parameter: bool) -> void:
@@ -296,7 +295,13 @@ func test_changes_end() -> void:
 	test_button.text = "Test Changes"
 	save_warning_label.text = "Changes not saved!"
 	testing_active = false
-	apply_settings_to_menu()
+	if not test_change_timer.is_stopped():
+		test_change_timer.stop()
+	test_change_timer_label.text = ""
+	toggle_custom_resolution_container()
+	toggle_display_preference_option_button()
+	toggle_borderless_button()
+	toggle_changed_settings_section()
 
 
 func save_settings() -> void:
@@ -311,35 +316,28 @@ func save_settings() -> void:
 
 
 func set_window(current_screen_parameter: int, mode_parameter: int, borderless_parameter: int, width_parameter: int, height_parameter: int) -> void:
+	ignore_window_resize = true
 	var window_instance = get_window()
-	window_instance.set_current_screen(current_screen_parameter)
 	if mode_parameter == 1:
 		window_instance.set_mode(Window.MODE_FULLSCREEN)
 	if mode_parameter == 0:
 		window_instance.set_mode(Window.MODE_WINDOWED)
 		window_instance.set_flag(Window.FLAG_BORDERLESS, borderless_parameter)
 		window_instance.set_size(Vector2i(width_parameter, height_parameter))
+	window_instance.set_current_screen(current_screen_parameter)
 #	window_instance.set_position()
+	ignore_window_resize = false
 
 
-YOU LEFT OFF HERE
-	if display_preference_option_button.item_count < 2:
-		display_preference_option_button.disabled = true
-
-
-
-
-
-
-func connect_scene_resize(scene_parameter: Control) -> void:
-	current_scene = scene_parameter
-	scene_parameter.resized.connect(self.on_resized)
-	call_deferred("update_container")
-
-
-
-
-
+func window_resized() -> void:
+	if ignore_window_resize:
+		prints("Window resized signal IGNORED")
+		return
+	var resized_window_size: Vector2i = DisplayServer.window_get_size(current_screen)
+	prints("Window resized function activated")
+	var resized_window_width: int = resized_window_size.x
+	var resized_window_height: int = resized_window_size.y
+	apply_both_resolutions(resized_window_width, resized_window_height)
 
 
 
@@ -351,6 +349,9 @@ func _on_reset_button_pressed() -> void:
 	settings.reset_main_settings()
 	reset_button.text = "Settings Reset!"
 	SignalBus._on_settings_changed.emit()
+	load_settings()
+	apply_settings_to_menu()
+	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
 	toggle_changed_settings_section()
 
 
@@ -375,10 +376,6 @@ func _on_resolution_height_option_button_item_selected(index: int) -> void:
 		custom_height_spin_box.value = resolution_list[index]
 	toggle_custom_resolution_container()
 	toggle_changed_settings_section()
-
-
-func _on_resolution_swap_button_pressed() -> void:
-	pass # Replace with function body.
 
 
 func _on_custom_width_spin_box_value_changed(value: float) -> void:
@@ -407,6 +404,7 @@ func _on_test_button_pressed() -> void:
 		return
 	if testing_active:
 		test_changes_end()
+		test_change_timer.stop()
 		prints("End test press")
 
 
@@ -421,3 +419,14 @@ func _on_accept_button_pressed() -> void:
 	load_settings()
 	apply_settings_to_menu()
 	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
+#	toggle_changed_settings_section()
+
+
+func _on_cancel_changes_button_pressed() -> void:
+	apply_settings_to_menu()
+	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
+	toggle_changed_settings_section()
+
+
+func _on_back_button_pressed() -> void:
+	SignalBus._on_main_settings_back_button_pressed.emit()

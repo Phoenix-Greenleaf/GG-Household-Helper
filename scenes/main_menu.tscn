@@ -136,4 +136,5 @@ horizontal_alignment = 1
 [connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/StorageOrganizerButton" to="." method="_on_storage_organizer_button_pressed"]
 [connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/SensorNetworkButton" to="." method="_on_sensor_network_button_pressed"]
 [connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/DisplayScreensButton" to="." method="_on_display_screens_button_pressed"]
+[connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/ExitButton" to="." method="_on_exit_button_pressed"]

@@ -18,3 +18,4 @@ signal remote_active_data_save
 signal remote_task_settings_reload
 signal remote_spreadsheet_grid_reload
 signal _on_update_task_group_dropdown_items_activated
+signal _on_main_settings_back_button_pressed

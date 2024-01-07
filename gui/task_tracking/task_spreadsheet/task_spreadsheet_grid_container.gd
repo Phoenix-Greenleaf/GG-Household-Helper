@@ -74,9 +74,9 @@ func _ready() -> void:
 	close_new_task_panel()
 	get_dropdown_items_from_global()
 	SignalBus.remote_task_settings_reload.emit()
-	if DataGlobal.settings_file.task_enable_auto_load_default_data:
-		DataGlobal.current_tasksheet_data = DataGlobal.settings_file.task_default_data
-		data_for_spreadsheet = DataGlobal.settings_file.task_default_data
+	if DataGlobal.settings_file.task_setting_enable_auto_load_default_data:
+		DataGlobal.current_tasksheet_data = DataGlobal.settings_file.task_setting_default_data
+		data_for_spreadsheet = DataGlobal.settings_file.task_setting_default_data
 	if !data_for_spreadsheet:
 		print("No Tasksheet found for TaskGrid....")
 		return
