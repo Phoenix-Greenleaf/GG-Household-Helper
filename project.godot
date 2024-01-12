@@ -10,7 +10,9 @@ config_version=5
 
 [application]
 
-config/name="GG Household Helper"
+config/name="Household Helper"
+config/description="Productivity suite for individuals and groups"
+config/version="2.0.0.0"
 run/main_scene="res://scenes/intro_screens.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)

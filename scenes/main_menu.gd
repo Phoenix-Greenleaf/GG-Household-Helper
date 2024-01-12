@@ -1,8 +1,13 @@
 extends Control
 
 
+@onready var versoning: Label = %Versoning
+
+
+
 func _ready() -> void:
 	SceneTransition.fade_from_black()
+	versoning.text = "Version " + ProjectSettings.get_setting("application/config/version")
 
 
 func _on_exit_button_pressed() -> void:
