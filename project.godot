@@ -17,7 +17,9 @@ run/main_scene="res://scenes/intro_screens.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
-config/icon="res://icon.svg"
+config/icon="res://images/HH Icon.ico"
+config/macos_native_icon="res://images/HH Icon.ico"
+config/windows_native_icon="res://images/HH Icon.ico"
 
 [autoload]
 
