@@ -20,14 +20,8 @@ color = Color(0, 0, 0, 1)
 
 [node name="SplashContainer" type="Node2D" parent="."]
 script = ExtResource("1_2bbsg")
-custom_node/type = 0
-custom_node/default_time = 2.0
-skip/type = 2
 move_to_scene = ExtResource("2_686r4")
 trainsition_type = 5
-min_pixel = 1.0
-max_pixel = 128.0
-transition_time = 1.0
 
 [node name="GodotSplashZoom" parent="SplashContainer" instance=ExtResource("2_v3tc2")]
 
