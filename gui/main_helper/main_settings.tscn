@@ -48,10 +48,12 @@ horizontal_alignment = 1
 [node name="MainSettingsTabContainer" type="TabContainer" parent="PanelContainer/SettingsVBoxContainer"]
 layout_mode = 2
 tab_alignment = 1
+current_tab = 1
 clip_tabs = false
 use_hidden_tabs_for_min_size = true
 
 [node name="Display" type="PanelContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer"]
+visible = false
 layout_mode = 2
 
 [node name="DisplayMarginContainer" type="MarginContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display"]
@@ -66,7 +68,7 @@ layout_mode = 2
 
 [node name="StandardOptions" type="VBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 3
+theme_override_constants/separation = 5
 
 [node name="ResolutionHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions"]
 layout_mode = 2
@@ -278,6 +280,15 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
+[node name="DisplayResetHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions"]
+layout_mode = 2
+alignment = 1
+
+[node name="ResetButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayResetHBoxContainer" groups=["testing_lock"]]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reset to Defaults"
+
 [node name="TestHSeparator" type="HSeparator" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -344,6 +355,19 @@ layout_mode = 2
 layout_mode = 2
 text = "Off"
 
+[node name="Theme" type="PanelContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer"]
+layout_mode = 2
+
+[node name="ThemeMarginContainer" type="MarginContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/CenterContainer"]
+layout_mode = 2
+text = "Under Construction"
+
 [node name="Audio" type="PanelContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer"]
 visible = false
 layout_mode = 2
@@ -388,18 +412,13 @@ text = "Under Construction"
 
 [node name="StandardButtonsHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 25
+theme_override_constants/separation = 20
 alignment = 1
 
 [node name="AcceptButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Accept"
-
-[node name="ResetButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer" groups=["testing_lock"]]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Reset to Defaults"
 
 [node name="BackButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer" groups=["testing_lock"]]
 unique_name_in_owner = true
@@ -415,8 +434,8 @@ text = "Back"
 [connection signal="item_selected" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayPreferenceHBoxContainer/DisplayPreferenceOptionButton" to="." method="_on_display_preference_option_button_item_selected"]
 [connection signal="item_selected" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayModeHBoxContainer/DisplayModeOptionButton" to="." method="_on_display_mode_option_button_item_selected"]
 [connection signal="toggled" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayModeHBoxContainer/BorderlessCheckButton" to="." method="_on_borderless_check_button_toggled"]
+[connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayResetHBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer/TestButton" to="." method="_on_test_button_pressed"]
 [connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer/CancelChangesButton" to="." method="_on_cancel_changes_button_pressed"]
 [connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
-[connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
