@@ -1,97 +1,8 @@
-[gd_scene load_steps=21 format=3 uid="uid://dqqm4htlk2dxs"]
+[gd_scene load_steps=4 format=3 uid="uid://dqqm4htlk2dxs"]
 
-[ext_resource type="Theme" uid="uid://dubk1ftmdlsay" path="res://themes/green_gal_main_menu_theme.tres" id="1_mhxpy"]
 [ext_resource type="Script" path="res://scenes/task_tracking_settings.gd" id="2_50fxw"]
-[ext_resource type="Theme" uid="uid://dsurd46r2nccp" path="res://themes/green_gal_large_title_theme.tres" id="2_g1yur"]
-[ext_resource type="StyleBox" uid="uid://drr0a8wi67h56" path="res://themes/theme_parts/popup_panel_3_style_box_flat.tres" id="4_ok60o"]
 [ext_resource type="ButtonGroup" uid="uid://rtfa2yhtpxlw" path="res://data/setting_parts/task_new_checkbox_options_button_group.tres" id="5_pw0kc"]
-[ext_resource type="FontFile" uid="uid://7jukdly5m5dl" path="res://fonts/font_otf/Gidolinya-Regular.otf" id="6_akkc4"]
-[ext_resource type="StyleBox" uid="uid://kshd0em2p28" path="res://themes/theme_parts/transpanency2_style_box_flat.tres" id="6_i4frn"]
-[ext_resource type="StyleBox" uid="uid://5gbky82e7ys5" path="res://themes/theme_parts/popup_panel_2_style_box_flat.tres" id="7_atkjp"]
-[ext_resource type="StyleBox" uid="uid://bcqpnkgaub5eq" path="res://themes/theme_parts/gg_disabled_button_style_box_flat.tres" id="7_fivoq"]
 [ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/data_manager/data_manager.tscn" id="8_ru03e"]
-[ext_resource type="StyleBox" uid="uid://bsl1gnk7iu4ua" path="res://themes/theme_parts/gg_focused_button_style_box_flat.tres" id="8_uptu1"]
-[ext_resource type="StyleBox" uid="uid://bakr6w60xl0kf" path="res://themes/theme_parts/gg_hover_button_style_box_flat.tres" id="9_wyl3m"]
-[ext_resource type="StyleBox" uid="uid://brn84anymriv3" path="res://themes/theme_parts/gg_normal_button_style_box_flat.tres" id="10_d8q32"]
-[ext_resource type="StyleBox" uid="uid://cxwys7rfq1ygf" path="res://themes/theme_parts/gg_pressed_button_style_box_flat.tres" id="11_tj0p1"]
-[ext_resource type="StyleBox" uid="uid://dpu0yb1nqqh5n" path="res://themes/theme_parts/gg_secondary_panel_style_box_flat.tres" id="12_256sb"]
-[ext_resource type="StyleBox" uid="uid://dcpfq0xquj5eb" path="res://themes/theme_parts/gg_background_panel_style_box_flat.tres" id="13_8bs52"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j1wvg"]
-
-[sub_resource type="Theme" id="Theme_if7eo"]
-Button/colors/font_outline_color = Color(0, 0, 0, 1)
-Button/constants/outline_size = 6
-Button/font_sizes/font_size = 20
-Button/fonts/font = ExtResource("6_akkc4")
-Button/styles/disabled = ExtResource("7_fivoq")
-Button/styles/focus = ExtResource("8_uptu1")
-Button/styles/hover = ExtResource("9_wyl3m")
-Button/styles/normal = ExtResource("10_d8q32")
-Button/styles/pressed = ExtResource("11_tj0p1")
-Label/colors/font_outline_color = Color(0, 0, 0, 1)
-Label/constants/outline_size = 6
-Label/font_sizes/font_size = 25
-Label/fonts/font = ExtResource("6_akkc4")
-LineEdit/colors/font_outline_color = Color(0, 0, 0, 1)
-LineEdit/constants/outline_size = 5
-LineEdit/font_sizes/font_size = 40
-LineEdit/fonts/font = ExtResource("6_akkc4")
-LineEdit/styles/focus = ExtResource("8_uptu1")
-LineEdit/styles/normal = ExtResource("11_tj0p1")
-LineEdit/styles/read_only = ExtResource("7_fivoq")
-Panel/styles/panel = ExtResource("12_256sb")
-PanelContainer/styles/panel = SubResource("StyleBoxEmpty_j1wvg")
-PopupMenu/font_sizes/font_size = 25
-PopupMenu/fonts/font = ExtResource("6_akkc4")
-PopupMenu/styles/panel = ExtResource("9_wyl3m")
-ScrollContainer/styles/panel = ExtResource("13_8bs52")
-TextEdit/colors/font_outline_color = Color(0, 0, 0, 1)
-TextEdit/constants/outline_size = 5
-TextEdit/font_sizes/font_size = 20
-TextEdit/fonts/font = ExtResource("6_akkc4")
-TextEdit/styles/focus = ExtResource("8_uptu1")
-TextEdit/styles/normal = ExtResource("11_tj0p1")
-TextEdit/styles/read_only = ExtResource("7_fivoq")
-VBoxContainer/constants/separation = 0
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4qobc"]
-
-[sub_resource type="Theme" id="Theme_naul4"]
-Button/colors/font_outline_color = Color(0, 0, 0, 1)
-Button/constants/outline_size = 6
-Button/font_sizes/font_size = 30
-Button/fonts/font = ExtResource("6_akkc4")
-Button/styles/disabled = ExtResource("7_fivoq")
-Button/styles/focus = ExtResource("8_uptu1")
-Button/styles/hover = ExtResource("9_wyl3m")
-Button/styles/normal = ExtResource("10_d8q32")
-Button/styles/pressed = ExtResource("11_tj0p1")
-Label/colors/font_outline_color = Color(0, 0, 0, 1)
-Label/constants/outline_size = 6
-Label/font_sizes/font_size = 25
-Label/fonts/font = ExtResource("6_akkc4")
-LineEdit/colors/font_outline_color = Color(0, 0, 0, 1)
-LineEdit/constants/outline_size = 5
-LineEdit/font_sizes/font_size = 20
-LineEdit/fonts/font = ExtResource("6_akkc4")
-LineEdit/styles/focus = ExtResource("8_uptu1")
-LineEdit/styles/normal = ExtResource("11_tj0p1")
-LineEdit/styles/read_only = ExtResource("7_fivoq")
-Panel/styles/panel = ExtResource("12_256sb")
-PanelContainer/styles/panel = SubResource("StyleBoxEmpty_4qobc")
-PopupMenu/font_sizes/font_size = 25
-PopupMenu/fonts/font = ExtResource("6_akkc4")
-PopupMenu/styles/panel = ExtResource("9_wyl3m")
-ScrollContainer/styles/panel = ExtResource("13_8bs52")
-TextEdit/colors/font_outline_color = Color(0, 0, 0, 1)
-TextEdit/constants/outline_size = 5
-TextEdit/font_sizes/font_size = 20
-TextEdit/fonts/font = ExtResource("6_akkc4")
-TextEdit/styles/focus = ExtResource("8_uptu1")
-TextEdit/styles/normal = ExtResource("11_tj0p1")
-TextEdit/styles/read_only = ExtResource("7_fivoq")
-VBoxContainer/constants/separation = 0
 
 [node name="TaskTrackingSettings" type="PanelContainer"]
 anchors_preset = 15
@@ -99,7 +10,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_mhxpy")
 script = ExtResource("2_50fxw")
 
 [node name="Center" type="CenterContainer" parent="."]
@@ -111,20 +21,15 @@ alignment = 1
 
 [node name="TaskSettingsTitle" type="Label" parent="Center/VBox"]
 layout_mode = 2
-theme = ExtResource("2_g1yur")
-theme_override_font_sizes/font_size = 80
 text = "Task Settings"
 horizontal_alignment = 1
 
 [node name="GridContainer" type="GridContainer" parent="Center/VBox"]
 layout_mode = 2
-theme_override_constants/h_separation = 12
-theme_override_constants/v_separation = 12
 columns = 2
 
 [node name="DefaultDataPanelContainer" type="PanelContainer" parent="Center/VBox/GridContainer"]
 layout_mode = 2
-theme_override_styles/panel = ExtResource("4_ok60o")
 
 [node name="DefaultDataVBox" type="VBoxContainer" parent="Center/VBox/GridContainer/DefaultDataPanelContainer"]
 layout_mode = 2
@@ -156,7 +61,6 @@ text = "Auto Load Default Data (Off)"
 
 [node name="NewCheckboxOptionsPanelContainer" type="PanelContainer" parent="Center/VBox/GridContainer"]
 layout_mode = 2
-theme_override_styles/panel = ExtResource("4_ok60o")
 
 [node name="NewCheckboxOptionsVBox" type="VBoxContainer" parent="Center/VBox/GridContainer/NewCheckboxOptionsPanelContainer"]
 layout_mode = 2
@@ -196,7 +100,6 @@ text = "Set Active & Assigned Profile"
 
 [node name="DeletionPanelContainer" type="PanelContainer" parent="Center/VBox/GridContainer"]
 layout_mode = 2
-theme_override_styles/panel = ExtResource("4_ok60o")
 
 [node name="DeletionVBox" type="VBoxContainer" parent="Center/VBox/GridContainer/DeletionPanelContainer"]
 layout_mode = 2
@@ -231,14 +134,9 @@ text = "Purge Profile Data from Task Sheet"
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_styles/panel = ExtResource("7_atkjp")
 
 [node name="MarginContainer" type="MarginContainer" parent="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox/ResetCheckboxPanelContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Center/VBox/GridContainer/DeletionPanelContainer/DeletionVBox/ResetCheckboxPanelContainer/MarginContainer"]
 layout_mode = 2
@@ -316,7 +214,6 @@ text = "Delete Task Sheet Data"
 
 [node name="OtherOptionsPanelContainer" type="PanelContainer" parent="Center/VBox/GridContainer"]
 layout_mode = 2
-theme_override_styles/panel = ExtResource("4_ok60o")
 
 [node name="OtherOptionsVBox" type="VBoxContainer" parent="Center/VBox/GridContainer/OtherOptionsPanelContainer"]
 layout_mode = 2
@@ -343,14 +240,12 @@ alignment = 1
 
 [node name="Label" type="Label" parent="Center/VBox/GridContainer/OtherOptionsPanelContainer/OtherOptionsVBox/HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 40
 text = "Description Preview Length"
 
 [node name="DescriptionPreviewLengthSpinBox" type="SpinBox" parent="Center/VBox/GridContainer/OtherOptionsPanelContainer/OtherOptionsVBox/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-theme = SubResource("Theme_if7eo")
 min_value = 6.0
 value = 50.0
 rounded = true
@@ -358,7 +253,6 @@ alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Center/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 43
 alignment = 1
 
 [node name="ResetDefaultSettingsButton" type="Button" parent="Center/VBox/HBoxContainer"]
@@ -377,16 +271,13 @@ text = "to Task Sheets"
 
 [node name="DeletionBackgroundPanelContainer" type="PanelContainer" parent="."]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
-theme_override_styles/panel = ExtResource("6_i4frn")
 
 [node name="DeletionCenterContainer" type="CenterContainer" parent="DeletionBackgroundPanelContainer"]
 layout_mode = 2
 
 [node name="DeletionPanelContainer" type="PanelContainer" parent="DeletionBackgroundPanelContainer/DeletionCenterContainer"]
 layout_mode = 2
-theme_override_styles/panel = ExtResource("7_atkjp")
 
 [node name="DeletionVBox" type="VBoxContainer" parent="DeletionBackgroundPanelContainer/DeletionCenterContainer/DeletionPanelContainer"]
 layout_mode = 2
@@ -401,9 +292,6 @@ horizontal_alignment = 1
 [node name="DeletionGridContainer" type="GridContainer" parent="DeletionBackgroundPanelContainer/DeletionCenterContainer/DeletionPanelContainer/DeletionVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = SubResource("Theme_naul4")
-theme_override_constants/h_separation = 3
-theme_override_constants/v_separation = 3
 columns = 6
 
 [node name="DeletionBackButton" type="Button" parent="DeletionBackgroundPanelContainer/DeletionCenterContainer/DeletionPanelContainer/DeletionVBox"]

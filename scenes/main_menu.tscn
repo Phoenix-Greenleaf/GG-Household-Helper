@@ -1,13 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://be574yx4gi08t"]
+[gd_scene load_steps=2 format=3 uid="uid://be574yx4gi08t"]
 
 [ext_resource type="Script" path="res://scenes/main_menu.gd" id="1_ei0oi"]
-[ext_resource type="Theme" uid="uid://dubk1ftmdlsay" path="res://themes/green_gal_main_menu_theme.tres" id="2_2rtue"]
-[ext_resource type="Theme" uid="uid://dsurd46r2nccp" path="res://themes/green_gal_large_title_theme.tres" id="3_y4llg"]
-[ext_resource type="Theme" uid="uid://c7ywbrtbx84q0" path="res://themes/green_gal_small_title_theme.tres" id="4_i7dnh"]
-[ext_resource type="Theme" uid="uid://0yiqrykg4xx2" path="res://themes/green_gal_tiny_text_theme.tres" id="5_0v4fq"]
-
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_mrwxq"]
-thickness = 7
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -27,7 +20,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("2_2rtue")
 
 [node name="MenuCenter" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -49,14 +41,12 @@ alignment = 1
 
 [node name="MainLabel" type="Label" parent="MenuCenter/MiddleManagement/TitleVBox"]
 layout_mode = 2
-theme = ExtResource("3_y4llg")
 text = "Household Helper"
 horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="SecondaryLabel" type="Label" parent="MenuCenter/MiddleManagement/TitleVBox"]
 layout_mode = 2
-theme = ExtResource("4_i7dnh")
 text = "Productivity Application Suite"
 horizontal_alignment = 1
 
@@ -66,36 +56,29 @@ theme_override_constants/separation = 10
 
 [node name="TaskTrackingButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
-theme = ExtResource("2_2rtue")
 text = "Task Tracking"
 
 [node name="HouseholdDocumentsButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
-theme = ExtResource("2_2rtue")
 text = "Household Documents"
 
 [node name="StorageOrganizerButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
-theme = ExtResource("2_2rtue")
 text = "Storage Organizer"
 
 [node name="SensorNetworkButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
-theme = ExtResource("2_2rtue")
 text = "Household Sensor Network"
 
 [node name="DisplayScreensButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
-theme = ExtResource("2_2rtue")
 text = "Display Screens"
 
 [node name="HSeparator" type="HSeparator" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_mrwxq")
 
 [node name="SettingsButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
-theme = ExtResource("2_2rtue")
 text = "Main Settings"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MenuCenter/MiddleManagement/MenuVBox"]
@@ -105,33 +88,28 @@ size_flags_vertical = 4
 [node name="HelpButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_2rtue")
 disabled = true
 text = "Help"
 
 [node name="AboutButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_2rtue")
 disabled = true
 text = "About"
 
 [node name="FeedbackButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_2rtue")
 disabled = true
 text = "Feedback"
 
 [node name="ExitButton" type="Button" parent="MenuCenter/MiddleManagement/MenuVBox"]
 layout_mode = 2
-theme = ExtResource("2_2rtue")
 text = "Exit"
 
 [node name="Versoning" type="Label" parent="MenuCenter/MiddleManagement/MenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("5_0v4fq")
 text = "Version Major.Minor.Patch.Revision"
 horizontal_alignment = 1
 

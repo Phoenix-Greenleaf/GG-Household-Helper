@@ -41,6 +41,11 @@ window/stretch/aspect="ignore"
 
 enabled=PackedStringArray("res://addons/awesome_splash/plugin.cfg", "res://addons/godot-action/plugin.cfg")
 
+[gui]
+
+theme/custom="res://theme/main_theme.tres"
+theme/custom_font="res://fonts/font_otf/Gidolinya-Regular.otf"
+
 [rendering]
 
 textures/vram_compression/import_etc2_astc=true

@@ -1,12 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://d4mpwr2508ash"]
+[gd_scene load_steps=2 format=3 uid="uid://d4mpwr2508ash"]
 
 [ext_resource type="Script" path="res://scenes/storage_menu.gd" id="1_3p0p7"]
-[ext_resource type="Theme" uid="uid://dubk1ftmdlsay" path="res://themes/green_gal_main_menu_theme.tres" id="1_4tl15"]
-[ext_resource type="Theme" uid="uid://dsurd46r2nccp" path="res://themes/green_gal_large_title_theme.tres" id="2_luit3"]
-[ext_resource type="Theme" uid="uid://0yiqrykg4xx2" path="res://themes/green_gal_tiny_text_theme.tres" id="3_5px2u"]
-
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_g0vrv"]
-thickness = 7
 
 [node name="StorageMenu" type="Control"]
 layout_mode = 3
@@ -26,7 +20,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_4tl15")
 
 [node name="MenuCenter" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -38,45 +31,37 @@ grow_vertical = 2
 
 [node name="MiddleManagement" type="VBoxContainer" parent="MenuCenter"]
 layout_mode = 2
-theme_override_constants/separation = 20
 
 [node name="MainLabel" type="Label" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("2_luit3")
 text = "Storage Organizer"
 horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="ToBeDevelopedButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_4tl15")
 disabled = true
 text = "To Be Developed"
 
 [node name="HSeparator" type="HSeparator" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_g0vrv")
 
 [node name="SettingsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_4tl15")
 disabled = true
 text = "Storage Settings"
 
 [node name="DataManagerButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_4tl15")
 disabled = true
 text = "Storage Data Manager"
 
 [node name="BackButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_4tl15")
 text = "Back to Main Menu"
 
 [node name="Notes" type="Label" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("3_5px2u")
 text = "Dev Notes: This section is my second priority. Organizing is a big task, and a useful app should be a lifesaver. I want the organizer to interact and link with other modules, like to-do and map overlays. "
 horizontal_alignment = 1
 autowrap_mode = 3

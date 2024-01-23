@@ -1,7 +1,0 @@
-[gd_resource type="StyleBoxLine" format=3 uid="uid://dh802c84fb1sv"]
-
-[resource]
-grow_begin = 6.0
-grow_end = 6.0
-thickness = 6
-vertical = true

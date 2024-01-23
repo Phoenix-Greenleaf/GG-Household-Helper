@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://nlsdl5ae6346"]
+[gd_scene load_steps=3 format=3 uid="uid://nlsdl5ae6346"]
 
 [ext_resource type="Script" path="res://scenes/greenleaf_galactic_intro_screen.gd" id="1_cpnjq"]
 [ext_resource type="VideoStream" path="res://video/Intro 1.ogv" id="1_ojy8j"]
-[ext_resource type="Theme" uid="uid://dsurd46r2nccp" path="res://themes/green_gal_large_title_theme.tres" id="2_uhj4k"]
 
 [node name="GreenleafGalacticIntroScreen" type="Node2D"]
 script = ExtResource("1_cpnjq")
@@ -49,7 +48,6 @@ size_flags_vertical = 3
 [node name="GreenleafGalacticLabel" type="Label" parent="CanvasLayer/VBoxContainer/GreenleafGalacticMarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
-theme = ExtResource("2_uhj4k")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "Greenleaf Galactic"
 horizontal_alignment = 1

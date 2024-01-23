@@ -1,16 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://ds4yxf6rofxhb"]
+[gd_scene load_steps=3 format=3 uid="uid://ds4yxf6rofxhb"]
 
 [ext_resource type="Script" path="res://gui/task_tracking/current_checkbox_button.gd" id="1_116pv"]
-[ext_resource type="Theme" uid="uid://djvo047swus7p" path="res://themes/green_gal_main_theme.tres" id="1_v11pb"]
-[ext_resource type="Theme" uid="uid://b6r6dqju3145j" path="res://themes/green_gal_custom_button_theme.tres" id="3_g425x"]
 [ext_resource type="Script" path="res://gui/task_tracking/checkbox_border_color_rect.gd" id="3_olb64"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_05o1u"]
 
 [node name="CurrentCheckboxButton" type="PanelContainer"]
 mouse_filter = 2
-theme = ExtResource("1_v11pb")
-theme_override_styles/panel = SubResource("StyleBoxEmpty_05o1u")
 script = ExtResource("1_116pv")
 
 [node name="Button" type="Button" parent="."]
@@ -20,15 +14,10 @@ toggle_mode = true
 [node name="CurrentCheckboxMargin" type="MarginContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
 
 [node name="CurrentCheckboxVBox" type="VBoxContainer" parent="CurrentCheckboxMargin"]
 layout_mode = 2
 mouse_filter = 2
-theme = ExtResource("1_v11pb")
 
 [node name="CurrentCheckboxLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
@@ -39,7 +28,6 @@ horizontal_alignment = 1
 [node name="HSeparator3" type="HSeparator" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 12
 
 [node name="CurrentCheckboxColorRectTop" type="ColorRect" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 unique_name_in_owner = true
@@ -70,11 +58,9 @@ mouse_filter = 2
 [node name="HSeparator2" type="HSeparator" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 12
 
 [node name="CurrentCheckboxStatusLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
-theme = ExtResource("3_g425x")
 text = "Current Status"
 horizontal_alignment = 1
 
@@ -84,7 +70,6 @@ mouse_filter = 2
 
 [node name="CurrentCheckboxProfileLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2
-theme = ExtResource("3_g425x")
 text = "Current Profile"
 horizontal_alignment = 1
 autowrap_mode = 3

@@ -1,12 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://c3i13onp82qws"]
+[gd_scene load_steps=2 format=3 uid="uid://c3i13onp82qws"]
 
-[ext_resource type="Theme" uid="uid://dubk1ftmdlsay" path="res://themes/green_gal_main_menu_theme.tres" id="1_ejexu"]
 [ext_resource type="Script" path="res://scenes/display_screens_menu.gd" id="1_syjo5"]
-[ext_resource type="Theme" uid="uid://dsurd46r2nccp" path="res://themes/green_gal_large_title_theme.tres" id="2_uyjgx"]
-[ext_resource type="Theme" uid="uid://0yiqrykg4xx2" path="res://themes/green_gal_tiny_text_theme.tres" id="3_lf47r"]
-
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_qus47"]
-thickness = 7
 
 [node name="DisplayScreensMenu" type="Control"]
 layout_mode = 3
@@ -24,7 +18,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_ejexu")
 
 [node name="MenuCenter" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -36,81 +29,67 @@ grow_vertical = 2
 
 [node name="MiddleManagement" type="VBoxContainer" parent="MenuCenter"]
 layout_mode = 2
-theme_override_constants/separation = 10
 
 [node name="MainLabel" type="Label" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("2_uyjgx")
 text = "Display Screens"
 horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="HouseholdHudButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_ejexu")
 disabled = true
 text = "Household H.U.D."
 
 [node name="WeatherAdvisoriesButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_ejexu")
 disabled = true
 text = "Weather & Advisories"
 
 [node name="MapOverlaysButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_ejexu")
 disabled = true
 text = "Maps & Overlays"
 
 [node name="WebPagesButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_ejexu")
 disabled = true
 text = "Web Pages"
 
 [node name="AlertsWarningsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_ejexu")
 disabled = true
 text = "Alerts & Warnings"
 
 [node name="StatusLightDisplayButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_ejexu")
 disabled = true
 text = "Status Light Display"
 
 [node name="ToDoListDisplayButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_ejexu")
 disabled = true
 text = "Task To-Do List Display"
 
 [node name="HSeparator" type="HSeparator" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_qus47")
 
 [node name="SettingsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_ejexu")
 disabled = true
 text = "Display Settings"
 
 [node name="DataManagerButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_ejexu")
 disabled = true
 text = "Display Data Manager"
 
 [node name="BackButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_ejexu")
 text = "Back to Main Menu"
 
 [node name="Notes" type="Label" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("3_lf47r")
 text = "Dev Notes: Displays stand at priority number three. I want useful info boards, that can be scrolled through and sometimes interacted with. Buttons list some examples, but are definately not final."
 horizontal_alignment = 1
 autowrap_mode = 3

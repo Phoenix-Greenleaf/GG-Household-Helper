@@ -1,9 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://esmp6jtqggdn"]
+[gd_scene load_steps=2 format=3 uid="uid://esmp6jtqggdn"]
 
 [ext_resource type="Script" path="res://gui/main_helper/main_settings.gd" id="1_2sqv7"]
-[ext_resource type="Theme" uid="uid://djvo047swus7p" path="res://themes/green_gal_main_theme.tres" id="1_6tiax"]
-[ext_resource type="StyleBox" uid="uid://5gbky82e7ys5" path="res://themes/theme_parts/popup_panel_2_style_box_flat.tres" id="2_g6pu6"]
-[ext_resource type="StyleBox" uid="uid://cmoiollela6cr" path="res://themes/theme_parts/black_style_box_line.tres" id="4_5yysd"]
 
 [node name="MainSettings" type="Control"]
 layout_mode = 3
@@ -31,44 +28,33 @@ offset_right = 248.0
 offset_bottom = 172.5
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_6tiax")
-theme_override_styles/panel = ExtResource("2_g6pu6")
 
 [node name="SettingsVBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 layout_mode = 2
-theme_override_constants/separation = 3
 alignment = 1
 
 [node name="MainSettingsTitleLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 35
 text = "Main Settings"
 horizontal_alignment = 1
 
 [node name="MainSettingsTabContainer" type="TabContainer" parent="PanelContainer/SettingsVBoxContainer"]
 layout_mode = 2
 tab_alignment = 1
-current_tab = 1
 clip_tabs = false
 use_hidden_tabs_for_min_size = true
 
 [node name="Display" type="PanelContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer"]
-visible = false
 layout_mode = 2
 
 [node name="DisplayMarginContainer" type="MarginContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display"]
 layout_mode = 2
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 6
 
 [node name="DisplayVBoxContainer" type="VBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer"]
 layout_mode = 2
 
 [node name="StandardOptions" type="VBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 5
 
 [node name="ResolutionHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions"]
 layout_mode = 2
@@ -292,8 +278,6 @@ text = "Reset to Defaults"
 [node name="TestHSeparator" type="HSeparator" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 13
-theme_override_styles/separator = ExtResource("4_5yysd")
 
 [node name="TestButtonsHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer"]
 unique_name_in_owner = true
@@ -356,17 +340,82 @@ layout_mode = 2
 text = "Off"
 
 [node name="Theme" type="PanelContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer"]
+visible = false
 layout_mode = 2
 
 [node name="ThemeMarginContainer" type="MarginContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme"]
 layout_mode = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer"]
+[node name="ThemeVBoxContainer" type="VBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/CenterContainer"]
+[node name="ThemeColumnsHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer"]
 layout_mode = 2
-text = "Under Construction"
+alignment = 1
+
+[node name="ThemeFontSizeVBoxContainer" type="VBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer"]
+layout_mode = 2
+
+[node name="ThemeSizeHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeFontSizeVBoxContainer"]
+layout_mode = 2
+
+[node name="ThemeSizeLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeFontSizeVBoxContainer/ThemeSizeHBoxContainer"]
+layout_mode = 2
+text = "Font Size"
+
+[node name="ThemeSizeSpinBox" type="SpinBox" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeFontSizeVBoxContainer/ThemeSizeHBoxContainer"]
+layout_mode = 2
+
+[node name="ThemeColorsVBoxContainer" type="VBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer"]
+layout_mode = 2
+
+[node name="ThemeColorHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsVBoxContainer"]
+layout_mode = 2
+
+[node name="ThemeColorLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsVBoxContainer/ThemeColorHBoxContainer"]
+layout_mode = 2
+text = "Color"
+
+[node name="ThemeColorPickerButton" type="ColorPickerButton" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsVBoxContainer/ThemeColorHBoxContainer"]
+layout_mode = 2
+text = "Color"
+color = Color(0, 0, 0.533333, 1)
+
+[node name="ThemeTestHSeparator" type="HSeparator" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer"]
+layout_mode = 2
+
+[node name="ThemeTestButtonsHBoxContainer" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ThemeTestButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeTestButtonsHBoxContainer"]
+layout_mode = 2
+text = "Test Changes"
+
+[node name="ThemeSaveWarningLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeTestButtonsHBoxContainer"]
+layout_mode = 2
+text = "Changes not saved!"
+horizontal_alignment = 1
+
+[node name="ThemeTestChangeTimerLabel" type="Label" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeTestButtonsHBoxContainer"]
+layout_mode = 2
+text = "#"
+
+[node name="ThemeTestChangeTimer" type="Timer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeTestButtonsHBoxContainer/ThemeTestChangeTimerLabel"]
+wait_time = 10.0
+one_shot = true
+
+[node name="ThemeCancelChangesButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeTestButtonsHBoxContainer" groups=["testing_lock"]]
+layout_mode = 2
+text = "Cancel Changes"
+
+[node name="ThemeResetHBoxContainer2" type="HBoxContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ThemeResetButton" type="Button" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeResetHBoxContainer2" groups=["testing_lock"]]
+layout_mode = 2
+text = "Reset to Defaults"
 
 [node name="Audio" type="PanelContainer" parent="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer"]
 visible = false
@@ -437,5 +486,8 @@ text = "Back"
 [connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayResetHBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer/TestButton" to="." method="_on_test_button_pressed"]
 [connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer/CancelChangesButton" to="." method="_on_cancel_changes_button_pressed"]
+[connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeTestButtonsHBoxContainer/ThemeTestButton" to="." method="_on_test_button_pressed"]
+[connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeTestButtonsHBoxContainer/ThemeCancelChangesButton" to="." method="_on_cancel_changes_button_pressed"]
+[connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeResetHBoxContainer2/ThemeResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
 [connection signal="pressed" from="PanelContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

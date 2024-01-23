@@ -1,12 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://duuk7lqqjftdu"]
+[gd_scene load_steps=2 format=3 uid="uid://duuk7lqqjftdu"]
 
 [ext_resource type="Script" path="res://scenes/sensor_network_menu.gd" id="1_pukc7"]
-[ext_resource type="Theme" uid="uid://dubk1ftmdlsay" path="res://themes/green_gal_main_menu_theme.tres" id="1_xgytt"]
-[ext_resource type="Theme" uid="uid://dsurd46r2nccp" path="res://themes/green_gal_large_title_theme.tres" id="2_upa60"]
-[ext_resource type="Theme" uid="uid://0yiqrykg4xx2" path="res://themes/green_gal_tiny_text_theme.tres" id="3_qyt1b"]
-
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_l0a72"]
-thickness = 7
 
 [node name="SensorNetworkMenu" type="Control"]
 layout_mode = 3
@@ -24,7 +18,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_xgytt")
 
 [node name="MenuCenter" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -36,69 +29,57 @@ grow_vertical = 2
 
 [node name="MiddleManagement" type="VBoxContainer" parent="MenuCenter"]
 layout_mode = 2
-theme_override_constants/separation = 20
 
 [node name="MainLabel" type="Label" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("2_upa60")
 text = "Household Sensor Network"
 horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="SecuritySensorsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_xgytt")
 disabled = true
 text = "Security Sensors"
 
 [node name="SecurityCamerasButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_xgytt")
 disabled = true
 text = "Security Cameras"
 
 [node name="EnvironmentSensorsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_xgytt")
 disabled = true
 text = "Environment Sensors"
 
 [node name="ActivitySensorsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_xgytt")
 disabled = true
 text = "Activity Sensors"
 
 [node name="ExternalDataButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_xgytt")
 disabled = true
 text = "External Data"
 
 [node name="HSeparator" type="HSeparator" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_l0a72")
 
 [node name="SettingsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_xgytt")
 disabled = true
 text = "Sensor Network Settings"
 
 [node name="DataManagerButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_xgytt")
 disabled = true
 text = "Sensor Network Data Manager"
 
 [node name="ExitButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("1_xgytt")
 text = "Back to Main Menu"
 
 [node name="Versoning" type="Label" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-theme = ExtResource("3_qyt1b")
 text = "Dev Notes: Managing the home with live data. Last priority, number 5, due to complexity. Sensors, buttons, and home automation. "
 horizontal_alignment = 1
 autowrap_mode = 3
