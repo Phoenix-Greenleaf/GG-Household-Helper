@@ -3,7 +3,12 @@
 [ext_resource type="Script" path="res://gui/task_tracking/checkbox_profile.gd" id="1_8egkx"]
 
 [node name="ProfilePanelContainer" type="PanelContainer"]
+offset_right = 79.0
+offset_bottom = 74.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
 mouse_filter = 2
+theme_type_variation = &"PanelContainer_Blank"
 script = ExtResource("1_8egkx")
 
 [node name="ProfileButton" type="Button" parent="."]
@@ -14,10 +19,12 @@ toggle_mode = true
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"MarginContainer_Double_Top_Bottom"
 
 [node name="VBox" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"VBoxContainer_No_Space"
 
 [node name="ProfileColorRect" type="ColorRect" parent="Margin/VBox"]
 unique_name_in_owner = true

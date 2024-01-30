@@ -5,6 +5,7 @@
 
 [node name="CurrentCheckboxButton" type="PanelContainer"]
 mouse_filter = 2
+theme_type_variation = &"PanelContainer_Blank"
 script = ExtResource("1_116pv")
 
 [node name="Button" type="Button" parent="."]
@@ -14,10 +15,12 @@ toggle_mode = true
 [node name="CurrentCheckboxMargin" type="MarginContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"MarginContainer_Double_Top_Bottom"
 
 [node name="CurrentCheckboxVBox" type="VBoxContainer" parent="CurrentCheckboxMargin"]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"VBoxContainer_No_Space"
 
 [node name="CurrentCheckboxLabel" type="Label" parent="CurrentCheckboxMargin/CurrentCheckboxVBox"]
 layout_mode = 2

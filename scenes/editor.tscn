@@ -39,11 +39,16 @@ grow_vertical = 2
 [node name="MainHBox" type="HBoxContainer" parent="MainMargin"]
 layout_mode = 2
 
-[node name="SideMenuVBox" type="VBoxContainer" parent="MainMargin/MainHBox"]
+[node name="SideMenuScrollContainer" type="ScrollContainer" parent="MainMargin/MainHBox"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="SideMenuVBox" type="VBoxContainer" parent="MainMargin/MainHBox/SideMenuScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
+theme_type_variation = &"VBoxContainer_No_Space"
 
-[node name="MenuButton" type="MenuButton" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="MenuButton" type="MenuButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 z_index = 4
 z_as_relative = false
 layout_mode = 2
@@ -73,22 +78,22 @@ popup/item_7/id = 0
 popup/item_8/text = "Quit"
 popup/item_8/id = 3
 
-[node name="HSeparator4" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="HSeparator4" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
 
-[node name="EditorModeToggleLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="EditorModeToggleLabel" type="Label" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
 text = "Editor Mode"
 horizontal_alignment = 1
 
-[node name="InfoModeButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="InfoModeButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("2_ludcj")
 text = "Info Mode"
 
-[node name="CheckboxModeButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="CheckboxModeButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -99,26 +104,26 @@ button_group = ExtResource("2_ludcj")
 text = "Checkbox
 Mode"
 
-[node name="HSeparator5" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="HSeparator5" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
 
-[node name="CurrentCheckboxButton" parent="MainMargin/MainHBox/SideMenuVBox" instance=ExtResource("3_droll")]
+[node name="CurrentCheckboxButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox" instance=ExtResource("3_droll")]
 unique_name_in_owner = true
 z_index = 3
 z_as_relative = false
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="HSeparator" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="Label" type="Label" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
 text = "Checkbox Mode"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="CheckboxApplyToggle" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="CheckboxApplyToggle" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -127,7 +132,7 @@ toggle_mode = true
 button_group = ExtResource("4_2dypo")
 text = "Apply"
 
-[node name="CheckboxInspectToggle" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="CheckboxInspectToggle" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -137,15 +142,15 @@ button_pressed = true
 button_group = ExtResource("4_2dypo")
 text = "Inspect"
 
-[node name="HSeparator2" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="HSeparator2" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
 
-[node name="SectionSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="SectionSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
 text = "Section"
 horizontal_alignment = 1
 
-[node name="YearlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="YearlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -155,7 +160,7 @@ button_pressed = true
 button_group = ExtResource("2_rjskt")
 text = "Yearly"
 
-[node name="MonthlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="MonthlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -164,7 +169,7 @@ toggle_mode = true
 button_group = ExtResource("2_rjskt")
 text = "Monthly"
 
-[node name="WeeklyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="WeeklyButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -173,7 +178,7 @@ toggle_mode = true
 button_group = ExtResource("2_rjskt")
 text = "Weekly"
 
-[node name="DailyButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="DailyButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -182,15 +187,15 @@ toggle_mode = true
 button_group = ExtResource("2_rjskt")
 text = "Daily"
 
-[node name="HSeparator3" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="HSeparator3" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
 
-[node name="MonthSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="MonthSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
 text = "Month"
 horizontal_alignment = 1
 
-[node name="MonthSelectionMenu" type="MenuButton" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="MonthSelectionMenu" type="MenuButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "January"
@@ -225,16 +230,16 @@ popup/item_11/id = 11
 popup/item_12/text = "December"
 popup/item_12/id = 12
 
-[node name="HSeparator7" type="HSeparator" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="HSeparator7" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
 
-[node name="EditingLockButton" type="CheckButton" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="EditingLockButton" type="CheckButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Editing
 Lock"
 
-[node name="SortTasksButton" type="Button" parent="MainMargin/MainHBox/SideMenuVBox"]
+[node name="SortTasksButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
@@ -322,6 +327,7 @@ layout_mode = 2
 
 [node name="HBox" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin"]
 layout_mode = 2
+theme_type_variation = &"HBoxContainer_No_Space"
 
 [node name="AddTaskButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
 unique_name_in_owner = true
@@ -439,13 +445,13 @@ unique_name_in_owner = true
 z_index = 2
 z_as_relative = false
 layout_mode = 0
-offset_left = 114.0
-offset_top = 279.0
-offset_right = 558.0
-offset_bottom = 456.0
+offset_left = 123.0
+offset_top = 228.0
+offset_right = 946.0
+offset_bottom = 450.0
 size_flags_horizontal = 0
 size_flags_vertical = 4
-paired_checkbox_menu_button = NodePath("../MainMargin/MainHBox/SideMenuVBox/CurrentCheckboxButton")
+paired_checkbox_menu_button = NodePath("../MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CurrentCheckboxButton")
 
 [node name="MultiTextPopupCenter" type="CenterContainer" parent="."]
 unique_name_in_owner = true
@@ -511,17 +517,17 @@ z_index = 5
 z_as_relative = false
 layout_mode = 2
 
-[connection signal="pressed" from="MainMargin/MainHBox/SideMenuVBox/MenuButton" to="." method="_on_menu_button_pressed"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/InfoModeButton" to="." method="_on_info_mode_button_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/CheckboxModeButton" to="." method="_on_checkbox_mode_button_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/CheckboxApplyToggle" to="." method="_on_checkbox_apply_toggle_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/CheckboxInspectToggle" to="." method="_on_checkbox_inspect_toggle_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/YearlyButton" to="." method="_on_yearly_button_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/MonthlyButton" to="." method="_on_monthly_button_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/WeeklyButton" to="." method="_on_weekly_button_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/DailyButton" to="." method="_on_daily_button_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuVBox/EditingLockButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_editing_lock_button_toggled"]
-[connection signal="pressed" from="MainMargin/MainHBox/SideMenuVBox/SortTasksButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_sort_tasks_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MenuButton" to="." method="_on_menu_button_pressed"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/InfoModeButton" to="." method="_on_info_mode_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxModeButton" to="." method="_on_checkbox_mode_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxApplyToggle" to="." method="_on_checkbox_apply_toggle_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxInspectToggle" to="." method="_on_checkbox_inspect_toggle_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/YearlyButton" to="." method="_on_yearly_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MonthlyButton" to="." method="_on_monthly_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/WeeklyButton" to="." method="_on_weekly_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DailyButton" to="." method="_on_daily_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/EditingLockButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_editing_lock_button_toggled"]
+[connection signal="pressed" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/SortTasksButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_sort_tasks_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/SaveWarningButton" to="." method="_on_save_warning_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/AddTaskButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_add_task_button_pressed"]
 [connection signal="item_selected" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/ExistingGroupsOption" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/TaskSpreadsheetGridContainer" method="_on_existing_groups_option_item_selected"]

@@ -32,32 +32,38 @@ layout_mode = 2
 
 [node name="MainLabel" type="Label" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Label_Title_Secondary"
 text = "Household Sensor Network"
 horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="SecuritySensorsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Security Sensors"
 
 [node name="SecurityCamerasButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Security Cameras"
 
 [node name="EnvironmentSensorsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Environment Sensors"
 
 [node name="ActivitySensorsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Activity Sensors"
 
 [node name="ExternalDataButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "External Data"
 
@@ -66,20 +72,24 @@ layout_mode = 2
 
 [node name="SettingsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Sensor Network Settings"
 
 [node name="DataManagerButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Sensor Network Data Manager"
 
 [node name="ExitButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 text = "Back to Main Menu"
 
 [node name="Versoning" type="Label" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Label_Medium"
 text = "Dev Notes: Managing the home with live data. Last priority, number 5, due to complexity. Sensors, buttons, and home automation. "
 horizontal_alignment = 1
 autowrap_mode = 3

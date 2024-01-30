@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=12 format=3 uid="uid://dec2b8xmm6paj"]
+[gd_resource type="Theme" load_steps=19 format=3 uid="uid://dec2b8xmm6paj"]
 
 [ext_resource type="StyleBox" uid="uid://s0we4cgk3yhc" path="res://theme/theme_parts/button_hover_box.tres" id="1_eye2p"]
 [ext_resource type="StyleBox" uid="uid://ofmvl3jqb6jj" path="res://theme/theme_parts/seperator_line.tres" id="1_jjv11"]
@@ -8,17 +8,37 @@
 [ext_resource type="StyleBox" uid="uid://bni7hpya166s4" path="res://theme/theme_parts/button_pressed_box.tres" id="5_l0fa5"]
 [ext_resource type="StyleBox" uid="uid://btp1xeut358gv" path="res://theme/theme_parts/panel_background_main.tres" id="7_5kw0t"]
 [ext_resource type="StyleBox" uid="uid://b6g3cuwnxssbu" path="res://theme/theme_parts/panel_popup_main.tres" id="8_nqoeh"]
+[ext_resource type="StyleBox" uid="uid://cea2jdrtxv378" path="res://theme/theme_parts/panel_popup_tertiary.tres" id="9_a71cd"]
+[ext_resource type="StyleBox" uid="uid://c0h43wg8air6l" path="res://theme/theme_parts/panel_background_transparency_red.tres" id="9_nxnt0"]
 [ext_resource type="StyleBox" uid="uid://dornspis7gy4s" path="res://theme/theme_parts/panel_popup_secondary.tres" id="9_rntpo"]
 [ext_resource type="StyleBox" uid="uid://c4hdxyyv8oaav" path="res://theme/theme_parts/panel_popup_unselected.tres" id="10_skf8o"]
+[ext_resource type="StyleBox" uid="uid://b7xlkaa6u1hwu" path="res://theme/theme_parts/panel_popup_transparency.tres" id="11_hl331"]
+[ext_resource type="StyleBox" uid="uid://bb7nj2frqg87q" path="res://theme/theme_parts/seperator_line_vertical.tres" id="14_eahqm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i3ehq"]
+
+[sub_resource type="Image" id="Image_hi8u1"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 76, 255, 255, 255, 75, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 99, 255, 255, 255, 191, 255, 255, 255, 191, 255, 255, 255, 99, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 4, 255, 255, 255, 122, 255, 255, 255, 191, 255, 255, 255, 188, 255, 255, 255, 188, 255, 255, 255, 191, 255, 255, 255, 121, 255, 255, 255, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 12, 255, 255, 255, 142, 255, 255, 255, 191, 255, 255, 255, 181, 255, 255, 255, 53, 255, 255, 255, 54, 255, 255, 255, 181, 255, 255, 255, 191, 255, 255, 255, 142, 255, 255, 255, 12, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 71, 255, 255, 255, 191, 255, 255, 255, 171, 255, 255, 255, 36, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 36, 255, 255, 255, 171, 255, 255, 255, 191, 255, 255, 255, 71, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 86, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 255, 255, 255, 86, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 86, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 255, 255, 255, 86, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 71, 255, 255, 255, 191, 255, 255, 255, 171, 255, 255, 255, 36, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 36, 255, 255, 255, 171, 255, 255, 255, 191, 255, 255, 255, 71, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 12, 255, 255, 255, 142, 255, 255, 255, 191, 255, 255, 255, 181, 255, 255, 255, 54, 255, 255, 255, 54, 255, 255, 255, 182, 255, 255, 255, 191, 255, 255, 255, 142, 255, 255, 255, 12, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 4, 255, 255, 255, 121, 255, 255, 255, 191, 255, 255, 255, 188, 255, 255, 255, 188, 255, 255, 255, 191, 255, 255, 255, 121, 255, 255, 255, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 98, 255, 255, 255, 191, 255, 255, 255, 191, 255, 255, 255, 98, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 75, 255, 255, 255, 75, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_ejad2"]
+image = SubResource("Image_hi8u1")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_u1ofj"]
 
 [resource]
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
 Button/colors/font_disabled_color = Color(0.87451, 0.87451, 0.87451, 0.301961)
+Button/colors/font_hover_pressed_color = Color(0.819608, 0.886275, 0.192157, 1)
 Button/colors/font_outline_color = Color(0, 0, 0, 1)
 Button/colors/font_pressed_color = Color(0.819608, 0.886275, 0.192157, 1)
 Button/constants/outline_size = 5
+Button/font_sizes/font_size = 20
 Button/styles/disabled = ExtResource("1_uvynl")
 Button/styles/focus = ExtResource("2_chbx5")
 Button/styles/hover = ExtResource("1_eye2p")
@@ -26,34 +46,85 @@ Button/styles/normal = ExtResource("2_1t7ml")
 Button/styles/pressed = ExtResource("5_l0fa5")
 Button_Large/base_type = &"Button"
 Button_Large/font_sizes/font_size = 40
+Button_Medium/base_type = &"Button"
+Button_Medium/font_sizes/font_size = 30
+CheckButton/font_sizes/font_size = 20
+CheckButton/styles/hover_pressed = ExtResource("1_eye2p")
+CheckButton_Medium/base_type = &"CheckButton"
+CheckButton_Medium/font_sizes/font_size = 30
 HBoxContainer/constants/separation = 10
+HBoxContainer_Double_Space/base_type = &"HBoxContainer"
+HBoxContainer_Double_Space/constants/separation = 20
+HBoxContainer_No_Space/base_type = &"HBoxContainer"
+HBoxContainer_No_Space/constants/separation = 0
 HSeparator/constants/separation = 20
 HSeparator/styles/separator = ExtResource("1_jjv11")
+HSeparator_Half/base_type = &"HSeparator"
+HSeparator_Half/constants/separation = 10
+HSeparator_None/base_type = &"HSeparator"
+HSeparator_None/constants/separation = 0
 Label/colors/font_color = Color(1, 1, 1, 1)
 Label/colors/font_outline_color = Color(0, 0, 0, 1)
 Label/constants/outline_size = 4
-Label/font_sizes/font_size = 25
+Label/font_sizes/font_size = 20
 Label_Large/base_type = &"Label"
 Label_Large/font_sizes/font_size = 40
 Label_Medium/base_type = &"Label"
 Label_Medium/font_sizes/font_size = 30
-Label_Small/base_type = &"Label"
-Label_Small/font_sizes/font_size = 20
 Label_Title/base_type = &"Label"
+Label_Title/constants/outline_size = 13
 Label_Title/font_sizes/font_size = 100
 Label_Title_Secondary/base_type = &"Label"
+Label_Title_Secondary/constants/outline_size = 10
 Label_Title_Secondary/font_sizes/font_size = 60
+LineEdit/font_sizes/font_size = 20
+LineEdit_Medium/base_type = &"LineEdit"
+LineEdit_Medium/font_sizes/font_size = 30
+MarginContainer/constants/margin_bottom = 6
+MarginContainer/constants/margin_left = 6
+MarginContainer/constants/margin_right = 6
+MarginContainer/constants/margin_top = 6
+MarginContainer_Double_Top_Bottom/base_type = &"MarginContainer"
+MarginContainer_Double_Top_Bottom/constants/margin_bottom = 12
+MarginContainer_Double_Top_Bottom/constants/margin_top = 12
+OptionButton/font_sizes/font_size = 20
+OptionButton_Medium/base_type = &"OptionButton"
+OptionButton_Medium/font_sizes/font_size = 30
 Panel/styles/panel = ExtResource("7_5kw0t")
 PanelContainer/styles/panel = ExtResource("8_nqoeh")
+PanelContainer_Background/base_type = &"PanelContainer"
+PanelContainer_Background/styles/panel = ExtResource("7_5kw0t")
+PanelContainer_Blank/base_type = &"PanelContainer"
+PanelContainer_Blank/styles/panel = SubResource("StyleBoxEmpty_i3ehq")
+PanelContainer_Red_Transparency/base_type = &"PanelContainer"
+PanelContainer_Red_Transparency/styles/panel = ExtResource("9_nxnt0")
+PanelContainer_Tertiary/base_type = &"PanelContainer"
+PanelContainer_Tertiary/styles/panel = ExtResource("9_a71cd")
 Panel_Container_Secondary/base_type = &"PanelContainer"
 Panel_Container_Secondary/styles/panel = ExtResource("9_rntpo")
+PopupMenu/font_sizes/font_size = 20
+PopupMenu/styles/panel = ExtResource("8_nqoeh")
+PopupMenu_Medium/base_type = &"PopupMenu"
+PopupMenu_Medium/font_sizes/font_size = 30
+PopupPanel/styles/panel = ExtResource("8_nqoeh")
+SpinBox/font_sizes/font_size = 20
+SpinBox/icons/updown = SubResource("ImageTexture_ejad2")
+SpinBox_Medium/base_type = &"SpinBox"
+SpinBox_Medium/font_sizes/font_size = 30
 TabBar/font_sizes/font_size = 30
 TabContainer/colors/font_outline_color = Color(0, 0, 0, 1)
 TabContainer/constants/outline_size = 5
-TabContainer/font_sizes/font_size = 30
+TabContainer/font_sizes/font_size = 40
 TabContainer/styles/panel = SubResource("StyleBoxEmpty_u1ofj")
 TabContainer/styles/tab_selected = ExtResource("8_nqoeh")
 TabContainer/styles/tab_unselected = ExtResource("10_skf8o")
+TabContainer/styles/tabbar_background = ExtResource("11_hl331")
 VBoxContainer/constants/separation = 10
+VBoxContainer_No_Space/base_type = &"VBoxContainer"
+VBoxContainer_No_Space/constants/separation = 0
 VSeparator/constants/separation = 20
-VSeparator/styles/separator = ExtResource("1_jjv11")
+VSeparator/styles/separator = ExtResource("14_eahqm")
+VSeparator_Half/base_type = &"VSeparator"
+VSeparator_Half/constants/separation = 10
+VSeparator_None/base_type = &"VSeparator"
+VSeparator_None/constants/separation = 0

@@ -32,42 +32,50 @@ layout_mode = 2
 
 [node name="MainLabel" type="Label" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
-text = "Display Screens"
+theme_type_variation = &"Label_Title_Secondary"
+text = "     Display Screens     "
 horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="HouseholdHudButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Household H.U.D."
 
 [node name="WeatherAdvisoriesButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Weather & Advisories"
 
 [node name="MapOverlaysButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Maps & Overlays"
 
 [node name="WebPagesButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Web Pages"
 
 [node name="AlertsWarningsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Alerts & Warnings"
 
 [node name="StatusLightDisplayButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Status Light Display"
 
 [node name="ToDoListDisplayButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Task To-Do List Display"
 
@@ -76,20 +84,24 @@ layout_mode = 2
 
 [node name="SettingsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Display Settings"
 
 [node name="DataManagerButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Display Data Manager"
 
 [node name="BackButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 text = "Back to Main Menu"
 
 [node name="Notes" type="Label" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Label_Medium"
 text = "Dev Notes: Displays stand at priority number three. I want useful info boards, that can be scrolled through and sometimes interacted with. Buttons list some examples, but are definately not final."
 horizontal_alignment = 1
 autowrap_mode = 3

@@ -32,31 +32,37 @@ layout_mode = 2
 
 [node name="MainLabel" type="Label" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Label_Title_Secondary"
 text = "Task Tracking"
 horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="TaskSheetsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 text = "Task Sheets"
 
 [node name="ToDoListButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Task To-Do List"
 
 [node name="StatusLightButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Status Light"
 
 [node name="CelebrationScreenButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Celebration Screen"
 
 [node name="TaskMetricsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Task Metrics"
 
@@ -65,18 +71,22 @@ layout_mode = 2
 
 [node name="SettingsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 text = "Task Settings"
 
 [node name="DataManagerButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 text = "Task Data Manager"
 
 [node name="BackButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 text = "Back to Main Menu"
 
 [node name="Notes" type="Label" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Label_Medium"
 text = "Dev Notes: This is the first section being developed.  I intend to work on the modules in the same order as their buttons. "
 horizontal_alignment = 1
 autowrap_mode = 3

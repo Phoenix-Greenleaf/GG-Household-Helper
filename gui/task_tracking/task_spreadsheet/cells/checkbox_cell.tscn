@@ -1,19 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://dba2s613cjsxc"]
+[gd_scene load_steps=3 format=3 uid="uid://dba2s613cjsxc"]
 
 [ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/cells/checkbox_cell.gd" id="1_ejb78"]
 [ext_resource type="Script" path="res://gui/task_tracking/checkbox_border_color_rect.gd" id="2_4nxhp"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1eff0"]
-
 [node name="CheckboxCell" type="PanelContainer"]
 clip_contents = true
 focus_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_1eff0")
+theme_type_variation = &"PanelContainer_Blank"
 script = ExtResource("1_ejb78")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_type_variation = &"VBoxContainer_No_Space"
 
 [node name="TopColorRect" type="ColorRect" parent="VBoxContainer"]
 unique_name_in_owner = true

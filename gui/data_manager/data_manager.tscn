@@ -18,6 +18,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 2
 size_flags_vertical = 2
+theme_type_variation = &"Panel_Container_Secondary"
 script = ExtResource("1_64y23")
 
 [node name="MainMargin" type="MarginContainer" parent="."]
@@ -28,6 +29,7 @@ layout_mode = 2
 
 [node name="DataManagerTitle" type="Label" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
+theme_type_variation = &"Label_Title_Secondary"
 text = "Data Manager"
 horizontal_alignment = 1
 
@@ -36,12 +38,14 @@ layout_mode = 2
 
 [node name="TaskLabel" type="Label" parent="MainMargin/DataManagerVBox"]
 layout_mode = 2
+theme_type_variation = &"Label_Large"
 text = "Task Data"
 horizontal_alignment = 1
 
 [node name="CurrentTasksheetLabel" type="Label" parent="MainMargin/DataManagerVBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"Label_Medium"
 text = "Current Data: [No Data Loaded]: [YEAR]"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -56,6 +60,7 @@ columns = 6
 [node name="NewTaskButton" type="Button" parent="MainMargin/DataManagerVBox/TaskGrid"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"Button_Medium"
 text = "New
 Data"
 
@@ -119,6 +124,7 @@ text = "Cancel"
 [node name="CloneDataButton" type="Button" parent="MainMargin/DataManagerVBox/TaskGrid"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"Button_Medium"
 text = "Clone
 Data"
 
@@ -181,6 +187,7 @@ layout_mode = 2
 text = "Cancel"
 
 [node name="TaskCSVHBox" type="HBoxContainer" parent="MainMargin/DataManagerVBox"]
+visible = false
 layout_mode = 2
 alignment = 1
 
@@ -195,23 +202,29 @@ disabled = true
 text = "Export Task"
 
 [node name="HSeparator" type="HSeparator" parent="MainMargin/DataManagerVBox"]
+visible = false
 layout_mode = 2
 
 [node name="ProfileLabel" type="Label" parent="MainMargin/DataManagerVBox"]
+visible = false
 layout_mode = 2
+theme_type_variation = &"Label_Large"
 text = "Profile Data"
 horizontal_alignment = 1
 
 [node name="ProfileCSVHBox" type="HBoxContainer" parent="MainMargin/DataManagerVBox"]
+visible = false
 layout_mode = 2
 alignment = 1
 
 [node name="ImportProfileCSV" type="Button" parent="MainMargin/DataManagerVBox/ProfileCSVHBox"]
+visible = false
 layout_mode = 2
 disabled = true
 text = "Import Profile Data"
 
 [node name="ExportProfileCSV" type="Button" parent="MainMargin/DataManagerVBox/ProfileCSVHBox"]
+visible = false
 layout_mode = 2
 disabled = true
 text = "Export Profile Data from Current Data"
@@ -223,6 +236,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
+theme_type_variation = &"Button_Medium"
 text = "Close Data Manager"
 
 [node name="ImportTaskFileDialog" type="FileDialog" parent="."]

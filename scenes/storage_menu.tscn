@@ -34,12 +34,14 @@ layout_mode = 2
 
 [node name="MainLabel" type="Label" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Label_Title_Secondary"
 text = "Storage Organizer"
 horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="ToBeDevelopedButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "To Be Developed"
 
@@ -48,20 +50,24 @@ layout_mode = 2
 
 [node name="SettingsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Storage Settings"
 
 [node name="DataManagerButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 disabled = true
 text = "Storage Data Manager"
 
 [node name="BackButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Button_Large"
 text = "Back to Main Menu"
 
 [node name="Notes" type="Label" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
+theme_type_variation = &"Label_Medium"
 text = "Dev Notes: This section is my second priority. Organizing is a big task, and a useful app should be a lifesaver. I want the organizer to interact and link with other modules, like to-do and map overlays. "
 horizontal_alignment = 1
 autowrap_mode = 3

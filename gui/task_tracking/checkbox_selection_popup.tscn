@@ -11,6 +11,7 @@
 [node name="CheckboxSelectionPopup" type="PanelContainer"]
 offset_right = 266.0
 offset_bottom = 148.0
+theme_type_variation = &"PanelContainer_Tertiary"
 script = ExtResource("1_sj3vj")
 
 [node name="SelectionPopupMargin" type="MarginContainer" parent="."]
@@ -31,6 +32,7 @@ horizontal_alignment = 1
 [node name="ActivePanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"PanelContainer_Blank"
 
 [node name="ActiveButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ActivePanelContainer"]
 unique_name_in_owner = true
@@ -42,10 +44,12 @@ script = ExtResource("3_hiv4p")
 [node name="ActiveMargin" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ActivePanelContainer"]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"MarginContainer_Double_Top_Bottom"
 
 [node name="ActiveVBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ActivePanelContainer/ActiveMargin"]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"VBoxContainer_No_Space"
 
 [node name="ActiveColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ActivePanelContainer/ActiveMargin/ActiveVBox"]
 custom_minimum_size = Vector2(40, 40)
@@ -73,6 +77,7 @@ vertical_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"PanelContainer_Blank"
 
 [node name="InProgressButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/InProgressPanelContainer"]
 unique_name_in_owner = true
@@ -84,10 +89,12 @@ script = ExtResource("4_x1ajq")
 [node name="InProgressMarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/InProgressPanelContainer"]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"MarginContainer_Double_Top_Bottom"
 
 [node name="InProgressVBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/InProgressPanelContainer/InProgressMarginContainer"]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"VBoxContainer_No_Space"
 
 [node name="InProgressTopColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/InProgressPanelContainer/InProgressMarginContainer/InProgressVBox"]
 custom_minimum_size = Vector2(40, 20)
@@ -115,6 +122,7 @@ vertical_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"PanelContainer_Blank"
 
 [node name="CompletedButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/CompletedPanelContainer"]
 unique_name_in_owner = true
@@ -127,10 +135,12 @@ script = ExtResource("5_evwea")
 [node name="CompletedMarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/CompletedPanelContainer"]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"MarginContainer_Double_Top_Bottom"
 
 [node name="CompletedVBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/CompletedPanelContainer/CompletedMarginContainer"]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"VBoxContainer_No_Space"
 
 [node name="CompletedColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/CompletedPanelContainer/CompletedMarginContainer/CompletedVBox"]
 unique_name_in_owner = true
@@ -150,6 +160,7 @@ vertical_alignment = 1
 [node name="ExpiredPanelContainer" type="PanelContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox"]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"PanelContainer_Blank"
 
 [node name="ExpiredButton" type="Button" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ExpiredPanelContainer"]
 unique_name_in_owner = true
@@ -161,10 +172,12 @@ script = ExtResource("6_58rg5")
 [node name="ExpiredMarginContainer" type="MarginContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ExpiredPanelContainer"]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"MarginContainer_Double_Top_Bottom"
 
 [node name="ExpiredVBox" type="VBoxContainer" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ExpiredPanelContainer/ExpiredMarginContainer"]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"VBoxContainer_No_Space"
 
 [node name="ExpiredColorRect" type="ColorRect" parent="SelectionPopupMargin/SelectionPopupVBox/SelectionPopupStatusHBox/ExpiredPanelContainer/ExpiredMarginContainer/ExpiredVBox"]
 custom_minimum_size = Vector2(40, 40)

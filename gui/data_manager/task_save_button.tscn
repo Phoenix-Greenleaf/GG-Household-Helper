@@ -15,6 +15,7 @@ offset_bottom = 26.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_type_variation = &"PanelContainer_Blank"
 script = ExtResource("1_4tmnx")
 
 [node name="FunctionalButton" type="Button" parent="."]
@@ -24,10 +25,6 @@ toggle_mode = true
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
 
 [node name="CenterContainer" type="CenterContainer" parent="MarginContainer"]
 layout_mode = 2
