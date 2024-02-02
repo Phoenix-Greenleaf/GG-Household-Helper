@@ -1,6 +1,6 @@
 extends Control
 
-@onready var menu_button:= $MainMargin/MainHBox/SideMenuVBox/MenuButton as MenuButton
+@onready var menu_button: MenuButton = %MenuButton
 @onready var popup:= menu_button.get_popup()
 @onready var current_date_label:= %CurrentDateLabel as Label
 @onready var data_manager_center: CenterContainer = $DataManagerCenter
@@ -45,6 +45,7 @@ func _ready() -> void:
 	if DataGlobal.current_tasksheet_data:
 		update_current_tasksheet_label()
 		add_task_button.disabled = false
+		SignalBus._on_editor_section_changed.emit()
 	SceneTransition.fade_from_black()
 
 

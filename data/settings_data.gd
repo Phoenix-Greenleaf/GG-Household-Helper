@@ -25,6 +25,54 @@ func _init() -> void:
 	DisplayServer.window_set_min_size(Vector2i(500, 500))
 	prints("Minimun window size applied")
 
+
+func export_json_from_resouce() -> Dictionary:
+	var exported_task_setting_default_data: Dictionary
+	if task_setting_default_data:
+		exported_task_setting_default_data = task_setting_default_data.export_json_from_resouce()
+	var json_data: Dictionary = {
+		"main_setting_window_width": main_setting_window_width,
+		"main_setting_window_height": main_setting_window_height,
+		"main_setting_monitor_mode": main_setting_monitor_mode,
+		"main_setting_borderless": main_setting_borderless,
+		"main_setting_last_monitor": main_setting_last_monitor,
+		"main_setting_current_monitor": main_setting_current_monitor,
+		"task_setting_enable_auto_load_default_data": task_setting_enable_auto_load_default_data,
+		"task_setting_default_data": exported_task_setting_default_data,
+		"task_setting_enable_deletion_buttons": task_setting_enable_deletion_buttons,
+		"task_setting_current_new_checkbox_option": task_setting_current_new_checkbox_option,
+		"task_setting_description_preview_length": task_setting_description_preview_length,
+		"task_setting_reset_current_checkboxes_section": task_setting_reset_current_checkboxes_section,
+		"task_setting_reset_current_checkboxes_month": task_setting_reset_current_checkboxes_month,
+	}
+	return json_data
+
+
+func import_json_to_resource(data_parameter: Dictionary) -> void:
+	var imported_task_setting_default_data: TaskSpreadsheetData
+	if data_parameter.task_setting_default_data:
+		imported_task_setting_default_data = TaskSpreadsheetData.new()
+		imported_task_setting_default_data.import_json_to_resource(data_parameter.task_setting_default_data)
+	else:
+		imported_task_setting_default_data = null
+	main_setting_window_width = data_parameter.main_setting_window_width
+	main_setting_window_height = data_parameter.main_setting_window_height
+	main_setting_monitor_mode = data_parameter.main_setting_monitor_mode
+	main_setting_borderless = data_parameter.main_setting_borderless
+	main_setting_last_monitor = data_parameter.main_setting_last_monitor
+	main_setting_current_monitor = data_parameter.main_setting_current_monitor
+	task_setting_enable_auto_load_default_data = data_parameter.task_setting_enable_auto_load_default_data
+	task_setting_default_data = imported_task_setting_default_data
+	task_setting_enable_deletion_buttons = data_parameter.task_setting_enable_deletion_buttons
+	task_setting_current_new_checkbox_option = data_parameter.task_setting_current_new_checkbox_option
+	task_setting_description_preview_length = data_parameter.task_setting_description_preview_length
+	task_setting_reset_current_checkboxes_section = data_parameter.task_setting_reset_current_checkboxes_section
+	task_setting_reset_current_checkboxes_month = data_parameter.task_setting_reset_current_checkboxes_month
+
+
+
+
+
 func reset_all_default_settings() -> void:
 	prints("Changing all settings to defaults...")
 	reset_main_settings()

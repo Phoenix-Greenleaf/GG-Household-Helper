@@ -28,6 +28,7 @@ SignalBus="*res://data/signal_bus.gd"
 sp="*res://addons/awesome_splash/utils_splash.gd"
 gd="*res://addons/godot-action/utils_gd_action.tscn"
 SceneTransition="*res://scenes/scene_transition.tscn"
+JsonSaveManager="*res://data/json_save_manager.gd"
 
 [display]
 

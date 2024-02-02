@@ -21,23 +21,20 @@ extends PanelContainer
 var task_save_button_group = preload("res://gui/data_manager/task_save_button_group.tres")
 var task_save_button = preload("res://gui/data_manager/task_save_button.tscn")
 
-var tasksheet_folder = "user://task_data/"
-var export_folder = "user://exports/"
-
 var safe_lock_active: bool
 var task_button_count: int = 4
 
-var error_keys: Array = [
-	"OK", #0
-	"FAILED", #1
-	"ERR_UNAVAILABLE", #2
-	"ERR_UNCONFIGURED", #3
-	"ERR_UNAUTHORIZED", #4
-	"ERR_PARAMETER_RANGE_ERROR", #5
-	"ERR_OUT_OF_MEMORY", #6
-	"ERR_FILE_NOT_FOUND" #7
-]
-
+#var error_keys: Array = [
+	#"OK", #0
+	#"FAILED", #1
+	#"ERR_UNAVAILABLE", #2
+	#"ERR_UNCONFIGURED", #3
+	#"ERR_UNAUTHORIZED", #4
+	#"ERR_PARAMETER_RANGE_ERROR", #5
+	#"ERR_OUT_OF_MEMORY", #6
+	#"ERR_FILE_NOT_FOUND" #7
+#]
+var empty_string := ""
 
 
 
@@ -78,26 +75,23 @@ func starting_visibilities() -> void:
 
 
 func load_existing_tasksheets() -> void:
-	if not DirAccess.dir_exists_absolute(tasksheet_folder):
+	if not DirAccess.dir_exists_absolute(JsonSaveManager.task_tracker_folder):
 		prints("Error loading existing task sheets")
 		return
-	var existing_files = DirAccess.get_files_at(tasksheet_folder)
+	var existing_files = DirAccess.get_files_at(JsonSaveManager.task_tracker_folder)
 	prints("Found files:", existing_files)
-	for file in existing_files:
-		prints("File Iteration:", file)
-		var extension = file.get_extension()
-		if extension != "res":
-			prints("ERROR: File", file, "is not of 'res'")
+	for file_iteration in existing_files:
+		#prints("File Iteration:", file_iteration)
+		var extension = "." + file_iteration.get_extension()
+		#prints(extension)
+		if extension != JsonSaveManager.json_extension:
+			prints("ERROR: File", file_iteration, "is not of 'json'")
 			continue
-		prints("Extension:", extension)
-		var filepath_for_loading = tasksheet_folder + file
-		prints("Loading filepath:", filepath_for_loading)
-		var file_resource: TaskSpreadsheetData = ResourceLoader.load(filepath_for_loading)
-		print(file_resource)
-		var loaded_name = file_resource.spreadsheet_title
-		var loaded_year = file_resource.spreadsheet_year
-		prints("Loaded:", loaded_name, loaded_year)
-		create_task_save_button(file_resource)
+		var file_name = file_iteration.replace(JsonSaveManager.json_extension, empty_string)
+		var loaded_resource = TaskSpreadsheetData.new()
+		var raw_resource = JsonSaveManager.load_data(file_name, JsonSaveManager.FileType.TASK_TRACKING)
+		loaded_resource.import_json_to_resource(raw_resource)
+		create_task_save_button(loaded_resource)
 	get_tree().call_group("task_save_panels", "retoggle_button_group")
 
 
@@ -110,9 +104,11 @@ func show_new_task_button() -> void:
 	new_task_button.visible = true
 	new_task_panel.visible = false
 
+
 func task_field_reset() -> void:
 	task_data_year_spinbox.value = 2000
 	task_data_title_line_edit.clear()
+
 
 func directory_check(directory_to_check) -> void:
 	if not DirAccess.dir_exists_absolute(directory_to_check):
@@ -120,7 +116,6 @@ func directory_check(directory_to_check) -> void:
 		prints("Created directory:", directory_to_check)
 	else:
 		prints("Directory Exists")
-
 
 
 func _on_import_task_file_dialog_file_selected(path: String) -> void:
@@ -151,12 +146,12 @@ func create_tasksheet_data_and_save(tasksheet_name: String, tasksheet_year: int)
 	var tasksheet_data := TaskSpreadsheetData.new()
 	tasksheet_data.spreadsheet_title = tasksheet_name
 	tasksheet_data.spreadsheet_year = tasksheet_year
-	var tasksheet_snake_name: String = tasksheet_name.to_snake_case()
-	var tasksheet_save_name: String = tasksheet_snake_name + "_" + str(tasksheet_year)
-	var filepath_create_and_save: String = tasksheet_folder + tasksheet_save_name + ".res"
-	prints("Filepath for save:", filepath_create_and_save)
-	tasksheet_data.spreadsheet_filepath = filepath_create_and_save
-	directory_check(tasksheet_folder)
+	#var tasksheet_snake_name: String = tasksheet_name.to_snake_case()
+	#var tasksheet_save_name: String = tasksheet_snake_name + "_" + str(tasksheet_year)
+	#var filepath_create_and_save: String = JsonSaveManager.task_tracker_folder + tasksheet_save_name + ".json"
+	#prints("Filepath for save:", filepath_create_and_save)
+	#tasksheet_data.spreadsheet_filepath = filepath_create_and_save
+	directory_check(JsonSaveManager.task_tracker_folder)
 	create_task_save_button(tasksheet_data)
 	send_tasksheet_to_global(tasksheet_data)
 	save_current_tasksheet()
@@ -167,15 +162,18 @@ func save_current_tasksheet() -> void:
 		prints("Nothing to save")
 		return
 	var current_tasksheet: TaskSpreadsheetData = DataGlobal.current_tasksheet_data
-	var current_filepath: String = current_tasksheet.spreadsheet_filepath
-	var tasksheet_save_error = ResourceSaver.save(current_tasksheet, current_filepath)
-	if tasksheet_save_error != OK:
-		var error_highscore: int = error_keys.size() - 1
-		if tasksheet_save_error > error_highscore:
-			printerr("Failed to save resource: NEW HIGHSCORE! ", tasksheet_save_error, "!")
-		else:
-			printerr("Failed to save resource: ", error_keys[tasksheet_save_error], " ", tasksheet_save_error)
-
+	var tasksheet_snake_name: String = current_tasksheet.spreadsheet_title.to_snake_case()
+	var tasksheet_save_name: String = tasksheet_snake_name + "_" + str(current_tasksheet.spreadsheet_year)
+	#var filepath_save: String = JsonSaveManager.task_tracker_folder + tasksheet_save_name + ".json"
+	var json_for_save: Dictionary = current_tasksheet.export_json_from_resouce()
+	JsonSaveManager.save_data(tasksheet_save_name, JsonSaveManager.FileType.TASK_TRACKING, json_for_save)
+	#var tasksheet_save_error = ResourceSaver.save(current_tasksheet, current_filepath)
+	#if tasksheet_save_error != OK:
+		#var error_highscore: int = error_keys.size() - 1
+		#if tasksheet_save_error > error_highscore:
+			#printerr("Failed to save resource: NEW HIGHSCORE! ", tasksheet_save_error, "!")
+		#else:
+			#printerr("Failed to save resource: ", error_keys[tasksheet_save_error], " ", tasksheet_save_error)
 
 
 func create_task_save_button(target_resource: TaskSpreadsheetData) -> void:
@@ -189,10 +187,9 @@ func create_task_save_button(target_resource: TaskSpreadsheetData) -> void:
 	var actual_task_button: Button = new_task_save_button.get_node("FunctionalButton")
 	actual_task_button.toggled.connect(_on_task_save_button_pressed.bind(target_resource))
 	actual_task_button.set_button_group(task_save_button_group)
-	
 	var target_name = target_resource.spreadsheet_title
 	var target_year = target_resource.spreadsheet_year
-	prints("Created button for", target_name, target_year, target_resource)
+	#prints("Created button for", target_name, target_year, target_resource)
 
 
 
@@ -214,6 +211,7 @@ func send_tasksheet_to_global(tasksheet_to_send) -> void:
 	DataGlobal.current_tasksheet_data = tasksheet_to_send
 	SignalBus._on_current_tasksheet_data_changed.emit()
 	SignalBus.reload_profiles_triggered.emit()
+	SignalBus._on_editor_section_changed.emit()
 	clone_menu_reset()
 
 
@@ -242,8 +240,7 @@ func _on_clone_accept_button_pressed() -> void:
 		var cloned_year = int(clone_spin_box.value)
 		var cloned_snake_name: String = cloned_title.to_snake_case()
 		var cloned_save_name: String = cloned_snake_name + "_" + str(cloned_year)
-		var cloned_filepath: String = tasksheet_folder + cloned_save_name + ".res"
-		if FileAccess.file_exists(cloned_filepath):
+		if FileAccess.file_exists(JsonSaveManager.generate_filepath(cloned_save_name, JsonSaveManager.FileType.TASK_TRACKING)):
 			prints("File already exists! Clone needs different year or title...")
 			DataGlobal.button_based_message(clone_accept_button, "Error!")
 			DataGlobal.button_based_message(clone_label, "File Already Exists!\n(Change Title or Year)")
@@ -275,7 +272,6 @@ func clone_menu_update() -> void:
 	clone_spin_box.visible = false
 
 
-
 func _on_clone_back_button_pressed() -> void:
 	clone_line_edit.visible = true
 	clone_spin_box.visible = false
@@ -287,11 +283,11 @@ func clone_tasksheet_data_and_save(tasksheet_name: String, tasksheet_year: int) 
 	var tasksheet_data: TaskSpreadsheetData = DataGlobal.current_tasksheet_data.duplicate(true)
 	tasksheet_data.spreadsheet_title = tasksheet_name
 	tasksheet_data.spreadsheet_year = tasksheet_year
-	var tasksheet_snake_name: String = tasksheet_name.to_snake_case()
-	var tasksheet_save_name: String = tasksheet_snake_name + "_" + str(tasksheet_year)
-	var filepath_create_and_save: String = tasksheet_folder + tasksheet_save_name + ".res"
-	prints("Filepath for save:", filepath_create_and_save)
-	tasksheet_data.spreadsheet_filepath = filepath_create_and_save
+	#var tasksheet_snake_name: String = tasksheet_name.to_snake_case()
+	#var tasksheet_save_name: String = tasksheet_snake_name + "_" + str(tasksheet_year)
+	#var filepath_create_and_save: String = JsonSaveManager.task_tracker_folder + tasksheet_save_name + ".res"
+	#prints("Filepath for save:", filepath_create_and_save)
+	#tasksheet_data.spreadsheet_filepath = filepath_create_and_save
 	create_task_save_button(tasksheet_data)
 	send_tasksheet_to_global(tasksheet_data)
 	save_current_tasksheet()
@@ -302,4 +298,3 @@ func reset_data_manager() -> void:
 		task_grid.remove_child(panel_iteration)
 		panel_iteration.queue_free()
 	load_existing_tasksheets()
-

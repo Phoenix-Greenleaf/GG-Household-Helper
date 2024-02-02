@@ -1,8 +1,3 @@
-"""
-PLANNING
-
-dragging / position
-"""
 extends Control
 
 @onready var resolution_width_option_button: OptionButton = %ResolutionWidthOptionButton

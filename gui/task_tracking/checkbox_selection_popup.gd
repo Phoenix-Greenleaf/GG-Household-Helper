@@ -71,13 +71,13 @@ func starting_visibilities() -> void:
 
 func load_existing_profiles() -> void:
 	if not DataGlobal.current_tasksheet_data:
-		prints("No Current Data to load profiles")
+		prints("No Current Data to load profiles: Checkbox Selection Popup")
 		return
 	var current_profiles: Array = DataGlobal.current_tasksheet_data.user_profiles
 	if current_profiles.size() == 0:
-		prints("No profiles to load")
+		prints("No profiles to load: Checkbox Selection Popup")
 		return
-	prints("Loading existing profiles:", current_profiles.size())
+	prints("Loading existing profiles: Checkbox Selection Popup", current_profiles.size())
 	for profile in current_profiles:
 		add_profile(profile)
 
@@ -100,7 +100,7 @@ func add_default_profile() -> void:
 
 
 func update_status_colors() -> void:
-	prints("Update status colors:")
+	#prints("Update status colors:")
 	var current_color = DataGlobal.current_checkbox_profile[1]
 	completed_color_rect.set_color(current_color)
 	in_progress_bottom_color_rect.set_color(current_color)
@@ -117,7 +117,7 @@ func create_new_profile(profile_name: String, profile_color: Color) -> void:
 	DataGlobal.current_tasksheet_data.user_profiles.append(new_profile)
 	add_profile(new_profile)
 	SignalBus.trigger_save_warning.emit()
-	prints(self, "func create_new_profile emits 'trigger_save_warning'")
+	#prints(self, "func create_new_profile emits 'trigger_save_warning'")
 
 
 func connect_paired_menu_button() -> void:
@@ -223,12 +223,13 @@ func _on_profile_menu_accept_pressed() -> void:
 		profile_color_picker_button.set_pick_color(random_color())
 		return
 	create_new_profile(profile_name, profile_color)
+	SignalBus._on_editor_section_changed.emit()
 	new_profile_button.visible = true
 	new_profile_menu.visible = false
 
 
 func reload_profiles() -> void:
-	prints("Reloading Profiles")
+	#prints("Reloading Profiles")
 	clear_profiles()
 	add_default_profile()
 	load_existing_profiles()
@@ -240,7 +241,7 @@ func clear_profiles() -> void:
 		selection_popup_profile_h_box.remove_child(child_iteration)
 		child_iteration.queue_free()
 	current_sibling = selection_popup_profile_label
-	prints("Profiles cleared")
+	#prints("Profiles cleared")
 
 
 func unlock_new_profile() -> void:

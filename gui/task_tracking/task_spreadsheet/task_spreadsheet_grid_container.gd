@@ -78,13 +78,13 @@ func _ready() -> void:
 		DataGlobal.current_tasksheet_data = DataGlobal.settings_file.task_setting_default_data
 		data_for_spreadsheet = DataGlobal.settings_file.task_setting_default_data
 	if !data_for_spreadsheet:
-		print("No Tasksheet found for TaskGrid....")
+		prints("No Tasksheet found for TaskGrid....")
 		return
 	var title = DataGlobal.current_tasksheet_data.spreadsheet_title
 	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
 	prints("TaskGrid found:", title, ":", year)
-	update_user_profile_dropdown_items()
 	load_existing_data()
+	update_user_profile_dropdown_items()
 	update_task_add_options()
 	editing_lock_button.button_pressed = true
 	editing_lock_button.button_pressed = false
@@ -197,11 +197,11 @@ func update_task_add_assigned_users() -> void:
 
 func clear_grid_children() -> void:
 	var children = self.get_children()
-	var count = self.get_child_count()
+	#var count = self.get_child_count()
 	for current_kiddo in children:
 		self.remove_child(current_kiddo)
 		current_kiddo.queue_free()
-	prints(count, "children in line for freedom")
+	#prints(count, "children in line for freedom")
 
 
 func _on_add_task_button_pressed() -> void:
@@ -325,7 +325,7 @@ func load_existing_data() -> void:
 
 
 func _on_sort_tasks_button_pressed() -> void:
-	prints("Placeholder")
+	#prints("Placeholder")
 	pass
 
 
@@ -336,13 +336,14 @@ func _on_accept_new_task_button_pressed() -> void:
 	if self.get_child_count() == 0:
 		create_header_row()
 	else:
-		prints("Header Already Added; child count:", self.get_child_count())
+		#prints("Header Already Added; child count:", self.get_child_count())
+		pass
 	create_new_task_data()
 	close_new_task_panel()
 	new_task_field_reset()
 	toggle_info_checkbox_modes()
 	SignalBus.trigger_save_warning.emit()
-	prints(self, "func _on_accept_new_task_button_pressed emits 'trigger_save_warning'")
+	#prints(self, "func _on_accept_new_task_button_pressed emits 'trigger_save_warning'")
 
 
 func update_existing_groups_option_button_items() -> void:
@@ -386,7 +387,7 @@ func create_header_row() -> void:
 	full_header_size = self.get_child_count()
 	info_header_size = get_tree().get_nodes_in_group("Info").size()
 	checkbox_header_size = get_tree().get_nodes_in_group("Checkbox").size()
-	prints("Header Sizes, Full:", full_header_size, " Info:", info_header_size, " Checkbox:", checkbox_header_size)
+	#prints("Header Sizes, Full:", full_header_size, " Info:", info_header_size, " Checkbox:", checkbox_header_size)
 
 
 func header_editing_prevention() -> void:
@@ -413,11 +414,11 @@ func set_grid_columns() -> void:
 	else:
 		prints("Header row size has gone wrong")
 	self.columns = header_size
-	prints("Setting grid to", header_size, "columns.")
+	#prints("Setting grid to", header_size, "columns.")
 
 
 func create_task_row_cells() -> void: #task "physical" nodes, display side
-	prints(current_task.name)
+	#prints(current_task.name)
 	create_text_cell(current_task.name, "Task Name")  #1
 	create_dropdown_cell(section_dropdown_items, current_task.section, "Section") #2
 	create_dropdown_cell(task_group_dropdown_items, current_task.group, "Group") #3
@@ -446,7 +447,7 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
 			var current_month = DataGlobal.current_toggled_month
 			var month_key = DataGlobal.Month.find_key(current_month).capitalize()
-			prints("Month Key:", month_key, "   Current month:", current_month)
+			#prints("Month Key:", month_key, "   Current month:", current_month)
 			var current_data: Array = current_task.month_checkbox_dictionary[month_key]
 			for checkbox_data in current_data:
 				var checkbox_state: DataGlobal.Checkbox = checkbox_data.checkbox_status
@@ -554,18 +555,18 @@ func delete_task_row(target_task: TaskData) -> void:
 			DataGlobal.current_tasksheet_data.spreadsheet_day_data.erase(target_task)
 	update_task_group_dropdown_items()
 	SignalBus.trigger_save_warning.emit()
-	prints(self, "func delete_task_row emits 'trigger_save_warning'")
+	#prints(self, "func delete_task_row emits 'trigger_save_warning'")
 
 
 func _on_focus_changed(control_node:Control) -> void:
 	if control_node == null:
 		return
 	current_focus = control_node
-	print()
-	prints("Focused", control_node.name)
+	#print()
+	#prints("Focused", control_node.name)
 	if "CheckboxCell" in control_node.name:
-		prints("Task:", control_node.saved_task.name)
-		prints("Position:", control_node.saved_position)
+		#prints("Task:", control_node.saved_task.name)
+		#prints("Position:", control_node.saved_position)
 		DataGlobal.focus_checkbox_profile = control_node.saved_profile
 		DataGlobal.focus_checkbox_state = control_node.saved_state
 		selected_checkbox(control_node)
@@ -575,7 +576,8 @@ func _on_focus_changed(control_node:Control) -> void:
 		or "DropdownCell"in control_node.name
 		or "NumberCell" in control_node.name
 		):
-		prints("Task:", control_node.saved_task.name)
+		#prints("Task:", control_node.saved_task.name)
+		pass
 
 
 func selected_checkbox(target) -> void:
@@ -586,11 +588,11 @@ func selected_checkbox(target) -> void:
 	match DataGlobal.current_toggled_checkbox_mode:
 		DataGlobal.CheckboxToggle.APPLY:
 			if ((current_profile == focus_profile) and (current_state == focus_state)):
-				prints("Checkbox already applied!")
+				#prints("Checkbox already applied!")
 				return
 			target.saved_profile = current_profile
 			target.saved_state = current_state
-			prints("selected checkbox check")
+			#prints("selected checkbox check")
 			target.update_checkbox()
 			target.update_active_data()
 		DataGlobal.CheckboxToggle.INSPECT:

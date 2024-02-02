@@ -25,7 +25,8 @@ var task_new_checkbox_options_button_group: ButtonGroup = preload("res://data/se
 
 var scanned_profiles: Array
 var current_data: TaskSpreadsheetData
-var tasksheet_folder = "user://task_data/"
+var tasksheet_folder = JsonSaveManager.task_tracker_folder
+var task_type = JsonSaveManager.FileType.TASK_TRACKING
 
 
 func _ready() -> void:
@@ -261,7 +262,10 @@ func _on_delete_task_sheet_button_pressed() -> void:
 	var existing_files = DirAccess.get_files_at(tasksheet_folder)
 	for file in existing_files:
 		var filepath_for_loading = tasksheet_folder + file
-		var file_resource: TaskSpreadsheetData = ResourceLoader.load(filepath_for_loading)
+		var file_name = file - JsonSaveManager.json_extension
+		var file_resource = TaskSpreadsheetData.new()
+		var json_import = JsonSaveManager.load_data(file_name, task_type)
+		file_resource.import_json_to_resource(json_import)
 		create_sheet_data_deathrow_button(file_resource, filepath_for_loading)
 
 
@@ -294,7 +298,10 @@ func _on_deathrow_button_pressed(pressed_button: Button, remove_type: String, ta
 			full_purge(target)
 			data_manager.save_current_tasksheet()
 		"sheet data":
-			var file_resource: TaskSpreadsheetData = ResourceLoader.load(target)
+			var file_to_load = FileAccess.open(target, FileAccess.READ)
+			var loaded_data = JSON.parse_string(file_to_load.get_as_text())
+			var file_resource := TaskSpreadsheetData.new()
+			file_resource.import_json_to_resource(loaded_data)
 			if settings.task_setting_default_data == file_resource:
 				settings.task_setting_default_data = null
 			if DataGlobal.current_tasksheet_data == file_resource:

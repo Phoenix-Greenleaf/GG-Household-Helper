@@ -72,10 +72,12 @@ var current_toggled_month: Month = Month.JANUARY
 var current_toggled_editor_mode: int = editor_modes["Checkbox"]
 var current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
 
-var user_folder := "user://"
+#var user_folder := "user://"
 var settings_save_name := "Settings"
-var resource_extension := ".res"
-var settings_filepath: String = user_folder + settings_save_name + resource_extension
+@onready var settings_filepath: String = JsonSaveManager.generate_filepath(settings_save_name, JsonSaveManager.FileType.SETTINGS)
+@onready var settings_filetype: JsonSaveManager.FileType = JsonSaveManager.FileType.SETTINGS
+#var json_extension := ".json"
+#var settings_filepath: String = user_folder + settings_save_name + json_extension
 
 func _init() -> void:
 	var month_keys: Array = Month.keys()
@@ -84,6 +86,7 @@ func _init() -> void:
 
 
 func _ready() -> void:
+	prints("DataGlobal ready function")
 	SignalBus._on_settings_changed.connect(save_settings)
 	SignalBus._on_current_tasksheet_data_changed.connect(load_settings)
 	load_settings()
@@ -129,9 +132,13 @@ func load_settings() -> void:
 		prints("Settings exist")
 		return
 	if not FileAccess.file_exists(settings_filepath):
+		prints("Creating new settings")
 		create_settings()
 		return
-	settings_file = ResourceLoader.load(settings_filepath)
+	prints("Loading settings")
+	settings_file = SettingsData.new()
+	var raw_data = JsonSaveManager.load_data(settings_save_name, settings_filetype)
+	settings_file.import_json_to_resource(raw_data)
 	SignalBus.remote_task_settings_reload.emit()
 
 
@@ -143,9 +150,7 @@ func create_settings() -> void:
 
 
 func save_settings() -> void:
-	var settings_save_error = ResourceSaver.save(settings_file, settings_filepath)
-	if settings_save_error != OK:
-		printerr("Failed to save settings", settings_save_error)
-		return
-	prints("Settings Saved")
+	var json_data = settings_file.export_json_from_resouce()
+	JsonSaveManager.save_data(settings_save_name, settings_filetype, json_data)
+
 

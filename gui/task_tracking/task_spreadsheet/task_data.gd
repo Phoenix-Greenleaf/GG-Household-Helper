@@ -22,6 +22,59 @@ var scheduling_array: Array
 var currently_scheduling: int
 
 
+
+func export_json_from_resource() -> Dictionary:
+	var month_checkbox_dictionary_export := {}
+	for unformatted_month in month_checkbox_dictionary:
+		var formatted_checkboxes := []
+		for unformatted_checkbox in month_checkbox_dictionary[unformatted_month]:
+			formatted_checkboxes.append(unformatted_checkbox.export_json_from_resouce())
+		month_checkbox_dictionary_export[unformatted_month] = formatted_checkboxes
+	var json_data: Dictionary = {
+		"name": name,
+		"section": section,
+		"group": group,
+		"previous_section": previous_section,
+		"assigned_user_name": assigned_user[0],
+		"assigned_user_color": assigned_user[1].to_html(),
+		"time_of_day": time_of_day,
+		"priority": priority,
+		"location": location,
+		"scheduling_start": scheduling_start,
+		"units_per_cycle": units_per_cycle,
+		"task_year": task_year,
+		"month_checkbox_dictionary": month_checkbox_dictionary_export,
+		"description": description,
+	}
+	return json_data
+
+
+func import_json_to_resource(data_parameter: Dictionary) -> void:
+	var imported_assigned_user_name: String = data_parameter.assigned_user_name
+	var imported_assigned_user_color := Color.from_string(data_parameter.assigned_user_color, Color.BLACK)
+	var imported_month_checkbox_dictionary := {}
+	for imported_month in data_parameter.month_checkbox_dictionary:
+		var imported_checkbox_array := []
+		for imported_checkbox_iteration in data_parameter.month_checkbox_dictionary[imported_month]:
+			var imported_checkbox = CheckboxData.new()
+			imported_checkbox.import_json_to_resource(imported_checkbox_iteration)
+			imported_checkbox_array.append(imported_checkbox)
+		imported_month_checkbox_dictionary[imported_month] = imported_checkbox_array
+	name = data_parameter.name
+	section = data_parameter.section
+	group = data_parameter.group
+	previous_section = data_parameter.previous_section
+	assigned_user = [imported_assigned_user_name, imported_assigned_user_color]
+	time_of_day = data_parameter.time_of_day
+	priority = data_parameter.priority
+	location = data_parameter.location
+	scheduling_start = data_parameter.scheduling_start
+	units_per_cycle = data_parameter.units_per_cycle
+	task_year = data_parameter.task_year
+	month_checkbox_dictionary = imported_month_checkbox_dictionary
+	description = data_parameter.description
+
+
 func offbrand_init() -> void:
 	generate_month_dictionary()
 	generate_all_checkboxes()
@@ -78,7 +131,7 @@ func new_checkbox_option() -> Array:
 	var settings: SettingsData = DataGlobal.settings_file
 	var status: DataGlobal.Checkbox = DataGlobal.Checkbox.ACTIVE
 	var user: Array = DataGlobal.default_profile
-	match settings.task_current_new_checkbox_option:
+	match settings.task_setting_current_new_checkbox_option:
 		settings.NEW_CHECKBOX_OPTION.ACTIVE:
 			pass
 		settings.NEW_CHECKBOX_OPTION.EXPIRED:
