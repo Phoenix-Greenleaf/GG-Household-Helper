@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b2gi1xlrdmw1p"]
 
-[ext_resource type="Script" path="res://gui/data_manager/data_manager.gd" id="1_64y23"]
+[ext_resource type="Script" path="res://gui/task_tracking/data_manager/data_manager.gd" id="1_64y23"]
 
 [node name="DataManager" type="PanelContainer"]
 clip_contents = true

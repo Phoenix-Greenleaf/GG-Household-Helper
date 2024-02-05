@@ -1,6 +1,6 @@
 extends Resource
 
-class_name CheckboxData
+class_name TaskCheckboxData
 
 @export var checkbox_status: DataGlobal.Checkbox
 @export var assigned_user: Array

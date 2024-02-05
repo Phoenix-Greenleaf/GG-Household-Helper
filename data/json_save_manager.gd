@@ -1,10 +1,8 @@
 extends Node
 
-@export var user_folder: String = "user://"
-@export var task_tracker_folder = "user://task_tracker_data/"
-@export var json_extension: String = ".json"
 
-enum FileType {SETTINGS, TASK_TRACKING}
+
+
 
 
 

@@ -53,26 +53,33 @@ enum CheckboxToggle {
 	INSPECT
 }
 
+enum FileType {
+	MAIN_SETTINGS,
+	TASK_TRACKING_DATA,
+	TASK_TRACKING_SETTINGS,
+	}
+
+var active_data_task_tracking: 
+var active_settings_main: 
+var active_settings_task_tracking:
 
 var default_profile: Array = ["No Profile", Color(1, 1, 1)]
-
 var editor_modes: Dictionary = {"Checkbox": 0, "Info": 1}
 var month_strings: Array[String]
-
-var current_tasksheet_data: TaskSpreadsheetData
-var settings_file: SettingsData
-
 var current_checkbox_state: int = Checkbox.ACTIVE
 var current_checkbox_profile: Array = default_profile
 var focus_checkbox_state: int
 var focus_checkbox_profile: Array
-
 var current_toggled_section: Section = Section.YEARLY
 var current_toggled_month: Month = Month.JANUARY
 var current_toggled_editor_mode: int = editor_modes["Checkbox"]
 var current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
 
-#var user_folder := "user://"
+@export var user_folder: String = "user://"
+@export var task_tracker_folder = "user://task_tracker_data/"
+@export var settings_folder = "user://settings/"
+@export var json_extension: String = ".json"
+
 var settings_save_name := "Settings"
 @onready var settings_filepath: String = JsonSaveManager.generate_filepath(settings_save_name, JsonSaveManager.FileType.SETTINGS)
 @onready var settings_filetype: JsonSaveManager.FileType = JsonSaveManager.FileType.SETTINGS
