@@ -59,32 +59,36 @@ enum FileType {
 	TASK_TRACKING_SETTINGS,
 	}
 
-var active_data_task_tracking: 
-var active_settings_main: 
-var active_settings_task_tracking:
+var active_settings_main: MainSettingsData
+var active_data_task_tracking: TaskSpreadsheetData
+var active_settings_task_tracking: TaskSettingsData
 
-var default_profile: Array = ["No Profile", Color(1, 1, 1)]
-var editor_modes: Dictionary = {"Checkbox": 0, "Info": 1}
+var json_extension: String = ".json"
+var user_folder: String = "user://"
+var settings_folder = "user://settings/"
+var task_tracker_folder = "user://task_tracker_data/"
+
+var name_main_settings: String = "main_settings"
+var name_task_tracking_data: String = "task_tracking_"
+var name_task_tracking_settings: String = "task_tracking_settings"
+
+var filepath_main_settings: String = settings_folder + name_main_settings + json_extension
+var filepath_task_tracking_settings: String = settings_folder + name_task_tracking_settings + json_extension
+
+var default_profile: Array = ["No Profile", Color.WHITE]
 var month_strings: Array[String]
-var current_checkbox_state: int = Checkbox.ACTIVE
-var current_checkbox_profile: Array = default_profile
-var focus_checkbox_state: int
-var focus_checkbox_profile: Array
-var current_toggled_section: Section = Section.YEARLY
-var current_toggled_month: Month = Month.JANUARY
-var current_toggled_editor_mode: int = editor_modes["Checkbox"]
-var current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
 
-@export var user_folder: String = "user://"
-@export var task_tracker_folder = "user://task_tracker_data/"
-@export var settings_folder = "user://settings/"
-@export var json_extension: String = ".json"
+var task_tracking_editor_modes: Dictionary = {"Checkbox": 0, "Info": 1}
+var task_tracking_current_checkbox_state: int = Checkbox.ACTIVE
+var task_tracking_current_checkbox_profile: Array = default_profile
+var task_tracking_focus_checkbox_state: int
+var task_tracking_focus_checkbox_profile: Array
+var task_tracking_current_toggled_section: Section = Section.YEARLY
+var task_tracking_current_toggled_month: Month = Month.JANUARY
+var task_tracking_current_toggled_editor_mode: int = task_tracking_editor_modes["Checkbox"]
+var task_tracking_current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
 
-var settings_save_name := "Settings"
-@onready var settings_filepath: String = JsonSaveManager.generate_filepath(settings_save_name, JsonSaveManager.FileType.SETTINGS)
-@onready var settings_filetype: JsonSaveManager.FileType = JsonSaveManager.FileType.SETTINGS
-#var json_extension := ".json"
-#var settings_filepath: String = user_folder + settings_save_name + json_extension
+
 
 func _init() -> void:
 	var month_keys: Array = Month.keys()
@@ -93,18 +97,21 @@ func _init() -> void:
 
 
 func _ready() -> void:
-	prints("DataGlobal ready function")
-	SignalBus._on_settings_changed.connect(save_settings)
-	SignalBus._on_current_tasksheet_data_changed.connect(load_settings)
-	load_settings()
+	SignalBus._on_settings_changed.connect(save_settings_main)
+	SignalBus._on_current_tasksheet_data_changed.connect(load_settings_main)
+	load_settings_main()
 	DisplayServer.window_set_min_size(Vector2i(500, 500))
 
 
-func button_based_message(target: Node, message: String, time: int = 2) -> void:
-#	prints("Sending:", message, "to", target.name, "to replace:", target.text)
+func button_based_message(target: Node, message: String, time: int = 2, interfering_messages: Array = []) -> void:
 	if target.text == message:
-		prints("Not today pal")
+		prints("Button message already active")
 		return
+	if interfering_messages.size() > 0:
+		for cross_chatter in interfering_messages:
+			if target.text == cross_chatter:
+				prints("Not today pal")
+				return
 	var original_text = target.text
 	target.text = message
 	var timer := Timer.new()
@@ -134,30 +141,69 @@ func days_in_month_finder(month_in_question: String, year_in_question) -> int:
 			return 6
 
 
-func load_settings() -> void:
-	if settings_file:
-		prints("Settings exist")
+func generate_filepath(save_name_parameter: String, current_file_type: FileType) -> String:
+	var save_filepath: String
+	match current_file_type:
+		FileType.TASK_TRACKING_DATA:
+			save_filepath = task_tracker_folder + save_name_parameter + json_extension
+			return save_filepath
+		_:
+			prints("Generate_filepath error for FileType:", current_file_type)
+			return "ERROR"
+
+
+func create_settings_main() -> void:
+	active_settings_main = MainSettingsData.new()
+	active_settings_main.reset_settings()
+	prints("New main settings data created")
+	save_settings_main()
+
+
+func save_settings_main() -> void:
+	var json_data = active_settings_main.export_json_from_resouce()
+	JsonSaveManager.save_data(filepath_main_settings, json_data)
+	prints("Main settings data saved")
+
+
+func load_settings_main() -> void:
+	if active_settings_main:
+		prints("Main settings exist")
 		return
-	if not FileAccess.file_exists(settings_filepath):
-		prints("Creating new settings")
-		create_settings()
+	if not FileAccess.file_exists(filepath_main_settings):
+		prints("Creating new main settings")
+		create_settings_main()
 		return
-	prints("Loading settings")
-	settings_file = SettingsData.new()
-	var raw_data = JsonSaveManager.load_data(settings_save_name, settings_filetype)
-	settings_file.import_json_to_resource(raw_data)
+	prints("Loading main settings")
+	active_settings_main = MainSettingsData.new()
+	var json_data = JsonSaveManager.load_data(filepath_main_settings)
+	active_settings_main.import_json_to_resource(json_data)
 	SignalBus.remote_task_settings_reload.emit()
 
 
-func create_settings() -> void:
-	settings_file = SettingsData.new()
-	settings_file.reset_all_default_settings()
-	prints("New settings data created")
-	save_settings()
+func create_settings_task_tracking() -> void:
+	active_settings_task_tracking = TaskSettingsData.new()
+	active_settings_task_tracking.reset_settings()
+	prints("New task tracking settings data created")
+	save_settings_task_tracking()
 
 
-func save_settings() -> void:
-	var json_data = settings_file.export_json_from_resouce()
-	JsonSaveManager.save_data(settings_save_name, settings_filetype, json_data)
+func save_settings_task_tracking() -> void:
+	var json_data = active_settings_task_tracking.export_json_from_resouce()
+	JsonSaveManager.save_data(filepath_task_tracking_settings, json_data)
+
+
+func load_settings_task_tracking() -> void:
+	if active_settings_task_tracking:
+		prints("Task tracking settings exist")
+		return
+	if not FileAccess.file_exists(filepath_task_tracking_settings):
+		prints("Creating new task tracking settings")
+		create_settings_task_tracking()
+		return
+	prints("Loading task tracking settings")
+	active_settings_task_tracking = TaskSettingsData.new()
+	var json_data = JsonSaveManager.load_data(filepath_task_tracking_settings)
+	active_settings_task_tracking.import_json_to_resource(json_data)
+	SignalBus.remote_task_settings_reload.emit()
 
 
