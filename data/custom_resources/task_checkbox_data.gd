@@ -8,12 +8,11 @@ class_name TaskCheckboxData
 
 
 func update_checkbox_data(
-	checkbox_status_parameter := DataGlobal.current_checkbox_state as DataGlobal.Checkbox,
-	assigned_user_parameter: Array = DataGlobal.current_checkbox_profile,
+	checkbox_status_parameter: DataGlobal.Checkbox = DataGlobal.task_tracking_current_checkbox_state,
+	assigned_user_parameter: Array = DataGlobal.task_tracking_current_checkbox_profile,
 	) -> void:
-	
-	checkbox_status = checkbox_status_parameter
-	assigned_user = assigned_user_parameter
+		checkbox_status = checkbox_status_parameter
+		assigned_user = assigned_user_parameter
 
 
 func export_json_from_resouce() -> Dictionary:

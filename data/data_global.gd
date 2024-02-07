@@ -79,7 +79,7 @@ var default_profile: Array = ["No Profile", Color.WHITE]
 var month_strings: Array[String]
 
 var task_tracking_editor_modes: Dictionary = {"Checkbox": 0, "Info": 1}
-var task_tracking_current_checkbox_state: int = Checkbox.ACTIVE
+var task_tracking_current_checkbox_state: Checkbox = Checkbox.ACTIVE
 var task_tracking_current_checkbox_profile: Array = default_profile
 var task_tracking_focus_checkbox_state: int
 var task_tracking_focus_checkbox_profile: Array
@@ -207,3 +207,75 @@ func load_settings_task_tracking() -> void:
 	SignalBus.remote_task_settings_reload.emit()
 
 
+
+
+
+#from data manager
+
+func save_data_task_set() -> void:
+	if not DataGlobal.active_data_task_tracking:
+		prints("Nothing to save")
+		return
+	var task_set_snake_name: String = DataGlobal.active_data_task_tracking.task_set_name.to_snake_case()
+	var task_set_year_string: String = str(DataGlobal.active_data_task_tracking.task_set_year)
+	var task_set_save_name: String = name_task_tracking_data + task_set_snake_name + "_" + task_set_year_string
+	var task_set_filepath: String = generate_filepath(task_set_save_name, FileType.TASK_TRACKING_DATA)
+	var json_for_save: Dictionary = active_data_task_tracking.export_json_from_resouce()
+	JsonSaveManager.save_data(task_set_filepath, json_for_save)
+
+
+func load_existing_tasksheets() -> void:
+	if not DirAccess.dir_exists_absolute(JsonSaveManager.task_tracker_folder):
+		prints("Error loading existing task sheets")
+		return
+	var existing_files = DirAccess.get_files_at(JsonSaveManager.task_tracker_folder)
+	prints("Found files:", existing_files)
+	for file_iteration in existing_files:
+		#prints("File Iteration:", file_iteration)
+		var extension = "." + file_iteration.get_extension()
+		#prints(extension)
+		if extension != JsonSaveManager.json_extension:
+			prints("ERROR: File", file_iteration, "is not of 'json'")
+			continue
+		var file_name = file_iteration.replace(JsonSaveManager.json_extension, empty_string)
+		var loaded_resource = TaskSpreadsheetData.new()
+		var raw_resource = JsonSaveManager.load_data(file_name, JsonSaveManager.FileType.TASK_TRACKING)
+		loaded_resource.import_json_to_resource(raw_resource)
+		create_task_save_button(loaded_resource)
+	get_tree().call_group("task_save_panels", "retoggle_button_group")
+
+
+
+func directory_check(directory_to_check) -> void:
+	if not DirAccess.dir_exists_absolute(directory_to_check):
+		DirAccess.make_dir_absolute(directory_to_check)
+		prints("Created directory:", directory_to_check)
+	else:
+		prints("Directory Exists")
+
+
+func create_tasksheet_data(tasksheet_name: String, tasksheet_year: int) -> void:
+	var tasksheet_data := TaskSpreadsheetData.new()
+	tasksheet_data.spreadsheet_title = tasksheet_name
+	tasksheet_data.spreadsheet_year = tasksheet_year
+	directory_check(JsonSaveManager.task_tracker_folder)
+	create_task_save_button(tasksheet_data)
+	send_tasksheet_to_global(tasksheet_data)
+	save_current_tasksheet()
+
+
+func send_tasksheet_to_global(tasksheet_to_send) -> void:
+	DataGlobal.current_tasksheet_data = tasksheet_to_send
+	SignalBus._on_current_tasksheet_data_changed.emit()
+	SignalBus.reload_profiles_triggered.emit()
+	SignalBus._on_editor_section_changed.emit()
+	clone_menu_reset()
+
+
+func clone_tasksheet_data(tasksheet_name: String, tasksheet_year: int) -> void:
+	var tasksheet_data: TaskSpreadsheetData = DataGlobal.current_tasksheet_data.duplicate(true)
+	tasksheet_data.spreadsheet_title = tasksheet_name
+	tasksheet_data.spreadsheet_year = tasksheet_year
+	create_task_save_button(tasksheet_data)
+	send_tasksheet_to_global(tasksheet_data)
+	save_current_tasksheet()

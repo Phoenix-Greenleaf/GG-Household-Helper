@@ -1,10 +1,9 @@
 extends Resource
 
-class_name TaskSpreadsheetData
+class_name TaskSetData
 
-@export var spreadsheet_year: int
-@export var spreadsheet_title: String
-#@export var spreadsheet_filepath: String
+@export var task_set_year: int
+@export var task_set_title: String
 @export var user_profiles: Array = []
 
 @export var spreadsheet_year_data: Array
@@ -27,8 +26,8 @@ func export_json_from_resouce() -> Dictionary:
 	var spreadsheet_day_data_export: Array = []
 	export_task_data_array(spreadsheet_day_data, spreadsheet_day_data_export)
 	var json_data: Dictionary = {
-		"spreadsheet_year": spreadsheet_year,
-		"spreadsheet_title": spreadsheet_title,
+		"task_set_year": task_set_year,
+		"task_set_title": task_set_title,
 		#"spreadsheet_filepath": spreadsheet_filepath,
 		"user_profiles": user_profile_export,
 		"spreadsheet_year_data": spreadsheet_year_data_export,
@@ -57,8 +56,8 @@ func import_json_to_resource(data_parameter: Dictionary) -> void:
 	import_task_data_array(data_parameter.spreadsheet_week_data, spreadsheet_week_data_import)
 	var spreadsheet_day_data_import: Array = []
 	import_task_data_array(data_parameter.spreadsheet_day_data, spreadsheet_day_data_import)
-	spreadsheet_year = data_parameter.spreadsheet_year
-	spreadsheet_title = data_parameter.spreadsheet_title
+	task_set_year = data_parameter.task_set_year
+	task_set_title = data_parameter.task_set_title
 	#spreadsheet_filepath = data_parameter.spreadsheet_filepath
 	user_profiles = user_profile_import
 	spreadsheet_year_data = spreadsheet_year_data_import

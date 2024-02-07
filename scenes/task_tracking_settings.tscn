@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://dqqm4htlk2dxs"]
 
 [ext_resource type="Script" path="res://scenes/task_tracking_settings.gd" id="2_50fxw"]
-[ext_resource type="ButtonGroup" uid="uid://rtfa2yhtpxlw" path="res://data/setting_parts/task_new_checkbox_options_button_group.tres" id="5_pw0kc"]
-[ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/task_tracking/data_manager/data_manager.tscn" id="8_ru03e"]
+[ext_resource type="ButtonGroup" uid="uid://rtfa2yhtpxlw" path="res://gui/task_tracking/task_new_checkbox_options_button_group.tres" id="5_pw0kc"]
+[ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/task_tracking/data_manager/task_data_manager.tscn" id="8_ru03e"]
 
 [node name="TaskTrackingSettings" type="PanelContainer"]
 anchors_preset = 15

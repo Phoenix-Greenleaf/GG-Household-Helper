@@ -56,7 +56,7 @@ func import_json_to_resource(data_parameter: Dictionary) -> void:
 	for imported_month in data_parameter.month_checkbox_dictionary:
 		var imported_checkbox_array := []
 		for imported_checkbox_iteration in data_parameter.month_checkbox_dictionary[imported_month]:
-			var imported_checkbox = CheckboxData.new()
+			var imported_checkbox = TaskCheckboxData.new()
 			imported_checkbox.import_json_to_resource(imported_checkbox_iteration)
 			imported_checkbox_array.append(imported_checkbox)
 		imported_month_checkbox_dictionary[imported_month] = imported_checkbox_array
@@ -118,8 +118,8 @@ func generate_month_checkboxes(month, number: int) -> void:
 	if month_checkbox_dictionary[month].size() != 0:
 		return
 	for iteration in number:
-		var checkbox_iteration = CheckboxData.new()
-		var checkbox_options = new_checkbox_option()
+		var checkbox_iteration = TaskCheckboxData.new()
+		var checkbox_options = default_checkbox_option()
 		var checkbox_status = checkbox_options[0]
 		var checkbox_assigned_user = checkbox_options[1]
 		checkbox_iteration.update_checkbox_data(checkbox_status, checkbox_assigned_user)
@@ -127,16 +127,15 @@ func generate_month_checkboxes(month, number: int) -> void:
 	blackout_unscheduled(month)
 
 
-func new_checkbox_option() -> Array:
-	var settings: SettingsData = DataGlobal.settings_file
+func default_checkbox_option() -> Array:
 	var status: DataGlobal.Checkbox = DataGlobal.Checkbox.ACTIVE
 	var user: Array = DataGlobal.default_profile
-	match settings.task_setting_current_new_checkbox_option:
-		settings.NEW_CHECKBOX_OPTION.ACTIVE:
+	match DataGlobal.active_settings_task_tracking.current_new_checkbox_option:
+		TaskSettingsData.NewCheckboxOption.ACTIVE:
 			pass
-		settings.NEW_CHECKBOX_OPTION.EXPIRED:
+		TaskSettingsData.NewCheckboxOption.EXPIRED:
 			status = DataGlobal.Checkbox.EXPIRED
-		settings.NEW_CHECKBOX_OPTION.ASSIGNED:
+		TaskSettingsData.NewCheckboxOption.ASSIGNED:
 			if assigned_user:
 				user = assigned_user
 	return [status, user]
@@ -233,22 +232,22 @@ func section_transfer() -> void:
 	prints("Transfering from", DataGlobal.Section.keys()[previous_section], "to", DataGlobal.Section.keys()[section])
 	match previous_section:
 		DataGlobal.Section.YEARLY:
-			DataGlobal.current_tasksheet_data.spreadsheet_year_data.erase(self)
+			DataGlobal.active_data_task_tracking.spreadsheet_year_data.erase(self)
 		DataGlobal.Section.MONTHLY:
-			DataGlobal.current_tasksheet_data.spreadsheet_month_data.erase(self)
+			DataGlobal.active_data_task_tracking.spreadsheet_month_data.erase(self)
 		DataGlobal.Section.WEEKLY:
-			DataGlobal.current_tasksheet_data.spreadsheet_week_data.erase(self)
+			DataGlobal.active_data_task_tracking.spreadsheet_week_data.erase(self)
 		DataGlobal.Section.DAILY:
-			DataGlobal.current_tasksheet_data.spreadsheet_day_data.erase(self)
+			DataGlobal.active_data_task_tracking.spreadsheet_day_data.erase(self)
 	match section:
 		DataGlobal.Section.YEARLY:
-			DataGlobal.current_tasksheet_data.spreadsheet_year_data.append(self)
+			DataGlobal.active_data_task_tracking.spreadsheet_year_data.append(self)
 		DataGlobal.Section.MONTHLY:
-			DataGlobal.current_tasksheet_data.spreadsheet_month_data.append(self)
+			DataGlobal.active_data_task_tracking.spreadsheet_month_data.append(self)
 		DataGlobal.Section.WEEKLY:
-			DataGlobal.current_tasksheet_data.spreadsheet_week_data.append(self)
+			DataGlobal.active_data_task_tracking.spreadsheet_week_data.append(self)
 		DataGlobal.Section.DAILY:
-			DataGlobal.current_tasksheet_data.spreadsheet_day_data.append(self)
+			DataGlobal.active_data_task_tracking.spreadsheet_day_data.append(self)
 	for month_iteration in month_checkbox_dictionary:
 		month_checkbox_dictionary[month_iteration].clear()
 	previous_section = section
