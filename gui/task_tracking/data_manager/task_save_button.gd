@@ -5,24 +5,26 @@ extends PanelContainer
 @onready var functional_button: Button = $FunctionalButton
 
 
-@export var saved_resource: TaskSpreadsheetData 
-
 
 func _ready() -> void:
-	update_button()
-	SignalBus._on_current_tasksheet_data_changed.connect(retoggle_button_group)
+	initialize_button()
+	SignalBus._on_current_task_set_data_changed.connect(retoggle_button_group)
 
 
-func update_button() -> void:
-	if saved_resource:
-		task_set_name_label.text = saved_resource.spreadsheet_title
-		task_set_year_label.text = str(saved_resource.spreadsheet_year)
-	else:
-		task_set_name_label.text = "Button Test"
-		task_set_year_label.text = "2020"
+func initialize_button() -> void:
+	task_set_name_label.text = "Button Test"
+	task_set_year_label.text = "2020"
 
 
 func retoggle_button_group() -> void:
 	functional_button.set_pressed_no_signal(false)
-	if DataGlobal.current_tasksheet_data == saved_resource:
+	if name_compare() and year_compare():
 		functional_button.set_pressed_no_signal(true)
+
+
+func name_compare() -> bool:
+	return DataGlobal.active_data_task_tracking.task_set_title == task_set_name_label.text
+
+
+func year_compare() -> bool:
+	return str(DataGlobal.active_data_task_tracking.task_set_year) == task_set_year_label.text

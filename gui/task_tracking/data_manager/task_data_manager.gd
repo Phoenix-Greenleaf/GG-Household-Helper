@@ -29,16 +29,16 @@ var empty_string := ""
 func _ready() -> void:
 	connect_signal_bus()
 	starting_visibilities()
-	load_existing_tasksheets()
+	load_existing_task_sets()
 	if DataGlobal.current_tasksheet_data:
 		update_current_tasksheet_label()
 
 
 func connect_signal_bus() -> void:
 	close_manager_button.pressed.connect(emit_exit_signal)
-	SignalBus._on_current_tasksheet_data_changed.connect(update_current_tasksheet_label)
-	SignalBus.trigger_save_warning.connect(safety_toggle.bind(true))
-	SignalBus.reset_save_warning.connect(safety_toggle.bind(false))
+	SignalBus._on_task_set_data_active_data_switched.connect(update_current_tasksheet_label)
+	SignalBus._on_task_set_data_modified.connect(safety_toggle.bind(true))
+	SignalBus._on_task_set_data_saved.connect(safety_toggle.bind(false))
 
 
 func safety_toggle(new_bool) -> void:
@@ -46,7 +46,7 @@ func safety_toggle(new_bool) -> void:
 
 
 func emit_exit_signal() -> void:
-	SignalBus.data_manager_close.emit()
+	SignalBus._on_task_data_manager_close_manager_button_pressed.emit()
 
 
 func update_current_tasksheet_label() -> void:
@@ -63,9 +63,18 @@ func starting_visibilities() -> void:
 	clone_menu_reset()
 
 
-func load_existing_tasksheets() -> void:
-#build connection to data gobal
-	create_task_save_button(loaded_resource)
+func load_existing_task_sets() -> void:
+	var existing_files = DataGlobal.load_existing_task_sets()
+	var interation_name: String
+	var interation_year: int
+	for file_iteration in existing_files:
+		var extension = "." + file_iteration.get_extension()
+		if extension != DataGlobal.json_extension:
+			printerr("ERROR: File", file_iteration, "is not of 'json'")
+			continue
+		interation_name = file_iteration.task_set_name
+		interation_year = file_iteration.task_set_year
+	create_task_save_button(interation_name, interation_year)
 	get_tree().call_group("task_save_panels", "retoggle_button_group")
 
 
@@ -84,37 +93,25 @@ func task_field_reset() -> void:
 	task_data_title_line_edit.clear()
 
 
-func create_tasksheet_data(tasksheet_name: String, tasksheet_year: int) -> void:
-	#var tasksheet_data := TaskSpreadsheetData.new()
-	#tasksheet_data.spreadsheet_title = tasksheet_name
-	#tasksheet_data.spreadsheet_year = tasksheet_year
-	#directory_check(JsonSaveManager.task_tracker_folder)
-	#create_task_save_button(tasksheet_data)
-	#send_tasksheet_to_global(tasksheet_data)
-	#save_current_tasksheet()
-	pass
-
-
-func create_task_save_button(target_resource: TaskSpreadsheetData) -> void:
-	var new_task_save_button = task_save_button.instantiate()
+func create_task_save_button(target_name: String, target_year: int) -> void:
+	var new_task_save_button := task_save_button.instantiate()
 	task_grid.add_child(new_task_save_button)
 	task_grid.move_child(new_task_save_button, task_button_count)
-	new_task_save_button.saved_resource = target_resource
-	new_task_save_button.update_button()
+	new_task_save_button.task_set_name_label.text = target_name
+	new_task_save_button.task_set_year_label.text = str(target_year)
 	new_task_save_button.add_to_group("task_save_panels")
 	task_button_count += 1
 	var actual_task_button: Button = new_task_save_button.get_node("FunctionalButton")
-	actual_task_button.toggled.connect(_on_task_save_button_pressed.bind(target_resource))
+	actual_task_button.toggled.connect(_on_task_save_button_pressed.bind(target_name, target_year))
 	actual_task_button.set_button_group(task_save_button_group)
-	var target_name = target_resource.spreadsheet_title
-	var target_year = target_resource.spreadsheet_year
 
 
-func send_tasksheet_to_global(tasksheet_to_send) -> void:
+
+func send_tasksheet_to_global() -> void:
 	#DataGlobal.current_tasksheet_data = tasksheet_to_send
-	#SignalBus._on_current_tasksheet_data_changed.emit()
-	#SignalBus.reload_profiles_triggered.emit()
-	#SignalBus._on_editor_section_changed.emit()
+	#SignalBus._on_task_set_data_active_data_switched.emit()
+	#SignalBus._on_task_editor_profile_selection_changed.emit()
+	#SignalBus._on_task_editor_section_changed.emit()
 	clone_menu_reset()
 
 
@@ -124,7 +121,7 @@ func clone_menu_open() -> void:
 
 
 func clone_menu_reset() -> void:
-	if DataGlobal.current_tasksheet_data:
+	if DataGlobal.active_data_task_tracking:
 		clone_data_button.visible = true
 		clone_data_panel.visible = false
 		clone_back_button.visible = false
@@ -136,9 +133,9 @@ func clone_menu_reset() -> void:
 
 func clone_menu_update() -> void:
 	clone_label.text = "Clone Title"
-	clone_line_edit.text = DataGlobal.current_tasksheet_data.spreadsheet_title
+	clone_line_edit.text = DataGlobal.active_data_task_tracking.task_set_title
 	clone_line_edit.visible = true
-	var new_year = DataGlobal.current_tasksheet_data.spreadsheet_year + 1
+	var new_year = DataGlobal.active_data_task_tracking.task_set_year + 1
 	clone_spin_box.set_value_no_signal(new_year)
 	clone_spin_box.visible = false
 
@@ -156,7 +153,7 @@ func reset_data_manager() -> void:
 	for panel_iteration in get_tree().get_nodes_in_group("task_save_panels"):
 		task_grid.remove_child(panel_iteration)
 		panel_iteration.queue_free()
-	load_existing_tasksheets()
+	load_existing_task_sets()
 
 
 
@@ -175,17 +172,17 @@ func _on_task_cancel_button_pressed() -> void:
 
 func _on_task_accept_button_pressed() -> void:
 	if not task_data_title_line_edit.text:
-		printerr("Task needs title, not accepted")
+		printerr("Task Set needs title, not accepted")
 		DataGlobal.button_based_message(task_accept_button, "Title Needed!")
 		return
 	var new_tasksheet_year := int(task_data_year_spinbox.value)
 	var new_tasksheet_name: String = task_data_title_line_edit.text
-	create_tasksheet_data(new_tasksheet_name, new_tasksheet_year)
+	DataGlobal.create_data_task_set(new_tasksheet_name, new_tasksheet_year)
 	task_field_reset()
 	show_new_task_button()
 
 
-func _on_task_save_button_pressed(button_pressed: bool, pressed_tasksheet: TaskSpreadsheetData):
+func _on_task_save_button_pressed(button_pressed: bool, pressed_tasksheet: TaskSetData):
 	if not button_pressed:
 		return
 	if pressed_tasksheet == DataGlobal.current_tasksheet_data:
@@ -193,8 +190,8 @@ func _on_task_save_button_pressed(button_pressed: bool, pressed_tasksheet: TaskS
 		DataGlobal.button_based_message(current_tasksheet_label, "Data Already Loaded!") 
 		return
 	if safe_lock_active:
-		save_current_tasksheet()
-	send_tasksheet_to_global(pressed_tasksheet)
+		DataGlobal.save_data_task_set()
+	send_tasksheet_to_global()
 	clone_menu_update()
 
 
@@ -216,14 +213,14 @@ func _on_clone_accept_button_pressed() -> void:
 	if clone_label.text == "Clone Year" or "File Already Exists!\n(Change Title or Year)":
 		var cloned_title = clone_line_edit.text
 		var cloned_year = int(clone_spin_box.value)
-		var cloned_snake_name: String = cloned_title.to_snake_case()
-		var cloned_save_name: String = cloned_snake_name + "_" + str(cloned_year)
-		if FileAccess.file_exists(JsonSaveManager.generate_filepath(cloned_save_name, JsonSaveManager.FileType.TASK_TRACKING)):
+		if FileAccess.file_exists(DataGlobal.generate_task_set_filepath(cloned_title, cloned_year)):
 			prints("File already exists! Clone needs different year or title...")
 			DataGlobal.button_based_message(clone_accept_button, "Error!")
 			DataGlobal.button_based_message(clone_label, "File Already Exists!\n(Change Title or Year)")
 			return
-		clone_tasksheet_data_and_save(cloned_title, cloned_year)
+		DataGlobal.clone_task_set_data(cloned_title, cloned_year)
+		create_task_save_button(cloned_title, cloned_year)
+		
 
 
 func _on_clone_cancel_button_pressed() -> void:

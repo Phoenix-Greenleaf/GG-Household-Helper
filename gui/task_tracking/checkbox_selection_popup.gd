@@ -54,9 +54,9 @@ func _ready() -> void:
 
 
 func signal_bus_connections() -> void:
-	SignalBus.update_checkbox_button.connect(update_status_colors)
-	SignalBus.reload_profiles_triggered.connect(reload_profiles)
-	SignalBus.reset_save_warning.connect(unlock_new_profile)
+	SignalBus._on_task_editor_checkbox_selection_changed.connect(update_status_colors)
+	SignalBus._on_task_editor_profile_selection_changed.connect(reload_profiles)
+	SignalBus._on_task_set_data_saved.connect(unlock_new_profile)
 
 
 func starting_visibilities() -> void:
@@ -116,8 +116,8 @@ func create_new_profile(profile_name: String, profile_color: Color) -> void:
 	var new_profile: Array = [profile_name, profile_color]
 	DataGlobal.current_tasksheet_data.user_profiles.append(new_profile)
 	add_profile(new_profile)
-	SignalBus.trigger_save_warning.emit()
-	#prints(self, "func create_new_profile emits 'trigger_save_warning'")
+	SignalBus._on_task_set_data_modified.emit()
+	#prints(self, "func create_new_profile emits '_on_task_set_data_modified'")
 
 
 func connect_paired_menu_button() -> void:
@@ -134,7 +134,7 @@ func connect_status_button_group() -> void:
 
 
 func update_paired_menu() -> void:
-	SignalBus.update_checkbox_button.emit()
+	SignalBus._on_task_editor_checkbox_selection_changed.emit()
 
 
 func random_color() -> Color:
@@ -197,7 +197,7 @@ func _on_menu_button_toggled(_button_pressed: bool) -> void:
 
 func _on_new_profile_button_pressed() -> void:
 	if new_profile_button.text == "Task Data\nNeeded!":
-		SignalBus.task_editor_remote_open_data_manager.emit()
+		SignalBus._on_task_editor_data_manager_remote_open_pressed.emit()
 		return
 	new_profile_button.visible = false
 	new_profile_menu.visible = true
@@ -223,7 +223,7 @@ func _on_profile_menu_accept_pressed() -> void:
 		profile_color_picker_button.set_pick_color(random_color())
 		return
 	create_new_profile(profile_name, profile_color)
-	SignalBus._on_editor_section_changed.emit()
+	SignalBus._on_task_editor_section_changed.emit()
 	new_profile_button.visible = true
 	new_profile_menu.visible = false
 
@@ -284,10 +284,10 @@ func _on_edit_profile_menu_accept_pressed() -> void:
 	edit_profile_menu.visible = false
 	replacement_scan(previous_profile, edited_profile)
 	DataGlobal.current_checkbox_profile = edited_profile
-	SignalBus.remote_active_data_save.emit()
-	SignalBus._on_current_tasksheet_data_changed.emit()
+	SignalBus._on_task_editor_save_button_pressed.emit()
+	SignalBus._on_task_set_data_active_data_switched.emit()
 	update_edit_profile_menu()
-	SignalBus.update_checkbox_button.emit()
+	SignalBus._on_task_editor_checkbox_selection_changed.emit()
 	reload_profiles()
 
 

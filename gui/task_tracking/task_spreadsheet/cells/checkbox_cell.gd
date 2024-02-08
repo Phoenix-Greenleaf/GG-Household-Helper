@@ -25,14 +25,14 @@ func update_active_data() -> void:
 			year_and_month_updater()
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
 			day_and_week_updater()
-	SignalBus.trigger_save_warning.emit()
-	prints("CheckboxCell", saved_task.name, saved_position, "func update_active_data emits 'trigger_save_warning'")
+	SignalBus._on_task_set_data_modified.emit()
+	print_verbose("CheckboxCell", saved_task.name, saved_position, "func update_active_data emits '_on_task_set_data_modified'")
 
 
 func year_and_month_updater() -> void: 
 	var current_position = saved_position
 	var current_month = DataGlobal.month_strings[current_position]
-	var current_data: CheckboxData = saved_task.month_checkbox_dictionary[current_month][0]
+	var current_data: TaskCheckboxData = saved_task.month_checkbox_dictionary[current_month][0]
 	current_data.checkbox_status = saved_state
 	current_data.assigned_user = saved_profile
 	prints("Active data for checkbox", current_month, "saved!")
@@ -42,7 +42,7 @@ func day_and_week_updater() -> void:
 	var current_month = DataGlobal.current_toggled_month
 	var month_key = DataGlobal.Month.find_key(current_month).capitalize()
 	var current_position = saved_position - 1 
-	var current_data: CheckboxData = saved_task.month_checkbox_dictionary[month_key][current_position]
+	var current_data: TaskCheckboxData = saved_task.month_checkbox_dictionary[month_key][current_position]
 	current_data.checkbox_status = saved_state
 	current_data.assigned_user = saved_profile
 	prints("Active data for checkbox", saved_position, "saved!")
@@ -81,11 +81,7 @@ func update_current_border(color_parameter: Color) -> void:
 func _on_resized() -> void:
 	cell_x = self.size.x
 	cell_y = self.size.y
-#	prints("")
-#	prints("Resized Check: Cell", name)
-#	prints("X", cell_x, ", Y", cell_y)
 	if not cell_checkbox_border_color_rect:
-#		prints("Too early to resize!")
 		return
 	cell_checkbox_border_color_rect.resize_border(cell_x, cell_y)
 

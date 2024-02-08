@@ -19,4 +19,4 @@ func _on_delete_button_pressed() -> void:
 	if text == button_text:
 		DataGlobal.button_based_message(self, "CONFIRM DELETE")
 		return
-	SignalBus._on_task_delete_button_primed_and_pressed.emit(saved_task)
+	SignalBus._on_task_editor_task_delete_button_primed_and_pressed.emit(saved_task)

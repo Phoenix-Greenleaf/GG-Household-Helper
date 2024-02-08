@@ -45,7 +45,7 @@ func _ready() -> void:
 	if DataGlobal.current_tasksheet_data:
 		update_current_tasksheet_label()
 		add_task_button.disabled = false
-		SignalBus._on_editor_section_changed.emit()
+		SignalBus._on_task_editor_section_changed.emit()
 	SceneTransition.fade_from_black()
 
 
@@ -60,16 +60,16 @@ func connection_cental() -> void:
 
 
 func connect_data_manager() -> void:
-	SignalBus.data_manager_close.connect(close_data_manager_popup)
+	SignalBus._on_task_data_manager_close_manager_button_pressed.connect(close_data_manager_popup)
 	data_manager_center.visible = false
 
 
 func connect_other_signal_bus() -> void:
-	SignalBus._on_current_tasksheet_data_changed.connect(update_current_tasksheet_label)
-	SignalBus.trigger_save_warning.connect(save_warning_triggered)
-	SignalBus.reset_save_warning.connect(save_waring_reset)
-	SignalBus.task_editor_remote_open_data_manager.connect(remote_open_data_manager)
-	SignalBus.remote_active_data_save.connect(save_active_data)
+	SignalBus._on_task_set_data_active_data_switched.connect(update_current_tasksheet_label)
+	SignalBus._on_task_set_data_modified.connect(save_warning_triggered)
+	SignalBus._on_task_set_data_saved.connect(save_waring_reset)
+	SignalBus._on_task_editor_data_manager_remote_open_pressed.connect(remote_open_data_manager)
+	SignalBus._on_task_editor_save_button_pressed.connect(save_active_data)
 
 
 func connect_month_menu() -> void:
@@ -168,7 +168,6 @@ func menu_button_actions(id: int) -> void:
 			save_active_data()
 			popup.visible = false
 			SceneTransition.fade_to_black("res://scenes/task_tracking_settings.tscn")
-			SignalBus.remote_task_settings_reload.emit()
 
 
 func menu_quit_with_save_protection() -> void:
@@ -224,7 +223,7 @@ func update_current_tasksheet_label() -> void:
 	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
 	var new_label = title + ": " + str(year)
 	current_save_label.text = new_label
-	SignalBus.reset_save_warning.emit()
+	SignalBus._on_task_set_data_saved.emit()
 
 
 func close_data_manager_popup() -> void:
@@ -267,7 +266,7 @@ func month_menu_button_actions(id: int) -> void:
 			month_menu_switch(11, DataGlobal.Month.NOVEMBER)
 		12:
 			month_menu_switch(12, DataGlobal.Month.DECEMBER)
-	SignalBus._on_editor_month_changed.emit()
+	SignalBus._on_task_editor_month_changed.emit()
 
 
 func month_menu_switch(passed_id: int, passed_month: DataGlobal.Month) -> void:
@@ -283,7 +282,7 @@ func _on_yearly_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
 		if DataGlobal.current_toggled_section != DataGlobal.Section.YEARLY:
 			DataGlobal.current_toggled_section = DataGlobal.Section.YEARLY
-			SignalBus._on_editor_section_changed.emit()
+			SignalBus._on_task_editor_section_changed.emit()
 			prints("Yearly Section Toggled")
 		else:
 			prints("Yearly Section ALREADY TOGGLED")
@@ -293,7 +292,7 @@ func _on_monthly_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
 		if DataGlobal.current_toggled_section != DataGlobal.Section.MONTHLY:
 			DataGlobal.current_toggled_section = DataGlobal.Section.MONTHLY
-			SignalBus._on_editor_section_changed.emit()
+			SignalBus._on_task_editor_section_changed.emit()
 			prints("Monthly Section Toggled")
 		else:
 			prints("Monthly Section ALREADY TOGGLED")
@@ -303,7 +302,7 @@ func _on_weekly_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
 		if DataGlobal.current_toggled_section != DataGlobal.Section.WEEKLY:
 			DataGlobal.current_toggled_section = DataGlobal.Section.WEEKLY
-			SignalBus._on_editor_section_changed.emit()
+			SignalBus._on_task_editor_section_changed.emit()
 			prints("Weekly Section Toggled")
 		else:
 			prints("Weekly Section ALREADY TOGGLED")
@@ -313,7 +312,7 @@ func _on_daily_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
 		if DataGlobal.current_toggled_section != DataGlobal.Section.DAILY:
 			DataGlobal.current_toggled_section = DataGlobal.Section.DAILY
-			SignalBus._on_editor_section_changed.emit()
+			SignalBus._on_task_editor_section_changed.emit()
 			prints("Daily Section Toggled")
 		else:
 			prints("Daily Section ALREADY TOGGLED")
@@ -323,7 +322,7 @@ func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
 		if DataGlobal.current_toggled_editor_mode != DataGlobal.editor_modes["Checkbox"]:
 			DataGlobal.current_toggled_editor_mode = DataGlobal.editor_modes["Checkbox"]
-			SignalBus._on_editor_mode_changed.emit()
+			SignalBus._on_task_editor_mode_changed.emit()
 			prints("Checkbox Mode toggled")
 		else:
 			prints("Checkbox Mode ALREADY TOGGLED")
@@ -333,7 +332,7 @@ func _on_info_mode_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
 		if DataGlobal.current_toggled_editor_mode != DataGlobal.editor_modes["Info"]:
 			DataGlobal.current_toggled_editor_mode = DataGlobal.editor_modes["Info"]
-			SignalBus._on_editor_mode_changed.emit()
+			SignalBus._on_task_editor_mode_changed.emit()
 			prints("Info Mode toggled")
 		else:
 			prints("Info Mode ALREADY TOGGLED")
@@ -368,7 +367,7 @@ func _on_save_warning_button_pressed() -> void:
 func save_active_data() -> void:
 		save_warning_button.text = "Data Saved"
 		data_manager.save_current_tasksheet()
-		SignalBus.reset_save_warning.emit()
+		SignalBus._on_task_set_data_saved.emit()
 
 
 func _on_menu_button_pressed() -> void:
@@ -383,7 +382,7 @@ func _on_checkbox_apply_toggle_toggled(button_pressed: bool) -> void:
 		return
 	if DataGlobal.current_toggled_checkbox_mode != DataGlobal.CheckboxToggle.APPLY:
 		DataGlobal.current_toggled_checkbox_mode = DataGlobal.CheckboxToggle.APPLY
-		SignalBus._on_checkbox_mode_changed.emit()
+		SignalBus._on_task_editor_checkbox_mode_changed.emit()
 		prints("Apply Mode toggled")
 	else:
 		prints("Apply Mode ALREADY TOGGLED")
@@ -394,7 +393,7 @@ func _on_checkbox_inspect_toggle_toggled(button_pressed: bool) -> void:
 		return
 	if DataGlobal.current_toggled_checkbox_mode != DataGlobal.CheckboxToggle.INSPECT:
 		DataGlobal.current_toggled_checkbox_mode = DataGlobal.CheckboxToggle.INSPECT
-		SignalBus._on_checkbox_mode_changed.emit()
+		SignalBus._on_task_editor_checkbox_mode_changed.emit()
 		prints("Inspect Mode toggled")
 	else:
 		prints("Inspect Mode ALREADY TOGGLED")

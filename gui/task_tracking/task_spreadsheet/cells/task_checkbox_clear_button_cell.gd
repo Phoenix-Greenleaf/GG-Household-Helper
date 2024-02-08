@@ -12,7 +12,7 @@ func _on_task_checkbox_clear_button_pressed() -> void:
 		return
 	if text == reset_safety_message:
 		saved_task.clear_self_checkboxes()
-		SignalBus.remote_spreadsheet_grid_reload.emit()
+		SignalBus._on_task_editor_grid_reload_pressed.emit()
 
 func prep_button() -> void:
 	var task_name: String = saved_task.name

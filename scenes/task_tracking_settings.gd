@@ -39,8 +39,7 @@ func _ready() -> void:
 
 func establish_connections() -> void:
 	task_new_checkbox_options_button_group.pressed.connect(_on_task_new_checkbox_options_button_group_pressed)
-	SignalBus.remote_task_settings_reload.connect(reload_settings)
-	
+
 
 func disarm_danger_buttons() -> void:
 		settings.task_setting_enable_deletion_buttons = false
@@ -136,7 +135,7 @@ func _on_regen_profiles_button_pressed() -> void:
 	for scan_iteration in scanned_profiles:
 		DataGlobal.current_tasksheet_data.user_profiles.append(scan_iteration)
 	data_manager.save_current_tasksheet()
-	SignalBus.reload_profiles_triggered.emit()
+	SignalBus._on_task_editor_profile_selection_changed.emit()
 
 
 func full_scan() -> void:
@@ -227,7 +226,7 @@ func _on_task_new_checkbox_options_button_group_pressed(pressed_button: Button) 
 
 
 func reload_settings() -> void:
-	SignalBus._on_settings_changed.emit()
+	DataGlobal.save_settings_task_tracking()
 	load_all_settings()
 
 

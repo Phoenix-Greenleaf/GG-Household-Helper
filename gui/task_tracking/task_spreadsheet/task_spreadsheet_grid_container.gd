@@ -73,7 +73,6 @@ func _ready() -> void:
 	ready_connections()
 	close_new_task_panel()
 	get_dropdown_items_from_global()
-	SignalBus.remote_task_settings_reload.emit()
 	if DataGlobal.settings_file.task_setting_enable_auto_load_default_data:
 		DataGlobal.current_tasksheet_data = DataGlobal.settings_file.task_setting_default_data
 		data_for_spreadsheet = DataGlobal.settings_file.task_setting_default_data
@@ -93,14 +92,14 @@ func _ready() -> void:
 func ready_connections() -> void:
 	if DataGlobal.current_tasksheet_data:
 		data_for_spreadsheet = DataGlobal.current_tasksheet_data
-	SignalBus._on_current_tasksheet_data_changed.connect(update_grid_spreadsheet)
-	SignalBus._on_editor_mode_changed.connect(toggle_info_checkbox_modes)
-	SignalBus._on_editor_section_changed.connect(section_or_month_changed)
-	SignalBus._on_editor_month_changed.connect(section_or_month_changed)
-	SignalBus.reload_profiles_triggered.connect(update_user_profile_dropdown_items)
+	SignalBus._on_task_set_data_active_data_switched.connect(update_grid_spreadsheet)
+	SignalBus._on_task_editor_mode_changed.connect(toggle_info_checkbox_modes)
+	SignalBus._on_task_editor_section_changed.connect(section_or_month_changed)
+	SignalBus._on_task_editor_month_changed.connect(section_or_month_changed)
+	SignalBus._on_task_editor_profile_selection_changed.connect(update_user_profile_dropdown_items)
 	get_viewport().gui_focus_changed.connect(_on_focus_changed)
-	SignalBus._on_task_delete_button_primed_and_pressed.connect(delete_task_row)
-	SignalBus.remote_spreadsheet_grid_reload.connect(reload_grid)
+	SignalBus._on_task_editor_task_delete_button_primed_and_pressed.connect(delete_task_row)
+	SignalBus._on_task_editor_grid_reload_pressed.connect(reload_grid)
 
 
 func set_time_unit() -> void:
@@ -153,7 +152,7 @@ func update_task_group_dropdown_items() -> void:
 			for task_iteration in data_for_spreadsheet.spreadsheet_day_data:
 				scan_task_for_group(task_iteration)
 	task_group_dropdown_items.insert(0, "None")
-	SignalBus._on_update_task_group_dropdown_items_activated.emit(task_group_dropdown_items)
+	SignalBus._on_task_editor_group_dropdown_items_changed.emit(task_group_dropdown_items)
 	update_existing_groups_option_button_items()
 
 
@@ -342,8 +341,8 @@ func _on_accept_new_task_button_pressed() -> void:
 	close_new_task_panel()
 	new_task_field_reset()
 	toggle_info_checkbox_modes()
-	SignalBus.trigger_save_warning.emit()
-	#prints(self, "func _on_accept_new_task_button_pressed emits 'trigger_save_warning'")
+	SignalBus._on_task_set_data_modified.emit()
+	#prints(self, "func _on_accept_new_task_button_pressed emits '_on_task_set_data_modified'")
 
 
 func update_existing_groups_option_button_items() -> void:
@@ -554,8 +553,8 @@ func delete_task_row(target_task: TaskData) -> void:
 		DataGlobal.Section.DAILY:
 			DataGlobal.current_tasksheet_data.spreadsheet_day_data.erase(target_task)
 	update_task_group_dropdown_items()
-	SignalBus.trigger_save_warning.emit()
-	#prints(self, "func delete_task_row emits 'trigger_save_warning'")
+	SignalBus._on_task_set_data_modified.emit()
+	#prints(self, "func delete_task_row emits '_on_task_set_data_modified'")
 
 
 func _on_focus_changed(control_node:Control) -> void:
@@ -599,7 +598,7 @@ func selected_checkbox(target) -> void:
 			DataGlobal.current_checkbox_profile = focus_profile
 			DataGlobal.current_checkbox_state = focus_state
 			checkbox_selection_popup.default_profile_status_limiter(focus_profile)
-			SignalBus.update_checkbox_button.emit()
+			SignalBus._on_task_editor_checkbox_selection_changed.emit()
 			checkbox_selection_popup.update_edit_profile_menu()
 
 

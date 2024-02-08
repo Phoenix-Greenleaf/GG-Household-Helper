@@ -10,7 +10,7 @@ extends PanelContainer
 func _ready() -> void:
 	var default_profile: Array = DataGlobal.default_profile
 	load_checkbox_profile(default_profile)
-	SignalBus.update_checkbox_button.connect(toggle_to_focused_cell)
+	SignalBus._on_task_editor_checkbox_selection_changed.connect(toggle_to_focused_cell)
 
 
 func load_checkbox_profile(target_profile: Array) -> void:

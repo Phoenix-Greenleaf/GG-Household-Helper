@@ -23,5 +23,5 @@ func update_active_data(number_parameter: float) -> void:
 			prints("SpinBox func update_active_data failed! saved_type:", saved_type)
 			prints("Spinbox Task", saved_task.name)
 			return
-	SignalBus.trigger_save_warning.emit()
-	prints("NumberCell", saved_task.name, "func update_active_data emits 'trigger_save_warning'")
+	SignalBus._on_task_set_data_modified.emit()
+	print_verbose("NumberCell", saved_task.name, "func update_active_data emits '_on_task_set_data_modified'")

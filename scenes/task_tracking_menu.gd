@@ -18,4 +18,4 @@ func _on_back_button_pressed() -> void:
 
 func _on_settings_button_pressed() -> void:
 	SceneTransition.fade_to_black("res://scenes/task_tracking_settings.tscn")
-	SignalBus.remote_task_settings_reload.emit()
+

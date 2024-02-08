@@ -305,7 +305,7 @@ func save_settings() -> void:
 	settings.main_setting_monitor_mode = display_mode_option_button.selected
 	settings.main_setting_current_monitor = display_preference_option_button.selected
 	settings.main_setting_borderless = borderless_check_button.button_pressed
-	SignalBus._on_settings_changed.emit()
+	DataGlobal.save_settings_main()
 	load_settings()
 	apply_settings_to_menu()
 
@@ -343,7 +343,7 @@ func _on_reset_button_pressed() -> void:
 		return
 	settings.reset_main_settings()
 	reset_button.text = "Settings Reset!"
-	SignalBus._on_settings_changed.emit()
+	DataGlobal.save_settings_main()
 	load_settings()
 	apply_settings_to_menu()
 	set_window(current_screen, monitor_mode, borderless, window_width, window_height)

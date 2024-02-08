@@ -2,7 +2,7 @@ extends PanelContainer
 
 
 func _ready() -> void:
-	SignalBus.data_manager_close.connect(close_data_manager_screen)
+	SignalBus._on_task_data_manager_close_manager_button_pressed.connect(close_data_manager_screen)
 	SceneTransition.fade_from_black()
 
 

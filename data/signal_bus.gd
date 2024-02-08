@@ -1,21 +1,37 @@
 extends Node
 
-signal data_manager_close
-signal _on_current_tasksheet_data_changed
-signal _on_editor_section_changed
-signal _on_editor_month_changed
-signal _on_editor_mode_changed
-signal _on_checkbox_mode_changed
-signal trigger_save_warning
-signal reset_save_warning
-signal update_checkbox_button
-signal reload_profiles_triggered
-signal _on_settings_changed
-signal assigned_user_dropdown_items_updated
-signal task_editor_remote_open_data_manager
-signal _on_task_delete_button_primed_and_pressed
-signal remote_active_data_save
-signal remote_task_settings_reload
-signal remote_spreadsheet_grid_reload
-signal _on_update_task_group_dropdown_items_activated
 signal _on_main_settings_back_button_pressed
+
+signal _on_task_set_data_active_data_switched
+signal _on_task_set_data_modified
+signal _on_task_set_data_saved
+signal _on_task_data_manager_close_manager_button_pressed
+signal _on_task_editor_section_changed
+signal _on_task_editor_month_changed
+signal _on_task_editor_mode_changed
+signal _on_task_editor_checkbox_mode_changed
+signal _on_task_editor_checkbox_selection_changed
+signal _on_task_editor_profile_selection_changed
+signal _on_task_editor_data_manager_remote_open_pressed
+signal _on_task_editor_task_delete_button_primed_and_pressed
+signal _on_task_editor_save_button_pressed
+signal _on_task_editor_grid_reload_pressed
+signal _on_task_editor_group_dropdown_items_changed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

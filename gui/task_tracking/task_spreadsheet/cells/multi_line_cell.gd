@@ -10,8 +10,8 @@ func _ready() -> void:
 func update_data(text_parameter: String) -> void:
 	saved_task.description = text_parameter
 	update_button()
-	SignalBus.trigger_save_warning.emit()
-	prints("MultiLineCell", saved_task.name, "func update_data emits 'trigger_save_warning'")
+	SignalBus._on_task_set_data_modified.emit()
+	print_verbose("MultiLineCell", saved_task.name, "func update_data emits '_on_task_set_data_modified'")
 
 
 func initialize_data(text_parameter: String) -> void:

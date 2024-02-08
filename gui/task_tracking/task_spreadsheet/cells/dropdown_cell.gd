@@ -100,8 +100,8 @@ func _on_dropdown_item_selected(index_parameter) -> void:
 		_:
 			prints("OptionButton active data update failed")
 			return
-	SignalBus.trigger_save_warning.emit()
-	prints("DropdownCell", saved_task.name, "func _on_dropdown_item_selected emits 'trigger_save_warning'")
+	SignalBus._on_task_set_data_modified.emit()
+	print_verbose("DropdownCell", saved_task.name, "func _on_dropdown_item_selected emits '_on_task_set_data_modified'")
 
 
 func connect_type_updates() -> void:
@@ -109,7 +109,7 @@ func connect_type_updates() -> void:
 		"Section":
 			pass
 		"Group":
-			SignalBus._on_update_task_group_dropdown_items_activated.connect(update_type_group)
+			SignalBus._on_task_editor_group_dropdown_items_changed.connect(update_type_group)
 		"Time Of Day":
 			pass
 		"Priority":
