@@ -2,8 +2,8 @@ extends Resource
 
 class_name TaskSetData
 
-@export var task_set_year: int
 @export var task_set_title: String
+@export var task_set_year: int
 @export var user_profiles: Array = []
 
 @export var spreadsheet_year_data: Array

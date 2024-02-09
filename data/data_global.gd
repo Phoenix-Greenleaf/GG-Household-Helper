@@ -89,6 +89,8 @@ var task_tracking_current_toggled_editor_mode: int = task_tracking_editor_modes[
 var task_tracking_current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
 
 
+# general use functions
+
 
 func _init() -> void:
 	var month_keys: Array = Month.keys()
@@ -159,6 +161,9 @@ func directory_check(directory_to_check) -> void:
 		prints("Directory Exists")
 
 
+# main settings
+
+
 func create_settings_main() -> void:
 	active_settings_main = MainSettingsData.new()
 	active_settings_main.reset_settings()
@@ -184,6 +189,9 @@ func load_settings_main() -> void:
 	active_settings_main = MainSettingsData.new()
 	var json_data = JsonSaveManager.load_data(filepath_main_settings)
 	active_settings_main.import_json_to_resource(json_data)
+
+
+# task tracking settings
 
 
 func create_settings_task_tracking() -> void:
@@ -212,12 +220,8 @@ func load_settings_task_tracking() -> void:
 	active_settings_task_tracking.import_json_to_resource(json_data)
 
 
+# data manager
 
-
-
-
-
-#from data manager
 
 func generate_task_set_filepath(task_set_name: String, task_set_year: int) -> String:
 	var task_set_snake_name: String = active_data_task_tracking.task_set_name.to_snake_case()
@@ -282,4 +286,23 @@ func send_task_set_to_global() -> void:
 	SignalBus._on_task_editor_profile_selection_changed.emit()
 	SignalBus._on_task_editor_section_changed.emit()
 	#clone_menu_reset()
+
+
+# task tracking settings
+
+
+func get_task_sets_info() -> Array:
+	var task_sets_info := []
+	var existing_files = DirAccess.get_files_at(task_tracker_folder)
+	for file in existing_files:
+		var filepath_for_loading = task_tracker_folder + file
+		var file_name = file - JsonSaveManager.json_extension
+		var file_resource = TaskSetData.new()
+		var json_import = JsonSaveManager.load_data(file_name)
+		file_resource.import_json_to_resource(json_import)
+		var file_info = [file_resource.task_set_title, file_resource.task_set_year]
+		task_sets_info.append(file_info)
+	return task_sets_info
+
+
 

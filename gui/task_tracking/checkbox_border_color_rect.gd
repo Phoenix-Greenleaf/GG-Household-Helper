@@ -30,14 +30,12 @@ func _draw() -> void:
 func update_border(update_color: Color = clear_color) -> void:
 	border_color = update_color
 	queue_redraw()
-#	prints("Border updated", self.name)
+
 
 func resize_border(x: float, y: float) -> void:
 	if current_x + current_width == x and current_y + current_width == y:
-#		prints("Border size happy")
 		return
 	current_x = x - current_width
 	current_y = y - current_width
-#	prints("Border resized", self.name)
 
 

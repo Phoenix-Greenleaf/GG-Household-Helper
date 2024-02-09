@@ -1,6 +1,6 @@
 extends GridContainer
 
-@export var data_for_spreadsheet: TaskSpreadsheetData
+@export var data_for_spreadsheet: TaskSetData
 
 @onready var add_task_button: Button = %AddTaskButton
 @onready var task_title_line_edit: LineEdit = %TaskTitleLineEdit
@@ -257,7 +257,7 @@ func create_new_task_data() -> void: #task coded model, the data side
 	new_task.name = new_task_title
 	var new_task_year = DataGlobal.current_tasksheet_data.spreadsheet_year
 	new_task.task_year = new_task_year
-	var new_task_section := DataGlobal.current_toggled_section
+	var new_task_section := DataGlobal.task_tracking_current_toggled_section
 	new_task.section = new_task_section
 	new_task.previous_section = new_task_section
 	var new_task_assigned_user: Array = user_profiles_dropdown_items[task_add_assigned_user_option_button.selected]
@@ -437,7 +437,7 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 			for month_iteration in current_task.month_checkbox_dictionary:
 				if month_iteration == "All":
 					continue
-				var checkbox_data: CheckboxData = current_task.month_checkbox_dictionary[month_iteration][0]
+				var checkbox_data: TaskCheckboxData = current_task.month_checkbox_dictionary[month_iteration][0]
 				var checkbox_state: DataGlobal.Checkbox = checkbox_data.checkbox_status
 				var checkbox_user: Array = checkbox_data.assigned_user
 				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)

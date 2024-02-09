@@ -5,7 +5,7 @@ class_name TaskSettingsData
 enum NewCheckboxOption {ACTIVE, EXPIRED, ASSIGNED}
 
 @export var enable_auto_load_default_data: bool
-@export var default_data: String
+@export var default_data: Array
 @export var enable_deletion_buttons: bool
 @export var current_new_checkbox_option: NewCheckboxOption
 @export var description_preview_length: int
@@ -44,7 +44,7 @@ func import_json_to_resource(data_parameter: Dictionary) -> void:
 
 func reset_settings() -> void:
 	enable_auto_load_default_data = false
-	default_data = ""
+	default_data = []
 	enable_deletion_buttons = false
 	current_new_checkbox_option = NewCheckboxOption.ASSIGNED
 	description_preview_length = 50
