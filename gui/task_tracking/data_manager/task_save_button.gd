@@ -8,7 +8,7 @@ extends PanelContainer
 
 func _ready() -> void:
 	initialize_button()
-	SignalBus._on_current_task_set_data_changed.connect(retoggle_button_group)
+	SignalBus._on_task_set_data_active_data_switched.connect(retoggle_button_group)
 
 
 func initialize_button() -> void:
@@ -18,6 +18,8 @@ func initialize_button() -> void:
 
 func retoggle_button_group() -> void:
 	functional_button.set_pressed_no_signal(false)
+	if not DataGlobal.active_data_task_tracking:
+		return
 	if name_compare() and year_compare():
 		functional_button.set_pressed_no_signal(true)
 

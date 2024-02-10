@@ -30,7 +30,7 @@ func _ready() -> void:
 	connect_signal_bus()
 	starting_visibilities()
 	load_existing_task_sets()
-	if DataGlobal.current_tasksheet_data:
+	if DataGlobal.active_data_task_tracking:
 		update_current_tasksheet_label()
 
 
@@ -51,8 +51,8 @@ func emit_exit_signal() -> void:
 
 func update_current_tasksheet_label() -> void:
 	var intro_text = "Current Data: "
-	var title = DataGlobal.current_tasksheet_data.spreadsheet_title
-	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
+	var title = DataGlobal.active_data_task_tracking.task_set_title
+	var year = DataGlobal.active_data_task_tracking.task_set_year
 	var new_label = intro_text + title + ": " + str(year)
 	current_tasksheet_label.text = new_label
 
@@ -64,17 +64,11 @@ func starting_visibilities() -> void:
 
 
 func load_existing_task_sets() -> void:
-	var existing_files = DataGlobal.load_existing_task_sets()
-	var interation_name: String
-	var interation_year: int
-	for file_iteration in existing_files:
-		var extension = "." + file_iteration.get_extension()
-		if extension != DataGlobal.json_extension:
-			printerr("ERROR: File", file_iteration, "is not of 'json'")
-			continue
-		interation_name = file_iteration.task_set_name
-		interation_year = file_iteration.task_set_year
-	create_task_save_button(interation_name, interation_year)
+	var existing_files_info = DataGlobal.get_task_sets_info()
+	for file_info_iteration in existing_files_info:
+		var interation_name = file_info_iteration[0]
+		var interation_year = file_info_iteration[1]
+		create_task_save_button(interation_name, interation_year)
 	get_tree().call_group("task_save_panels", "retoggle_button_group")
 
 
@@ -106,15 +100,6 @@ func create_task_save_button(target_name: String, target_year: int) -> void:
 	actual_task_button.set_button_group(task_save_button_group)
 
 
-
-func send_tasksheet_to_global() -> void:
-	#DataGlobal.current_tasksheet_data = tasksheet_to_send
-	#SignalBus._on_task_set_data_active_data_switched.emit()
-	#SignalBus._on_task_editor_profile_selection_changed.emit()
-	#SignalBus._on_task_editor_section_changed.emit()
-	clone_menu_reset()
-
-
 func clone_menu_open() -> void:
 	clone_data_button.visible = false
 	clone_data_panel.visible = true
@@ -140,22 +125,11 @@ func clone_menu_update() -> void:
 	clone_spin_box.visible = false
 
 
-#func clone_tasksheet_data(tasksheet_name: String, tasksheet_year: int) -> void:
-	#var tasksheet_data: TaskSpreadsheetData = DataGlobal.current_tasksheet_data.duplicate(true)
-	#tasksheet_data.spreadsheet_title = tasksheet_name
-	#tasksheet_data.spreadsheet_year = tasksheet_year
-	#create_task_save_button(tasksheet_data)
-	#send_tasksheet_to_global(tasksheet_data)
-	#save_current_tasksheet()
-
-
 func reset_data_manager() -> void:
 	for panel_iteration in get_tree().get_nodes_in_group("task_save_panels"):
 		task_grid.remove_child(panel_iteration)
 		panel_iteration.queue_free()
 	load_existing_task_sets()
-
-
 
 
 func _on_import_task_file_dialog_file_selected(path: String) -> void:
@@ -178,20 +152,25 @@ func _on_task_accept_button_pressed() -> void:
 	var new_tasksheet_year := int(task_data_year_spinbox.value)
 	var new_tasksheet_name: String = task_data_title_line_edit.text
 	DataGlobal.create_data_task_set(new_tasksheet_name, new_tasksheet_year)
+	create_task_save_button(new_tasksheet_name, new_tasksheet_year)
 	task_field_reset()
 	show_new_task_button()
 
 
-func _on_task_save_button_pressed(button_pressed: bool, pressed_tasksheet: TaskSetData):
+func _on_task_save_button_pressed(button_pressed: bool, name_parameter: String, year_parameter: int):
 	if not button_pressed:
 		return
-	if pressed_tasksheet == DataGlobal.current_tasksheet_data:
-		prints("Tasksheet data already loaded, skipping.")
-		DataGlobal.button_based_message(current_tasksheet_label, "Data Already Loaded!") 
-		return
+	prints("Test _on_task_save_button_pressed:", name_parameter, year_parameter)
+	if DataGlobal.active_data_task_tracking:
+		if [name_parameter, year_parameter] == DataGlobal.get_active_task_set_info():
+			prints("Tasksheet data already loaded, skipping.")
+			DataGlobal.button_based_message(current_tasksheet_label, "Data Already Loaded!") 
+			return
 	if safe_lock_active:
 		DataGlobal.save_data_task_set()
-	send_tasksheet_to_global()
+	DataGlobal.load_data_task_set(name_parameter, year_parameter)
+	DataGlobal.task_set_data_reloaded()
+	clone_menu_reset()
 	clone_menu_update()
 
 

@@ -35,6 +35,7 @@ var task_settings_index: int = 1
 
 
 func _ready() -> void:
+	DataGlobal.load_settings_task_tracking()
 	connection_cental()
 	set_current_date_label()
 	set_buttons()
@@ -42,7 +43,7 @@ func _ready() -> void:
 	add_task_button.disabled = true
 	popup.hide_on_item_selection = false
 	multi_text_popup_center.visible = false
-	if DataGlobal.current_tasksheet_data:
+	if DataGlobal.active_data_task_tracking:
 		update_current_tasksheet_label()
 		add_task_button.disabled = false
 		SignalBus._on_task_editor_section_changed.emit()
@@ -96,7 +97,7 @@ func set_section_buttons() -> void:
 	monthly_button.set_pressed_no_signal(false)
 	weekly_button.set_pressed_no_signal(false)
 	daily_button.set_pressed_no_signal(false)
-	match DataGlobal.current_toggled_section:
+	match DataGlobal.task_tracking_current_toggled_section:
 		DataGlobal.Section.YEARLY:
 			yearly_button.set_pressed_no_signal(true)
 		DataGlobal.Section.MONTHLY:
@@ -110,7 +111,7 @@ func set_section_buttons() -> void:
 func set_checkbox_mode_buttons() -> void:
 	checkbox_apply_toggle.set_pressed_no_signal(false)
 	checkbox_inspect_toggle.set_pressed_no_signal(false)
-	match DataGlobal.current_toggled_checkbox_mode:
+	match DataGlobal.task_tracking_current_toggled_checkbox_mode:
 		DataGlobal.CheckboxToggle.APPLY:
 			checkbox_apply_toggle.set_pressed_no_signal(true)
 		DataGlobal.CheckboxToggle.INSPECT:
@@ -120,7 +121,7 @@ func set_checkbox_mode_buttons() -> void:
 func set_editor_mode_buttons() -> void:
 	info_mode_button.set_pressed_no_signal(false)
 	checkbox_mode_button.set_pressed_no_signal(false)
-	match DataGlobal.current_toggled_editor_mode:
+	match DataGlobal.task_tracking_current_toggled_editor_mode:
 		1: #"Info"
 			info_mode_button.set_pressed_no_signal(true)
 		0: #"Checkbox"
@@ -128,7 +129,7 @@ func set_editor_mode_buttons() -> void:
 
 
 func set_month_selection_menu() -> void:
-	var selected_month = DataGlobal.current_toggled_month
+	var selected_month = DataGlobal.task_tracking_current_toggled_month
 	month_selection_menu_button.text = DataGlobal.month_strings[selected_month]
 	month_selection_menu_popup.set_item_disabled(selected_month, true)
 
@@ -219,8 +220,8 @@ func menu_to_task_menu_with_save_protection() -> void:
 
 
 func update_current_tasksheet_label() -> void:
-	var title = DataGlobal.current_tasksheet_data.spreadsheet_title
-	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
+	var title = DataGlobal.active_data_task_tracking.task_set_title
+	var year = DataGlobal.active_data_task_tracking.task_set_year
 	var new_label = title + ": " + str(year)
 	current_save_label.text = new_label
 	SignalBus._on_task_set_data_saved.emit()
@@ -231,7 +232,7 @@ func close_data_manager_popup() -> void:
 
 
 func section_enum_to_string() -> String:
-	var section_enum: int = DataGlobal.current_toggled_section
+	var section_enum: int = DataGlobal.task_tracking_current_toggled_section
 	var section_keys: Array = DataGlobal.Section.keys()
 	var current_section_key: String = section_keys[section_enum]
 	return current_section_key.capitalize()
@@ -273,15 +274,15 @@ func month_menu_switch(passed_id: int, passed_month: DataGlobal.Month) -> void:
 			var month_keys = DataGlobal.Month.keys()
 			month_selection_menu_button.text = month_keys[passed_id].capitalize()
 			month_selection_menu_popup.set_item_disabled(passed_id, true)
-			DataGlobal.current_toggled_month = passed_month
+			DataGlobal.task_tracking_current_toggled_month = passed_month
 			month_selection_menu_popup.set_item_disabled(last_toggled_month, false)
 			last_toggled_month = passed_id
 
 
 func _on_yearly_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
-		if DataGlobal.current_toggled_section != DataGlobal.Section.YEARLY:
-			DataGlobal.current_toggled_section = DataGlobal.Section.YEARLY
+		if DataGlobal.task_tracking_current_toggled_section != DataGlobal.Section.YEARLY:
+			DataGlobal.task_tracking_current_toggled_section = DataGlobal.Section.YEARLY
 			SignalBus._on_task_editor_section_changed.emit()
 			prints("Yearly Section Toggled")
 		else:
@@ -290,8 +291,8 @@ func _on_yearly_button_toggled(button_pressed: bool) -> void:
 
 func _on_monthly_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
-		if DataGlobal.current_toggled_section != DataGlobal.Section.MONTHLY:
-			DataGlobal.current_toggled_section = DataGlobal.Section.MONTHLY
+		if DataGlobal.task_tracking_current_toggled_section != DataGlobal.Section.MONTHLY:
+			DataGlobal.task_tracking_current_toggled_section = DataGlobal.Section.MONTHLY
 			SignalBus._on_task_editor_section_changed.emit()
 			prints("Monthly Section Toggled")
 		else:
@@ -300,8 +301,8 @@ func _on_monthly_button_toggled(button_pressed: bool) -> void:
 
 func _on_weekly_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
-		if DataGlobal.current_toggled_section != DataGlobal.Section.WEEKLY:
-			DataGlobal.current_toggled_section = DataGlobal.Section.WEEKLY
+		if DataGlobal.task_tracking_current_toggled_section != DataGlobal.Section.WEEKLY:
+			DataGlobal.task_tracking_current_toggled_section = DataGlobal.Section.WEEKLY
 			SignalBus._on_task_editor_section_changed.emit()
 			prints("Weekly Section Toggled")
 		else:
@@ -310,8 +311,8 @@ func _on_weekly_button_toggled(button_pressed: bool) -> void:
 
 func _on_daily_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
-		if DataGlobal.current_toggled_section != DataGlobal.Section.DAILY:
-			DataGlobal.current_toggled_section = DataGlobal.Section.DAILY
+		if DataGlobal.task_tracking_current_toggled_section != DataGlobal.Section.DAILY:
+			DataGlobal.task_tracking_current_toggled_section = DataGlobal.Section.DAILY
 			SignalBus._on_task_editor_section_changed.emit()
 			prints("Daily Section Toggled")
 		else:
@@ -320,8 +321,8 @@ func _on_daily_button_toggled(button_pressed: bool) -> void:
 
 func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
-		if DataGlobal.current_toggled_editor_mode != DataGlobal.editor_modes["Checkbox"]:
-			DataGlobal.current_toggled_editor_mode = DataGlobal.editor_modes["Checkbox"]
+		if DataGlobal.task_tracking_current_toggled_editor_mode != DataGlobal.task_tracking_editor_modes["Checkbox"]:
+			DataGlobal.task_tracking_current_toggled_editor_mode = DataGlobal.task_tracking_editor_modes["Checkbox"]
 			SignalBus._on_task_editor_mode_changed.emit()
 			prints("Checkbox Mode toggled")
 		else:
@@ -330,8 +331,8 @@ func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void:
 
 func _on_info_mode_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
-		if DataGlobal.current_toggled_editor_mode != DataGlobal.editor_modes["Info"]:
-			DataGlobal.current_toggled_editor_mode = DataGlobal.editor_modes["Info"]
+		if DataGlobal.task_tracking_current_toggled_editor_mode != DataGlobal.task_tracking_editor_modes["Info"]:
+			DataGlobal.task_tracking_current_toggled_editor_mode = DataGlobal.task_tracking_editor_modes["Info"]
 			SignalBus._on_task_editor_mode_changed.emit()
 			prints("Info Mode toggled")
 		else:
@@ -365,8 +366,9 @@ func _on_save_warning_button_pressed() -> void:
 
 
 func save_active_data() -> void:
+	if DataGlobal.active_data_task_tracking:
 		save_warning_button.text = "Data Saved"
-		data_manager.save_current_tasksheet()
+		DataGlobal.save_data_task_set()
 		SignalBus._on_task_set_data_saved.emit()
 
 
@@ -380,8 +382,8 @@ func _on_menu_button_pressed() -> void:
 func _on_checkbox_apply_toggle_toggled(button_pressed: bool) -> void:
 	if not button_pressed:
 		return
-	if DataGlobal.current_toggled_checkbox_mode != DataGlobal.CheckboxToggle.APPLY:
-		DataGlobal.current_toggled_checkbox_mode = DataGlobal.CheckboxToggle.APPLY
+	if DataGlobal.task_tracking_current_toggled_checkbox_mode != DataGlobal.CheckboxToggle.APPLY:
+		DataGlobal.task_tracking_current_toggled_checkbox_mode = DataGlobal.CheckboxToggle.APPLY
 		SignalBus._on_task_editor_checkbox_mode_changed.emit()
 		prints("Apply Mode toggled")
 	else:
@@ -391,8 +393,8 @@ func _on_checkbox_apply_toggle_toggled(button_pressed: bool) -> void:
 func _on_checkbox_inspect_toggle_toggled(button_pressed: bool) -> void:
 	if not button_pressed:
 		return
-	if DataGlobal.current_toggled_checkbox_mode != DataGlobal.CheckboxToggle.INSPECT:
-		DataGlobal.current_toggled_checkbox_mode = DataGlobal.CheckboxToggle.INSPECT
+	if DataGlobal.task_tracking_current_toggled_checkbox_mode != DataGlobal.CheckboxToggle.INSPECT:
+		DataGlobal.task_tracking_current_toggled_checkbox_mode = DataGlobal.CheckboxToggle.INSPECT
 		SignalBus._on_task_editor_checkbox_mode_changed.emit()
 		prints("Inspect Mode toggled")
 	else:

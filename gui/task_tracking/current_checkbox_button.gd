@@ -5,7 +5,7 @@ extends PanelContainer
 @onready var current_checkbox_border_color_rect: ColorRect = %CurrentCheckboxBorderColorRect
 
 @onready var current_checkbox_status_label: Label = $CurrentCheckboxMargin/CurrentCheckboxVBox/CurrentCheckboxStatusLabel
-@onready var current_checkbox_profile_label: Label = $CurrentCheckboxMargin/CurrentCheckboxVBox/CurrentCheckboxProfileLabel
+@onready var task_tracking_current_checkbox_profile_label: Label = $CurrentCheckboxMargin/CurrentCheckboxVBox/CurrentCheckboxProfileLabel
 
 var checkbox_status_keys = DataGlobal.Checkbox.keys()
 
@@ -30,22 +30,21 @@ func disable_capslock() -> void:
 
 
 func update_status() -> void:
-	var new_status_enum = DataGlobal.current_checkbox_state
+	var new_status_enum = DataGlobal.task_tracking_current_checkbox_state
 	var new_status_text: String = checkbox_status_keys[new_status_enum]
 	current_checkbox_status_label.set_text(new_status_text)
 
 
 func update_profile() -> void:
-	var new_profile: Array = DataGlobal.current_checkbox_profile
-	var new_profile_text: String = new_profile[0]
-	current_checkbox_profile_label.set_text(new_profile_text)
+	var new_profile_text: String = DataGlobal.task_tracking_current_checkbox_profile[0]
+	task_tracking_current_checkbox_profile_label.set_text(new_profile_text)
 
 
 func update_checkbox_colors() -> void:
-	var profile_color: Color = DataGlobal.current_checkbox_profile[1]
+	var profile_color: Color = DataGlobal.task_tracking_current_checkbox_profile[1]
 	var white := Color(1, 1, 1)
 	var black := Color(0, 0, 0)
-	match DataGlobal.current_checkbox_state:
+	match DataGlobal.task_tracking_current_checkbox_state:
 		DataGlobal.Checkbox.ACTIVE:
 			current_checkbox_color_rect_top.set_color(white)
 			current_checkbox_color_rect_bottom.set_color(white)

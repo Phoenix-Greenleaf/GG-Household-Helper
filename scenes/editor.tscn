@@ -441,7 +441,7 @@ size_flags_vertical = 3
 columns = 2
 script = ExtResource("6_j3l32")
 
-[node name="CheckboxSelectionPopup" parent="." instance=ExtResource("6_okd6i")]
+[node name="CheckboxSelectionPopup" parent="." node_paths=PackedStringArray("paired_checkbox_menu_button") instance=ExtResource("6_okd6i")]
 unique_name_in_owner = true
 z_index = 2
 z_as_relative = false
@@ -452,6 +452,7 @@ offset_right = 946.0
 offset_bottom = 450.0
 size_flags_horizontal = 0
 size_flags_vertical = 4
+paired_checkbox_menu_button = NodePath("../MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CurrentCheckboxButton")
 
 [node name="MultiTextPopupCenter" type="CenterContainer" parent="."]
 unique_name_in_owner = true

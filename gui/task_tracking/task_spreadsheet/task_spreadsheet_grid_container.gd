@@ -70,17 +70,18 @@ var header_cell_array: Array = [
 
 
 func _ready() -> void:
+	DataGlobal.load_settings_task_tracking()
 	ready_connections()
 	close_new_task_panel()
 	get_dropdown_items_from_global()
-	if DataGlobal.settings_file.task_setting_enable_auto_load_default_data:
-		DataGlobal.current_tasksheet_data = DataGlobal.settings_file.task_setting_default_data
+	if DataGlobal.active_settings_task_tracking.enable_auto_load_default_data:
+		DataGlobal.active_data_task_tracking = DataGlobal.active_settings_task_tracking.task_setting_default_data
 		data_for_spreadsheet = DataGlobal.settings_file.task_setting_default_data
 	if !data_for_spreadsheet:
 		prints("No Tasksheet found for TaskGrid....")
 		return
-	var title = DataGlobal.current_tasksheet_data.spreadsheet_title
-	var year = DataGlobal.current_tasksheet_data.spreadsheet_year
+	var title = DataGlobal.active_data_task_tracking.task_set_title
+	var year = DataGlobal.active_data_task_tracking.task_set_year
 	prints("TaskGrid found:", title, ":", year)
 	load_existing_data()
 	update_user_profile_dropdown_items()
@@ -90,8 +91,8 @@ func _ready() -> void:
 
 
 func ready_connections() -> void:
-	if DataGlobal.current_tasksheet_data:
-		data_for_spreadsheet = DataGlobal.current_tasksheet_data
+	if DataGlobal.active_data_task_tracking:
+		data_for_spreadsheet = DataGlobal.active_data_task_tracking
 	SignalBus._on_task_set_data_active_data_switched.connect(update_grid_spreadsheet)
 	SignalBus._on_task_editor_mode_changed.connect(toggle_info_checkbox_modes)
 	SignalBus._on_task_editor_section_changed.connect(section_or_month_changed)
@@ -103,7 +104,7 @@ func ready_connections() -> void:
 
 
 func set_time_unit() -> void:
-	match DataGlobal.current_toggled_section:
+	match DataGlobal.task_tracking_current_toggled_section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
 			header_cell_array[9] = "Months/Cycle"
 			task_add_units_per_cycle_label.text = "Months per Cycle:"
@@ -116,10 +117,10 @@ func set_time_unit() -> void:
 
 
 func toggle_info_checkbox_modes() -> void:
-	if DataGlobal.current_toggled_editor_mode == DataGlobal.editor_modes["Info"]:
+	if DataGlobal.task_tracking_current_toggled_editor_mode == DataGlobal.task_tracking_editor_modes["Info"]:
 		get_tree().set_group("Info", "visible", true)
 		get_tree().set_group("Checkbox", "visible", false)
-	elif DataGlobal.current_toggled_editor_mode == DataGlobal.editor_modes["Checkbox"]:
+	elif DataGlobal.task_tracking_current_toggled_editor_mode == DataGlobal.task_tracking_editor_modes["Checkbox"]:
 		get_tree().set_group("Checkbox", "visible", true)
 		get_tree().set_group("Info", "visible", false)
 	else:
@@ -138,7 +139,7 @@ func get_dropdown_items_from_global() -> void:
 
 func update_task_group_dropdown_items() -> void:
 	task_group_dropdown_items.clear()
-	match DataGlobal.current_toggled_section:
+	match DataGlobal.task_tracking_current_toggled_section:
 		DataGlobal.Section.YEARLY:
 			for task_iteration in data_for_spreadsheet.spreadsheet_year_data:
 				scan_task_for_group(task_iteration)
@@ -151,6 +152,7 @@ func update_task_group_dropdown_items() -> void:
 		DataGlobal.Section.DAILY:
 			for task_iteration in data_for_spreadsheet.spreadsheet_day_data:
 				scan_task_for_group(task_iteration)
+	task_group_dropdown_items.sort()
 	task_group_dropdown_items.insert(0, "None")
 	SignalBus._on_task_editor_group_dropdown_items_changed.emit(task_group_dropdown_items)
 	update_existing_groups_option_button_items()
@@ -162,7 +164,6 @@ func scan_task_for_group(scan_task: TaskData) -> void:
 	if task_group_dropdown_items.has(scan_task.group):
 		return
 	task_group_dropdown_items.append(scan_task.group)
-	task_group_dropdown_items.sort()
 
 
 func reload_grid() -> void:
@@ -176,9 +177,9 @@ func section_or_month_changed() -> void:
 
 
 func update_grid_spreadsheet() -> void:
-	data_for_spreadsheet = DataGlobal.current_tasksheet_data
-	var title = data_for_spreadsheet.spreadsheet_title
-	var year = data_for_spreadsheet.spreadsheet_year
+	data_for_spreadsheet = DataGlobal.active_data_task_tracking
+	var title = data_for_spreadsheet.task_set_title
+	var year = data_for_spreadsheet.task_set_year
 	prints("TaskGrid updated:", title, ":", year)
 	section_or_month_changed()
 
@@ -196,11 +197,9 @@ func update_task_add_assigned_users() -> void:
 
 func clear_grid_children() -> void:
 	var children = self.get_children()
-	#var count = self.get_child_count()
 	for current_kiddo in children:
 		self.remove_child(current_kiddo)
 		current_kiddo.queue_free()
-	#prints(count, "children in line for freedom")
 
 
 func _on_add_task_button_pressed() -> void:
@@ -255,7 +254,7 @@ func create_new_task_data() -> void: #task coded model, the data side
 	var new_task = TaskData.new()
 	var new_task_title = task_title_line_edit.text
 	new_task.name = new_task_title
-	var new_task_year = DataGlobal.current_tasksheet_data.spreadsheet_year
+	var new_task_year = DataGlobal.active_data_task_tracking.task_set_year
 	new_task.task_year = new_task_year
 	var new_task_section := DataGlobal.task_tracking_current_toggled_section
 	new_task.section = new_task_section
@@ -307,7 +306,7 @@ func load_existing_data() -> void:
 	set_time_unit()
 	create_header_row()
 	update_task_group_dropdown_items()
-	match DataGlobal.current_toggled_section:
+	match DataGlobal.task_tracking_current_toggled_section:
 		DataGlobal.Section.YEARLY:
 			for data_iteration in data_for_spreadsheet.spreadsheet_year_data:
 				process_task(data_iteration)
@@ -334,9 +333,6 @@ func _on_accept_new_task_button_pressed() -> void:
 		return
 	if self.get_child_count() == 0:
 		create_header_row()
-	else:
-		#prints("Header Already Added; child count:", self.get_child_count())
-		pass
 	create_new_task_data()
 	close_new_task_panel()
 	new_task_field_reset()
@@ -365,9 +361,9 @@ func create_header_row() -> void:
 		else:
 			create_header_cell(header_cell_array[iteration], "Info")
 	var checkbox = "Checkbox"
-	var current_section = DataGlobal.current_toggled_section
-	var current_month = DataGlobal.Month.find_key(DataGlobal.current_toggled_month).capitalize()
-	var current_year = DataGlobal.current_tasksheet_data.spreadsheet_year
+	var current_section = DataGlobal.task_tracking_current_toggled_section
+	var current_month = DataGlobal.Month.find_key(DataGlobal.task_tracking_current_toggled_month).capitalize()
+	var current_year = DataGlobal.active_data_task_tracking.task_set_year
 	match current_section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
 			for month in DataGlobal.month_strings:
@@ -386,7 +382,6 @@ func create_header_row() -> void:
 	full_header_size = self.get_child_count()
 	info_header_size = get_tree().get_nodes_in_group("Info").size()
 	checkbox_header_size = get_tree().get_nodes_in_group("Checkbox").size()
-	#prints("Header Sizes, Full:", full_header_size, " Info:", info_header_size, " Checkbox:", checkbox_header_size)
 
 
 func header_editing_prevention() -> void:
@@ -406,18 +401,17 @@ func set_grid_columns() -> void:
 		prints("Columns not set")
 		return
 	var header_size: int = 0
-	if DataGlobal.current_toggled_editor_mode == DataGlobal.editor_modes["Info"]:
+	if DataGlobal.task_tracking_current_toggled_editor_mode == DataGlobal.task_tracking_editor_modes["Info"]:
 		header_size = full_header_size - checkbox_header_size
-	elif DataGlobal.current_toggled_editor_mode == DataGlobal.editor_modes["Checkbox"]:
+	elif DataGlobal.task_tracking_current_toggled_editor_mode == DataGlobal.task_tracking_editor_modes["Checkbox"]:
 		header_size = full_header_size - info_header_size
 	else:
 		prints("Header row size has gone wrong")
 	self.columns = header_size
-	#prints("Setting grid to", header_size, "columns.")
+
 
 
 func create_task_row_cells() -> void: #task "physical" nodes, display side
-	#prints(current_task.name)
 	create_text_cell(current_task.name, "Task Name")  #1
 	create_dropdown_cell(section_dropdown_items, current_task.section, "Section") #2
 	create_dropdown_cell(task_group_dropdown_items, current_task.group, "Group") #3
@@ -444,9 +438,8 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 				checkbox_position += 1
 			create_checkbox_clear_cell(checkbox)
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
-			var current_month = DataGlobal.current_toggled_month
+			var current_month = DataGlobal.task_tracking_current_toggled_month
 			var month_key = DataGlobal.Month.find_key(current_month).capitalize()
-			#prints("Month Key:", month_key, "   Current month:", current_month)
 			var current_data: Array = current_task.month_checkbox_dictionary[month_key]
 			for checkbox_data in current_data:
 				var checkbox_state: DataGlobal.Checkbox = checkbox_data.checkbox_status
@@ -543,76 +536,55 @@ func delete_task_row(target_task: TaskData) -> void:
 		if current_child.saved_task == target_task:
 			self.remove_child(current_child)
 			current_child.queue_free()
-	match DataGlobal.current_toggled_section:
+	match DataGlobal.task_tracking_current_toggled_section:
 		DataGlobal.Section.YEARLY:
-			DataGlobal.current_tasksheet_data.spreadsheet_year_data.erase(target_task)
+			DataGlobal.active_data_task_tracking.spreadsheet_year_data.erase(target_task)
 		DataGlobal.Section.MONTHLY:
-			DataGlobal.current_tasksheet_data.spreadsheet_month_data.erase(target_task)
+			DataGlobal.active_data_task_tracking.spreadsheet_month_data.erase(target_task)
 		DataGlobal.Section.WEEKLY:
-			DataGlobal.current_tasksheet_data.spreadsheet_week_data.erase(target_task)
+			DataGlobal.active_data_task_tracking.spreadsheet_week_data.erase(target_task)
 		DataGlobal.Section.DAILY:
-			DataGlobal.current_tasksheet_data.spreadsheet_day_data.erase(target_task)
+			DataGlobal.active_data_task_tracking.spreadsheet_day_data.erase(target_task)
 	update_task_group_dropdown_items()
 	SignalBus._on_task_set_data_modified.emit()
-	#prints(self, "func delete_task_row emits '_on_task_set_data_modified'")
 
 
 func _on_focus_changed(control_node:Control) -> void:
 	if control_node == null:
 		return
 	current_focus = control_node
-	#print()
-	#prints("Focused", control_node.name)
 	if "CheckboxCell" in control_node.name:
-		#prints("Task:", control_node.saved_task.name)
-		#prints("Position:", control_node.saved_position)
-		DataGlobal.focus_checkbox_profile = control_node.saved_profile
-		DataGlobal.focus_checkbox_state = control_node.saved_state
+		DataGlobal.task_tracking_focus_checkbox_profile = control_node.saved_profile
+		DataGlobal.task_tracking_focus_checkbox_state = control_node.saved_state
 		selected_checkbox(control_node)
-	if (
-		"TextCell" in control_node.name
-		or "MultiLineCell"in control_node.name
-		or "DropdownCell"in control_node.name
-		or "NumberCell" in control_node.name
-		):
-		#prints("Task:", control_node.saved_task.name)
-		pass
 
 
 func selected_checkbox(target) -> void:
-	var current_profile = DataGlobal.current_checkbox_profile
-	var current_state = DataGlobal.current_checkbox_state
+	var current_profile = DataGlobal.task_tracking_current_checkbox_profile
+	var current_state = DataGlobal.task_tracking_current_checkbox_state
 	var focus_profile = target.saved_profile
 	var focus_state = target.saved_state
-	match DataGlobal.current_toggled_checkbox_mode:
+	match DataGlobal.task_tracking_current_toggled_checkbox_mode:
 		DataGlobal.CheckboxToggle.APPLY:
 			if ((current_profile == focus_profile) and (current_state == focus_state)):
-				#prints("Checkbox already applied!")
 				return
 			target.saved_profile = current_profile
 			target.saved_state = current_state
-			#prints("selected checkbox check")
 			target.update_checkbox()
 			target.update_active_data()
 		DataGlobal.CheckboxToggle.INSPECT:
-			DataGlobal.current_checkbox_profile = focus_profile
-			DataGlobal.current_checkbox_state = focus_state
+			DataGlobal.task_tracking_current_checkbox_profile = focus_profile
+			DataGlobal.task_tracking_current_checkbox_state = focus_state
 			checkbox_selection_popup.default_profile_status_limiter(focus_profile)
 			SignalBus._on_task_editor_checkbox_selection_changed.emit()
 			checkbox_selection_popup.update_edit_profile_menu()
-
-
-func return_data_to_sender(data, return_address) -> void:
-	prints("Return:", data)
-	prints("Sender:", return_address)
-	return_address = data
 
 
 func update_user_profile_dropdown_items() -> void:
 	prints("Updating user profile dropdown.")
 	user_profiles_dropdown_items.clear()
 	user_profiles_dropdown_items.append(DataGlobal.default_profile)
-	for profile in DataGlobal.current_tasksheet_data.user_profiles:
+	for profile in DataGlobal.active_data_task_tracking.user_profiles:
 		user_profiles_dropdown_items.append(profile)
 	prints("New Dropdown:")
 	print_profiles_dropdown()

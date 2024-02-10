@@ -24,7 +24,7 @@ extends Control
 
 @onready var current_scene: Control
 
-@onready var settings = DataGlobal.settings_file
+@onready var settings = DataGlobal.active_settings_main
 
 var primary_screen: int
 var current_screen: int
@@ -87,7 +87,7 @@ func _ready() -> void:
 
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if testing_active:
 		test_change_timer_label.set_text(str(int(test_change_timer.time_left)))
 
@@ -134,12 +134,12 @@ func connect_signals() -> void:
 
 
 func load_settings() -> void:
-	window_width = settings.main_setting_window_width
-	window_height = settings.main_setting_window_height
+	window_width = settings.window_width
+	window_height = settings.window_height
 	window_size = Vector2i(window_width, window_height)
-	monitor_mode = settings.main_setting_monitor_mode
-	current_screen = settings.main_setting_current_monitor
-	borderless = settings.main_setting_borderless
+	monitor_mode = settings.monitor_mode
+	current_screen = settings.current_monitor
+	borderless = settings.borderless
 
 
 func apply_settings_to_menu() -> void:
@@ -373,14 +373,14 @@ func _on_resolution_height_option_button_item_selected(index: int) -> void:
 	toggle_changed_settings_section()
 
 
-func _on_custom_width_spin_box_value_changed(value: float) -> void:
+func _on_custom_width_spin_box_value_changed(_value: float) -> void:
 	toggle_changed_settings_section()
 
-func _on_custom_height_spin_box_value_changed(value: float) -> void:
+func _on_custom_height_spin_box_value_changed(_value: float) -> void:
 	toggle_changed_settings_section()
 
 
-func _on_display_preference_option_button_item_selected(index: int) -> void:
+func _on_display_preference_option_button_item_selected(_index: int) -> void:
 	toggle_changed_settings_section()
 
 

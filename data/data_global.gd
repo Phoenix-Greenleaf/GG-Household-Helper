@@ -99,7 +99,7 @@ func _init() -> void:
 
 
 func _ready() -> void:
-	SignalBus._on_current_task_set_data_changed.connect(load_settings_main)
+	SignalBus._on_task_set_data_active_data_switched.connect(load_settings_main)
 	load_settings_main()
 	DisplayServer.window_set_min_size(Vector2i(500, 500))
 
@@ -178,6 +178,7 @@ func save_settings_main() -> void:
 
 
 func load_settings_main() -> void:
+	directory_check(settings_folder)
 	if active_settings_main:
 		prints("Main settings exist")
 		return
@@ -224,32 +225,27 @@ func load_settings_task_tracking() -> void:
 
 
 func generate_task_set_filepath(task_set_name: String, task_set_year: int) -> String:
-	var task_set_snake_name: String = active_data_task_tracking.task_set_name.to_snake_case()
-	var task_set_year_string: String = str(active_data_task_tracking.task_set_year)
-	var task_set_save_name: String = name_task_tracking_data + task_set_snake_name + "_" + task_set_year_string
+	var task_set_save_name: String = name_task_tracking_data + task_set_name + "_" + str(task_set_year)
 	var task_set_filepath: String = generate_filepath(task_set_save_name, FileType.TASK_TRACKING_DATA)
 	return task_set_filepath
 
 
 func create_data_task_set(task_set_name: String, task_set_year: int) -> void:
 	var task_set_data := TaskSetData.new()
-	task_set_data.spreadsheet_title = task_set_name
-	task_set_data.spreadsheet_year = task_set_year
+	task_set_data.task_set_title = task_set_name
+	task_set_data.task_set_year = task_set_year
 	directory_check(task_tracker_folder)
-	#create_task_save_button(task_set_data)
-	#send_task_set_to_global(task_set_data)
 	active_data_task_tracking = task_set_data
 	save_data_task_set()
-	return
+	task_set_data_reloaded()
 
 
 func clone_task_set_data(task_set_name: String, task_set_year: int) -> void:
 	var task_set_data: TaskSetData = DataGlobal.active_data_task_tracking.duplicate(true)
-	task_set_data.spreadsheet_title = task_set_name
-	task_set_data.spreadsheet_year = task_set_year
+	task_set_data.task_set_title = task_set_name
+	task_set_data.task_set_year = task_set_year
 	active_data_task_tracking = task_set_data
-	#create_task_save_button(task_set_data)
-	send_task_set_to_global()
+	task_set_data_reloaded()
 	save_data_task_set()
 
 
@@ -257,8 +253,8 @@ func save_data_task_set() -> void:
 	if not active_data_task_tracking:
 		printerr("Nothing to save")
 		return
-	var task_set_name = active_data_task_tracking.spreadsheet_title
-	var task_set_year = active_data_task_tracking.spreadsheet_year
+	var task_set_name = active_data_task_tracking.task_set_title
+	var task_set_year = active_data_task_tracking.task_set_year
 	var task_set_filepath := generate_task_set_filepath(task_set_name, task_set_year)
 	var json_for_save: Dictionary = active_data_task_tracking.export_json_from_resouce()
 	JsonSaveManager.save_data(task_set_filepath, json_for_save)
@@ -268,37 +264,33 @@ func load_data_task_set(task_set_name: String, task_set_year: int) -> void:
 	active_data_task_tracking = null #does this have any impact?
 	active_data_task_tracking = TaskSetData.new()
 	var task_set_filepath := generate_task_set_filepath(task_set_name, task_set_year)
+	prints("task set filepath to load:", task_set_filepath)
 	var json_data = JsonSaveManager.load_data(task_set_filepath)
 	active_data_task_tracking.import_json_to_resource(json_data)
 
 
-func load_existing_task_sets() -> PackedStringArray:
-	if not DirAccess.dir_exists_absolute(task_tracker_folder):
-		printerr("Error loading existing task sheets")
-		return []
-	var existing_files: PackedStringArray = DirAccess.get_files_at(task_tracker_folder)
-	prints("Found files:", existing_files)
-	return existing_files
-
-
-func send_task_set_to_global() -> void:
-	SignalBus._on_current_task_set_data_changed.emit()
+func task_set_data_reloaded() -> void:
+	SignalBus._on_task_set_data_active_data_switched.emit()
 	SignalBus._on_task_editor_profile_selection_changed.emit()
 	SignalBus._on_task_editor_section_changed.emit()
-	#clone_menu_reset()
 
 
 # task tracking settings
+
+
+func get_active_task_set_info() -> Array:
+	var name_info := active_data_task_tracking.task_set_title
+	var year_info := active_data_task_tracking.task_set_year
+	return [name_info, year_info]
 
 
 func get_task_sets_info() -> Array:
 	var task_sets_info := []
 	var existing_files = DirAccess.get_files_at(task_tracker_folder)
 	for file in existing_files:
-		var filepath_for_loading = task_tracker_folder + file
-		var file_name = file - JsonSaveManager.json_extension
+		var task_set_filepath = task_tracker_folder + file
+		var json_import = JsonSaveManager.load_data(task_set_filepath)
 		var file_resource = TaskSetData.new()
-		var json_import = JsonSaveManager.load_data(file_name)
 		file_resource.import_json_to_resource(json_import)
 		var file_info = [file_resource.task_set_title, file_resource.task_set_year]
 		task_sets_info.append(file_info)

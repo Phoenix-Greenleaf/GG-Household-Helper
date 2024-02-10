@@ -20,7 +20,7 @@ func load_checkbox_profile(target_profile: Array) -> void:
 
 
 func toggle_to_focused_cell() -> void:
-	if DataGlobal.current_checkbox_profile != saved_profile:
+	if DataGlobal.task_tracking_current_checkbox_profile != saved_profile:
 		profile_button.set_pressed_no_signal(false)
 		return
 	profile_button.set_pressed_no_signal(true)
