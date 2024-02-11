@@ -316,7 +316,7 @@ func _on_set_default_data_button_pressed() -> void:
 		prints("No data to set as default")
 		DataGlobal.button_based_message(default_data_display_button, "No Data to set as Default!")
 		return
-	#settings.default_data = DataGlobal.active_data_task_tracking
+	settings.default_data = DataGlobal.get_active_task_set_info()
 	reload_settings()
 
 

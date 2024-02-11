@@ -20,7 +20,7 @@ func _ready() -> void:
 	name = "CheckboxCell"
 
 func update_active_data() -> void:
-	match DataGlobal.current_toggled_section:
+	match DataGlobal.task_tracking_current_toggled_section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
 			year_and_month_updater()
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
@@ -39,7 +39,7 @@ func year_and_month_updater() -> void:
 
 
 func day_and_week_updater() -> void: 
-	var current_month = DataGlobal.current_toggled_month
+	var current_month = DataGlobal.task_tracking_current_toggled_month
 	var month_key = DataGlobal.Month.find_key(current_month).capitalize()
 	var current_position = saved_position - 1 
 	var current_data: TaskCheckboxData = saved_task.month_checkbox_dictionary[month_key][current_position]

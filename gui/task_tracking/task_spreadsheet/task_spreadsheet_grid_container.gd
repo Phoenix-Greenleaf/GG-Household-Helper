@@ -74,9 +74,11 @@ func _ready() -> void:
 	ready_connections()
 	close_new_task_panel()
 	get_dropdown_items_from_global()
-	if DataGlobal.active_settings_task_tracking.enable_auto_load_default_data:
-		DataGlobal.active_data_task_tracking = DataGlobal.active_settings_task_tracking.task_setting_default_data
-		data_for_spreadsheet = DataGlobal.settings_file.task_setting_default_data
+	var task_settings = DataGlobal.active_settings_task_tracking
+	if task_settings.enable_auto_load_default_data:
+		var default_data_info = task_settings.default_data
+		DataGlobal.load_data_task_set(default_data_info[0], default_data_info[1])
+		data_for_spreadsheet = DataGlobal.active_data_task_tracking
 	if !data_for_spreadsheet:
 		prints("No Tasksheet found for TaskGrid....")
 		return
@@ -101,6 +103,8 @@ func ready_connections() -> void:
 	get_viewport().gui_focus_changed.connect(_on_focus_changed)
 	SignalBus._on_task_editor_task_delete_button_primed_and_pressed.connect(delete_task_row)
 	SignalBus._on_task_editor_grid_reload_pressed.connect(reload_grid)
+	SignalBus._on_task_editor_group_data_changed.connect(update_task_group_dropdown_items)
+	SignalBus._on_task_editor_remote_dropdown_items_users_changed.connect(update_user_profile_dropdown_items)
 
 
 func set_time_unit() -> void:
@@ -193,6 +197,7 @@ func update_task_add_assigned_users() -> void:
 	task_add_assigned_user_option_button.clear()
 	for item in user_profiles_dropdown_items:
 		task_add_assigned_user_option_button.add_item(item[0])
+	one
 
 
 func clear_grid_children() -> void:
@@ -323,7 +328,6 @@ func load_existing_data() -> void:
 
 
 func _on_sort_tasks_button_pressed() -> void:
-	#prints("Placeholder")
 	pass
 
 
@@ -338,7 +342,7 @@ func _on_accept_new_task_button_pressed() -> void:
 	new_task_field_reset()
 	toggle_info_checkbox_modes()
 	SignalBus._on_task_set_data_modified.emit()
-	#prints(self, "func _on_accept_new_task_button_pressed emits '_on_task_set_data_modified'")
+	update_task_group_dropdown_items()
 
 
 func update_existing_groups_option_button_items() -> void:
@@ -588,6 +592,8 @@ func update_user_profile_dropdown_items() -> void:
 		user_profiles_dropdown_items.append(profile)
 	prints("New Dropdown:")
 	print_profiles_dropdown()
+	SignalBus._on_task_editor_remote_dropdown_items_users_changed.emit()
+	update_task_add_assigned_users()
 
 
 func print_profiles_dropdown() -> void:

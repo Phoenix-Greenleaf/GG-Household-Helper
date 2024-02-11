@@ -35,6 +35,7 @@ var selected_item
 func _ready() -> void:
 	name = "DropdownCell"
 	self.item_selected.connect(_on_dropdown_item_selected)
+	SignalBus._on_task_editor_remote_dropdown_items_users_changed.connect(remote_users_dropdown_items_changed)
 
 
 func update_dropdown_items(selected_item_parameter = selected_item) -> void:
@@ -68,6 +69,11 @@ func update_dropdown_items(selected_item_parameter = selected_item) -> void:
 	selected = selection_index
 
 
+func remote_users_dropdown_items_changed(new_user_list) -> void:
+	dropdown_items = new_user_list
+	update_dropdown_items()
+
+
 func _on_dropdown_item_selected(index_parameter) -> void:
 	match saved_type:
 		"Section":
@@ -91,10 +97,10 @@ func _on_dropdown_item_selected(index_parameter) -> void:
 				prints("None / Default profile selected")
 			else:
 				profile_names.clear()
-				for current_profile in DataGlobal.current_tasksheet_data.user_profiles:
+				for current_profile in DataGlobal.active_data_task_tracking.user_profiles:
 					profile_names.append(current_profile[0])
 				var assigned_user_profile_index = profile_names.find(assigned_user_name)
-				var assigned_user_profile = DataGlobal.current_tasksheet_data.user_profiles[assigned_user_profile_index]
+				var assigned_user_profile = DataGlobal.active_data_task_tracking.user_profiles[assigned_user_profile_index]
 				prints("Profile selected on dropdown:", assigned_user_profile[0])
 				saved_task.assigned_user = assigned_user_profile
 		_:

@@ -224,6 +224,7 @@ func _on_profile_menu_accept_pressed() -> void:
 		return
 	create_new_profile(profile_name, profile_color)
 	SignalBus._on_task_editor_section_changed.emit()
+	SignalBus._on_task_editor_profile_data_changed.emit()
 	new_profile_button.visible = true
 	new_profile_menu.visible = false
 
@@ -287,8 +288,10 @@ func _on_edit_profile_menu_accept_pressed() -> void:
 	SignalBus._on_task_editor_save_button_pressed.emit()
 	SignalBus._on_task_set_data_active_data_switched.emit()
 	update_edit_profile_menu()
-	SignalBus._on_task_editor_checkbox_selection_changed.emit()
 	reload_profiles()
+	SignalBus._on_task_editor_checkbox_selection_changed.emit()
+	SignalBus._on_task_editor_profile_selection_changed.emit()
+	SignalBus._on_task_editor_profile_data_changed.emit()
 
 
 func _on_edit_profile_menu_cancel_pressed() -> void:
