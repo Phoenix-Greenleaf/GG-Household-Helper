@@ -11,7 +11,7 @@ func _ready() -> void:
 
 func prep_delete_button() -> void:
 	var task_name: String = saved_task.name
-	button_text = "Delete " + task_name
+	button_text = "Delete '" + task_name + "'"
 	text = button_text
 
 

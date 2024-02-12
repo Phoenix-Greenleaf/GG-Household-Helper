@@ -87,6 +87,8 @@ var task_tracking_current_toggled_section: Section = Section.YEARLY
 var task_tracking_current_toggled_month: Month = Month.JANUARY
 var task_tracking_current_toggled_editor_mode: int = task_tracking_editor_modes["Checkbox"]
 var task_tracking_current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
+var task_tracking_task_group_dropdown_items: Array 
+var task_tracking_user_profiles_dropdown_items: Array
 
 
 # general use functions
@@ -99,9 +101,16 @@ func _init() -> void:
 
 
 func _ready() -> void:
-	SignalBus._on_task_set_data_active_data_switched.connect(load_settings_main)
+	connect_signals()
 	load_settings_main()
 	DisplayServer.window_set_min_size(Vector2i(500, 500))
+
+
+func connect_signals() -> void:
+	SignalBus._on_task_set_data_active_data_switched.connect(load_settings_main)
+	SignalBus._on_task_editor_profile_selection_changed.connect(task_editor_update_user_profile_dropdown_items) #can we directly call?
+	#SignalBus._on_task_editor_remote_dropdown_items_users_changed.connect(task_editor_update_user_profile_dropdown_items) #without signal?
+
 
 
 func button_based_message(target: Node, message: String, time: int = 2, interfering_messages: Array = []) -> void:
@@ -275,7 +284,7 @@ func task_set_data_reloaded() -> void:
 	SignalBus._on_task_editor_section_changed.emit()
 
 
-# task tracking settings
+# task tracking editor
 
 
 func get_active_task_set_info() -> Array:
@@ -295,6 +304,44 @@ func get_task_sets_info() -> Array:
 		var file_info = [file_resource.task_set_title, file_resource.task_set_year]
 		task_sets_info.append(file_info)
 	return task_sets_info
+
+
+func task_editor_update_user_profile_dropdown_items() -> void:
+	prints("Updating user profile dropdown.")
+	task_tracking_user_profiles_dropdown_items.clear()
+	task_tracking_user_profiles_dropdown_items.append(default_profile)
+	for profile in active_data_task_tracking.user_profiles:
+		task_tracking_user_profiles_dropdown_items.append(profile)
+	SignalBus._on_task_editor_assigned_user_dropdown_items_changed.emit()
+
+
+func task_editor_update_task_group_dropdown_items() -> void:
+	task_tracking_task_group_dropdown_items.clear()
+	match DataGlobal.task_tracking_current_toggled_section:
+		DataGlobal.Section.YEARLY:
+			for task_iteration in active_data_task_tracking.spreadsheet_year_data:
+				task_editor_scan_task_for_group(task_iteration)
+		DataGlobal.Section.MONTHLY:
+			for task_iteration in active_data_task_tracking.spreadsheet_month_data:
+				task_editor_scan_task_for_group(task_iteration)
+		DataGlobal.Section.WEEKLY:
+			for task_iteration in active_data_task_tracking.spreadsheet_week_data:
+				task_editor_scan_task_for_group(task_iteration)
+		DataGlobal.Section.DAILY:
+			for task_iteration in active_data_task_tracking.spreadsheet_day_data:
+				task_editor_scan_task_for_group(task_iteration)
+	task_tracking_task_group_dropdown_items.sort()
+	task_tracking_task_group_dropdown_items.insert(0, "None")
+	SignalBus._on_task_editor_group_dropdown_items_changed.emit()
+
+
+func task_editor_scan_task_for_group(scan_task: TaskData) -> void:
+	if scan_task.group == "None":
+		return
+	if task_tracking_task_group_dropdown_items.has(scan_task.group):
+		return
+	task_tracking_task_group_dropdown_items.append(scan_task.group)
+
 
 
 

@@ -32,10 +32,27 @@ var profile_names: Array
 var selected_item
 
 
+
 func _ready() -> void:
 	name = "DropdownCell"
 	self.item_selected.connect(_on_dropdown_item_selected)
-	SignalBus._on_task_editor_remote_dropdown_items_users_changed.connect(remote_users_dropdown_items_changed)
+	connect_type_updates()
+
+
+func connect_type_updates() -> void:
+	match saved_type:
+		"Section":
+			pass
+		"Group":
+			SignalBus._on_task_editor_group_dropdown_items_changed.connect(update_dropdown_items)
+		"Time Of Day":
+			pass
+		"Priority":
+			pass
+		"Assigned User":
+			SignalBus._on_task_editor_assigned_user_dropdown_items_changed.connect(update_dropdown_items)
+		_:
+			pass
 
 
 func update_dropdown_items(selected_item_parameter = selected_item) -> void:
@@ -49,11 +66,11 @@ func update_dropdown_items(selected_item_parameter = selected_item) -> void:
 				add_item(item)
 			selection_index = selected_item
 		"Group":
-			for item in dropdown_items:
+			for item in DataGlobal.task_tracking_task_group_dropdown_items:
 				add_item(item)
 			selection_index = dropdown_items.find(selected_item)
 		"Assigned User":
-			for profile in dropdown_items:
+			for profile in DataGlobal.task_tracking_user_profiles_dropdown_items:
 				var profile_name = profile[0]
 				if profile_name == "No Profile":
 					profile_name = "Not Assigned"
@@ -67,11 +84,6 @@ func update_dropdown_items(selected_item_parameter = selected_item) -> void:
 				prints("dropdown items:", dropdown_items)
 				prints("")
 	selected = selection_index
-
-
-func remote_users_dropdown_items_changed(new_user_list) -> void:
-	dropdown_items = new_user_list
-	update_dropdown_items()
 
 
 func _on_dropdown_item_selected(index_parameter) -> void:
@@ -109,23 +121,3 @@ func _on_dropdown_item_selected(index_parameter) -> void:
 	SignalBus._on_task_set_data_modified.emit()
 	print_verbose("DropdownCell", saved_task.name, "func _on_dropdown_item_selected emits '_on_task_set_data_modified'")
 
-
-func connect_type_updates() -> void:
-	match saved_type:
-		"Section":
-			pass
-		"Group":
-			SignalBus._on_task_editor_group_dropdown_items_changed.connect(update_type_group)
-		"Time Of Day":
-			pass
-		"Priority":
-			pass
-		"Assigned User":
-			pass
-		_:
-			pass
-
-
-func update_type_group(new_group_items: Array) -> void:
-	dropdown_items = new_group_items
-	update_dropdown_items()

@@ -224,7 +224,6 @@ func _on_profile_menu_accept_pressed() -> void:
 		return
 	create_new_profile(profile_name, profile_color)
 	SignalBus._on_task_editor_section_changed.emit()
-	SignalBus._on_task_editor_profile_data_changed.emit()
 	new_profile_button.visible = true
 	new_profile_menu.visible = false
 

@@ -16,4 +16,4 @@ func _on_task_checkbox_clear_button_pressed() -> void:
 
 func prep_button() -> void:
 	var task_name: String = saved_task.name
-	text = "Reset: " + task_name
+	text = "Reset '" + task_name + "'"

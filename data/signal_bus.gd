@@ -17,8 +17,8 @@ signal _on_task_editor_task_delete_button_primed_and_pressed
 signal _on_task_editor_save_button_pressed
 signal _on_task_editor_grid_reload_pressed
 signal _on_task_editor_group_dropdown_items_changed
-signal _on_task_editor_group_data_changed
-signal _on_task_editor_remote_dropdown_items_users_changed
+signal _on_task_editor_assigned_user_dropdown_items_changed
+
 
 
 
