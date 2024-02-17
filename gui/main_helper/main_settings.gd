@@ -118,7 +118,7 @@ func _ready() -> void:
 	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
 	toggle_changed_settings_section()
 	connect_signals()
-	main_settings_tab_container.set_current_tab()
+	main_settings_tab_container.set_current_tab(0)
 
 
 
@@ -370,6 +370,14 @@ func window_resized() -> void:
 	apply_both_resolutions(resized_window_width, resized_window_height)
 
 
+func initialize_theme_option_buttons() -> void:
+	theme_test_change_timer_label.text = ""
+
+
+func load_theme_settings() -> void:
+	pass
+
+
 
 
 func _on_reset_button_pressed() -> void:
@@ -449,7 +457,6 @@ func _on_accept_button_pressed() -> void:
 	load_settings()
 	apply_settings_to_menu()
 	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
-#	toggle_changed_settings_section()
 
 
 func _on_cancel_changes_button_pressed() -> void:
@@ -460,3 +467,17 @@ func _on_cancel_changes_button_pressed() -> void:
 
 func _on_back_button_pressed() -> void:
 	SignalBus._on_main_settings_back_button_pressed.emit()
+
+
+
+
+func _on_theme_test_button_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_theme_cancel_changes_button_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_theme_reset_button_pressed() -> void:
+	pass # Replace with function body.
