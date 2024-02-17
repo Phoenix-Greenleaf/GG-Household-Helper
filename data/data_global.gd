@@ -175,7 +175,7 @@ func directory_check(directory_to_check) -> void:
 
 func create_settings_main() -> void:
 	active_settings_main = MainSettingsData.new()
-	active_settings_main.reset_settings()
+	active_settings_main.reset_settings_all_main()
 	prints("New main settings data created")
 	save_settings_main()
 

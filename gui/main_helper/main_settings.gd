@@ -1,12 +1,12 @@
 extends Control
 
+@onready var main_settings_tab_container: TabContainer = %MainSettingsTabContainer
+
 @onready var resolution_width_option_button: OptionButton = %ResolutionWidthOptionButton
 @onready var resolution_height_option_button: OptionButton = %ResolutionHeightOptionButton
 @onready var custom_resolution_h_box_container: HBoxContainer = %CustomResolutionHBoxContainer
 @onready var custom_width_spin_box: SpinBox = %CustomWidthSpinBox
 @onready var custom_height_spin_box: SpinBox = %CustomHeightSpinBox
-@onready var aspect_ratio_whole_value: Label = %AspectRatioWholeValue
-@onready var aspect_ratio_single_value: Label = %AspectRatioSingleValue
 @onready var display_preference_option_button: OptionButton = %DisplayPreferenceOptionButton
 @onready var display_mode_option_button: OptionButton = %DisplayModeOptionButton
 @onready var borderless_check_button: CheckButton = %BorderlessCheckButton
@@ -22,7 +22,35 @@ extends Control
 @onready var test_change_timer: Timer = %TestChangeTimer
 @onready var cancel_changes_button: Button = %CancelChangesButton
 
-@onready var current_scene: Control
+
+
+@onready var theme_title_size_spin_box: SpinBox = %ThemeTitleSizeSpinBox
+@onready var theme_sub_title_size_spin_box: SpinBox = %ThemeSubTitleSizeSpinBox
+@onready var theme_large_size_spin_box: SpinBox = %ThemeLargeSizeSpinBox
+@onready var theme_medium_size_spin_box: SpinBox = %ThemeMediumSizeSpinBox
+@onready var theme_small_size_spin_box: SpinBox = %ThemeSmallSizeSpinBox
+@onready var theme_font_color_picker_button: ColorPickerButton = %ThemeFontColorPickerButton
+@onready var theme_outline_color_picker_button: ColorPickerButton = %ThemeOutlineColorPickerButton
+@onready var theme_main_color_picker_button: ColorPickerButton = %ThemeMainColorPickerButton
+@onready var theme_secondary_color_picker_button: ColorPickerButton = %ThemeSecondaryColorPickerButton
+@onready var theme_tertiary_color_picker_button: ColorPickerButton = %ThemeTertiaryColorPickerButton
+@onready var theme_quaternary_color_picker_button: ColorPickerButton = %ThemeQuaternaryColorPickerButton
+@onready var theme_quinary_color_picker_button: ColorPickerButton = %ThemeQuinaryColorPickerButton
+@onready var theme_button_default_color_picker_button: ColorPickerButton = %ThemeButtonDefaultColorPickerButton
+@onready var theme_button_disabled_color_picker_button: ColorPickerButton = %ThemeButtonDisabledColorPickerButton
+@onready var theme_button_focus_color_picker_button: ColorPickerButton = %ThemeButtonFocusColorPickerButton
+@onready var theme_button_pressed_color_picker_button: ColorPickerButton = %ThemeButtonPressedColorPickerButton
+@onready var theme_button_hover_color_picker_button: ColorPickerButton = %ThemeButtonHoverColorPickerButton
+@onready var theme_transparency_default_color_picker_button: ColorPickerButton = %ThemeTransparencyDefaultColorPickerButton
+@onready var theme_transparency_warning_color_picker_button: ColorPickerButton = %ThemeTransparencyWarningColorPickerButton
+@onready var theme_test_button: Button = %ThemeTestButton
+@onready var theme_save_warning_label: Label = %ThemeSaveWarningLabel
+@onready var theme_test_change_timer_label: Label = %ThemeTestChangeTimerLabel
+@onready var theme_cancel_changes_button: Button = %ThemeCancelChangesButton
+@onready var theme_reset_button: Button = %ThemeResetButton
+
+
+
 
 @onready var settings = DataGlobal.active_settings_main
 
@@ -76,6 +104,12 @@ var resolution_list: Array = [
 
 
 
+
+
+
+
+
+
 func _ready() -> void:
 	get_display_data()
 	load_settings()
@@ -84,6 +118,7 @@ func _ready() -> void:
 	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
 	toggle_changed_settings_section()
 	connect_signals()
+	main_settings_tab_container.set_current_tab()
 
 
 

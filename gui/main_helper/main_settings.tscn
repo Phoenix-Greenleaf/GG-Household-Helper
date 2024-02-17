@@ -46,12 +46,9 @@ horizontal_alignment = 1
 [node name="MainSettingsTabContainer" type="TabContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer"]
 layout_mode = 2
 tab_alignment = 1
-current_tab = 1
 clip_tabs = false
-use_hidden_tabs_for_min_size = true
 
 [node name="Display" type="PanelContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer"]
-visible = false
 layout_mode = 2
 
 [node name="DisplayMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display"]
@@ -367,6 +364,7 @@ layout_mode = 2
 text = "Off"
 
 [node name="Theme" type="PanelContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer"]
+visible = false
 layout_mode = 2
 
 [node name="ThemeMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme"]
