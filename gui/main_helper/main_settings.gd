@@ -402,7 +402,52 @@ func initialize_theme() -> void:
 
 
 func apply_theme_settings_to_menu() -> void:
+	theme_title_size_spin_box.value = theme_title_size
+	theme_sub_title_size_spin_box.value = theme_sub_title_size
+	theme_large_size_spin_box.value = theme_large_size
+	theme_medium_size_spin_box.value = theme_medium_size
+	theme_small_size_spin_box.value = theme_small_size
+	theme_font_color_picker_button.color = theme_font_color
+	theme_outline_color_picker_button.color = theme_outlines_color
+	theme_main_color_picker_button.color = theme_main_color
+	theme_secondary_color_picker_button.color = theme_secondary_color
+	theme_tertiary_color_picker_button.color = theme_tertiary_color
+	theme_quaternary_color_picker_button.color = theme_quaternary_color
+	theme_quinary_color_picker_button.color = theme_quinary_color
+	theme_button_default_color_picker_button.color = theme_button_default_color
+	theme_button_disabled_color_picker_button.color = theme_button_disabled_color
+	theme_button_focus_color_picker_button.color = theme_button_focus_color
+	theme_button_pressed_color_picker_button.color = theme_button_pressed_color
+	theme_button_hover_color_picker_button.color = theme_button_hover_color
+	theme_transparency_default_color_picker_button.color = theme_transparency_default_color
+	theme_transparency_warning_color_picker_button.color = theme_transparency_warning_color
+
+
+func theme_toggle_changed_settings_section() -> void:
 	pass
+
+
+func theme_disable_changed_settings_section(disabled_parameter: bool) -> void:
+	pass
+
+
+func theme_changed_settings_check() -> bool:
+	return true
+
+
+func theme_test_changes_start() -> void:
+	pass
+
+
+func theme_test_mass_disable(disabled_parameter: bool) -> void:
+	pass
+
+
+func theme_test_changes_end() -> void:
+	pass
+
+
+
 
 
 
