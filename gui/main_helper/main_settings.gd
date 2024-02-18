@@ -48,6 +48,8 @@ extends Control
 @onready var theme_test_change_timer_label: Label = %ThemeTestChangeTimerLabel
 @onready var theme_cancel_changes_button: Button = %ThemeCancelChangesButton
 @onready var theme_reset_button: Button = %ThemeResetButton
+@onready var theme_test_change_timer: Timer = %ThemeTestChangeTimer
+
 
 
 
@@ -507,7 +509,7 @@ func _on_reset_button_pressed() -> void:
 	if reset_button.text == "Reset to Defaults":
 		DataGlobal.button_based_message(reset_button, "CLICK TO CONFIRM RESET")
 		return
-	settings.reset_main_settings()
+	settings.reset_settings_display()
 	reset_button.text = "Settings Reset!"
 	DataGlobal.save_settings_main()
 	load_display_settings()
@@ -593,15 +595,31 @@ func _on_back_button_pressed() -> void:
 
 
 func _on_theme_test_button_pressed() -> void:
-	pass # Replace with function body.
+	if not testing_active:
+		theme_test_changes_start()
+		prints("Start test press")
+		return
+	if testing_active:
+		theme_test_changes_end()
+		theme_test_change_timer.stop()
+		prints("End test press")
 
 
 func _on_theme_cancel_changes_button_pressed() -> void:
-	pass # Replace with function body.
+	apply_theme_settings_to_menu()
+	theme_toggle_changed_settings_section()
 
 
 func _on_theme_reset_button_pressed() -> void:
-	pass # Replace with function body.
+	if theme_reset_button.text == "Reset to Defaults":
+		DataGlobal.button_based_message(theme_reset_button, "CLICK TO CONFIRM RESET")
+		return
+	settings.reset_settings_theme()
+	theme_reset_button.text = "Settings Reset!"
+	DataGlobal.save_settings_main()
+	load_theme_settings()
+	apply_theme_settings_to_menu()
+	theme_toggle_changed_settings_section()
 
 
 func _on_main_settings_tab_container_tab_changed(tab: int) -> void:

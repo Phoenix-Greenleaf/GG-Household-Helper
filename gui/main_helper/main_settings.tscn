@@ -769,6 +769,7 @@ theme_type_variation = &"Label_Medium"
 text = "#"
 
 [node name="ThemeTestChangeTimer" type="Timer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeTestButtonsHBoxContainer/ThemeTestChangeTimerLabel"]
+unique_name_in_owner = true
 wait_time = 10.0
 one_shot = true
 
