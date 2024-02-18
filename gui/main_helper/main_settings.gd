@@ -102,11 +102,25 @@ var resolution_list: Array = [
 	7680,
 ]
 
-
-
-
-
-
+var theme_title_size: int
+var theme_sub_title_size: int
+var theme_large_size: int
+var theme_medium_size: int
+var theme_small_size: int
+var theme_font_color: Color
+var theme_outlines_color: Color
+var theme_main_color: Color
+var theme_secondary_color: Color
+var theme_tertiary_color: Color
+var theme_quaternary_color: Color
+var theme_quinary_color: Color
+var theme_button_default_color: Color
+var theme_button_disabled_color: Color
+var theme_button_focus_color: Color
+var theme_button_pressed_color: Color
+var theme_button_hover_color: Color
+var theme_transparency_default_color: Color
+var theme_transparency_warning_color: Color
 
 
 
@@ -116,7 +130,6 @@ func _ready() -> void:
 	toggle_changed_settings_section()
 	connect_signals()
 	main_settings_tab_container.set_current_tab(0)
-
 
 
 func _process(_delta: float) -> void:
@@ -348,7 +361,7 @@ func test_changes_end() -> void:
 	toggle_changed_settings_section()
 
 
-func save_settings() -> void:
+func save_display_settings() -> void:
 	settings.main_setting_window_width = custom_width_spin_box.value
 	settings.main_setting_window_height = custom_height_spin_box.value
 	settings.main_setting_monitor_mode = display_mode_option_button.selected
@@ -394,8 +407,50 @@ func apply_theme_settings_to_menu() -> void:
 
 
 func load_theme_settings() -> void:
-	pass
+	theme_title_size = settings.theme_title_size
+	theme_sub_title_size = settings.theme_sub_title_size
+	theme_large_size = settings.theme_large_size
+	theme_medium_size = settings.theme_medium_size
+	theme_small_size = settings.theme_small_size
+	theme_font_color = settings.theme_font_color
+	theme_outlines_color = settings.theme_outlines_color
+	theme_main_color = settings.theme_main_color
+	theme_secondary_color = settings.theme_secondary_color
+	theme_tertiary_color = settings.theme_tertiary_color
+	theme_quaternary_color = settings.theme_quaternary_color
+	theme_quinary_color = settings.theme_quinary_color
+	theme_button_default_color = settings.theme_button_default_color
+	theme_button_disabled_color = settings.theme_button_disabled_color
+	theme_button_focus_color = settings.theme_button_focus_color
+	theme_button_pressed_color = settings.theme_button_pressed_color
+	theme_button_hover_color = settings.theme_button_hover_color
+	theme_transparency_default_color = settings.theme_transparency_default_color
+	theme_transparency_warning_color = settings.theme_transparency_warning_color
 
+
+func save_theme_settings() -> void:
+	settings.theme_title_size = theme_title_size_spin_box.value
+	settings.theme_sub_title_size = theme_sub_title_size_spin_box.value
+	settings.theme_large_size = theme_large_size_spin_box.value
+	settings.theme_medium_size = theme_medium_size_spin_box.value
+	settings.theme_small_size = theme_small_size_spin_box.value
+	settings.theme_font_color = theme_font_color_picker_button.color
+	settings.theme_outlines_color = theme_outline_color_picker_button.color
+	settings.theme_main_color = theme_main_color_picker_button.color
+	settings.theme_secondary_color = theme_secondary_color_picker_button.color
+	settings.theme_tertiary_color = theme_tertiary_color_picker_button.color
+	settings.theme_quaternary_color = theme_quaternary_color_picker_button.color
+	settings.theme_quinary_color = theme_quinary_color_picker_button.color
+	settings.theme_button_default_color = theme_button_default_color_picker_button.color
+	settings.theme_button_disabled_color = theme_button_disabled_color_picker_button.color
+	settings.theme_button_focus_color = theme_button_focus_color_picker_button.color
+	settings.theme_button_pressed_color = theme_button_pressed_color_picker_button.color
+	settings.theme_button_hover_color = theme_button_hover_color_picker_button.color
+	settings.theme_transparency_default_color = theme_transparency_default_color_picker_button.color
+	settings.theme_transparency_warning_color = theme_transparency_warning_color_picker_button.color
+	DataGlobal.save_settings_main()
+	load_theme_settings()
+	apply_display_settings_to_menu()
 
 
 
@@ -472,9 +527,9 @@ func _on_accept_button_pressed() -> void:
 	if testing_active:
 		test_changes_end()
 		prints("End test saved")
-	save_settings()
-	load_display_settings()
-	apply_display_settings_to_menu()
+	save_display_settings()
+	#load_display_settings() # i think the save function does these two already
+	#apply_display_settings_to_menu()
 	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
 
 
@@ -486,8 +541,6 @@ func _on_cancel_changes_button_pressed() -> void:
 
 func _on_back_button_pressed() -> void:
 	SignalBus._on_main_settings_back_button_pressed.emit()
-
-
 
 
 func _on_theme_test_button_pressed() -> void:
