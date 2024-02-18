@@ -852,6 +852,7 @@ size_flags_vertical = 4
 theme_type_variation = &"Button_Medium"
 text = "Back"
 
+[connection signal="tab_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer" to="." method="_on_main_settings_tab_container_tab_changed"]
 [connection signal="item_selected" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ResolutionHBoxContainer/ResolutionWidthOptionButton" to="." method="_on_resolution_width_option_button_item_selected"]
 [connection signal="item_selected" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/ResolutionHBoxContainer/ResolutionHeightOptionButton" to="." method="_on_resolution_height_option_button_item_selected"]
 [connection signal="value_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/CustomResolutionHBoxContainer/CustomWidthSpinBox" to="." method="_on_custom_width_spin_box_value_changed"]

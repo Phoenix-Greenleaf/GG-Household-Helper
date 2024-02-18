@@ -54,6 +54,8 @@ extends Control
 
 @onready var settings = DataGlobal.active_settings_main
 
+var current_setting_tab: int = 0
+
 var primary_screen: int
 var current_screen: int
 var screen_count: int
@@ -129,12 +131,14 @@ func _ready() -> void:
 	initialize_all_sections()
 	toggle_changed_settings_section()
 	connect_signals()
-	main_settings_tab_container.set_current_tab(0)
+	main_settings_tab_container.set_current_tab(current_setting_tab)
 
 
 func _process(_delta: float) -> void:
 	if testing_active:
 		test_change_timer_label.set_text(str(int(test_change_timer.time_left)))
+		if main_settings_tab_container.current_tab != current_setting_tab:
+			main_settings_tab_container.current_tab = current_setting_tab
 
 
 func initialize_all_sections() -> void:
@@ -598,3 +602,7 @@ func _on_theme_cancel_changes_button_pressed() -> void:
 
 func _on_theme_reset_button_pressed() -> void:
 	pass # Replace with function body.
+
+
+func _on_main_settings_tab_container_tab_changed(tab: int) -> void:
+	current_setting_tab = tab
