@@ -111,11 +111,8 @@ var resolution_list: Array = [
 
 
 func _ready() -> void:
-	get_display_data()
-	load_settings()
-	initialize_option_buttons()
-	apply_settings_to_menu()
-	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
+	load_all_settings()
+	initialize_all_sections()
 	toggle_changed_settings_section()
 	connect_signals()
 	main_settings_tab_container.set_current_tab(0)
@@ -125,6 +122,19 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if testing_active:
 		test_change_timer_label.set_text(str(int(test_change_timer.time_left)))
+
+
+func initialize_all_sections() -> void:
+	initialize_display()
+	initialize_theme()
+
+
+func initialize_display() -> void:
+	get_display_data()
+	initialize_option_buttons()
+	apply_display_settings_to_menu()
+	test_change_timer_label.text = ""
+	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
 
 
 func get_display_data() -> void:
@@ -141,7 +151,6 @@ func initialize_option_buttons() -> void:
 	initialize_resolution_lists(resolution_width_option_button, screen_native_width)
 	initialize_resolution_lists(resolution_height_option_button, screen_native_height)
 	initialize_display_preference_options()
-	test_change_timer_label.text = ""
 
 
 func initialize_resolution_lists(button_parameter: OptionButton, native_resolution_paramter: int) -> void:
@@ -168,7 +177,12 @@ func connect_signals() -> void:
 	get_tree().get_root().size_changed.connect(window_resized)
 
 
-func load_settings() -> void:
+func load_all_settings() -> void:
+	load_display_settings()
+	load_theme_settings()
+
+
+func load_display_settings() -> void:
 	window_width = settings.window_width
 	window_height = settings.window_height
 	window_size = Vector2i(window_width, window_height)
@@ -177,7 +191,7 @@ func load_settings() -> void:
 	borderless = settings.borderless
 
 
-func apply_settings_to_menu() -> void:
+func apply_display_settings_to_menu() -> void:
 	apply_both_resolutions(window_width, window_height)
 	apply_display_preference()
 	apply_display_mode()
@@ -341,8 +355,8 @@ func save_settings() -> void:
 	settings.main_setting_current_monitor = display_preference_option_button.selected
 	settings.main_setting_borderless = borderless_check_button.button_pressed
 	DataGlobal.save_settings_main()
-	load_settings()
-	apply_settings_to_menu()
+	load_display_settings()
+	apply_display_settings_to_menu()
 
 
 func set_window(current_screen_parameter: int, mode_parameter: int, borderless_parameter: int, width_parameter: int, height_parameter: int) -> void:
@@ -355,7 +369,6 @@ func set_window(current_screen_parameter: int, mode_parameter: int, borderless_p
 		window_instance.set_flag(Window.FLAG_BORDERLESS, borderless_parameter)
 		window_instance.set_size(Vector2i(width_parameter, height_parameter))
 	window_instance.set_current_screen(current_screen_parameter)
-#	window_instance.set_position()
 	ignore_window_resize = false
 
 
@@ -370,8 +383,14 @@ func window_resized() -> void:
 	apply_both_resolutions(resized_window_width, resized_window_height)
 
 
-func initialize_theme_option_buttons() -> void:
+func initialize_theme() -> void:
+	apply_theme_settings_to_menu()
 	theme_test_change_timer_label.text = ""
+
+
+func apply_theme_settings_to_menu() -> void:
+	pass
+
 
 
 func load_theme_settings() -> void:
@@ -387,8 +406,8 @@ func _on_reset_button_pressed() -> void:
 	settings.reset_main_settings()
 	reset_button.text = "Settings Reset!"
 	DataGlobal.save_settings_main()
-	load_settings()
-	apply_settings_to_menu()
+	load_display_settings()
+	apply_display_settings_to_menu()
 	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
 	toggle_changed_settings_section()
 
@@ -454,13 +473,13 @@ func _on_accept_button_pressed() -> void:
 		test_changes_end()
 		prints("End test saved")
 	save_settings()
-	load_settings()
-	apply_settings_to_menu()
+	load_display_settings()
+	apply_display_settings_to_menu()
 	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
 
 
 func _on_cancel_changes_button_pressed() -> void:
-	apply_settings_to_menu()
+	apply_display_settings_to_menu()
 	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
 	toggle_changed_settings_section()
 
