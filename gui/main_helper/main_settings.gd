@@ -141,13 +141,13 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if not testing_active:
 		return
-	if main_settings_tab_container.current_tab != current_setting_tab:
-		main_settings_tab_container.current_tab = current_setting_tab
 	match main_settings_tab_container.current_tab:
 		0:
 			test_change_timer_label.set_text(str(int(test_change_timer.time_left)))
 		1:
 			theme_test_change_timer_label.set_text(str(int(theme_test_change_timer.time_left)))
+		_:
+			prints("No tab timer to update")
 
 
 func initialize_all_sections() -> void:
@@ -407,6 +407,11 @@ func window_resized() -> void:
 	var resized_window_width: int = resized_window_size.x
 	var resized_window_height: int = resized_window_size.y
 	apply_both_resolutions(resized_window_width, resized_window_height)
+
+
+func disable_main_settings_tab_container_all_tabs(disabled_parameter:bool) -> void:
+	for tab_iteration in main_settings_tab_container.get_tab_count():
+		main_settings_tab_container.set_tab_disabled(tab_iteration, disabled_parameter)
 
 
 func initialize_theme() -> void:
