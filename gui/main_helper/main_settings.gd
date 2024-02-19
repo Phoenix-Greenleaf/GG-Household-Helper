@@ -200,6 +200,7 @@ func initialize_display_preference_options() -> void:
 
 func connect_signals() -> void:
 	test_change_timer.timeout.connect(test_changes_end)
+	theme_test_change_timer.timeout.connect(theme_test_changes_end)
 	get_tree().get_root().size_changed.connect(window_resized)
 
 
@@ -340,6 +341,7 @@ func changed_settings_check() -> bool:
 
 func test_changes_start() -> void:
 	test_mass_disable(true)
+	disable_main_settings_tab_container_all_tabs(true)
 	set_window(display_preference_option_button.selected, display_mode_option_button.selected, borderless_check_button.button_pressed, custom_width_spin_box.value, custom_height_spin_box.value)
 	test_button.text = "Cancel Test"
 	save_warning_label.text = "Test Active, will revert in:"
@@ -442,8 +444,7 @@ func apply_theme_settings_to_menu() -> void:
 
 
 func theme_toggle_changed_settings_section() -> void:
-	var settings_changed: bool = theme_changed_settings_check()
-	if settings_changed:
+	if theme_changed_settings_check():
 		theme_disable_changed_settings_section(false)
 		return
 	theme_disable_changed_settings_section(true)
@@ -456,23 +457,72 @@ func theme_disable_changed_settings_section(disabled_parameter: bool) -> void:
 
 
 func theme_changed_settings_check() -> bool:
-	return true
+	if theme_title_size != theme_title_size_spin_box.value:
+		return true
+	if theme_sub_title_size != theme_sub_title_size_spin_box.value:
+		return true
+	if theme_large_size != theme_large_size_spin_box.value:
+		return true
+	if theme_medium_size != theme_medium_size_spin_box.value:
+		return true
+	if theme_small_size != theme_small_size_spin_box.value:
+		return true
+	if theme_font_color != theme_font_color_picker_button.color:
+		return true
+	if theme_outlines_color != theme_outline_color_picker_button.color:
+		return true
+	if theme_main_color != theme_main_color_picker_button.color:
+		return true
+	if theme_secondary_color != theme_secondary_color_picker_button.color:
+		return true
+	if theme_tertiary_color != theme_tertiary_color_picker_button.color:
+		return true
+	if theme_quaternary_color != theme_quaternary_color_picker_button.color:
+		return true
+	if theme_quinary_color != theme_quinary_color_picker_button.color:
+		return true
+	if theme_button_default_color != theme_button_default_color_picker_button.color:
+		return true
+	if theme_button_disabled_color != theme_button_disabled_color_picker_button.color:
+		return true
+	if theme_button_focus_color != theme_button_focus_color_picker_button.color:
+		return true
+	if theme_button_pressed_color != theme_button_pressed_color_picker_button.color:
+		return true
+	if theme_button_hover_color != theme_button_hover_color_picker_button.color:
+		return true
+	if theme_transparency_default_color != theme_transparency_default_color_picker_button.color:
+		return true
+	if theme_transparency_warning_color != theme_transparency_warning_color_picker_button.color:
+		return true
+	return false
 
 
 func theme_test_changes_start() -> void:
-	pass
+	theme_test_mass_disable(true)
+	disable_main_settings_tab_container_all_tabs(true)
+	theme_test_button.text = "Cancel Test"
+	theme_save_warning_label.text = "Test Active, will revert in:"
+	testing_active = true
+	theme_test_change_timer.start(test_time)
 
 
 func theme_test_mass_disable(disabled_parameter: bool) -> void:
-	pass
+	get_tree().call_group("theme_testing_lock", "set_disabled", disabled_parameter)
+	get_tree().call_group("theme_testing_lock", "set_editable", !disabled_parameter)
 
 
 func theme_test_changes_end() -> void:
-	pass
-
-
-
-
+	if not testing_active:
+		return
+	theme_test_mass_disable(false)
+	theme_test_button.text = "Test Changes"
+	theme_save_warning_label.text = "Changes not saved!"
+	testing_active = false
+	if not theme_test_change_timer.is_stopped():
+		theme_test_change_timer.stop()
+	theme_test_change_timer_label.text = ""
+	toggle_changed_settings_section()
 
 
 func load_theme_settings() -> void:

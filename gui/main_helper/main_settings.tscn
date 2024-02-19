@@ -402,7 +402,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Title"
 text = "Title"
 
-[node name="ThemeTitleSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeTitleSizeHBoxContainer"]
+[node name="ThemeTitleSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeTitleSizeHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
@@ -416,7 +416,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Title_Secondary"
 text = "Sub-Title"
 
-[node name="ThemeSubTitleSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeSubTitleSizeHBoxContainer"]
+[node name="ThemeSubTitleSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeSubTitleSizeHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
@@ -430,7 +430,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Large"
 text = "Large"
 
-[node name="ThemeLargeSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeLargeSizeHBoxContainer"]
+[node name="ThemeLargeSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeLargeSizeHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
@@ -444,7 +444,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Medium"
 
-[node name="ThemeMediumSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeMediumSizeHBoxContainer"]
+[node name="ThemeMediumSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeMediumSizeHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
@@ -457,7 +457,7 @@ alignment = 2
 layout_mode = 2
 text = "Small"
 
-[node name="ThemeSmallSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeSmallSizeHBoxContainer"]
+[node name="ThemeSmallSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeSmallSizeHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
@@ -490,7 +490,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Font"
 
-[node name="ThemeFontColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeMainColorsPanelContainer/ThemeMainColorsMarginContainer/ThemeMainColorsVBoxContainer/ThemeFontColorHBoxContainer"]
+[node name="ThemeFontColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeMainColorsPanelContainer/ThemeMainColorsMarginContainer/ThemeMainColorsVBoxContainer/ThemeFontColorHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Color"
@@ -505,7 +505,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Outlines"
 
-[node name="ThemeOutlineColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeMainColorsPanelContainer/ThemeMainColorsMarginContainer/ThemeMainColorsVBoxContainer/ThemeOutlineColorHBoxContainer"]
+[node name="ThemeOutlineColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeMainColorsPanelContainer/ThemeMainColorsMarginContainer/ThemeMainColorsVBoxContainer/ThemeOutlineColorHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Color"
@@ -536,7 +536,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Main"
 
-[node name="ThemeMainColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeMainColorHBoxContainer"]
+[node name="ThemeMainColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeMainColorHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Color"
@@ -551,7 +551,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Secondary"
 
-[node name="ThemeSecondaryColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeSecondaryColorHBoxContainer"]
+[node name="ThemeSecondaryColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeSecondaryColorHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Color"
@@ -566,7 +566,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Tertiary"
 
-[node name="ThemeTertiaryColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeTertiaryColorHBoxContainer"]
+[node name="ThemeTertiaryColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeTertiaryColorHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Color"
@@ -581,7 +581,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Quaternary"
 
-[node name="ThemeQuaternaryColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeQuaternaryColorHBoxContainer"]
+[node name="ThemeQuaternaryColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeQuaternaryColorHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Color"
@@ -596,7 +596,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Quinary"
 
-[node name="ThemeQuinaryColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeQuinaryColorHBoxContainer"]
+[node name="ThemeQuinaryColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeQuinaryColorHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Color"
@@ -630,7 +630,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Default"
 
-[node name="ThemeButtonDefaultColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonDefaultColorHBoxContainer"]
+[node name="ThemeButtonDefaultColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonDefaultColorHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Color"
@@ -645,7 +645,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Disabled"
 
-[node name="ThemeButtonDisabledColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonDisabledColorHBoxContainer"]
+[node name="ThemeButtonDisabledColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonDisabledColorHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Color"
@@ -660,7 +660,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Focus"
 
-[node name="ThemeButtonFocusColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonFocusColorHBoxContainer"]
+[node name="ThemeButtonFocusColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonFocusColorHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Color"
@@ -675,7 +675,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Pressed"
 
-[node name="ThemeButtonPressedColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonPressedColorHBoxContainer"]
+[node name="ThemeButtonPressedColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonPressedColorHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Color"
@@ -690,7 +690,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Hover"
 
-[node name="ThemeButtonHoverColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonHoverColorHBoxContainer"]
+[node name="ThemeButtonHoverColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonHoverColorHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Color"
@@ -721,7 +721,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Default"
 
-[node name="ThemeTransparencyDefaultColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeTransparencyColorsPanelContainer/ThemeTransparencyColorsMarginContainer/ThemeTransparencyColorsVBoxContainer/ThemeTransparencyDefaultColorHBoxContainer"]
+[node name="ThemeTransparencyDefaultColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeTransparencyColorsPanelContainer/ThemeTransparencyColorsMarginContainer/ThemeTransparencyColorsVBoxContainer/ThemeTransparencyDefaultColorHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Color"
@@ -736,7 +736,7 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Warning"
 
-[node name="ThemeTransparencyWarningColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeTransparencyColorsPanelContainer/ThemeTransparencyColorsMarginContainer/ThemeTransparencyColorsVBoxContainer/ThemeTransparencyWarningColorHBoxContainer"]
+[node name="ThemeTransparencyWarningColorPickerButton" type="ColorPickerButton" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeTransparencyColorsPanelContainer/ThemeTransparencyColorsMarginContainer/ThemeTransparencyColorsVBoxContainer/ThemeTransparencyWarningColorHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Color"
