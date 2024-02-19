@@ -49,6 +49,8 @@ extends Control
 @onready var theme_cancel_changes_button: Button = %ThemeCancelChangesButton
 @onready var theme_reset_button: Button = %ThemeResetButton
 @onready var theme_test_change_timer: Timer = %ThemeTestChangeTimer
+@onready var theme_test_h_separator: HSeparator = %ThemeTestHSeparator
+@onready var theme_test_buttons_h_box_container: HBoxContainer = %ThemeTestButtonsHBoxContainer
 
 
 
@@ -137,10 +139,15 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if testing_active:
-		test_change_timer_label.set_text(str(int(test_change_timer.time_left)))
-		if main_settings_tab_container.current_tab != current_setting_tab:
-			main_settings_tab_container.current_tab = current_setting_tab
+	if not testing_active:
+		return
+	if main_settings_tab_container.current_tab != current_setting_tab:
+		main_settings_tab_container.current_tab = current_setting_tab
+	match main_settings_tab_container.current_tab:
+		0:
+			test_change_timer_label.set_text(str(int(test_change_timer.time_left)))
+		1:
+			theme_test_change_timer_label.set_text(str(int(theme_test_change_timer.time_left)))
 
 
 func initialize_all_sections() -> void:
@@ -430,11 +437,17 @@ func apply_theme_settings_to_menu() -> void:
 
 
 func theme_toggle_changed_settings_section() -> void:
-	pass
+	var settings_changed: bool = theme_changed_settings_check()
+	if settings_changed:
+		theme_disable_changed_settings_section(false)
+		return
+	theme_disable_changed_settings_section(true)
 
 
 func theme_disable_changed_settings_section(disabled_parameter: bool) -> void:
-	pass
+	theme_test_h_separator.visible = !disabled_parameter
+	theme_test_buttons_h_box_container.visible = !disabled_parameter
+	accept_button.disabled = disabled_parameter
 
 
 func theme_changed_settings_check() -> bool:
