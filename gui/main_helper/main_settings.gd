@@ -202,6 +202,29 @@ func connect_signals() -> void:
 	test_change_timer.timeout.connect(test_changes_end)
 	theme_test_change_timer.timeout.connect(theme_test_changes_end)
 	get_tree().get_root().size_changed.connect(window_resized)
+	connect_theme_signals_to_change_check()
+
+
+func connect_theme_signals_to_change_check() -> void:
+	theme_title_size_spin_box.value_changed.connect(theme_toggle_changed_settings_section)
+	theme_sub_title_size_spin_box.value_changed.connect(theme_toggle_changed_settings_section)
+	theme_large_size_spin_box.value_changed.connect(theme_toggle_changed_settings_section)
+	theme_medium_size_spin_box.value_changed.connect(theme_toggle_changed_settings_section)
+	theme_small_size_spin_box.value_changed.connect(theme_toggle_changed_settings_section)
+	theme_font_color_picker_button.color_changed.connect(theme_toggle_changed_settings_section)
+	theme_outline_color_picker_button.color_changed.connect(theme_toggle_changed_settings_section)
+	theme_main_color_picker_button.color_changed.connect(theme_toggle_changed_settings_section)
+	theme_secondary_color_picker_button.color_changed.connect(theme_toggle_changed_settings_section)
+	theme_tertiary_color_picker_button.color_changed.connect(theme_toggle_changed_settings_section)
+	theme_quaternary_color_picker_button.color_changed.connect(theme_toggle_changed_settings_section)
+	theme_quinary_color_picker_button.color_changed.connect(theme_toggle_changed_settings_section)
+	theme_button_default_color_picker_button.color_changed.connect(theme_toggle_changed_settings_section)
+	theme_button_disabled_color_picker_button.color_changed.connect(theme_toggle_changed_settings_section)
+	theme_button_focus_color_picker_button.color_changed.connect(theme_toggle_changed_settings_section)
+	theme_button_pressed_color_picker_button.color_changed.connect(theme_toggle_changed_settings_section)
+	theme_button_hover_color_picker_button.color_changed.connect(theme_toggle_changed_settings_section)
+	theme_transparency_default_color_picker_button.color_changed.connect(theme_toggle_changed_settings_section)
+	theme_transparency_warning_color_picker_button.color_changed.connect(theme_toggle_changed_settings_section)
 
 
 func load_all_settings() -> void:
@@ -441,6 +464,7 @@ func apply_theme_settings_to_menu() -> void:
 	theme_button_hover_color_picker_button.color = theme_button_hover_color
 	theme_transparency_default_color_picker_button.color = theme_transparency_default_color
 	theme_transparency_warning_color_picker_button.color = theme_transparency_warning_color
+	theme_disable_changed_settings_section(true)
 
 
 func theme_toggle_changed_settings_section() -> void:
