@@ -405,6 +405,7 @@ text = "Title"
 [node name="ThemeTitleSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeTitleSizeHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
+value = 99.0
 alignment = 1
 
 [node name="ThemeSubTitleSizeHBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer"]
@@ -419,6 +420,7 @@ text = "Sub-Title"
 [node name="ThemeSubTitleSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeSubTitleSizeHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
+value = 60.0
 alignment = 1
 
 [node name="ThemeLargeSizeHBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer"]
@@ -433,6 +435,7 @@ text = "Large"
 [node name="ThemeLargeSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeLargeSizeHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
+value = 40.0
 alignment = 1
 
 [node name="ThemeMediumSizeHBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer"]
@@ -447,6 +450,7 @@ text = "Medium"
 [node name="ThemeMediumSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeMediumSizeHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
+value = 30.0
 alignment = 1
 
 [node name="ThemeSmallSizeHBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer"]
@@ -460,6 +464,7 @@ text = "Small"
 [node name="ThemeSmallSizeSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeSmallSizeHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
+value = 20.0
 alignment = 1
 
 [node name="ThemeColorsColumn2VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer"]
@@ -742,9 +747,20 @@ layout_mode = 2
 text = "Color"
 color = Color(0, 0, 0.533333, 1)
 
+[node name="ThemeResetHBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ThemeResetButton" type="Button" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeResetHBoxContainer" groups=["theme_testing_lock"]]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Button_Medium"
+text = "Reset to Defaults"
+
 [node name="ThemeTestHSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"HSeparator_None"
 
 [node name="ThemeTestButtonsHBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer"]
 unique_name_in_owner = true
@@ -775,21 +791,11 @@ unique_name_in_owner = true
 wait_time = 10.0
 one_shot = true
 
-[node name="ThemeCancelChangesButton" type="Button" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeTestButtonsHBoxContainer" groups=["testing_lock"]]
+[node name="ThemeCancelChangesButton" type="Button" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeTestButtonsHBoxContainer" groups=["theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Button_Medium"
 text = "Cancel Changes"
-
-[node name="ThemeResetHBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="ThemeResetButton" type="Button" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeResetHBoxContainer" groups=["testing_lock"]]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"Button_Medium"
-text = "Reset to Defaults"
 
 [node name="Audio" type="PanelContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer"]
 visible = false
@@ -847,7 +853,7 @@ layout_mode = 2
 theme_type_variation = &"Button_Medium"
 text = "Accept"
 
-[node name="BackButton" type="Button" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer" groups=["testing_lock"]]
+[node name="BackButton" type="Button" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer" groups=["testing_lock", "theme_testing_lock"]]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -866,8 +872,27 @@ text = "Back"
 [connection signal="pressed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/StandardOptions/DisplayResetHBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer/TestButton" to="." method="_on_test_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Display/DisplayMarginContainer/DisplayVBoxContainer/TestButtonsHBoxContainer/CancelChangesButton" to="." method="_on_cancel_changes_button_pressed"]
+[connection signal="value_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeTitleSizeHBoxContainer/ThemeTitleSizeSpinBox" to="." method="_on_theme_title_size_spin_box_value_changed"]
+[connection signal="value_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeSubTitleSizeHBoxContainer/ThemeSubTitleSizeSpinBox" to="." method="_on_theme_sub_title_size_spin_box_value_changed"]
+[connection signal="value_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeLargeSizeHBoxContainer/ThemeLargeSizeSpinBox" to="." method="_on_theme_large_size_spin_box_value_changed"]
+[connection signal="value_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeMediumSizeHBoxContainer/ThemeMediumSizeSpinBox" to="." method="_on_theme_medium_size_spin_box_value_changed"]
+[connection signal="value_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn1VBoxContainer/ThemeFontSizePanelContainer/ThemeFontSizeMarginContainer/ThemeFontSizeVBoxContainer/ThemeSmallSizeHBoxContainer/ThemeSmallSizeSpinBox" to="." method="_on_theme_small_size_spin_box_value_changed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeMainColorsPanelContainer/ThemeMainColorsMarginContainer/ThemeMainColorsVBoxContainer/ThemeFontColorHBoxContainer/ThemeFontColorPickerButton" to="." method="_on_theme_font_color_picker_button_color_changed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeMainColorsPanelContainer/ThemeMainColorsMarginContainer/ThemeMainColorsVBoxContainer/ThemeOutlineColorHBoxContainer/ThemeOutlineColorPickerButton" to="." method="_on_theme_outline_color_picker_button_color_changed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeMainColorHBoxContainer/ThemeMainColorPickerButton" to="." method="_on_theme_main_color_picker_button_color_changed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeSecondaryColorHBoxContainer/ThemeSecondaryColorPickerButton" to="." method="_on_theme_secondary_color_picker_button_color_changed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeTertiaryColorHBoxContainer/ThemeTertiaryColorPickerButton" to="." method="_on_theme_tertiary_color_picker_button_color_changed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeQuaternaryColorHBoxContainer/ThemeQuaternaryColorPickerButton" to="." method="_on_theme_quaternary_color_picker_button_color_changed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn2VBoxContainer/ThemeBackgroundColorsPanelContainer/ThemeBackgroundColorsMarginContainer/ThemeBackgroundColorsVBoxContainer/ThemeQuinaryColorHBoxContainer/ThemeQuinaryColorPickerButton" to="." method="_on_theme_quinary_color_picker_button_color_changed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonDefaultColorHBoxContainer/ThemeButtonDefaultColorPickerButton" to="." method="_on_theme_button_default_color_picker_button_color_changed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonDisabledColorHBoxContainer/ThemeButtonDisabledColorPickerButton" to="." method="_on_theme_button_disabled_color_picker_button_color_changed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonFocusColorHBoxContainer/ThemeButtonFocusColorPickerButton" to="." method="_on_theme_button_focus_color_picker_button_color_changed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonPressedColorHBoxContainer/ThemeButtonPressedColorPickerButton" to="." method="_on_theme_button_pressed_color_picker_button_color_changed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeButtonColorsPanelContainer/ThemeButtonColorsMarginContainer/ThemeButtonColorsVBoxContainer/ThemeButtonHoverColorHBoxContainer/ThemeButtonHoverColorPickerButton" to="." method="_on_theme_button_hover_color_picker_button_color_changed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeTransparencyColorsPanelContainer/ThemeTransparencyColorsMarginContainer/ThemeTransparencyColorsVBoxContainer/ThemeTransparencyDefaultColorHBoxContainer/ThemeTransparencyDefaultColorPickerButton" to="." method="_on_theme_transparency_default_color_picker_button_color_changed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColorsColumn3VBoxContainer/ThemeTransparencyColorsPanelContainer/ThemeTransparencyColorsMarginContainer/ThemeTransparencyColorsVBoxContainer/ThemeTransparencyWarningColorHBoxContainer/ThemeTransparencyWarningColorPickerButton" to="." method="_on_theme_transparency_warning_color_picker_button_color_changed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeResetHBoxContainer/ThemeResetButton" to="." method="_on_theme_reset_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeTestButtonsHBoxContainer/ThemeTestButton" to="." method="_on_theme_test_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeTestButtonsHBoxContainer/ThemeCancelChangesButton" to="." method="_on_theme_cancel_changes_button_pressed"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeResetHBoxContainer/ThemeResetButton" to="." method="_on_theme_reset_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/SettingsVBoxContainer/StandardButtonsHBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
