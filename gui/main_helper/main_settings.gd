@@ -147,7 +147,8 @@ func _ready() -> void:
 	initialize_all_sections()
 	toggle_changed_settings_section()
 	connect_signals()
-	main_settings_tab_container.set_current_tab(current_setting_tab)
+	main_settings_tab_container.set_current_tab(0)
+
 
 
 func _process(_delta: float) -> void:
@@ -160,6 +161,9 @@ func _process(_delta: float) -> void:
 			theme_test_change_timer_label.set_text(str(int(theme_test_change_timer.time_left)))
 		_:
 			prints("No tab timer to update")
+
+
+
 
 
 func initialize_all_sections() -> void:
@@ -432,6 +436,7 @@ func disable_main_settings_tab_container_all_tabs(disabled_parameter:bool) -> vo
 func initialize_theme() -> void:
 	apply_theme_settings_to_menu()
 	theme_test_change_timer_label.text = ""
+	set_themes()
 
 
 func apply_theme_settings_to_menu() -> void:
@@ -643,13 +648,13 @@ func accept_button_display_settings() -> void:
 
 
 func accept_button_theme_settings() -> void:
-	if not changed_settings_check():
-		prints("No changes in Display Settings, skipping save.")
+	if not theme_changed_settings_check():
+		prints("No changes in Theme Settings, skipping save.")
 		return
 	if testing_active:
-		test_changes_end()
+		theme_test_changes_end()
 		prints("End test: Accepted")
-	save_display_settings()
+	save_theme_settings()
 	set_themes()
 
 
@@ -723,6 +728,7 @@ func _on_test_button_pressed() -> void:
 
 
 func _on_accept_button_pressed() -> void:
+	prints("accepted button sees:", main_settings_tab_container.current_tab)
 	match main_settings_tab_container.current_tab:
 		0:
 			accept_button_display_settings()
@@ -779,6 +785,7 @@ func _on_theme_reset_button_pressed() -> void:
 
 func _on_main_settings_tab_container_tab_changed(tab: int) -> void:
 	current_setting_tab = tab
+	prints("Current settings tab:", tab)
 
 
 func _on_theme_title_size_spin_box_value_changed(_value: float) -> void:
