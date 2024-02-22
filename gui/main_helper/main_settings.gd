@@ -255,6 +255,8 @@ func apply_current_display_server_to_menu() -> void:
 	match active_true_display_mode:
 		DisplayServer.WINDOW_MODE_FULLSCREEN:
 			active_display_mode = 1
+			active_window_width = window_width
+			active_window_height = window_height
 		DisplayServer.WINDOW_MODE_WINDOWED, DisplayServer.WINDOW_MODE_MAXIMIZED:
 			active_display_mode = 0
 		_:
@@ -359,7 +361,7 @@ func toggle_changed_settings_section() -> void:
 func disable_changed_settings_section(disabled_parameter: bool) -> void:
 	test_h_separator.visible = !disabled_parameter
 	test_buttons_h_box_container.visible = !disabled_parameter
-	accept_button.disabled = disabled_parameter
+	toggle_accept_button()
 
 
 func changed_settings_check() -> bool:
@@ -460,6 +462,15 @@ func disable_main_settings_tab_container_all_tabs(disabled_parameter:bool) -> vo
 		main_settings_tab_container.set_tab_disabled(tab_iteration, disabled_parameter)
 
 
+func toggle_accept_button() -> void:
+	match main_settings_tab_container.current_tab:
+		0:
+			accept_button.disabled = !changed_settings_check()
+		1:
+			accept_button.disabled = !theme_changed_settings_check()
+		_:
+			printerr("Accept button error: Tab not found. ", main_settings_tab_container.current_tab)
+
 func initialize_theme() -> void:
 	apply_theme_settings_to_menu()
 	theme_test_change_timer_label.text = ""
@@ -499,7 +510,7 @@ func theme_toggle_changed_settings_section() -> void:
 func theme_disable_changed_settings_section(disabled_parameter: bool) -> void:
 	theme_test_h_separator.visible = !disabled_parameter
 	theme_test_buttons_h_box_container.visible = !disabled_parameter
-	accept_button.disabled = disabled_parameter
+	toggle_accept_button()
 
 
 func theme_changed_settings_check() -> bool:

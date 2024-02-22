@@ -8,6 +8,9 @@
 
 [node name="Splash" type="Node2D"]
 
+[node name="MainSettings" parent="." instance=ExtResource("5_m4tla")]
+visible = false
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = -2
 
@@ -33,6 +36,3 @@ transition_time = 1.0
 [node name="GodotSplashZoom" parent="SplashContainer" instance=ExtResource("2_v3tc2")]
 
 [node name="GreenleafGalacticIntroScreen" parent="SplashContainer" instance=ExtResource("4_xwp53")]
-
-[node name="MainSettings" parent="." instance=ExtResource("5_m4tla")]
-visible = false
