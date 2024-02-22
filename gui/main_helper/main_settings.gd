@@ -779,14 +779,15 @@ func _on_accept_button_pressed() -> void:
 func _on_cancel_changes_button_pressed() -> void:
 	match main_settings_tab_container.current_tab:
 		0:
-			pass
+			apply_display_settings_to_menu()
+			set_window(current_screen, monitor_mode, borderless, window_width, window_height)
+			toggle_changed_settings_section()
 		1:
-			pass
+			apply_theme_settings_to_menu()
+			set_themes()
+			theme_toggle_changed_settings_section()
 		_:
 			prints("Cancel Button Error: Tab not found:", main_settings_tab_container.current_tab)
-	apply_display_settings_to_menu()
-	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
-	toggle_changed_settings_section()
 
 
 func _on_back_button_pressed() -> void:
