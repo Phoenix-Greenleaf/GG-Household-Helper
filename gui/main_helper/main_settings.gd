@@ -147,6 +147,7 @@ func _ready() -> void:
 	load_all_settings()
 	initialize_all_sections()
 	connect_signals()
+	fix_theme_variations()
 	toggle_changed_settings_section()
 	theme_toggle_changed_settings_section()
 	main_settings_tab_container.set_current_tab(0)
@@ -179,6 +180,13 @@ func initialize_display() -> void:
 		DataGlobal.main_settings_active = true
 		return
 	apply_current_display_server_to_menu()
+
+
+func fix_theme_variations() -> void:
+	DataGlobal.theme_variation_issue_workaround(theme_title_size_spin_box, "LineEdit_Title")
+	DataGlobal.theme_variation_issue_workaround(theme_sub_title_size_spin_box, "LineEdit_Title_Secondary")
+	DataGlobal.theme_variation_issue_workaround(theme_large_size_spin_box, "LineEdit_Large")
+	DataGlobal.theme_variation_issue_workaround(theme_medium_size_spin_box, "LineEdit_Medium")
 
 
 func get_display_data() -> void:
@@ -638,17 +646,24 @@ func set_themes() -> void:
 	MAIN_THEME.set_font_size("font_size", "Label_Large", theme_large_size)
 	MAIN_THEME.set_font_size("font_size", "Label_Title_Secondary", theme_sub_title_size)
 	MAIN_THEME.set_font_size("font_size", "Label_Title", theme_title_size)
+	
+	MAIN_THEME.set_font_size("font_size", "LineEdit", theme_small_size)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Medium", theme_medium_size)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Large", theme_large_size)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Title_Secondary", theme_sub_title_size)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Title", theme_title_size)
+	
 	PANEL_BACKGROUND_MAIN.set("bg_color", theme_main_color)
 	#PANEL_POPUP_MAIN.set("bg_color", theme_main_color)
 	PANEL_POPUP_SECONDARY.set("bg_color", theme_secondary_color)
 	PANEL_POPUP_TERTIARY.set("bg_color", theme_tertiary_color)
-
+	
 	BUTTON_DISABLED_BOX.set("bg_color", theme_button_disabled_color)
 	BUTTON_FOCUS_BOX.set("border_color", theme_button_focus_color)
 	BUTTON_HOVER_BOX.set("bg_color", theme_button_hover_color)
 	BUTTON_NORMAL_BOX.set("bg_color", theme_button_default_color)
 	BUTTON_PRESSED_BOX.set("bg_color", theme_button_pressed_color)
-
+	
 	PANEL_BACKGROUND_TRANSPARENCY_RED.set("bg_color", theme_transparency_warning_color)
 	PANEL_POPUP_TRANSPARENCY.set("bg_color", theme_transparency_default_color)
 
@@ -659,17 +674,24 @@ func test_themes() -> void:
 	MAIN_THEME.set_font_size("font_size", "Label_Large", theme_large_size_spin_box.value)
 	MAIN_THEME.set_font_size("font_size", "Label_Title_Secondary", theme_sub_title_size_spin_box.value)
 	MAIN_THEME.set_font_size("font_size", "Label_Title", theme_title_size_spin_box.value)
+	
+	MAIN_THEME.set_font_size("font_size", "LineEdit", theme_small_size_spin_box.value)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Medium", theme_medium_size_spin_box.value)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Large", theme_large_size_spin_box.value)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Title_Secondary", theme_sub_title_size_spin_box.value)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Title", theme_title_size_spin_box.value)
+	
 	PANEL_BACKGROUND_MAIN.set("bg_color", theme_main_color_picker_button.color)
 	#PANEL_POPUP_MAIN.set("bg_color", theme_main_color_picker_button.color)
 	PANEL_POPUP_SECONDARY.set("bg_color", theme_secondary_color_picker_button.color)
 	PANEL_POPUP_TERTIARY.set("bg_color", theme_tertiary_color_picker_button.color)
-
+	
 	BUTTON_DISABLED_BOX.set("bg_color", theme_button_disabled_color_picker_button.color)
 	BUTTON_FOCUS_BOX.set("border_color", theme_button_focus_color_picker_button.color)
 	BUTTON_HOVER_BOX.set("bg_color", theme_button_hover_color_picker_button.color)
 	BUTTON_NORMAL_BOX.set("bg_color", theme_button_default_color_picker_button.color)
 	BUTTON_PRESSED_BOX.set("bg_color", theme_button_pressed_color_picker_button.color)
-
+	
 	PANEL_BACKGROUND_TRANSPARENCY_RED.set("bg_color", theme_transparency_warning_color_picker_button.color)
 	PANEL_POPUP_TRANSPARENCY.set("bg_color", theme_transparency_default_color_picker_button.color)
 
@@ -682,6 +704,7 @@ func accept_button_display_settings() -> void:
 		test_changes_end()
 		prints("End test: Accepted")
 	save_display_settings()
+	toggle_changed_settings_section()
 	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
 
 
@@ -693,6 +716,7 @@ func accept_button_theme_settings() -> void:
 		theme_test_changes_end()
 		prints("End test: Accepted")
 	save_theme_settings()
+	theme_toggle_changed_settings_section()
 	set_themes()
 
 
