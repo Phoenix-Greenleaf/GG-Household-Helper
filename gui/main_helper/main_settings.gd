@@ -81,6 +81,7 @@ var screen_native_height: int
 var monitor_mode: int
 var borderless: bool
 var window_size: Vector2i
+var starting_window_size: Vector2i
 var window_width: int
 var window_height: int
 
@@ -145,10 +146,10 @@ var theme_transparency_warning_color: Color
 func _ready() -> void:
 	load_all_settings()
 	initialize_all_sections()
-	toggle_changed_settings_section()
 	connect_signals()
+	toggle_changed_settings_section()
+	theme_toggle_changed_settings_section()
 	main_settings_tab_container.set_current_tab(0)
-
 
 
 func _process(_delta: float) -> void:
@@ -163,9 +164,6 @@ func _process(_delta: float) -> void:
 			prints("No tab timer to update")
 
 
-
-
-
 func initialize_all_sections() -> void:
 	initialize_display()
 	initialize_theme()
@@ -174,9 +172,13 @@ func initialize_all_sections() -> void:
 func initialize_display() -> void:
 	get_display_data()
 	initialize_option_buttons()
-	apply_display_settings_to_menu()
 	test_change_timer_label.text = ""
-	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
+	if not DataGlobal.main_settings_active:
+		apply_display_settings_to_menu()
+		set_window(current_screen, monitor_mode, borderless, window_width, window_height)
+		DataGlobal.main_settings_active = true
+		return
+	apply_current_display_server_to_menu()
 
 
 func get_display_data() -> void:
@@ -184,6 +186,7 @@ func get_display_data() -> void:
 	primary_screen = DisplayServer.get_primary_screen()
 	current_screen = DisplayServer.window_get_current_screen()
 	window_size = DisplayServer.window_get_size(current_screen)
+	starting_window_size = DisplayServer.window_get_size(current_screen)
 	screen_size = DisplayServer.screen_get_size(current_screen)
 	screen_native_width = screen_size.x
 	screen_native_height = screen_size.y
@@ -236,10 +239,34 @@ func load_display_settings() -> void:
 
 func apply_display_settings_to_menu() -> void:
 	apply_both_resolutions(window_width, window_height)
-	apply_display_preference()
-	apply_display_mode()
-	apply_borderless()
+	apply_display_preference(current_screen)
+	apply_display_mode(monitor_mode)
+	apply_borderless(borderless)
 	disable_changed_settings_section(true)
+
+
+func apply_current_display_server_to_menu() -> void:
+	var active_screen = DisplayServer.window_get_current_screen()
+	var active_window = DisplayServer.window_get_size(active_screen)
+	var active_window_width = active_window.x
+	var active_window_height = active_window.y
+	var active_true_display_mode = DisplayServer.window_get_mode(active_screen)
+	var active_display_mode
+	match active_true_display_mode:
+		DisplayServer.WINDOW_MODE_FULLSCREEN:
+			active_display_mode = 1
+		DisplayServer.WINDOW_MODE_WINDOWED, DisplayServer.WINDOW_MODE_MAXIMIZED:
+			active_display_mode = 0
+		_:
+			printerr("Issue matching Window Mode")
+	var active_borderless = false
+	if DisplayServer.window_get_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, active_screen):
+		active_borderless = true
+	apply_both_resolutions(active_window_width, active_window_height)
+	apply_display_preference(active_screen)
+	apply_display_mode(active_display_mode)
+	apply_borderless(active_borderless)
+	toggle_changed_settings_section()
 
 
 func apply_both_resolutions(width_parameter: int, height_parameter: int) -> void:
@@ -275,8 +302,8 @@ func toggle_custom_dimension_disable(option_button_parameter: OptionButton, spin
 		spin_box_parameter.editable = false
 
 
-func apply_display_preference() -> void:
-	display_preference_option_button.select(current_screen)
+func apply_display_preference(display_parameter: int) -> void:
+	display_preference_option_button.select(display_parameter)
 	toggle_display_preference_option_button()
 
 
@@ -285,14 +312,14 @@ func toggle_display_preference_option_button() -> void:
 		display_preference_option_button.disabled = true
 
 
-func apply_display_mode() -> void:
-	display_mode_option_button.select(monitor_mode)
+func apply_display_mode(display_mode_parameter: int) -> void:
+	display_mode_option_button.select(display_mode_parameter)
 
 
-func apply_borderless() -> void:
+func apply_borderless(borderless_parameter: bool) -> void:
 	if display_mode_option_button.selected == 0:
 		borderless_check_button.disabled = false
-		borderless_check_button.set_pressed_no_signal(borderless)
+		borderless_check_button.set_pressed_no_signal(borderless_parameter)
 		if borderless:
 			borderless_status_label.text = "On"
 			return
@@ -394,11 +421,11 @@ func test_changes_end() -> void:
 
 
 func save_display_settings() -> void:
-	settings.main_setting_window_width = custom_width_spin_box.value
-	settings.main_setting_window_height = custom_height_spin_box.value
-	settings.main_setting_monitor_mode = display_mode_option_button.selected
-	settings.main_setting_current_monitor = display_preference_option_button.selected
-	settings.main_setting_borderless = borderless_check_button.button_pressed
+	settings.window_width = custom_width_spin_box.value
+	settings.window_height = custom_height_spin_box.value
+	settings.monitor_mode = display_mode_option_button.selected
+	settings.current_monitor = display_preference_option_button.selected
+	settings.borderless = borderless_check_button.button_pressed
 	DataGlobal.save_settings_main()
 	load_display_settings()
 	apply_display_settings_to_menu()
@@ -680,7 +707,7 @@ func _on_display_mode_option_button_item_selected(index: int) -> void:
 		custom_height_spin_box.value = screen_native_height
 		apply_both_resolutions(screen_native_width, screen_native_height)
 	toggle_changed_settings_section()
-	apply_borderless()
+	apply_borderless(borderless)
 
 
 func _on_resolution_width_option_button_item_selected(index: int) -> void:

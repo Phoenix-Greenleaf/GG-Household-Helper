@@ -90,6 +90,8 @@ var task_tracking_current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle
 var task_tracking_task_group_dropdown_items: Array 
 var task_tracking_user_profiles_dropdown_items: Array
 
+var main_settings_active: bool = false
+
 
 # general use functions
 

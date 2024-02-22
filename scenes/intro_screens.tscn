@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://rwg6xp1eflba"]
+[gd_scene load_steps=6 format=3 uid="uid://rwg6xp1eflba"]
 
 [ext_resource type="Script" path="res://addons/awesome_splash/core/SplashContainer.gd" id="1_2bbsg"]
 [ext_resource type="PackedScene" uid="uid://be574yx4gi08t" path="res://scenes/main_menu.tscn" id="2_686r4"]
 [ext_resource type="PackedScene" uid="uid://b5aj1thqf6837" path="res://src/demo_collection/zoom/splash_screen.tscn" id="2_v3tc2"]
 [ext_resource type="PackedScene" uid="uid://nlsdl5ae6346" path="res://scenes/greenleaf_galactic_intro_screen.tscn" id="4_xwp53"]
+[ext_resource type="PackedScene" uid="uid://esmp6jtqggdn" path="res://gui/main_helper/main_settings.tscn" id="5_m4tla"]
 
 [node name="Splash" type="Node2D"]
 
@@ -32,3 +33,6 @@ transition_time = 1.0
 [node name="GodotSplashZoom" parent="SplashContainer" instance=ExtResource("2_v3tc2")]
 
 [node name="GreenleafGalacticIntroScreen" parent="SplashContainer" instance=ExtResource("4_xwp53")]
+
+[node name="MainSettings" parent="." instance=ExtResource("5_m4tla")]
+visible = false
