@@ -183,6 +183,13 @@ func initialize_display() -> void:
 
 
 func fix_theme_variations() -> void:
+	DataGlobal.theme_variation_issue_workaround(resolution_width_option_button, "PopupMenu_Medium")
+	DataGlobal.theme_variation_issue_workaround(resolution_height_option_button, "PopupMenu_Medium")
+	DataGlobal.theme_variation_issue_workaround(custom_width_spin_box, "LineEdit_Medium")
+	DataGlobal.theme_variation_issue_workaround(custom_height_spin_box, "LineEdit_Medium")
+	DataGlobal.theme_variation_issue_workaround(display_preference_option_button, "PopupMenu_Medium")
+	DataGlobal.theme_variation_issue_workaround(display_mode_option_button, "PopupMenu_Medium")
+	
 	DataGlobal.theme_variation_issue_workaround(theme_title_size_spin_box, "LineEdit_Title")
 	DataGlobal.theme_variation_issue_workaround(theme_sub_title_size_spin_box, "LineEdit_Title_Secondary")
 	DataGlobal.theme_variation_issue_workaround(theme_large_size_spin_box, "LineEdit_Large")
@@ -395,7 +402,7 @@ func changed_settings_check() -> bool:
 func test_changes_start() -> void:
 	test_mass_disable(true)
 	disable_main_settings_tab_container_all_tabs(true)
-	set_window(display_preference_option_button.selected, display_mode_option_button.selected, borderless_check_button.button_pressed, custom_width_spin_box.value, custom_height_spin_box.value)
+	set_window(display_preference_option_button.selected, display_mode_option_button.selected, borderless_check_button.button_pressed, int(custom_width_spin_box.value), int(custom_height_spin_box.value))
 	test_button.text = "Cancel Test"
 	save_warning_label.text = "Test Active, will revert in:"
 	testing_active = true
@@ -653,6 +660,25 @@ func set_themes() -> void:
 	MAIN_THEME.set_font_size("font_size", "LineEdit_Title_Secondary", theme_sub_title_size)
 	MAIN_THEME.set_font_size("font_size", "LineEdit_Title", theme_title_size)
 	
+	MAIN_THEME.set_font_size("font_size", "Button", theme_small_size)
+	MAIN_THEME.set_font_size("font_size", "Button_Medium", theme_medium_size)
+	MAIN_THEME.set_font_size("font_size", "Button_Large", theme_large_size)
+	
+	MAIN_THEME.set_font_size("font_size", "OptionButton", theme_small_size)
+	MAIN_THEME.set_font_size("font_size", "OptionButton_Medium", theme_medium_size)
+	
+	MAIN_THEME.set_font_size("font_size", "PopupMenu", theme_small_size) 
+	MAIN_THEME.set_font_size("font_size", "PopupMenu_Medium", theme_medium_size)
+	
+	MAIN_THEME.set_font_size("font_size", "CheckButton", theme_small_size)
+	MAIN_THEME.set_font_size("font_size", "CheckButton_Medium", theme_medium_size)
+	
+	MAIN_THEME.set_font_size("font_size", "TabContainer", theme_small_size)
+	MAIN_THEME.set_font_size("font_size", "TabContainer_Medium", theme_medium_size)
+	MAIN_THEME.set_font_size("font_size", "TabContainer_Large", theme_large_size)
+	
+	MAIN_THEME.set_font_size("font_size", "TextEdit", theme_small_size)
+	
 	PANEL_BACKGROUND_MAIN.set("bg_color", theme_main_color)
 	#PANEL_POPUP_MAIN.set("bg_color", theme_main_color)
 	PANEL_POPUP_SECONDARY.set("bg_color", theme_secondary_color)
@@ -669,17 +695,44 @@ func set_themes() -> void:
 
 
 func test_themes() -> void:
-	MAIN_THEME.set_font_size("font_size", "Label", theme_small_size_spin_box.value)
-	MAIN_THEME.set_font_size("font_size", "Label_Medium", theme_medium_size_spin_box.value)
-	MAIN_THEME.set_font_size("font_size", "Label_Large", theme_large_size_spin_box.value)
-	MAIN_THEME.set_font_size("font_size", "Label_Title_Secondary", theme_sub_title_size_spin_box.value)
-	MAIN_THEME.set_font_size("font_size", "Label_Title", theme_title_size_spin_box.value)
+	var test_font_small := int(theme_small_size_spin_box.value)
+	var test_font_medium := int(theme_medium_size_spin_box.value)
+	var test_font_large := int(theme_large_size_spin_box.value)
+	var test_font_sub_title := int(theme_sub_title_size_spin_box.value)
+	var test_font_title := int(theme_title_size_spin_box.value)
 	
-	MAIN_THEME.set_font_size("font_size", "LineEdit", theme_small_size_spin_box.value)
-	MAIN_THEME.set_font_size("font_size", "LineEdit_Medium", theme_medium_size_spin_box.value)
-	MAIN_THEME.set_font_size("font_size", "LineEdit_Large", theme_large_size_spin_box.value)
-	MAIN_THEME.set_font_size("font_size", "LineEdit_Title_Secondary", theme_sub_title_size_spin_box.value)
-	MAIN_THEME.set_font_size("font_size", "LineEdit_Title", theme_title_size_spin_box.value)
+	
+	
+	MAIN_THEME.set_font_size("font_size", "Label", test_font_small)
+	MAIN_THEME.set_font_size("font_size", "Label_Medium", test_font_medium)
+	MAIN_THEME.set_font_size("font_size", "Label_Large", test_font_large)
+	MAIN_THEME.set_font_size("font_size", "Label_Title_Secondary", test_font_sub_title)
+	MAIN_THEME.set_font_size("font_size", "Label_Title", test_font_title)
+	
+	MAIN_THEME.set_font_size("font_size", "LineEdit", test_font_small)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Medium", test_font_medium)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Large", test_font_large)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Title_Secondary", test_font_sub_title)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Title", test_font_title)
+	
+	MAIN_THEME.set_font_size("font_size", "Button", test_font_small)
+	MAIN_THEME.set_font_size("font_size", "Button_Medium", test_font_medium)
+	MAIN_THEME.set_font_size("font_size", "Button_Large", test_font_large)
+	
+	MAIN_THEME.set_font_size("font_size", "OptionButton", test_font_small)
+	MAIN_THEME.set_font_size("font_size", "OptionButton_Medium", test_font_medium)
+	
+	MAIN_THEME.set_font_size("font_size", "PopupMenu", test_font_small)
+	MAIN_THEME.set_font_size("font_size", "PopupMenu_Medium", test_font_medium)
+	
+	MAIN_THEME.set_font_size("font_size", "CheckButton", test_font_small)
+	MAIN_THEME.set_font_size("font_size", "CheckButton_Medium", test_font_medium)
+	
+	MAIN_THEME.set_font_size("font_size", "TabContainer", test_font_small)
+	MAIN_THEME.set_font_size("font_size", "TabContainer_Medium", test_font_medium)
+	MAIN_THEME.set_font_size("font_size", "TabContainer_Large", test_font_large)
+	
+	MAIN_THEME.set_font_size("font_size", "TextEdit", test_font_small)
 	
 	PANEL_BACKGROUND_MAIN.set("bg_color", theme_main_color_picker_button.color)
 	#PANEL_POPUP_MAIN.set("bg_color", theme_main_color_picker_button.color)
@@ -843,6 +896,7 @@ func _on_theme_reset_button_pressed() -> void:
 	DataGlobal.save_settings_main()
 	load_theme_settings()
 	apply_theme_settings_to_menu()
+	set_themes()
 	theme_toggle_changed_settings_section()
 
 

@@ -345,10 +345,14 @@ func task_editor_scan_task_for_group(scan_task: TaskData) -> void:
 	task_tracking_task_group_dropdown_items.append(scan_task.group)
 
 
-func theme_variation_issue_workaround(correction_target, theme_parameter) -> void:
-	if correction_target is SpinBox:
-		var spinbox_internals: LineEdit = correction_target.get_line_edit()
-		spinbox_internals.set_theme_type_variation(theme_parameter)
-	if correction_target is OptionButton:
-		pass
+func theme_variation_issue_workaround(correction_target: Node, theme_parameter: String) -> void:
+	match correction_target.get_class():
+		"SpinBox":
+			var internal_line_edit: LineEdit = correction_target.get_line_edit()
+			internal_line_edit.set_theme_type_variation(theme_parameter)
+		"MenuButton", "OptionButton":
+			var internal_popup_menu: PopupMenu = correction_target.get_popup()
+			internal_popup_menu.set_theme_type_variation(theme_parameter)
+		_:
+			prints("theme_variation_issue_workaround cannot match class:", correction_target.get_class())
 
