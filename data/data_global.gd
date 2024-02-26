@@ -90,6 +90,8 @@ var task_tracking_current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle
 var task_tracking_task_group_dropdown_items: Array 
 var task_tracking_user_profiles_dropdown_items: Array
 
+var main_settings_active: bool = false
+
 
 # general use functions
 
@@ -175,7 +177,7 @@ func directory_check(directory_to_check) -> void:
 
 func create_settings_main() -> void:
 	active_settings_main = MainSettingsData.new()
-	active_settings_main.reset_settings()
+	active_settings_main.reset_settings_all_main()
 	prints("New main settings data created")
 	save_settings_main()
 
@@ -343,5 +345,14 @@ func task_editor_scan_task_for_group(scan_task: TaskData) -> void:
 	task_tracking_task_group_dropdown_items.append(scan_task.group)
 
 
-
+func theme_variation_issue_workaround(correction_target: Node, theme_parameter: String) -> void:
+	match correction_target.get_class():
+		"SpinBox":
+			var internal_line_edit: LineEdit = correction_target.get_line_edit()
+			internal_line_edit.set_theme_type_variation(theme_parameter)
+		"MenuButton", "OptionButton":
+			var internal_popup_menu: PopupMenu = correction_target.get_popup()
+			internal_popup_menu.set_theme_type_variation(theme_parameter)
+		_:
+			prints("theme_variation_issue_workaround cannot match class:", correction_target.get_class())
 
