@@ -76,8 +76,10 @@ func starting_visibilities() -> void:
 func sync_position() -> void:
 	var offset_x: int = 0
 	var offset_y: int = 0
-	var menu_position_x: int = paired_checkbox_menu_button.position.x
-	var menu_position_y: int = paired_checkbox_menu_button.position.y
+	var menu_transform: Transform2D = paired_checkbox_menu_button.get_global_transform_with_canvas()
+	var menu_origin = menu_transform.origin
+	var menu_position_x: int = menu_origin.x
+	var menu_position_y: int = menu_origin.y
 	var sync_x: int = offset_x + menu_position_x + menu_button_width
 	var sync_y: int = offset_y + menu_position_y
 	var sync_vector := Vector2i(sync_x, sync_y)
