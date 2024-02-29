@@ -213,7 +213,9 @@ func initialize_option_buttons() -> void:
 	initialize_display_preference_options()
 
 
-func initialize_resolution_lists(button_parameter: OptionButton, native_resolution_paramter: int) -> void:
+func initialize_resolution_lists(button_parameter: OptionButton,
+	native_resolution_paramter: int
+) -> void:
 	button_parameter.clear()
 	for resolution_iteration in resolution_list:
 		if resolution_iteration == native_resolution_paramter:
@@ -228,7 +230,9 @@ func initialize_display_preference_options() -> void:
 	for display_iteration in screen_count:
 		var monitor_name: String = "Monitor " + str(display_iteration + 1)
 		var monitor_size: Vector2i = DisplayServer.screen_get_size(display_iteration)
-		var monitor_size_string: String = "  (" + str(monitor_size.x) + " x " + str(monitor_size.y) + ")"
+		var monitor_size_string: String = ("  (" + str(monitor_size.x) + " x "
+			+ str(monitor_size.y) + ")"
+		)
 		display_preference_option_button.add_item(monitor_name + monitor_size_string)
 
 
@@ -292,7 +296,9 @@ func apply_both_resolutions(width_parameter: int, height_parameter: int) -> void
 	toggle_custom_resolution_container()
 
 
-func apply_resolution(button_parameter: OptionButton, spinbox_parameter: SpinBox, resolution_parameter: int) -> void:
+func apply_resolution(button_parameter: OptionButton, spinbox_parameter: SpinBox,
+	resolution_parameter: int
+) -> void:
 	spinbox_parameter.value = resolution_parameter
 	if resolution_parameter not in resolution_list:
 		button_parameter.select(resolution_list.size())
@@ -304,7 +310,9 @@ func apply_resolution(button_parameter: OptionButton, spinbox_parameter: SpinBox
 
 
 func toggle_custom_resolution_container() -> void:
-	if resolution_height_option_button.selected != resolution_list.size() and resolution_width_option_button.selected != resolution_list.size():
+	if (resolution_height_option_button.selected != resolution_list.size()
+		and resolution_width_option_button.selected != resolution_list.size()
+	):
 		custom_resolution_h_box_container.visible = false
 		return
 	custom_resolution_h_box_container.visible = true
@@ -312,7 +320,9 @@ func toggle_custom_resolution_container() -> void:
 	toggle_custom_dimension_disable(resolution_width_option_button, custom_width_spin_box)
 
 
-func toggle_custom_dimension_disable(option_button_parameter: OptionButton, spin_box_parameter: SpinBox) -> void:
+func toggle_custom_dimension_disable(option_button_parameter: OptionButton,
+	spin_box_parameter: SpinBox
+) -> void:
 	if option_button_parameter.selected == resolution_list.size():
 		spin_box_parameter.editable = true
 	else:
@@ -402,7 +412,12 @@ func changed_settings_check() -> bool:
 func test_changes_start() -> void:
 	test_mass_disable(true)
 	disable_main_settings_tab_container_all_tabs(true)
-	set_window(display_preference_option_button.selected, display_mode_option_button.selected, borderless_check_button.button_pressed, int(custom_width_spin_box.value), int(custom_height_spin_box.value))
+	set_window(display_preference_option_button.selected,
+		display_mode_option_button.selected,
+		borderless_check_button.button_pressed,
+		int(custom_width_spin_box.value),
+		int(custom_height_spin_box.value)
+	)
 	test_button.text = "Cancel Test"
 	save_warning_label.text = "Test Active, will revert in:"
 	testing_active = true
@@ -448,7 +463,9 @@ func save_display_settings() -> void:
 	apply_display_settings_to_menu()
 
 
-func set_window(current_screen_parameter: int, mode_parameter: int, borderless_parameter: int, width_parameter: int, height_parameter: int) -> void:
+func set_window(current_screen_parameter: int, mode_parameter: int,
+	borderless_parameter: int, width_parameter: int, height_parameter: int
+) -> void:
 	ignore_window_resize = true
 	var window_instance = get_window()
 	if mode_parameter == 1:
@@ -484,7 +501,9 @@ func toggle_accept_button() -> void:
 		1:
 			accept_button.disabled = !theme_changed_settings_check()
 		_:
-			printerr("Accept button error: Tab not found. ", main_settings_tab_container.current_tab)
+			printerr("Accept button error: Tab not found. ",
+				main_settings_tab_container.current_tab
+			)
 
 func initialize_theme() -> void:
 	apply_theme_settings_to_menu()
@@ -745,8 +764,12 @@ func test_themes() -> void:
 	BUTTON_NORMAL_BOX.set("bg_color", theme_button_default_color_picker_button.color)
 	BUTTON_PRESSED_BOX.set("bg_color", theme_button_pressed_color_picker_button.color)
 	
-	PANEL_BACKGROUND_TRANSPARENCY_RED.set("bg_color", theme_transparency_warning_color_picker_button.color)
-	PANEL_POPUP_TRANSPARENCY.set("bg_color", theme_transparency_default_color_picker_button.color)
+	PANEL_BACKGROUND_TRANSPARENCY_RED.set("bg_color",
+		theme_transparency_warning_color_picker_button.color
+	)
+	PANEL_POPUP_TRANSPARENCY.set("bg_color",
+		theme_transparency_default_color_picker_button.color
+	)
 
 
 func accept_button_display_settings() -> void:

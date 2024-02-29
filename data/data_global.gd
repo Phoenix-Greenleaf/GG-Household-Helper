@@ -73,7 +73,9 @@ var name_task_tracking_data: String = "task_tracking_"
 var name_task_tracking_settings: String = "task_tracking_settings"
 
 var filepath_main_settings: String = settings_folder + name_main_settings + json_extension
-var filepath_task_tracking_settings: String = settings_folder + name_task_tracking_settings + json_extension
+var filepath_task_tracking_settings: String = (settings_folder
+	+ name_task_tracking_settings + json_extension
+)
 
 var default_profile: Array = ["No Profile", Color.WHITE]
 var month_strings: Array[String]
@@ -110,12 +112,14 @@ func _ready() -> void:
 
 func connect_signals() -> void:
 	SignalBus._on_task_set_data_active_data_switched.connect(load_settings_main)
-	SignalBus._on_task_editor_profile_selection_changed.connect(task_editor_update_user_profile_dropdown_items) #can we directly call?
-	#SignalBus._on_task_editor_remote_dropdown_items_users_changed.connect(task_editor_update_user_profile_dropdown_items) #without signal?
+	SignalBus._on_task_editor_profile_selection_changed.connect(
+		task_editor_update_user_profile_dropdown_items
+	) #can we directly call?
 
 
-
-func button_based_message(target: Node, message: String, time: int = 2, interfering_messages: Array = []) -> void:
+func button_based_message(target: Node, message: String, time: int = 2,
+	interfering_messages: Array = []
+) -> void:
 	if target.text == message:
 		prints("Button message already active")
 		return
@@ -236,8 +240,12 @@ func load_settings_task_tracking() -> void:
 
 
 func generate_task_set_filepath(task_set_name: String, task_set_year: int) -> String:
-	var task_set_save_name: String = name_task_tracking_data + task_set_name + "_" + str(task_set_year)
-	var task_set_filepath: String = generate_filepath(task_set_save_name, FileType.TASK_TRACKING_DATA)
+	var task_set_save_name: String = (name_task_tracking_data + task_set_name
+		+ "_" + str(task_set_year)
+	)
+	var task_set_filepath: String = generate_filepath(task_set_save_name,
+		FileType.TASK_TRACKING_DATA
+	)
 	return task_set_filepath
 
 
@@ -354,5 +362,7 @@ func theme_variation_issue_workaround(correction_target: Node, theme_parameter: 
 			var internal_popup_menu: PopupMenu = correction_target.get_popup()
 			internal_popup_menu.set_theme_type_variation(theme_parameter)
 		_:
-			prints("theme_variation_issue_workaround cannot match class:", correction_target.get_class())
+			prints("theme_variation_issue_workaround cannot match class:",
+				correction_target.get_class()
+			)
 

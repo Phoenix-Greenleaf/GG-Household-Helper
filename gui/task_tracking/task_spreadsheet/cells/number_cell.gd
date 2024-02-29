@@ -24,4 +24,3 @@ func update_active_data(number_parameter: float) -> void:
 			prints("Spinbox Task", saved_task.name)
 			return
 	SignalBus._on_task_set_data_modified.emit()
-	print_verbose("NumberCell", saved_task.name, "func update_active_data emits '_on_task_set_data_modified'")

@@ -24,7 +24,9 @@ func _draw() -> void:
 	if not border_color:
 		prints("No borders needed", self.name)
 		return
-	draw_rect(Rect2(current_start, current_start, current_x, current_y), border_color, false, current_width)
+	draw_rect(Rect2(current_start, current_start, current_x, current_y),
+		border_color, false, current_width
+	)
 
 
 func update_border(update_color: Color = clear_color) -> void:

@@ -195,7 +195,9 @@ func _on_clone_accept_button_pressed() -> void:
 		if FileAccess.file_exists(DataGlobal.generate_task_set_filepath(cloned_title, cloned_year)):
 			prints("File already exists! Clone needs different year or title...")
 			DataGlobal.button_based_message(clone_accept_button, "Error!")
-			DataGlobal.button_based_message(clone_label, "File Already Exists!\n(Change Title or Year)")
+			DataGlobal.button_based_message(clone_label,
+				"File Already Exists!\n(Change Title or Year)"
+			)
 			return
 		DataGlobal.clone_task_set_data(cloned_title, cloned_year)
 		create_task_save_button(cloned_title, cloned_year)

@@ -82,13 +82,27 @@ func import_json_to_resource(data_parameter: Dictionary) -> void:
 	theme_tertiary_color = Color.from_string(data_parameter.theme_tertiary_color, Color.WHITE)
 	theme_quaternary_color = Color.from_string(data_parameter.theme_quaternary_color, Color.WHITE)
 	theme_quinary_color = Color.from_string(data_parameter.theme_quinary_color, Color.WHITE)
-	theme_button_default_color = Color.from_string(data_parameter.theme_button_default_color, Color.WHITE)
-	theme_button_disabled_color = Color.from_string(data_parameter.theme_button_disabled_color, Color.WHITE)
-	theme_button_focus_color = Color.from_string(data_parameter.theme_button_focus_color, Color.WHITE)
-	theme_button_pressed_color = Color.from_string(data_parameter.theme_button_pressed_color, Color.WHITE)
-	theme_button_hover_color = Color.from_string(data_parameter.theme_button_hover_color, Color.WHITE)
-	theme_transparency_default_color = Color.from_string(data_parameter.theme_transparency_default_color, Color.WHITE)
-	theme_transparency_warning_color = Color.from_string(data_parameter.theme_transparency_warning_color, Color.WHITE)
+	theme_button_default_color = Color.from_string(
+		data_parameter.theme_button_default_color, Color.WHITE
+	)
+	theme_button_disabled_color = Color.from_string(
+		data_parameter.theme_button_disabled_color, Color.WHITE
+	)
+	theme_button_focus_color = Color.from_string(
+		data_parameter.theme_button_focus_color, Color.WHITE
+	)
+	theme_button_pressed_color = Color.from_string(
+		data_parameter.theme_button_pressed_color, Color.WHITE
+	)
+	theme_button_hover_color = Color.from_string(
+		data_parameter.theme_button_hover_color, Color.WHITE
+	)
+	theme_transparency_default_color = Color.from_string(
+		data_parameter.theme_transparency_default_color, Color.WHITE
+	)
+	theme_transparency_warning_color = Color.from_string(
+		data_parameter.theme_transparency_warning_color, Color.WHITE
+	)
 
 
 
