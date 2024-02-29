@@ -24,7 +24,7 @@ extends PanelContainer
 
 @onready var profile_color_picker_button: ColorPickerButton = %ProfileColorPickerButton
 
-@export var paired_checkbox_menu_button: Node
+@export var paired_checkbox_menu_button: PanelContainer
 
 
 @onready var edit_profile_button: Button = %EditProfileButton
@@ -33,7 +33,7 @@ extends PanelContainer
 @onready var edit_profile_color_picker_button: ColorPickerButton = %EditProfileColorPickerButton
 @onready var edit_profile_menu_accept: Button = %EditProfileMenuAccept
 
-
+var menu_button_width: int
 
 
 var checkbox_profile = preload("res://gui/task_tracking/checkbox_profile.tscn")
@@ -53,6 +53,11 @@ func _ready() -> void:
 	signal_bus_connections()
 
 
+func _process(_delta: float) -> void:
+	if self.visible and paired_checkbox_menu_button:
+			sync_position()
+
+
 func signal_bus_connections() -> void:
 	SignalBus._on_task_editor_checkbox_selection_changed.connect(update_status_colors)
 	SignalBus._on_task_editor_profile_selection_changed.connect(reload_profiles)
@@ -67,6 +72,22 @@ func starting_visibilities() -> void:
 	edit_profile_button.visible = false
 	edit_profile_menu.visible = false
 
+
+func sync_position() -> void:
+	var offset_x: int = 0
+	var offset_y: int = 0
+	var menu_transform: Transform2D = paired_checkbox_menu_button.get_global_transform_with_canvas()
+	var menu_origin = menu_transform.origin
+	var menu_position_x: int = menu_origin.x
+	var menu_position_y: int = menu_origin.y
+	var sync_x: int = offset_x + menu_position_x + menu_button_width
+	var sync_y: int = offset_y + menu_position_y
+	var sync_vector := Vector2i(sync_x, sync_y)
+	self.position = sync_vector
+
+
+func update_menu_button_witdth() -> void:
+	menu_button_width = paired_checkbox_menu_button.size.x
 
 
 func load_existing_profiles() -> void:
@@ -127,6 +148,7 @@ func connect_paired_menu_button() -> void:
 		return
 	var menu_button = paired_checkbox_menu_button.get_node("Button")
 	menu_button.toggled.connect(_on_menu_button_toggled)
+	paired_checkbox_menu_button.resized.connect(update_menu_button_witdth)
 
 
 func connect_status_button_group() -> void:
