@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://dmxpuvrkuq7tc"]
+
+[node name="ColorPaletteStrip" type="HBoxContainer"]
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Palette Name"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+
+[node name="ColorRect4" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+
+[node name="ColorRect5" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+
+[node name="ColorRect6" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+
+[node name="ColorRect7" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+
+[node name="ColorRect8" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
