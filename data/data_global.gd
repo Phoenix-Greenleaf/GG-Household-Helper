@@ -176,6 +176,20 @@ func directory_check(directory_to_check) -> void:
 		prints("Directory Exists")
 
 
+func theme_variation_issue_workaround(correction_target: Node, theme_parameter: String) -> void:
+	match correction_target.get_class():
+		"SpinBox":
+			var internal_line_edit: LineEdit = correction_target.get_line_edit()
+			internal_line_edit.set_theme_type_variation(theme_parameter)
+		"MenuButton", "OptionButton":
+			var internal_popup_menu: PopupMenu = correction_target.get_popup()
+			internal_popup_menu.set_theme_type_variation(theme_parameter)
+		_:
+			prints("theme_variation_issue_workaround cannot match class:",
+				correction_target.get_class()
+			)
+
+
 # main settings
 
 
@@ -352,17 +366,4 @@ func task_editor_scan_task_for_group(scan_task: TaskData) -> void:
 		return
 	task_tracking_task_group_dropdown_items.append(scan_task.group)
 
-
-func theme_variation_issue_workaround(correction_target: Node, theme_parameter: String) -> void:
-	match correction_target.get_class():
-		"SpinBox":
-			var internal_line_edit: LineEdit = correction_target.get_line_edit()
-			internal_line_edit.set_theme_type_variation(theme_parameter)
-		"MenuButton", "OptionButton":
-			var internal_popup_menu: PopupMenu = correction_target.get_popup()
-			internal_popup_menu.set_theme_type_variation(theme_parameter)
-		_:
-			prints("theme_variation_issue_workaround cannot match class:",
-				correction_target.get_class()
-			)
 

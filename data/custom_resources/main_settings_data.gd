@@ -18,7 +18,9 @@ class_name MainSettingsData
 @export var theme_small_size: int
 @export var theme_font_color: Color
 @export var theme_outlines_color: Color
-@export var theme_main_color: Color
+@export var theme_background_color: Color
+@export var theme_border_line_color: Color
+@export var theme_primary_color: Color
 @export var theme_secondary_color: Color
 @export var theme_tertiary_color: Color
 @export var theme_quaternary_color: Color
@@ -30,7 +32,7 @@ class_name MainSettingsData
 @export var theme_button_hover_color: Color
 @export var theme_transparency_default_color: Color
 @export var theme_transparency_warning_color: Color
-
+@export var theme_color_sets: Dictionary
 
 func export_json_from_resouce() -> Dictionary:
 	var json_data: Dictionary = {
@@ -47,7 +49,9 @@ func export_json_from_resouce() -> Dictionary:
 		"theme_small_size": theme_small_size,
 		"theme_font_color": theme_font_color.to_html(),
 		"theme_outlines_color": theme_outlines_color.to_html(),
-		"theme_main_color": theme_main_color.to_html(),
+		"theme_background_color": theme_background_color.to_html(),
+		"theme_border_line_color": theme_border_line_color.to_html(),
+		"theme_primary_color": theme_primary_color.to_html(),
 		"theme_secondary_color": theme_secondary_color.to_html(),
 		"theme_tertiary_color": theme_tertiary_color.to_html(),
 		"theme_quaternary_color": theme_quaternary_color.to_html(),
@@ -75,35 +79,32 @@ func import_json_to_resource(data_parameter: Dictionary) -> void:
 	theme_large_size = data_parameter.theme_large_size
 	theme_medium_size = data_parameter.theme_medium_size
 	theme_small_size = data_parameter.theme_small_size
-	theme_font_color = Color.from_string(data_parameter.theme_font_color, Color.WHITE)
-	theme_outlines_color = Color.from_string(data_parameter.theme_outlines_color, Color.WHITE)
-	theme_main_color = Color.from_string(data_parameter.theme_main_color, Color.WHITE)
-	theme_secondary_color = Color.from_string(data_parameter.theme_secondary_color, Color.WHITE)
-	theme_tertiary_color = Color.from_string(data_parameter.theme_tertiary_color, Color.WHITE)
-	theme_quaternary_color = Color.from_string(data_parameter.theme_quaternary_color, Color.WHITE)
-	theme_quinary_color = Color.from_string(data_parameter.theme_quinary_color, Color.WHITE)
-	theme_button_default_color = Color.from_string(
-		data_parameter.theme_button_default_color, Color.WHITE
+	theme_font_color = color_from_string(data_parameter.theme_font_color)
+	theme_outlines_color = color_from_string(data_parameter.theme_outlines_color)
+	theme_background_color = color_from_string(data_parameter.theme_background_color)
+	theme_border_line_color = color_from_string(data_parameter.theme_border_line_color)
+	theme_primary_color = color_from_string(data_parameter.theme_primary_color)
+	theme_secondary_color = color_from_string(data_parameter.theme_secondary_color)
+	theme_tertiary_color = color_from_string(data_parameter.theme_tertiary_color)
+	theme_quaternary_color = color_from_string(data_parameter.theme_quaternary_color)
+	theme_quinary_color = color_from_string(data_parameter.theme_quinary_color)
+	theme_button_default_color = color_from_string(data_parameter.theme_button_default_color)
+	theme_button_disabled_color = color_from_string(data_parameter.theme_button_disabled_color)
+	theme_button_focus_color = color_from_string(data_parameter.theme_button_focus_color)
+	theme_button_pressed_color = color_from_string(data_parameter.theme_button_pressed_color)
+	theme_button_hover_color = color_from_string(data_parameter.theme_button_hover_color)
+	theme_transparency_default_color = (
+		color_from_string(data_parameter.theme_transparency_default_color)
 	)
-	theme_button_disabled_color = Color.from_string(
-		data_parameter.theme_button_disabled_color, Color.WHITE
-	)
-	theme_button_focus_color = Color.from_string(
-		data_parameter.theme_button_focus_color, Color.WHITE
-	)
-	theme_button_pressed_color = Color.from_string(
-		data_parameter.theme_button_pressed_color, Color.WHITE
-	)
-	theme_button_hover_color = Color.from_string(
-		data_parameter.theme_button_hover_color, Color.WHITE
-	)
-	theme_transparency_default_color = Color.from_string(
-		data_parameter.theme_transparency_default_color, Color.WHITE
-	)
-	theme_transparency_warning_color = Color.from_string(
-		data_parameter.theme_transparency_warning_color, Color.WHITE
+	theme_transparency_warning_color = (
+		color_from_string(data_parameter.theme_transparency_warning_color)
 	)
 
+
+func color_from_string(string_parameter: String) -> Color:
+	var default_color = Color.WHITE
+	var string_color = Color.from_string(string_parameter, default_color)
+	return string_color
 
 
 func reset_settings_all_main() -> void:
@@ -121,22 +122,227 @@ func reset_settings_display() -> void:
 
 
 func reset_settings_theme() -> void:
+	reset_settings_theme_text_size()
+	reset_settings_theme_colors()
+
+
+func reset_settings_theme_text_size() -> void:
 	theme_title_size = 100
 	theme_sub_title_size = 60
 	theme_large_size = 40
 	theme_medium_size = 30
 	theme_small_size = 20
-	theme_font_color = Color.WHITE
-	theme_outlines_color = Color.BLACK
-	theme_main_color = Color.DARK_GREEN
-	theme_secondary_color = Color.WEB_GREEN
-	theme_tertiary_color = Color.OLIVE_DRAB
-	theme_quaternary_color = Color.OLIVE
-	theme_quinary_color = Color.FOREST_GREEN
-	theme_button_default_color = Color.LIME_GREEN
-	theme_button_disabled_color = Color.DARK_SLATE_GRAY
-	theme_button_focus_color = Color.GOLD
-	theme_button_pressed_color = Color.CHARTREUSE
-	theme_button_hover_color = Color.LIME
-	theme_transparency_default_color = Color(Color.DIM_GRAY, 0.5)
-	theme_transparency_warning_color = Color(Color.DARK_RED, 0.5)
+
+
+func reset_settings_theme_colors() -> void:
+	if theme_color_sets != {}:
+		return
+	prints("Generating theme color sets!")
+	theme_color_sets = {
+		"red": color_set_red(),
+		"orange": color_set_orange(),
+		"yellow": color_set_yellow(),
+		"green": color_set_green(),
+		"blue": color_set_blue(),
+		"purple": color_set_purple(),
+		"pink": color_set_pink(),
+		"neutral": color_set_neutral(),
+		"red custom": color_set_red(),
+		"orange custom": color_set_orange(),
+		"yellow custom": color_set_yellow(),
+		"green custom": color_set_green(),
+		"blue custom": color_set_blue(),
+		"purple custom": color_set_purple(),
+		"pink custom": color_set_pink(),
+		"neutral custom": color_set_neutral(),
+	}
+	#theme_font_color = Color.WHITE
+	#theme_outlines_color = Color.BLACK
+	#theme_primary_color = Color.DARK_GREEN
+	#theme_secondary_color = Color.WEB_GREEN
+	#theme_tertiary_color = Color.OLIVE_DRAB
+	#theme_quaternary_color = Color.OLIVE
+	#theme_quinary_color = Color.FOREST_GREEN
+	#theme_button_default_color = Color.LIME_GREEN
+	#theme_button_disabled_color = Color.DARK_SLATE_GRAY
+	#theme_button_focus_color = Color.GOLD
+	#theme_button_pressed_color = Color.CHARTREUSE
+	#theme_button_hover_color = Color.LIME
+	#theme_transparency_default_color = Color(Color.DIM_GRAY, 0.5)
+	#theme_transparency_warning_color = Color(Color.DARK_RED, 0.5)
+
+
+func color_set_red() -> Dictionary:
+	var color_set := {
+		"theme_font_color": Color.WHITE.to_html(),
+		"theme_outlines_color": Color.WHITE.to_html(),
+		"theme_background_color": Color.WHITE.to_html(),
+		"theme_border_line_color": Color.WHITE.to_html(),
+		"theme_primary_color": Color.WHITE.to_html(),
+		"theme_secondary_color": Color.WHITE.to_html(),
+		"theme_tertiary_color": Color.WHITE.to_html(),
+		"theme_quaternary_color": Color.WHITE.to_html(),
+		"theme_quinary_color": Color.WHITE.to_html(),
+		"theme_button_default_color": Color.WHITE.to_html(),
+		"theme_button_disabled_color": Color.WHITE.to_html(),
+		"theme_button_focus_color": Color.WHITE.to_html(),
+		"theme_button_pressed_color": Color.WHITE.to_html(),
+		"theme_button_hover_color": Color.WHITE.to_html(),
+		"theme_transparency_default_color": Color.WHITE.to_html(),
+		"theme_transparency_warning_color": Color.WHITE.to_html(),
+	}
+	return color_set
+
+
+func color_set_orange() -> Dictionary:
+	var color_set := {
+		"theme_font_color": Color.WHITE.to_html(),
+		"theme_outlines_color": Color.WHITE.to_html(),
+		"theme_background_color": Color.WHITE.to_html(),
+		"theme_border_line_color": Color.WHITE.to_html(),
+		"theme_primary_color": Color.WHITE.to_html(),
+		"theme_secondary_color": Color.WHITE.to_html(),
+		"theme_tertiary_color": Color.WHITE.to_html(),
+		"theme_quaternary_color": Color.WHITE.to_html(),
+		"theme_quinary_color": Color.WHITE.to_html(),
+		"theme_button_default_color": Color.WHITE.to_html(),
+		"theme_button_disabled_color": Color.WHITE.to_html(),
+		"theme_button_focus_color": Color.WHITE.to_html(),
+		"theme_button_pressed_color": Color.WHITE.to_html(),
+		"theme_button_hover_color": Color.WHITE.to_html(),
+		"theme_transparency_default_color": Color.WHITE.to_html(),
+		"theme_transparency_warning_color": Color.WHITE.to_html(),
+	}
+	return color_set
+
+
+func color_set_yellow() -> Dictionary:
+	var color_set := {
+		"theme_font_color": Color.WHITE.to_html(),
+		"theme_outlines_color": Color.WHITE.to_html(),
+		"theme_background_color": Color.WHITE.to_html(),
+		"theme_border_line_color": Color.WHITE.to_html(),
+		"theme_primary_color": Color.WHITE.to_html(),
+		"theme_secondary_color": Color.WHITE.to_html(),
+		"theme_tertiary_color": Color.WHITE.to_html(),
+		"theme_quaternary_color": Color.WHITE.to_html(),
+		"theme_quinary_color": Color.WHITE.to_html(),
+		"theme_button_default_color": Color.WHITE.to_html(),
+		"theme_button_disabled_color": Color.WHITE.to_html(),
+		"theme_button_focus_color": Color.WHITE.to_html(),
+		"theme_button_pressed_color": Color.WHITE.to_html(),
+		"theme_button_hover_color": Color.WHITE.to_html(),
+		"theme_transparency_default_color": Color.WHITE.to_html(),
+		"theme_transparency_warning_color": Color.WHITE.to_html(),
+	}
+	return color_set
+
+
+func color_set_green() -> Dictionary:
+	var color_set := {
+		"theme_font_color": Color.WHITE.to_html(),
+		"theme_outlines_color": Color.WHITE.to_html(),
+		"theme_background_color": Color.WHITE.to_html(),
+		"theme_border_line_color": Color.WHITE.to_html(),
+		"theme_primary_color": Color.WHITE.to_html(),
+		"theme_secondary_color": Color.WHITE.to_html(),
+		"theme_tertiary_color": Color.WHITE.to_html(),
+		"theme_quaternary_color": Color.WHITE.to_html(),
+		"theme_quinary_color": Color.WHITE.to_html(),
+		"theme_button_default_color": Color.WHITE.to_html(),
+		"theme_button_disabled_color": Color.WHITE.to_html(),
+		"theme_button_focus_color": Color.WHITE.to_html(),
+		"theme_button_pressed_color": Color.WHITE.to_html(),
+		"theme_button_hover_color": Color.WHITE.to_html(),
+		"theme_transparency_default_color": Color.WHITE.to_html(),
+		"theme_transparency_warning_color": Color.WHITE.to_html(),
+	}
+	return color_set
+
+
+func color_set_blue() -> Dictionary:
+	var color_set := {
+		"theme_font_color": Color.WHITE.to_html(),
+		"theme_outlines_color": Color.WHITE.to_html(),
+		"theme_background_color": Color.WHITE.to_html(),
+		"theme_border_line_color": Color.WHITE.to_html(),
+		"theme_primary_color": Color.WHITE.to_html(),
+		"theme_secondary_color": Color.WHITE.to_html(),
+		"theme_tertiary_color": Color.WHITE.to_html(),
+		"theme_quaternary_color": Color.WHITE.to_html(),
+		"theme_quinary_color": Color.WHITE.to_html(),
+		"theme_button_default_color": Color.WHITE.to_html(),
+		"theme_button_disabled_color": Color.WHITE.to_html(),
+		"theme_button_focus_color": Color.WHITE.to_html(),
+		"theme_button_pressed_color": Color.WHITE.to_html(),
+		"theme_button_hover_color": Color.WHITE.to_html(),
+		"theme_transparency_default_color": Color.WHITE.to_html(),
+		"theme_transparency_warning_color": Color.WHITE.to_html(),
+	}
+	return color_set
+
+
+func color_set_purple() -> Dictionary:
+	var color_set := {
+		"theme_font_color": Color.WHITE.to_html(),
+		"theme_outlines_color": Color.WHITE.to_html(),
+		"theme_background_color": Color.WHITE.to_html(),
+		"theme_border_line_color": Color.WHITE.to_html(),
+		"theme_primary_color": Color.WHITE.to_html(),
+		"theme_secondary_color": Color.WHITE.to_html(),
+		"theme_tertiary_color": Color.WHITE.to_html(),
+		"theme_quaternary_color": Color.WHITE.to_html(),
+		"theme_quinary_color": Color.WHITE.to_html(),
+		"theme_button_default_color": Color.WHITE.to_html(),
+		"theme_button_disabled_color": Color.WHITE.to_html(),
+		"theme_button_focus_color": Color.WHITE.to_html(),
+		"theme_button_pressed_color": Color.WHITE.to_html(),
+		"theme_button_hover_color": Color.WHITE.to_html(),
+		"theme_transparency_default_color": Color.WHITE.to_html(),
+		"theme_transparency_warning_color": Color.WHITE.to_html(),
+	}
+	return color_set
+
+
+func color_set_pink() -> Dictionary:
+	var color_set := {
+		"theme_font_color": Color.WHITE.to_html(),
+		"theme_outlines_color": Color.WHITE.to_html(),
+		"theme_background_color": Color.WHITE.to_html(),
+		"theme_border_line_color": Color.WHITE.to_html(),
+		"theme_primary_color": Color.WHITE.to_html(),
+		"theme_secondary_color": Color.WHITE.to_html(),
+		"theme_tertiary_color": Color.WHITE.to_html(),
+		"theme_quaternary_color": Color.WHITE.to_html(),
+		"theme_quinary_color": Color.WHITE.to_html(),
+		"theme_button_default_color": Color.WHITE.to_html(),
+		"theme_button_disabled_color": Color.WHITE.to_html(),
+		"theme_button_focus_color": Color.WHITE.to_html(),
+		"theme_button_pressed_color": Color.WHITE.to_html(),
+		"theme_button_hover_color": Color.WHITE.to_html(),
+		"theme_transparency_default_color": Color.WHITE.to_html(),
+		"theme_transparency_warning_color": Color.WHITE.to_html(),
+	}
+	return color_set
+
+
+func color_set_neutral() -> Dictionary:
+	var color_set := {
+		"theme_font_color": Color.WHITE.to_html(),
+		"theme_outlines_color": Color.WHITE.to_html(),
+		"theme_background_color": Color.WHITE.to_html(),
+		"theme_border_line_color": Color.WHITE.to_html(),
+		"theme_primary_color": Color.WHITE.to_html(),
+		"theme_secondary_color": Color.WHITE.to_html(),
+		"theme_tertiary_color": Color.WHITE.to_html(),
+		"theme_quaternary_color": Color.WHITE.to_html(),
+		"theme_quinary_color": Color.WHITE.to_html(),
+		"theme_button_default_color": Color.WHITE.to_html(),
+		"theme_button_disabled_color": Color.WHITE.to_html(),
+		"theme_button_focus_color": Color.WHITE.to_html(),
+		"theme_button_pressed_color": Color.WHITE.to_html(),
+		"theme_button_hover_color": Color.WHITE.to_html(),
+		"theme_transparency_default_color": Color.WHITE.to_html(),
+		"theme_transparency_warning_color": Color.WHITE.to_html(),
+	}
+	return color_set

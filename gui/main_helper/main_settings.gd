@@ -31,7 +31,9 @@ extends Control
 @onready var theme_small_size_spin_box: SpinBox = %ThemeSmallSizeSpinBox
 @onready var theme_font_color_picker_button: ColorPickerButton = %ThemeFontColorPickerButton
 @onready var theme_outline_color_picker_button: ColorPickerButton = %ThemeOutlineColorPickerButton
-@onready var theme_main_color_picker_button: ColorPickerButton = %ThemeMainColorPickerButton
+@onready var theme_background_color_picker_button: ColorPickerButton = %ThemeBackgroundColorPickerButton
+@onready var theme_border_line_color_picker_button: ColorPickerButton = %ThemeBorderLineColorPickerButton
+@onready var theme_primary_color_picker_button: ColorPickerButton = %ThemePrimaryColorPickerButton
 @onready var theme_secondary_color_picker_button: ColorPickerButton = %ThemeSecondaryColorPickerButton
 @onready var theme_tertiary_color_picker_button: ColorPickerButton = %ThemeTertiaryColorPickerButton
 @onready var theme_quaternary_color_picker_button: ColorPickerButton = %ThemeQuaternaryColorPickerButton
@@ -128,7 +130,7 @@ var theme_medium_size: int
 var theme_small_size: int
 var theme_font_color: Color
 var theme_outlines_color: Color
-var theme_main_color: Color
+var theme_primary_color: Color
 var theme_secondary_color: Color
 var theme_tertiary_color: Color
 var theme_quaternary_color: Color
@@ -519,7 +521,7 @@ func apply_theme_settings_to_menu() -> void:
 	theme_small_size_spin_box.value = theme_small_size
 	theme_font_color_picker_button.color = theme_font_color
 	theme_outline_color_picker_button.color = theme_outlines_color
-	theme_main_color_picker_button.color = theme_main_color
+	theme_primary_color_picker_button.color = theme_primary_color
 	theme_secondary_color_picker_button.color = theme_secondary_color
 	theme_tertiary_color_picker_button.color = theme_tertiary_color
 	theme_quaternary_color_picker_button.color = theme_quaternary_color
@@ -562,7 +564,7 @@ func theme_changed_settings_check() -> bool:
 		return true
 	if theme_outlines_color != theme_outline_color_picker_button.color:
 		return true
-	if theme_main_color != theme_main_color_picker_button.color:
+	if theme_primary_color != theme_primary_color_picker_button.color:
 		return true
 	if theme_secondary_color != theme_secondary_color_picker_button.color:
 		return true
@@ -627,7 +629,7 @@ func load_theme_settings() -> void:
 	theme_small_size = settings.theme_small_size
 	theme_font_color = settings.theme_font_color
 	theme_outlines_color = settings.theme_outlines_color
-	theme_main_color = settings.theme_main_color
+	theme_primary_color = settings.theme_primary_color
 	theme_secondary_color = settings.theme_secondary_color
 	theme_tertiary_color = settings.theme_tertiary_color
 	theme_quaternary_color = settings.theme_quaternary_color
@@ -649,7 +651,7 @@ func save_theme_settings() -> void:
 	settings.theme_small_size = theme_small_size_spin_box.value
 	settings.theme_font_color = theme_font_color_picker_button.color
 	settings.theme_outlines_color = theme_outline_color_picker_button.color
-	settings.theme_main_color = theme_main_color_picker_button.color
+	settings.theme_primary_color = theme_primary_color_picker_button.color
 	settings.theme_secondary_color = theme_secondary_color_picker_button.color
 	settings.theme_tertiary_color = theme_tertiary_color_picker_button.color
 	settings.theme_quaternary_color = theme_quaternary_color_picker_button.color
@@ -698,8 +700,8 @@ func set_themes() -> void:
 	
 	MAIN_THEME.set_font_size("font_size", "TextEdit", theme_small_size)
 	
-	PANEL_BACKGROUND_MAIN.set("bg_color", theme_main_color)
-	#PANEL_POPUP_MAIN.set("bg_color", theme_main_color)
+	PANEL_BACKGROUND_MAIN.set("bg_color", theme_primary_color)
+	PANEL_POPUP_MAIN.set("bg_color", theme_primary_color)
 	PANEL_POPUP_SECONDARY.set("bg_color", theme_secondary_color)
 	PANEL_POPUP_TERTIARY.set("bg_color", theme_tertiary_color)
 	
@@ -753,8 +755,8 @@ func test_themes() -> void:
 	
 	MAIN_THEME.set_font_size("font_size", "TextEdit", test_font_small)
 	
-	PANEL_BACKGROUND_MAIN.set("bg_color", theme_main_color_picker_button.color)
-	#PANEL_POPUP_MAIN.set("bg_color", theme_main_color_picker_button.color)
+	PANEL_BACKGROUND_MAIN.set("bg_color", theme_primary_color_picker_button.color)
+	PANEL_POPUP_MAIN.set("bg_color", theme_primary_color_picker_button.color)
 	PANEL_POPUP_SECONDARY.set("bg_color", theme_secondary_color_picker_button.color)
 	PANEL_POPUP_TERTIARY.set("bg_color", theme_tertiary_color_picker_button.color)
 	
