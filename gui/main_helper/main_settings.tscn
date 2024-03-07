@@ -826,6 +826,12 @@ layout_mode = 2
 text = "Color"
 color = Color(0, 0, 0.533333, 1)
 
+[node name="ColorPaletteMenuButton" type="Button" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn3VBoxContainer" groups=["theme_testing_lock"]]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Current Color Palette:
+RAINBOW custom"
+
 [node name="ThemeResetHBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer"]
 layout_mode = 2
 alignment = 1

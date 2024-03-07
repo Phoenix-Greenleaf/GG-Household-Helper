@@ -32,7 +32,12 @@ class_name MainSettingsData
 @export var theme_button_hover_color: Color
 @export var theme_transparency_default_color: Color
 @export var theme_transparency_warning_color: Color
-@export var theme_color_sets: Dictionary
+@export var theme_color_palettes: Dictionary
+@export var theme_current_color_palette: String
+
+@export var alpha_for_transparencies: float = 0.6
+
+
 
 func export_json_from_resouce() -> Dictionary:
 	var json_data: Dictionary = {
@@ -47,22 +52,24 @@ func export_json_from_resouce() -> Dictionary:
 		"theme_large_size": theme_large_size,
 		"theme_medium_size": theme_medium_size,
 		"theme_small_size": theme_small_size,
-		"theme_font_color": theme_font_color.to_html(),
-		"theme_outlines_color": theme_outlines_color.to_html(),
-		"theme_background_color": theme_background_color.to_html(),
-		"theme_border_line_color": theme_border_line_color.to_html(),
-		"theme_primary_color": theme_primary_color.to_html(),
-		"theme_secondary_color": theme_secondary_color.to_html(),
-		"theme_tertiary_color": theme_tertiary_color.to_html(),
-		"theme_quaternary_color": theme_quaternary_color.to_html(),
-		"theme_quinary_color": theme_quinary_color.to_html(),
-		"theme_button_default_color": theme_button_default_color.to_html(),
-		"theme_button_disabled_color": theme_button_disabled_color.to_html(),
-		"theme_button_focus_color": theme_button_focus_color.to_html(),
-		"theme_button_pressed_color": theme_button_pressed_color.to_html(),
-		"theme_button_hover_color": theme_button_hover_color.to_html(),
-		"theme_transparency_default_color": theme_transparency_default_color.to_html(),
-		"theme_transparency_warning_color": theme_transparency_warning_color.to_html(),
+		"theme_color_palettes": theme_color_palettes,
+		"theme_current_color_palette": theme_current_color_palette,
+		#"theme_font_color": theme_font_color.to_html(),
+		#"theme_outlines_color": theme_outlines_color.to_html(),
+		#"theme_background_color": theme_background_color.to_html(),
+		#"theme_border_line_color": theme_border_line_color.to_html(),
+		#"theme_primary_color": theme_primary_color.to_html(),
+		#"theme_secondary_color": theme_secondary_color.to_html(),
+		#"theme_tertiary_color": theme_tertiary_color.to_html(),
+		#"theme_quaternary_color": theme_quaternary_color.to_html(),
+		#"theme_quinary_color": theme_quinary_color.to_html(),
+		#"theme_button_default_color": theme_button_default_color.to_html(),
+		#"theme_button_disabled_color": theme_button_disabled_color.to_html(),
+		#"theme_button_focus_color": theme_button_focus_color.to_html(),
+		#"theme_button_pressed_color": theme_button_pressed_color.to_html(),
+		#"theme_button_hover_color": theme_button_hover_color.to_html(),
+		#"theme_transparency_default_color": theme_transparency_default_color.to_html(),
+		#"theme_transparency_warning_color": theme_transparency_warning_color.to_html(),
 	}
 	return json_data
 
@@ -79,32 +86,34 @@ func import_json_to_resource(data_parameter: Dictionary) -> void:
 	theme_large_size = data_parameter.theme_large_size
 	theme_medium_size = data_parameter.theme_medium_size
 	theme_small_size = data_parameter.theme_small_size
-	theme_font_color = color_from_string(data_parameter.theme_font_color)
-	theme_outlines_color = color_from_string(data_parameter.theme_outlines_color)
-	theme_background_color = color_from_string(data_parameter.theme_background_color)
-	theme_border_line_color = color_from_string(data_parameter.theme_border_line_color)
-	theme_primary_color = color_from_string(data_parameter.theme_primary_color)
-	theme_secondary_color = color_from_string(data_parameter.theme_secondary_color)
-	theme_tertiary_color = color_from_string(data_parameter.theme_tertiary_color)
-	theme_quaternary_color = color_from_string(data_parameter.theme_quaternary_color)
-	theme_quinary_color = color_from_string(data_parameter.theme_quinary_color)
-	theme_button_default_color = color_from_string(data_parameter.theme_button_default_color)
-	theme_button_disabled_color = color_from_string(data_parameter.theme_button_disabled_color)
-	theme_button_focus_color = color_from_string(data_parameter.theme_button_focus_color)
-	theme_button_pressed_color = color_from_string(data_parameter.theme_button_pressed_color)
-	theme_button_hover_color = color_from_string(data_parameter.theme_button_hover_color)
-	theme_transparency_default_color = (
-		color_from_string(data_parameter.theme_transparency_default_color)
-	)
-	theme_transparency_warning_color = (
-		color_from_string(data_parameter.theme_transparency_warning_color)
-	)
+	theme_color_palettes = data_parameter.theme_color_palettes
+	theme_current_color_palette = data_parameter.theme_current_color_palette
+	#theme_font_color = color_from_string(data_parameter.theme_font_color)
+	#theme_outlines_color = color_from_string(data_parameter.theme_outlines_color)
+	#theme_background_color = color_from_string(data_parameter.theme_background_color)
+	#theme_border_line_color = color_from_string(data_parameter.theme_border_line_color)
+	#theme_primary_color = color_from_string(data_parameter.theme_primary_color)
+	#theme_secondary_color = color_from_string(data_parameter.theme_secondary_color)
+	#theme_tertiary_color = color_from_string(data_parameter.theme_tertiary_color)
+	#theme_quaternary_color = color_from_string(data_parameter.theme_quaternary_color)
+	#theme_quinary_color = color_from_string(data_parameter.theme_quinary_color)
+	#theme_button_default_color = color_from_string(data_parameter.theme_button_default_color)
+	#theme_button_disabled_color = color_from_string(data_parameter.theme_button_disabled_color)
+	#theme_button_focus_color = color_from_string(data_parameter.theme_button_focus_color)
+	#theme_button_pressed_color = color_from_string(data_parameter.theme_button_pressed_color)
+	#theme_button_hover_color = color_from_string(data_parameter.theme_button_hover_color)
+	#theme_transparency_default_color = (
+		#color_from_string(data_parameter.theme_transparency_default_color)
+	#)
+	#theme_transparency_warning_color = (
+		#color_from_string(data_parameter.theme_transparency_warning_color)
+	#)
 
 
-func color_from_string(string_parameter: String) -> Color:
-	var default_color = Color.WHITE
-	var string_color = Color.from_string(string_parameter, default_color)
-	return string_color
+#func color_from_string(string_parameter: String) -> Color:
+	#var default_color = Color.WHITE
+	#var string_color = Color.from_string(string_parameter, default_color)
+	#return string_color
 
 
 func reset_settings_all_main() -> void:
@@ -135,41 +144,30 @@ func reset_settings_theme_text_size() -> void:
 
 
 func reset_settings_theme_colors() -> void:
-	if theme_color_sets != {}:
-		return
-	prints("Generating theme color sets!")
-	theme_color_sets = {
-		"red": color_set_red(),
-		"orange": color_set_orange(),
-		"yellow": color_set_yellow(),
+	theme_current_color_palette = "green"
+	theme_color_palettes = generate_color_sets()
+
+
+func generate_color_sets() -> Dictionary:
+	var new_color_sets := {
+		#"red": color_set_red(),
+		#"orange": color_set_orange(),
+		#"yellow": color_set_yellow(),
 		"green": color_set_green(),
-		"blue": color_set_blue(),
-		"purple": color_set_purple(),
-		"pink": color_set_pink(),
-		"neutral": color_set_neutral(),
-		"red custom": color_set_red(),
-		"orange custom": color_set_orange(),
-		"yellow custom": color_set_yellow(),
+		#"blue": color_set_blue(),
+		#"purple": color_set_purple(),
+		#"pink": color_set_pink(),
+		#"neutral": color_set_neutral(),
+		#"red custom": color_set_red(),
+		#"orange custom": color_set_orange(),
+		#"yellow custom": color_set_yellow(),
 		"green custom": color_set_green(),
-		"blue custom": color_set_blue(),
-		"purple custom": color_set_purple(),
-		"pink custom": color_set_pink(),
-		"neutral custom": color_set_neutral(),
+		#"blue custom": color_set_blue(),
+		#"purple custom": color_set_purple(),
+		#"pink custom": color_set_pink(),
+		#"neutral custom": color_set_neutral(),
 	}
-	#theme_font_color = Color.WHITE
-	#theme_outlines_color = Color.BLACK
-	#theme_primary_color = Color.DARK_GREEN
-	#theme_secondary_color = Color.WEB_GREEN
-	#theme_tertiary_color = Color.OLIVE_DRAB
-	#theme_quaternary_color = Color.OLIVE
-	#theme_quinary_color = Color.FOREST_GREEN
-	#theme_button_default_color = Color.LIME_GREEN
-	#theme_button_disabled_color = Color.DARK_SLATE_GRAY
-	#theme_button_focus_color = Color.GOLD
-	#theme_button_pressed_color = Color.CHARTREUSE
-	#theme_button_hover_color = Color.LIME
-	#theme_transparency_default_color = Color(Color.DIM_GRAY, 0.5)
-	#theme_transparency_warning_color = Color(Color.DARK_RED, 0.5)
+	return new_color_sets
 
 
 func color_set_red() -> Dictionary:
@@ -241,21 +239,25 @@ func color_set_yellow() -> Dictionary:
 func color_set_green() -> Dictionary:
 	var color_set := {
 		"theme_font_color": Color.WHITE.to_html(),
-		"theme_outlines_color": Color.WHITE.to_html(),
-		"theme_background_color": Color.WHITE.to_html(),
-		"theme_border_line_color": Color.WHITE.to_html(),
-		"theme_primary_color": Color.WHITE.to_html(),
-		"theme_secondary_color": Color.WHITE.to_html(),
-		"theme_tertiary_color": Color.WHITE.to_html(),
-		"theme_quaternary_color": Color.WHITE.to_html(),
-		"theme_quinary_color": Color.WHITE.to_html(),
-		"theme_button_default_color": Color.WHITE.to_html(),
-		"theme_button_disabled_color": Color.WHITE.to_html(),
-		"theme_button_focus_color": Color.WHITE.to_html(),
-		"theme_button_pressed_color": Color.WHITE.to_html(),
-		"theme_button_hover_color": Color.WHITE.to_html(),
-		"theme_transparency_default_color": Color.WHITE.to_html(),
-		"theme_transparency_warning_color": Color.WHITE.to_html(),
+		"theme_outlines_color": Color.BLACK.to_html(),
+		"theme_background_color": Color.DARK_GREEN.to_html(),
+		"theme_border_line_color": Color.BLACK.to_html(),
+		"theme_primary_color": Color.FOREST_GREEN.to_html(),
+		"theme_secondary_color": Color.LIME_GREEN.to_html(),
+		"theme_tertiary_color": Color.GREEN.to_html(),
+		"theme_quaternary_color": Color.GREEN_YELLOW.to_html(),
+		"theme_quinary_color": Color.DARK_OLIVE_GREEN.to_html(),
+		"theme_button_default_color": Color.GOLDENROD.to_html(),
+		"theme_button_disabled_color": Color.DIM_GRAY.to_html(),
+		"theme_button_focus_color": Color.GOLD.to_html(),
+		"theme_button_pressed_color": Color.SADDLE_BROWN.to_html(),
+		"theme_button_hover_color": Color.DARK_GOLDENROD.to_html(),
+		"theme_transparency_default_color": Color(
+			Color.DARK_SLATE_GRAY, alpha_for_transparencies
+		).to_html(),
+		"theme_transparency_warning_color": Color(
+			Color.CRIMSON, alpha_for_transparencies
+		).to_html(),
 	}
 	return color_set
 
@@ -346,3 +348,5 @@ func color_set_neutral() -> Dictionary:
 		"theme_transparency_warning_color": Color.WHITE.to_html(),
 	}
 	return color_set
+
+

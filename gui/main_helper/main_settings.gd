@@ -22,8 +22,6 @@ extends Control
 @onready var test_change_timer: Timer = %TestChangeTimer
 @onready var cancel_changes_button: Button = %CancelChangesButton
 
-
-
 @onready var theme_title_size_spin_box: SpinBox = %ThemeTitleSizeSpinBox
 @onready var theme_sub_title_size_spin_box: SpinBox = %ThemeSubTitleSizeSpinBox
 @onready var theme_large_size_spin_box: SpinBox = %ThemeLargeSizeSpinBox
@@ -53,6 +51,9 @@ extends Control
 @onready var theme_test_change_timer: Timer = %ThemeTestChangeTimer
 @onready var theme_test_h_separator: HSeparator = %ThemeTestHSeparator
 @onready var theme_test_buttons_h_box_container: HBoxContainer = %ThemeTestButtonsHBoxContainer
+@onready var color_palette_menu_button: Button = %ColorPaletteMenuButton
+
+const COLOR_PALETTE_LABEL_BUTTON_GROUP = preload("res://gui/main_helper/color_palette_label_button_group.tres")
 
 const MAIN_THEME = preload("res://theme/main_theme.tres")
 
@@ -130,6 +131,8 @@ var theme_medium_size: int
 var theme_small_size: int
 var theme_font_color: Color
 var theme_outlines_color: Color
+var theme_background_color: Color
+var theme_border_line_color: Color
 var theme_primary_color: Color
 var theme_secondary_color: Color
 var theme_tertiary_color: Color
@@ -143,12 +146,14 @@ var theme_button_hover_color: Color
 var theme_transparency_default_color: Color
 var theme_transparency_warning_color: Color
 
+var theme_current_color_palette: String
+
 
 
 func _ready() -> void:
+	connect_signals()
 	load_all_settings()
 	initialize_all_sections()
-	connect_signals()
 	fix_theme_variations()
 	toggle_changed_settings_section()
 	theme_toggle_changed_settings_section()
@@ -242,6 +247,28 @@ func connect_signals() -> void:
 	test_change_timer.timeout.connect(test_changes_end)
 	theme_test_change_timer.timeout.connect(theme_test_changes_end)
 	get_tree().get_root().size_changed.connect(window_resized)
+	COLOR_PALETTE_LABEL_BUTTON_GROUP.pressed.connect(theme_palette_button_pressed)
+	SignalBus._on_theme_settings_color_palettes_loaded.connect(theme_select_current_palette_button)
+	connect_theme_color_pickers()
+
+
+func connect_theme_color_pickers() -> void:
+	theme_font_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_outline_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_background_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_border_line_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_primary_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_secondary_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_tertiary_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_quaternary_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_quinary_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_button_default_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_button_disabled_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_button_focus_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_button_pressed_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_button_hover_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_transparency_default_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_transparency_warning_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
 
 
 func load_all_settings() -> void:
@@ -519,6 +546,10 @@ func apply_theme_settings_to_menu() -> void:
 	theme_large_size_spin_box.value = theme_large_size
 	theme_medium_size_spin_box.value = theme_medium_size
 	theme_small_size_spin_box.value = theme_small_size
+	apply_theme_color_palette_to_menu()
+
+
+func apply_theme_color_palette_to_menu() -> void:
 	theme_font_color_picker_button.color = theme_font_color
 	theme_outline_color_picker_button.color = theme_outlines_color
 	theme_primary_color_picker_button.color = theme_primary_color
@@ -588,6 +619,14 @@ func theme_changed_settings_check() -> bool:
 		return true
 	if theme_transparency_warning_color != theme_transparency_warning_color_picker_button.color:
 		return true
+	if theme_font_color != theme_font_color_picker_button.color:
+		return true
+	if theme_outlines_color != theme_outline_color_picker_button.color:
+		return true
+	if theme_border_line_color != theme_border_line_color_picker_button.color:
+		return true
+	if theme_current_color_palette != settings.theme_current_color_palette:
+		return true
 	return false
 
 
@@ -627,20 +666,28 @@ func load_theme_settings() -> void:
 	theme_large_size = settings.theme_large_size
 	theme_medium_size = settings.theme_medium_size
 	theme_small_size = settings.theme_small_size
-	theme_font_color = settings.theme_font_color
-	theme_outlines_color = settings.theme_outlines_color
-	theme_primary_color = settings.theme_primary_color
-	theme_secondary_color = settings.theme_secondary_color
-	theme_tertiary_color = settings.theme_tertiary_color
-	theme_quaternary_color = settings.theme_quaternary_color
-	theme_quinary_color = settings.theme_quinary_color
-	theme_button_default_color = settings.theme_button_default_color
-	theme_button_disabled_color = settings.theme_button_disabled_color
-	theme_button_focus_color = settings.theme_button_focus_color
-	theme_button_pressed_color = settings.theme_button_pressed_color
-	theme_button_hover_color = settings.theme_button_hover_color
-	theme_transparency_default_color = settings.theme_transparency_default_color
-	theme_transparency_warning_color = settings.theme_transparency_warning_color
+	theme_current_color_palette = settings.theme_current_color_palette
+	load_theme_color_palette()
+
+
+func load_theme_color_palette() -> void:
+	var color_profile = settings.theme_color_palettes[theme_current_color_palette]
+	theme_font_color = Color(color_profile.theme_font_color)
+	theme_outlines_color = Color(color_profile.theme_outlines_color)
+	theme_background_color = Color(color_profile.theme_background_color)
+	theme_border_line_color = Color(color_profile.theme_border_line_color)
+	theme_primary_color = Color(color_profile.theme_primary_color)
+	theme_secondary_color = Color(color_profile.theme_secondary_color)
+	theme_tertiary_color = Color(color_profile.theme_tertiary_color)
+	theme_quaternary_color = Color(color_profile.theme_quaternary_color)
+	theme_quinary_color = Color(color_profile.theme_quinary_color)
+	theme_button_default_color = Color(color_profile.theme_button_default_color)
+	theme_button_disabled_color = Color(color_profile.theme_button_disabled_color)
+	theme_button_focus_color = Color(color_profile.theme_button_focus_color)
+	theme_button_pressed_color = Color(color_profile.theme_button_pressed_color)
+	theme_button_hover_color = Color(color_profile.theme_button_hover_color)
+	theme_transparency_default_color = Color(color_profile.theme_transparency_default_color)
+	theme_transparency_warning_color = Color(color_profile.theme_transparency_warning_color)
 
 
 func save_theme_settings() -> void:
@@ -649,20 +696,24 @@ func save_theme_settings() -> void:
 	settings.theme_large_size = theme_large_size_spin_box.value
 	settings.theme_medium_size = theme_medium_size_spin_box.value
 	settings.theme_small_size = theme_small_size_spin_box.value
-	settings.theme_font_color = theme_font_color_picker_button.color
-	settings.theme_outlines_color = theme_outline_color_picker_button.color
-	settings.theme_primary_color = theme_primary_color_picker_button.color
-	settings.theme_secondary_color = theme_secondary_color_picker_button.color
-	settings.theme_tertiary_color = theme_tertiary_color_picker_button.color
-	settings.theme_quaternary_color = theme_quaternary_color_picker_button.color
-	settings.theme_quinary_color = theme_quinary_color_picker_button.color
-	settings.theme_button_default_color = theme_button_default_color_picker_button.color
-	settings.theme_button_disabled_color = theme_button_disabled_color_picker_button.color
-	settings.theme_button_focus_color = theme_button_focus_color_picker_button.color
-	settings.theme_button_pressed_color = theme_button_pressed_color_picker_button.color
-	settings.theme_button_hover_color = theme_button_hover_color_picker_button.color
-	settings.theme_transparency_default_color = theme_transparency_default_color_picker_button.color
-	settings.theme_transparency_warning_color = theme_transparency_warning_color_picker_button.color
+	settings.theme_current_color_palette = theme_current_color_palette
+	var color_profile = settings.theme_color_palettes[theme_current_color_palette]
+	color_profile.theme_font_color = theme_font_color_picker_button.color.to_html()
+	color_profile.theme_outlines_color = theme_outline_color_picker_button.color.to_html()
+	color_profile.theme_background_color = theme_background_color_picker_button.color.to_html()
+	color_profile.theme_border_line_color = theme_border_line_color_picker_button.color.to_html()
+	color_profile.theme_primary_color = theme_primary_color_picker_button.color.to_html()
+	color_profile.theme_secondary_color = theme_secondary_color_picker_button.color.to_html()
+	color_profile.theme_tertiary_color = theme_tertiary_color_picker_button.color.to_html()
+	color_profile.theme_quaternary_color = theme_quaternary_color_picker_button.color.to_html()
+	color_profile.theme_quinary_color = theme_quinary_color_picker_button.color.to_html()
+	color_profile.theme_button_default_color = theme_button_default_color_picker_button.color.to_html()
+	color_profile.theme_button_disabled_color = theme_button_disabled_color_picker_button.color.to_html()
+	color_profile.theme_button_focus_color = theme_button_focus_color_picker_button.color.to_html()
+	color_profile.theme_button_pressed_color = theme_button_pressed_color_picker_button.color.to_html()
+	color_profile.theme_button_hover_color = theme_button_hover_color_picker_button.color.to_html()
+	color_profile.theme_transparency_default_color = theme_transparency_default_color_picker_button.color.to_html()
+	color_profile.theme_transparency_warning_color = theme_transparency_warning_color_picker_button.color.to_html()
 	DataGlobal.save_settings_main()
 	load_theme_settings()
 	apply_display_settings_to_menu()
@@ -700,7 +751,7 @@ func set_themes() -> void:
 	
 	MAIN_THEME.set_font_size("font_size", "TextEdit", theme_small_size)
 	
-	PANEL_BACKGROUND_MAIN.set("bg_color", theme_primary_color)
+	PANEL_BACKGROUND_MAIN.set("bg_color", theme_background_color)
 	PANEL_POPUP_MAIN.set("bg_color", theme_primary_color)
 	PANEL_POPUP_SECONDARY.set("bg_color", theme_secondary_color)
 	PANEL_POPUP_TERTIARY.set("bg_color", theme_tertiary_color)
@@ -794,10 +845,50 @@ func accept_button_theme_settings() -> void:
 		theme_test_changes_end()
 		prints("End test: Accepted")
 	save_theme_settings()
-	theme_toggle_changed_settings_section()
 	set_themes()
+	SignalBus._on_theme_settings_color_palette_updated.emit()
+	theme_toggle_changed_settings_section()
 
 
+func theme_select_current_palette_button() -> void:
+	var palette_button_list: Array = COLOR_PALETTE_LABEL_BUTTON_GROUP.get_buttons()
+	if palette_button_list.size() == 0:
+		return
+	for button_iteration in palette_button_list:
+		var button_text =  button_iteration.text.to_lower()
+		if button_text == theme_current_color_palette:
+			button_iteration.set_pressed_no_signal(true)
+			color_palette_menu_button.text = "Current Color Palette:\n" + button_iteration.text.capitalize()
+			return
+		button_iteration.set_pressed_no_signal(false)
+	theme_custom_palette_check()
+
+
+func theme_palette_button_pressed(button_pressed: Button) -> void:
+	theme_current_color_palette = button_pressed.text.to_lower()
+	color_palette_menu_button.text = "Current Color Palette:\n" + button_pressed.text
+	theme_select_current_palette_button()
+	load_theme_color_palette()
+	apply_theme_color_palette_to_menu()
+	theme_toggle_changed_settings_section()
+	
+
+
+func theme_custom_palette_check() -> bool:
+	if theme_current_color_palette.ends_with("custom"):
+		return true
+	return false
+
+
+func theme_preset_palette_swaps_to_custom_when_edited(_discarded_parameter) -> void:
+	if theme_custom_palette_check():
+		return
+	prints("Changing palette from preset to custom!")
+	theme_current_color_palette += " custom"
+	theme_select_current_palette_button()
+	load_theme_color_palette()
+	apply_theme_color_palette_to_menu()
+	theme_toggle_changed_settings_section()
 
 
 

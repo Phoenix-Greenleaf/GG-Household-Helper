@@ -1,88 +1,78 @@
-[gd_scene load_steps=2 format=3 uid="uid://cisnan0qbk7wr"]
+[gd_scene load_steps=3 format=3 uid="uid://cisnan0qbk7wr"]
 
+[ext_resource type="Script" path="res://gui/main_helper/theme_palette_picker_popup.gd" id="1_2mkuq"]
 [ext_resource type="PackedScene" uid="uid://dmxpuvrkuq7tc" path="res://gui/main_helper/color_palette_strip.tscn" id="1_hlqf1"]
 
-[node name="ThemePalettePickerPopup" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="ThemePalettePickerPopup" type="PanelContainer"]
+offset_right = 946.0
+offset_bottom = 270.0
+script = ExtResource("1_2mkuq")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_right = 12.0
-offset_bottom = 12.0
-
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="MainVBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="TitlePanelContainer" type="PanelContainer" parent="MarginContainer/MainVBoxContainer"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/MainVBoxContainer/TitlePanelContainer"]
 layout_mode = 2
 text = "Theme Color Palettes"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="PaletteHBoxContainer" type="HBoxContainer" parent="MarginContainer/MainVBoxContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="PresetPaletteVBoxContainer" type="VBoxContainer" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="PresetPalettePanelContainer" type="PanelContainer" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/PresetPaletteVBoxContainer"]
+layout_mode = 2
+
+[node name="PresetPaletteLabel" type="Label" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/PresetPaletteVBoxContainer/PresetPalettePanelContainer"]
 layout_mode = 2
 text = "Preset Palettes"
 horizontal_alignment = 1
 
-[node name="ColorPaletteStrip" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("1_hlqf1")]
+[node name="ColorPaletteStrip" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/PresetPaletteVBoxContainer" instance=ExtResource("1_hlqf1")]
 layout_mode = 2
 
-[node name="ColorPaletteStrip2" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("1_hlqf1")]
+[node name="ColorPaletteStrip2" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/PresetPaletteVBoxContainer" instance=ExtResource("1_hlqf1")]
 layout_mode = 2
 
-[node name="ColorPaletteStrip3" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("1_hlqf1")]
+[node name="ColorPaletteStrip3" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/PresetPaletteVBoxContainer" instance=ExtResource("1_hlqf1")]
 layout_mode = 2
 
-[node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="CustomPaletteVBoxContainer" type="VBoxContainer" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="CustomPalettePanelContainer" type="PanelContainer" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/CustomPaletteVBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/CustomPaletteVBoxContainer/CustomPalettePanelContainer"]
 layout_mode = 2
 text = "Custom Palettes"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="ColorPaletteStrip" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/CustomPaletteVBoxContainer" instance=ExtResource("1_hlqf1")]
 layout_mode = 2
 
-[node name="ColorPaletteStrip" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer" instance=ExtResource("1_hlqf1")]
+[node name="ColorPaletteStrip2" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/CustomPaletteVBoxContainer" instance=ExtResource("1_hlqf1")]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
-layout_mode = 2
-text = "Reset"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="ColorPaletteStrip3" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/CustomPaletteVBoxContainer" instance=ExtResource("1_hlqf1")]
 layout_mode = 2
 
-[node name="ColorPaletteStrip2" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer2" instance=ExtResource("1_hlqf1")]
+[node name="CloseButton" type="Button" parent="MarginContainer/MainVBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
-
-[node name="Button" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer2"]
-layout_mode = 2
-text = "Reset"
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
-layout_mode = 2
-
-[node name="ColorPaletteStrip3" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer3" instance=ExtResource("1_hlqf1")]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer3"]
-layout_mode = 2
-text = "Reset"
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Close"
