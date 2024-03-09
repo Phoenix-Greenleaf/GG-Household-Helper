@@ -93,7 +93,6 @@ var test_time: int = 13
 
 var ignore_window_resize: bool = true
 
-
 var resolution_list: Array = [
 	600,
 	640,
@@ -147,6 +146,8 @@ var theme_transparency_default_color: Color
 var theme_transparency_warning_color: Color
 
 var theme_current_color_palette: String
+var theme_loaded_color_palette: String
+var theme_palette_reset_needs_saving: bool = false
 
 
 
@@ -249,6 +250,7 @@ func connect_signals() -> void:
 	get_tree().get_root().size_changed.connect(window_resized)
 	COLOR_PALETTE_LABEL_BUTTON_GROUP.pressed.connect(theme_palette_button_pressed)
 	SignalBus._on_theme_settings_color_palettes_loaded.connect(theme_select_current_palette_button)
+	SignalBus._on_theme_settings_color_palette_reset.connect(theme_reset_palette)
 	connect_theme_color_pickers()
 
 
@@ -550,6 +552,10 @@ func apply_theme_settings_to_menu() -> void:
 
 
 func apply_theme_color_palette_to_menu() -> void:
+	theme_current_color_palette = theme_loaded_color_palette
+	color_palette_menu_button.text = "Current Color Palette:\n" + theme_current_color_palette.capitalize()
+	theme_background_color_picker_button.color = theme_background_color
+	theme_border_line_color_picker_button.color = theme_border_line_color
 	theme_font_color_picker_button.color = theme_font_color
 	theme_outline_color_picker_button.color = theme_outlines_color
 	theme_primary_color_picker_button.color = theme_primary_color
@@ -564,7 +570,6 @@ func apply_theme_color_palette_to_menu() -> void:
 	theme_button_hover_color_picker_button.color = theme_button_hover_color
 	theme_transparency_default_color_picker_button.color = theme_transparency_default_color
 	theme_transparency_warning_color_picker_button.color = theme_transparency_warning_color
-	theme_disable_changed_settings_section(true)
 
 
 func theme_toggle_changed_settings_section() -> void:
@@ -594,6 +599,10 @@ func theme_changed_settings_check() -> bool:
 	if theme_font_color != theme_font_color_picker_button.color:
 		return true
 	if theme_outlines_color != theme_outline_color_picker_button.color:
+		return true
+	if theme_background_color != theme_background_color_picker_button.color:
+		return true
+	if theme_border_line_color != theme_border_line_color_picker_button.color:
 		return true
 	if theme_primary_color != theme_primary_color_picker_button.color:
 		return true
@@ -625,7 +634,9 @@ func theme_changed_settings_check() -> bool:
 		return true
 	if theme_border_line_color != theme_border_line_color_picker_button.color:
 		return true
-	if theme_current_color_palette != settings.theme_current_color_palette:
+	if theme_current_color_palette != theme_loaded_color_palette:
+		return true
+	if theme_palette_reset_needs_saving:
 		return true
 	return false
 
@@ -657,7 +668,8 @@ func theme_test_changes_end() -> void:
 	if not theme_test_change_timer.is_stopped():
 		theme_test_change_timer.stop()
 	theme_test_change_timer_label.text = ""
-	toggle_changed_settings_section()
+	theme_select_current_palette_button()
+	theme_toggle_changed_settings_section()
 
 
 func load_theme_settings() -> void:
@@ -667,6 +679,7 @@ func load_theme_settings() -> void:
 	theme_medium_size = settings.theme_medium_size
 	theme_small_size = settings.theme_small_size
 	theme_current_color_palette = settings.theme_current_color_palette
+	theme_loaded_color_palette = settings.theme_current_color_palette
 	load_theme_color_palette()
 
 
@@ -714,9 +727,10 @@ func save_theme_settings() -> void:
 	color_profile.theme_button_hover_color = theme_button_hover_color_picker_button.color.to_html()
 	color_profile.theme_transparency_default_color = theme_transparency_default_color_picker_button.color.to_html()
 	color_profile.theme_transparency_warning_color = theme_transparency_warning_color_picker_button.color.to_html()
+	theme_palette_reset_needs_saving = false
 	DataGlobal.save_settings_main()
 	load_theme_settings()
-	apply_display_settings_to_menu()
+	apply_theme_settings_to_menu()
 
 
 func set_themes() -> void:
@@ -913,18 +927,20 @@ func accept_button_theme_settings() -> void:
 	set_themes()
 	SignalBus._on_theme_settings_color_palette_updated.emit()
 	theme_toggle_changed_settings_section()
+	theme_select_current_palette_button()
 
 
 func theme_select_current_palette_button() -> void:
 	var palette_button_list: Array = COLOR_PALETTE_LABEL_BUTTON_GROUP.get_buttons()
 	if palette_button_list.size() == 0:
 		return
+	prints("Attempting to select palette button:", theme_current_color_palette)
 	for button_iteration in palette_button_list:
 		var button_text =  button_iteration.text.to_lower()
 		if button_text == theme_current_color_palette:
 			button_iteration.set_pressed_no_signal(true)
 			color_palette_menu_button.text = "Current Color Palette:\n" + button_iteration.text.capitalize()
-			return
+			continue
 		button_iteration.set_pressed_no_signal(false)
 	theme_custom_palette_check()
 
@@ -932,11 +948,28 @@ func theme_select_current_palette_button() -> void:
 func theme_palette_button_pressed(button_pressed: Button) -> void:
 	theme_current_color_palette = button_pressed.text.to_lower()
 	color_palette_menu_button.text = "Current Color Palette:\n" + button_pressed.text
-	theme_select_current_palette_button()
-	load_theme_color_palette()
-	apply_theme_color_palette_to_menu()
+	theme_load_palette_to_menu(theme_current_color_palette)
 	theme_toggle_changed_settings_section()
-	
+
+
+func theme_load_palette_to_menu(palette_parameter) -> void:
+	var loaded_palette = settings.theme_color_palettes[palette_parameter]
+	theme_background_color_picker_button.color = Color(loaded_palette.theme_background_color)
+	theme_primary_color_picker_button.color = Color(loaded_palette.theme_primary_color)
+	theme_secondary_color_picker_button.color = Color(loaded_palette.theme_secondary_color)
+	theme_tertiary_color_picker_button.color = Color(loaded_palette.theme_tertiary_color)
+	theme_quaternary_color_picker_button.color = Color(loaded_palette.theme_quaternary_color)
+	theme_quinary_color_picker_button.color = Color(loaded_palette.theme_quinary_color)
+	theme_border_line_color_picker_button.color = Color(loaded_palette.theme_border_line_color)
+	theme_font_color_picker_button.color = Color(loaded_palette.theme_font_color)
+	theme_outline_color_picker_button.color = Color(loaded_palette.theme_outlines_color)
+	theme_button_default_color_picker_button.color = Color(loaded_palette.theme_button_default_color)
+	theme_button_disabled_color_picker_button.color = Color(loaded_palette.theme_button_disabled_color)
+	theme_button_focus_color_picker_button.color = Color(loaded_palette.theme_button_focus_color)
+	theme_button_hover_color_picker_button.color = Color(loaded_palette.theme_button_hover_color)
+	theme_button_pressed_color_picker_button.color = Color(loaded_palette.theme_button_pressed_color)
+	theme_transparency_default_color_picker_button.color = Color(loaded_palette.theme_transparency_default_color)
+	theme_transparency_warning_color_picker_button.color = Color(loaded_palette.theme_transparency_warning_color)
 
 
 func theme_custom_palette_check() -> bool:
@@ -951,10 +984,19 @@ func theme_preset_palette_swaps_to_custom_when_edited(_discarded_parameter) -> v
 	prints("Changing palette from preset to custom!")
 	theme_current_color_palette += " custom"
 	theme_select_current_palette_button()
-	load_theme_color_palette()
-	apply_theme_color_palette_to_menu()
+	theme_load_palette_to_menu(theme_current_color_palette)
 	theme_toggle_changed_settings_section()
 
+
+func theme_reset_palette(palette_parameter: String) -> void:
+	var preset_palette = palette_parameter.left(-7)
+	prints("Reseting palette:", palette_parameter, "to", preset_palette)
+	settings.theme_color_palettes[palette_parameter] = settings.theme_color_palettes[preset_palette]
+	SignalBus._on_theme_settings_color_palette_updated.emit()
+	if palette_parameter == theme_current_color_palette:
+		theme_load_palette_to_menu(palette_parameter)
+	theme_palette_reset_needs_saving = true
+	theme_toggle_changed_settings_section()
 
 
 func _on_reset_button_pressed() -> void:
@@ -1044,6 +1086,7 @@ func _on_cancel_changes_button_pressed() -> void:
 			apply_theme_settings_to_menu()
 			set_themes()
 			theme_toggle_changed_settings_section()
+			theme_select_current_palette_button()
 		_:
 			prints("Cancel Button Error: Tab not found:", main_settings_tab_container.current_tab)
 
@@ -1065,6 +1108,7 @@ func _on_theme_test_button_pressed() -> void:
 
 func _on_theme_cancel_changes_button_pressed() -> void:
 	apply_theme_settings_to_menu()
+	theme_select_current_palette_button()
 	theme_toggle_changed_settings_section()
 
 

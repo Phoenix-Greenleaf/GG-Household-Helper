@@ -19,7 +19,7 @@ extends PanelContainer
 @onready var reset_button: Button = %ResetButton
 @onready var palette_name_button: Button = %PaletteNameButton
 
-@export var color_set_for_reset: Dictionary
+@export var color_set_for_reset: String
 
 
 
@@ -51,19 +51,16 @@ func enable_reset_button() -> void:
 
 
 func set_palette_name(palette_name: String) -> void:
-	palette_name_button.text = palette_name
+	color_set_for_reset = palette_name
+	palette_name_button.text = palette_name.capitalize()
 
 
 func set_palette_button_group(group: ButtonGroup) -> void:
 	palette_name_button.button_group = group
 
 
-
-
-
-
-
-
-
-
-
+func _on_reset_button_pressed() -> void:
+	if reset_button.text == "Reset":
+		DataGlobal.button_based_message(reset_button, "Confirm", 3)
+		return
+	SignalBus._on_theme_settings_color_palette_reset.emit(color_set_for_reset)

@@ -54,22 +54,6 @@ func export_json_from_resouce() -> Dictionary:
 		"theme_small_size": theme_small_size,
 		"theme_color_palettes": theme_color_palettes,
 		"theme_current_color_palette": theme_current_color_palette,
-		#"theme_font_color": theme_font_color.to_html(),
-		#"theme_outlines_color": theme_outlines_color.to_html(),
-		#"theme_background_color": theme_background_color.to_html(),
-		#"theme_border_line_color": theme_border_line_color.to_html(),
-		#"theme_primary_color": theme_primary_color.to_html(),
-		#"theme_secondary_color": theme_secondary_color.to_html(),
-		#"theme_tertiary_color": theme_tertiary_color.to_html(),
-		#"theme_quaternary_color": theme_quaternary_color.to_html(),
-		#"theme_quinary_color": theme_quinary_color.to_html(),
-		#"theme_button_default_color": theme_button_default_color.to_html(),
-		#"theme_button_disabled_color": theme_button_disabled_color.to_html(),
-		#"theme_button_focus_color": theme_button_focus_color.to_html(),
-		#"theme_button_pressed_color": theme_button_pressed_color.to_html(),
-		#"theme_button_hover_color": theme_button_hover_color.to_html(),
-		#"theme_transparency_default_color": theme_transparency_default_color.to_html(),
-		#"theme_transparency_warning_color": theme_transparency_warning_color.to_html(),
 	}
 	return json_data
 
@@ -88,32 +72,6 @@ func import_json_to_resource(data_parameter: Dictionary) -> void:
 	theme_small_size = data_parameter.theme_small_size
 	theme_color_palettes = data_parameter.theme_color_palettes
 	theme_current_color_palette = data_parameter.theme_current_color_palette
-	#theme_font_color = color_from_string(data_parameter.theme_font_color)
-	#theme_outlines_color = color_from_string(data_parameter.theme_outlines_color)
-	#theme_background_color = color_from_string(data_parameter.theme_background_color)
-	#theme_border_line_color = color_from_string(data_parameter.theme_border_line_color)
-	#theme_primary_color = color_from_string(data_parameter.theme_primary_color)
-	#theme_secondary_color = color_from_string(data_parameter.theme_secondary_color)
-	#theme_tertiary_color = color_from_string(data_parameter.theme_tertiary_color)
-	#theme_quaternary_color = color_from_string(data_parameter.theme_quaternary_color)
-	#theme_quinary_color = color_from_string(data_parameter.theme_quinary_color)
-	#theme_button_default_color = color_from_string(data_parameter.theme_button_default_color)
-	#theme_button_disabled_color = color_from_string(data_parameter.theme_button_disabled_color)
-	#theme_button_focus_color = color_from_string(data_parameter.theme_button_focus_color)
-	#theme_button_pressed_color = color_from_string(data_parameter.theme_button_pressed_color)
-	#theme_button_hover_color = color_from_string(data_parameter.theme_button_hover_color)
-	#theme_transparency_default_color = (
-		#color_from_string(data_parameter.theme_transparency_default_color)
-	#)
-	#theme_transparency_warning_color = (
-		#color_from_string(data_parameter.theme_transparency_warning_color)
-	#)
-
-
-#func color_from_string(string_parameter: String) -> Color:
-	#var default_color = Color.WHITE
-	#var string_color = Color.from_string(string_parameter, default_color)
-	#return string_color
 
 
 func reset_settings_all_main() -> void:
@@ -150,22 +108,22 @@ func reset_settings_theme_colors() -> void:
 
 func generate_color_sets() -> Dictionary:
 	var new_color_sets := {
-		#"red": color_set_red(),
-		#"orange": color_set_orange(),
-		#"yellow": color_set_yellow(),
+		"red": color_set_red(),
+		"orange": color_set_orange(),
+		"yellow": color_set_yellow(),
 		"green": color_set_green(),
-		#"blue": color_set_blue(),
-		#"purple": color_set_purple(),
-		#"pink": color_set_pink(),
-		#"neutral": color_set_neutral(),
-		#"red custom": color_set_red(),
-		#"orange custom": color_set_orange(),
-		#"yellow custom": color_set_yellow(),
+		"blue": color_set_blue(),
+		"purple": color_set_purple(),
+		"pink": color_set_pink(),
+		"neutral": color_set_neutral(),
+		"red custom": color_set_red(),
+		"orange custom": color_set_orange(),
+		"yellow custom": color_set_yellow(),
 		"green custom": color_set_green(),
-		#"blue custom": color_set_blue(),
-		#"purple custom": color_set_purple(),
-		#"pink custom": color_set_pink(),
-		#"neutral custom": color_set_neutral(),
+		"blue custom": color_set_blue(),
+		"purple custom": color_set_purple(),
+		"pink custom": color_set_pink(),
+		"neutral custom": color_set_neutral(),
 	}
 	return new_color_sets
 

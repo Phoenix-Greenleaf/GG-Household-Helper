@@ -67,7 +67,7 @@ func add_preset_palette(palette_name_parameter: String, palette_colors_parameter
 func add_custom_palette(palette_name_parameter: String, palette_colors_parameter: Dictionary) -> void:
 	var color_palette_strip_instance = COLOR_PALETTE_STRIP.instantiate()
 	custom_palette_v_box_container.add_child(color_palette_strip_instance)
-	color_palette_strip_instance.set_palette_name((palette_name_parameter).capitalize())
+	color_palette_strip_instance.set_palette_name(palette_name_parameter)
 	color_palette_strip_instance.set_palette_color(palette_colors_parameter)
 	color_palette_strip_instance.enable_reset_button()
 	color_palette_strip_instance.set_palette_button_group(COLOR_PALETTE_LABEL_BUTTON_GROUP)
