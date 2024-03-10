@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=10 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scenes/editor.gd" id="1_nkaig"]
 [ext_resource type="ButtonGroup" uid="uid://dstnxfnckpqs0" path="res://gui/task_tracking/editor_mode_button_group.tres" id="2_ludcj"]
 [ext_resource type="ButtonGroup" uid="uid://tci5j17kmt8l" path="res://gui/task_tracking/section_button_group.tres" id="2_rjskt"]
 [ext_resource type="PackedScene" uid="uid://ds4yxf6rofxhb" path="res://gui/task_tracking/current_checkbox_button.tscn" id="3_droll"]
 [ext_resource type="ButtonGroup" uid="uid://c4hrg6nv6u6tb" path="res://gui/task_tracking/checkbox_toggle.tres" id="4_2dypo"]
+[ext_resource type="Theme" uid="uid://dec2b8xmm6paj" path="res://theme/main_theme.tres" id="5_fnfo6"]
 [ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/task_spreadsheet_grid_container.gd" id="6_j3l32"]
 [ext_resource type="PackedScene" uid="uid://c7tqndbd8llst" path="res://gui/task_tracking/checkbox_selection_popup.tscn" id="6_okd6i"]
 [ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/task_tracking/data_manager/task_data_manager.tscn" id="7_io7f7"]
@@ -97,8 +98,6 @@ text = "Info Mode"
 [node name="CheckboxModeButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("2_ludcj")
@@ -127,8 +126,6 @@ autowrap_mode = 3
 [node name="CheckboxApplyToggle" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
 toggle_mode = true
 button_group = ExtResource("4_2dypo")
 text = "Apply"
@@ -136,8 +133,6 @@ text = "Apply"
 [node name="CheckboxInspectToggle" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("4_2dypo")
@@ -154,8 +149,7 @@ horizontal_alignment = 1
 [node name="YearlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
+theme = ExtResource("5_fnfo6")
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("2_rjskt")
@@ -164,8 +158,7 @@ text = "Yearly"
 [node name="MonthlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
+theme = ExtResource("5_fnfo6")
 toggle_mode = true
 button_group = ExtResource("2_rjskt")
 text = "Monthly"
@@ -173,8 +166,7 @@ text = "Monthly"
 [node name="WeeklyButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
+theme = ExtResource("5_fnfo6")
 toggle_mode = true
 button_group = ExtResource("2_rjskt")
 text = "Weekly"
@@ -182,8 +174,7 @@ text = "Weekly"
 [node name="DailyButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
+theme = ExtResource("5_fnfo6")
 toggle_mode = true
 button_group = ExtResource("2_rjskt")
 text = "Daily"
@@ -242,8 +233,6 @@ Lock"
 
 [node name="SortTasksButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
 disabled = true
 text = "Sort Tasks"
 

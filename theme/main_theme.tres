@@ -1,22 +1,21 @@
-[gd_resource type="Theme" load_steps=18 format=3 uid="uid://dec2b8xmm6paj"]
+[gd_resource type="Theme" load_steps=17 format=3 uid="uid://dec2b8xmm6paj"]
 
 [ext_resource type="StyleBox" uid="uid://s0we4cgk3yhc" path="res://theme/theme_parts/button_hover_box.tres" id="1_eye2p"]
-[ext_resource type="StyleBox" uid="uid://ofmvl3jqb6jj" path="res://theme/theme_parts/seperator_line.tres" id="1_jjv11"]
 [ext_resource type="StyleBox" uid="uid://12c5oqtc8shq" path="res://theme/theme_parts/button_disabled_box.tres" id="1_uvynl"]
 [ext_resource type="StyleBox" uid="uid://b2fb1r5ywcvj6" path="res://theme/theme_parts/button_normal_box.tres" id="2_1t7ml"]
 [ext_resource type="StyleBox" uid="uid://651ss3cc2hq6" path="res://theme/theme_parts/button_focus_box.tres" id="2_chbx5"]
 [ext_resource type="StyleBox" uid="uid://bni7hpya166s4" path="res://theme/theme_parts/button_pressed_box.tres" id="5_l0fa5"]
-[ext_resource type="StyleBox" uid="uid://btp1xeut358gv" path="res://theme/theme_parts/panel_background_main.tres" id="7_5kw0t"]
-[ext_resource type="StyleBox" uid="uid://b6g3cuwnxssbu" path="res://theme/theme_parts/panel_popup_main.tres" id="8_nqoeh"]
-[ext_resource type="StyleBox" uid="uid://cea2jdrtxv378" path="res://theme/theme_parts/panel_popup_tertiary.tres" id="9_a71cd"]
-[ext_resource type="StyleBox" uid="uid://c0h43wg8air6l" path="res://theme/theme_parts/panel_background_transparency_red.tres" id="9_nxnt0"]
-[ext_resource type="StyleBox" uid="uid://dornspis7gy4s" path="res://theme/theme_parts/panel_popup_secondary.tres" id="9_rntpo"]
-[ext_resource type="StyleBox" uid="uid://c4hdxyyv8oaav" path="res://theme/theme_parts/panel_popup_unselected.tres" id="10_skf8o"]
-[ext_resource type="StyleBox" uid="uid://bb7nj2frqg87q" path="res://theme/theme_parts/seperator_line_vertical.tres" id="14_eahqm"]
+[ext_resource type="StyleBox" uid="uid://ofmvl3jqb6jj" path="res://theme/theme_parts/separator_line.tres" id="6_rl2ow"]
+[ext_resource type="StyleBox" uid="uid://btp1xeut358gv" path="res://theme/theme_parts/panel_background.tres" id="7_l4vuo"]
+[ext_resource type="StyleBox" uid="uid://b6g3cuwnxssbu" path="res://theme/theme_parts/popup_primary.tres" id="8_tmhir"]
+[ext_resource type="StyleBox" uid="uid://c0h43wg8air6l" path="res://theme/theme_parts/panel_transparency_warning.tres" id="9_3seaj"]
+[ext_resource type="StyleBox" uid="uid://cea2jdrtxv378" path="res://theme/theme_parts/popup_tertiary.tres" id="10_bsxl7"]
+[ext_resource type="StyleBox" uid="uid://dornspis7gy4s" path="res://theme/theme_parts/popup_secondary.tres" id="11_c6ole"]
+[ext_resource type="StyleBox" uid="uid://bb7nj2frqg87q" path="res://theme/theme_parts/separator_line_vertical.tres" id="12_78tm2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i3ehq"]
 
-[sub_resource type="Image" id="Image_xbbtv"]
+[sub_resource type="Image" id="Image_am54f"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 76, 255, 255, 255, 75, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 99, 255, 255, 255, 191, 255, 255, 255, 191, 255, 255, 255, 99, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 4, 255, 255, 255, 122, 255, 255, 255, 191, 255, 255, 255, 188, 255, 255, 255, 188, 255, 255, 255, 191, 255, 255, 255, 121, 255, 255, 255, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 12, 255, 255, 255, 142, 255, 255, 255, 191, 255, 255, 255, 181, 255, 255, 255, 53, 255, 255, 255, 54, 255, 255, 255, 181, 255, 255, 255, 191, 255, 255, 255, 142, 255, 255, 255, 12, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 71, 255, 255, 255, 191, 255, 255, 255, 171, 255, 255, 255, 36, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 36, 255, 255, 255, 171, 255, 255, 255, 191, 255, 255, 255, 71, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 86, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 255, 255, 255, 86, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 86, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 255, 255, 255, 86, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 71, 255, 255, 255, 191, 255, 255, 255, 171, 255, 255, 255, 36, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 36, 255, 255, 255, 171, 255, 255, 255, 191, 255, 255, 255, 71, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 12, 255, 255, 255, 142, 255, 255, 255, 191, 255, 255, 255, 181, 255, 255, 255, 54, 255, 255, 255, 54, 255, 255, 255, 182, 255, 255, 255, 191, 255, 255, 255, 142, 255, 255, 255, 12, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 4, 255, 255, 255, 121, 255, 255, 255, 191, 255, 255, 255, 188, 255, 255, 255, 188, 255, 255, 255, 191, 255, 255, 255, 121, 255, 255, 255, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 98, 255, 255, 255, 191, 255, 255, 255, 191, 255, 255, 255, 98, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 75, 255, 255, 255, 75, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -26,16 +25,14 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_ejad2"]
-image = SubResource("Image_xbbtv")
+image = SubResource("Image_am54f")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_u1ofj"]
 
 [resource]
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
 Button/colors/font_disabled_color = Color(0.87451, 0.87451, 0.87451, 0.301961)
-Button/colors/font_hover_pressed_color = Color(0.819608, 0.886275, 0.192157, 1)
 Button/colors/font_outline_color = Color(0, 0, 0, 1)
-Button/colors/font_pressed_color = Color(0.819608, 0.886275, 0.192157, 1)
 Button/constants/outline_size = 5
 Button/font_sizes/font_size = 20
 Button/styles/disabled = ExtResource("1_uvynl")
@@ -57,7 +54,7 @@ HBoxContainer_Double_Space/constants/separation = 20
 HBoxContainer_No_Space/base_type = &"HBoxContainer"
 HBoxContainer_No_Space/constants/separation = 0
 HSeparator/constants/separation = 20
-HSeparator/styles/separator = ExtResource("1_jjv11")
+HSeparator/styles/separator = ExtResource("6_rl2ow")
 HSeparator_Half/base_type = &"HSeparator"
 HSeparator_Half/constants/separation = 10
 HSeparator_None/base_type = &"HSeparator"
@@ -95,23 +92,23 @@ MarginContainer_Double_Top_Bottom/constants/margin_top = 12
 OptionButton/font_sizes/font_size = 20
 OptionButton_Medium/base_type = &"OptionButton"
 OptionButton_Medium/font_sizes/font_size = 30
-Panel/styles/panel = ExtResource("7_5kw0t")
-PanelContainer/styles/panel = ExtResource("8_nqoeh")
+Panel/styles/panel = ExtResource("7_l4vuo")
+PanelContainer/styles/panel = ExtResource("8_tmhir")
 PanelContainer_Background/base_type = &"PanelContainer"
-PanelContainer_Background/styles/panel = ExtResource("7_5kw0t")
+PanelContainer_Background/styles/panel = ExtResource("7_l4vuo")
 PanelContainer_Blank/base_type = &"PanelContainer"
 PanelContainer_Blank/styles/panel = SubResource("StyleBoxEmpty_i3ehq")
 PanelContainer_Red_Transparency/base_type = &"PanelContainer"
-PanelContainer_Red_Transparency/styles/panel = ExtResource("9_nxnt0")
+PanelContainer_Red_Transparency/styles/panel = ExtResource("9_3seaj")
 PanelContainer_Tertiary/base_type = &"PanelContainer"
-PanelContainer_Tertiary/styles/panel = ExtResource("9_a71cd")
+PanelContainer_Tertiary/styles/panel = ExtResource("10_bsxl7")
 Panel_Container_Secondary/base_type = &"PanelContainer"
-Panel_Container_Secondary/styles/panel = ExtResource("9_rntpo")
+Panel_Container_Secondary/styles/panel = ExtResource("11_c6ole")
 PopupMenu/font_sizes/font_size = 20
-PopupMenu/styles/panel = ExtResource("8_nqoeh")
+PopupMenu/styles/panel = ExtResource("8_tmhir")
 PopupMenu_Medium/base_type = &"PopupMenu"
 PopupMenu_Medium/font_sizes/font_size = 30
-PopupPanel/styles/panel = ExtResource("8_nqoeh")
+PopupPanel/styles/panel = ExtResource("8_tmhir")
 SpinBox/font_sizes/font_size = 20
 SpinBox/icons/updown = SubResource("ImageTexture_ejad2")
 SpinBox_Medium/base_type = &"SpinBox"
@@ -121,8 +118,11 @@ TabContainer/colors/font_outline_color = Color(0, 0, 0, 1)
 TabContainer/constants/outline_size = 5
 TabContainer/font_sizes/font_size = 20
 TabContainer/styles/panel = SubResource("StyleBoxEmpty_u1ofj")
-TabContainer/styles/tab_selected = ExtResource("8_nqoeh")
-TabContainer/styles/tab_unselected = ExtResource("10_skf8o")
+TabContainer/styles/tab_disabled = ExtResource("1_uvynl")
+TabContainer/styles/tab_focus = ExtResource("2_chbx5")
+TabContainer/styles/tab_hovered = ExtResource("1_eye2p")
+TabContainer/styles/tab_selected = ExtResource("5_l0fa5")
+TabContainer/styles/tab_unselected = ExtResource("2_1t7ml")
 TabContainer_Large/base_type = &"TabContainer"
 TabContainer_Large/font_sizes/font_size = 40
 TabContainer_Medium/base_type = &"TabContainer"
@@ -132,7 +132,7 @@ VBoxContainer/constants/separation = 10
 VBoxContainer_No_Space/base_type = &"VBoxContainer"
 VBoxContainer_No_Space/constants/separation = 0
 VSeparator/constants/separation = 20
-VSeparator/styles/separator = ExtResource("14_eahqm")
+VSeparator/styles/separator = ExtResource("12_78tm2")
 VSeparator_Half/base_type = &"VSeparator"
 VSeparator_Half/constants/separation = 10
 VSeparator_None/base_type = &"VSeparator"

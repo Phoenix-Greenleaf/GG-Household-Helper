@@ -56,11 +56,19 @@ extends Control
 const COLOR_PALETTE_LABEL_BUTTON_GROUP = preload("res://gui/main_helper/color_palette_label_button_group.tres")
 
 const MAIN_THEME = preload("res://theme/main_theme.tres")
-
-const PANEL_BACKGROUND_MAIN = preload("res://theme/theme_parts/panel_background_main.tres")
-const PANEL_POPUP_MAIN = preload("res://theme/theme_parts/panel_popup_main.tres")
-const PANEL_POPUP_SECONDARY = preload("res://theme/theme_parts/panel_popup_secondary.tres")
-const PANEL_POPUP_TERTIARY = preload("res://theme/theme_parts/panel_popup_tertiary.tres")
+# Regular Panels: squared edges, no border
+const PANEL_BACKGROUND = preload("res://theme/theme_parts/panel_background.tres")
+const PANEL_TRANSPARENCY_DEFAULT = preload("res://theme/theme_parts/panel_transparency_default.tres")
+const PANEL_TRANSPARENCY_WARNING = preload("res://theme/theme_parts/panel_transparency_warning.tres")
+# Popup Panels: rounded edges, colored border
+const POPUP_PRIMARY = preload("res://theme/theme_parts/popup_primary.tres")
+const POPUP_SECONDARY = preload("res://theme/theme_parts/popup_secondary.tres")
+const POPUP_TERTIARY = preload("res://theme/theme_parts/popup_tertiary.tres")
+const POPUP_QUATERNARY = preload("res://theme/theme_parts/popup_quaternary.tres")
+const POPUP_QUINARY = preload("res://theme/theme_parts/popup_quinary.tres")
+const POPUP_TRANSPARENCY_DEFAULT = preload("res://theme/theme_parts/popup_transparency_default.tres")
+const POPUP_TRANSPARENCY_WARNING = preload("res://theme/theme_parts/popup_transparency_warning.tres")
+# unsure that these popup_transparencies are needed
 
 const BUTTON_DISABLED_BOX = preload("res://theme/theme_parts/button_disabled_box.tres")
 const BUTTON_FOCUS_BOX = preload("res://theme/theme_parts/button_focus_box.tres")
@@ -68,8 +76,8 @@ const BUTTON_HOVER_BOX = preload("res://theme/theme_parts/button_hover_box.tres"
 const BUTTON_NORMAL_BOX = preload("res://theme/theme_parts/button_normal_box.tres")
 const BUTTON_PRESSED_BOX = preload("res://theme/theme_parts/button_pressed_box.tres")
 
-const PANEL_BACKGROUND_TRANSPARENCY_RED = preload("res://theme/theme_parts/panel_background_transparency_red.tres")
-const PANEL_POPUP_TRANSPARENCY = preload("res://theme/theme_parts/panel_popup_transparency.tres")
+const SEPARATOR_LINE = preload("res://theme/theme_parts/separator_line.tres")
+const SEPARATOR_LINE_VERTICAL = preload("res://theme/theme_parts/separator_line_vertical.tres")
 
 @onready var settings = DataGlobal.active_settings_main
 
@@ -804,39 +812,79 @@ func set_themes_title_font(size_parameter: int) -> void:
 
 
 func set_themes_background_color(color_parameter: Color) -> void:
-	PANEL_BACKGROUND_MAIN.set("bg_color", color_parameter)
+	PANEL_BACKGROUND.set("bg_color", color_parameter)
 
 
 func set_themes_primary_color(color_parameter: Color) -> void:
-	PANEL_POPUP_MAIN.set("bg_color", color_parameter)
+	POPUP_PRIMARY.set("bg_color", color_parameter)
 
 
 func set_themes_secondary_color(color_parameter: Color) -> void:
-	PANEL_POPUP_SECONDARY.set("bg_color", color_parameter)
+	POPUP_SECONDARY.set("bg_color", color_parameter)
 
 
 func set_themes_tertiary_color(color_parameter: Color) -> void:
-	PANEL_POPUP_TERTIARY.set("bg_color", color_parameter)
+	POPUP_TERTIARY.set("bg_color", color_parameter)
 
 
 func set_themes_quaternary_color(color_parameter: Color) -> void:
-	pass
+	POPUP_QUATERNARY.set("bg_color", color_parameter)
 
 
 func set_themes_quinary_color(color_parameter: Color) -> void:
-	pass
+	POPUP_QUINARY.set("bg_color", color_parameter)
 
 
 func set_themes_border_line_color(color_parameter: Color) -> void:
-	pass
+	BUTTON_NORMAL_BOX.set("border_color", color_parameter)
+	BUTTON_DISABLED_BOX.set("border_color", color_parameter)
+	BUTTON_PRESSED_BOX.set("border_color", color_parameter)
+	BUTTON_HOVER_BOX.set("border_color", color_parameter)
 
+	POPUP_PRIMARY.set("border_color", color_parameter)
+	POPUP_SECONDARY.set("border_color", color_parameter)
+	POPUP_TERTIARY.set("border_color", color_parameter)
+	POPUP_QUATERNARY.set("border_color", color_parameter)
+	POPUP_QUINARY.set("border_color", color_parameter)
+
+	POPUP_TRANSPARENCY_DEFAULT.set("border_color", color_parameter)
+	POPUP_TRANSPARENCY_WARNING.set("border_color", color_parameter)
+
+	SEPARATOR_LINE.set("color", color_parameter)
+	SEPARATOR_LINE_VERTICAL.set("color", color_parameter)
 
 func set_themes_font_color(color_parameter: Color) -> void:
-	pass
+	MAIN_THEME.set_color("font_color", "Label", color_parameter)
+	MAIN_THEME.set_color("font_color", "LineEdit", color_parameter)
+	MAIN_THEME.set_color("font_color", "OptionButton", color_parameter)
+	MAIN_THEME.set_color("font_color", "PopupMenu", color_parameter) 
+	MAIN_THEME.set_color("font_color", "CheckButton", color_parameter)
+	MAIN_THEME.set_color("font_color", "TextEdit", color_parameter)
+	
+	MAIN_THEME.set_color("font_color", "Button", color_parameter)
+	MAIN_THEME.set_color("font_focus_color", "Button", color_parameter)
+	MAIN_THEME.set_color("font_hover_color", "Button", color_parameter)
+	MAIN_THEME.set_color("font_pressed_color", "Button", color_parameter)
+	MAIN_THEME.set_color("font_hover_pressed_color", "Button", color_parameter)
+	MAIN_THEME.set_color("font_disabled_color", "Button", Color(color_parameter, 0.5))
+	
+	MAIN_THEME.set_color("font_unselected_color", "TabContainer", color_parameter)
+	MAIN_THEME.set_color("font_focus_color", "TabContainer", color_parameter)
+	MAIN_THEME.set_color("font_hover_color", "TabContainer", color_parameter)
+	MAIN_THEME.set_color("font_selected_color", "TabContainer", color_parameter)
+	MAIN_THEME.set_color("font_hover_pressed_color", "TabContainer", color_parameter)
+	MAIN_THEME.set_color("font_disabled_color", "TabContainer", Color(color_parameter, 0.5))
 
 
 func set_themes_outline_color(color_parameter: Color) -> void:
-	pass
+	MAIN_THEME.set_color("font_outline_color", "Label", color_parameter)
+	MAIN_THEME.set_color("font_outline_color", "LineEdit", color_parameter)
+	MAIN_THEME.set_color("font_outline_color", "Button", color_parameter)
+	MAIN_THEME.set_color("font_outline_color", "OptionButton", color_parameter)
+	MAIN_THEME.set_color("font_outline_color", "PopupMenu", color_parameter) 
+	MAIN_THEME.set_color("font_outline_color", "CheckButton", color_parameter)
+	MAIN_THEME.set_color("font_outline_color", "TabContainer", color_parameter)
+	MAIN_THEME.set_color("font_outline_color", "TextEdit", color_parameter)
 
 
 func set_themes_button_default_color(color_parameter: Color) -> void:
@@ -860,11 +908,13 @@ func set_themes_button_hover_color(color_parameter: Color) -> void:
 
 
 func set_themes_transparency_default_color(color_parameter: Color) -> void:
-	PANEL_POPUP_TRANSPARENCY.set("bg_color", color_parameter)
+	PANEL_TRANSPARENCY_DEFAULT.set("bg_color", color_parameter)
+	POPUP_TRANSPARENCY_DEFAULT.set("bg_color", color_parameter)
 
 
 func set_themes_transparency_warning_color(color_parameter: Color) -> void:
-	PANEL_BACKGROUND_TRANSPARENCY_RED.set("bg_color", color_parameter)
+	PANEL_TRANSPARENCY_WARNING.set("bg_color", color_parameter)
+	POPUP_TRANSPARENCY_WARNING.set("bg_color", color_parameter)
 
 
 func test_themes() -> void:
