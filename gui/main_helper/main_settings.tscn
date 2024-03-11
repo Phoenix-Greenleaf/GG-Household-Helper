@@ -369,6 +369,7 @@ text = "Off"
 
 [node name="Theme" type="PanelContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer"]
 layout_mode = 2
+theme_type_variation = &"PanelContainer_Tertiary"
 
 [node name="ThemeMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme"]
 layout_mode = 2
@@ -386,7 +387,6 @@ layout_mode = 2
 
 [node name="ThemeTextSizePanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn1VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"PanelContainer_Tertiary"
 
 [node name="ThemeTextSizeMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn1VBoxContainer/ThemeTextSizePanelContainer"]
 layout_mode = 2
@@ -484,7 +484,6 @@ text = "Reset Text Sizes"
 
 [node name="ThemeTextColorsPanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn1VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"PanelContainer_Tertiary"
 
 [node name="ThemeTextColorsMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn1VBoxContainer/ThemeTextColorsPanelContainer"]
 layout_mode = 2
@@ -536,7 +535,6 @@ layout_mode = 2
 
 [node name="ThemeMainColorsPanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn2VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"PanelContainer_Tertiary"
 
 [node name="ThemeMainColorsMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn2VBoxContainer/ThemeMainColorsPanelContainer"]
 layout_mode = 2
@@ -585,7 +583,6 @@ text = "Color"
 
 [node name="ThemePanelColorsPanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn2VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"PanelContainer_Tertiary"
 
 [node name="ThemePanelColorsMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn2VBoxContainer/ThemePanelColorsPanelContainer"]
 layout_mode = 2
@@ -683,7 +680,6 @@ layout_mode = 2
 
 [node name="ThemeButtonColorsPanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn3VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"PanelContainer_Tertiary"
 
 [node name="ThemeButtonColorsMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn3VBoxContainer/ThemeButtonColorsPanelContainer"]
 layout_mode = 2
@@ -778,7 +774,6 @@ color = Color(0, 0, 0.533333, 1)
 
 [node name="ThemeTransparencyColorsPanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn3VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"PanelContainer_Tertiary"
 
 [node name="ThemeTransparencyColorsMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn3VBoxContainer/ThemeTransparencyColorsPanelContainer"]
 layout_mode = 2

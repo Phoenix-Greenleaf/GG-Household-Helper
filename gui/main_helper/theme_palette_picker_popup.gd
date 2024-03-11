@@ -48,12 +48,10 @@ func empty_palette_colums() -> void:
 
 func load_color_palettes() -> void:
 	var color_palettes: Dictionary = DataGlobal.active_settings_main.theme_color_palettes
-	for palette_name in color_palettes:
-		prints("Loading palette:", palette_name)
-		if palette_name in chromatic_array:
-			add_preset_palette(palette_name, color_palettes[palette_name])
-		if palette_name in custom_chromatic_array:
-			add_custom_palette(palette_name, color_palettes[palette_name])
+	for palette_name in chromatic_array:
+		add_preset_palette(palette_name, color_palettes[palette_name])
+	for palette_name in custom_chromatic_array:
+		add_custom_palette(palette_name, color_palettes[palette_name])
 	SignalBus._on_theme_settings_color_palettes_loaded.emit()
 
 
