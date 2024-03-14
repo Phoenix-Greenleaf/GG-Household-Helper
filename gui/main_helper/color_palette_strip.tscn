@@ -11,10 +11,12 @@ script = ExtResource("1_vocmw")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
+alignment = 2
 
 [node name="PaletteNameButton" type="Button" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 toggle_mode = true
 text = "Palette Name"
 
