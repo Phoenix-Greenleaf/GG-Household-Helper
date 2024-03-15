@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Household Helper"
 config/description="Productivity suite for individuals and groups"
-config/version="1.9.0.0"
+config/version="2.0.0.0"
 run/main_scene="res://scenes/intro_screens.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)
