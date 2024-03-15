@@ -29,7 +29,166 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MainSettings" parent="SettingsCenterContainer" instance=ExtResource("3_7p4gp")]
+[node name="SharedCenterHBoxContainer" type="HBoxContainer" parent="SettingsCenterContainer"]
+layout_mode = 2
+
+[node name="PreviewPanelPanelContainer" type="PanelContainer" parent="SettingsCenterContainer/SharedCenterHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="PreviewPanelMarginContainer" type="MarginContainer" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer"]
+layout_mode = 2
+
+[node name="ColorStripMarginContainer" type="MarginContainer" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 70
+
+[node name="ColorStripHBoxContainer" type="HBoxContainer" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/ColorStripMarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="BackgroundPanel" type="Panel" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/ColorStripMarginContainer/ColorStripHBoxContainer"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PrimaryPanel" type="Panel" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/ColorStripMarginContainer/ColorStripHBoxContainer"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Panel_Primary"
+
+[node name="SecondaryPanel" type="Panel" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/ColorStripMarginContainer/ColorStripHBoxContainer"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Panel_Secondary"
+
+[node name="TertiaryPanel" type="Panel" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/ColorStripMarginContainer/ColorStripHBoxContainer"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Panel_Tertiary"
+
+[node name="QuaternaryPanel" type="Panel" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/ColorStripMarginContainer/ColorStripHBoxContainer"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Panel_Quaternary"
+
+[node name="QuinaryPanel" type="Panel" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/ColorStripMarginContainer/ColorStripHBoxContainer"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Panel_Quinary"
+
+[node name="PreviewPanelVBoxContainer" type="VBoxContainer" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer"]
+layout_mode = 2
+
+[node name="PreviewPanelLabel" type="Label" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Label_Large"
+text = "Preview Panel"
+
+[node name="HSeparator" type="HSeparator" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer"]
+layout_mode = 2
+
+[node name="PanelsLabel" type="Label" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Label_Large"
+text = "Panels"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PrimaryPanelContainer" type="PanelContainer" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer/PrimaryPanelContainer"]
+layout_mode = 2
+theme_type_variation = &"Label_Medium"
+text = "Primary"
+horizontal_alignment = 1
+
+[node name="SecondaryPanelContainer" type="PanelContainer" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Panel_Container_Secondary"
+
+[node name="Label" type="Label" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer/SecondaryPanelContainer"]
+layout_mode = 2
+theme_type_variation = &"Label_Medium"
+text = "Secondary"
+horizontal_alignment = 1
+
+[node name="TertiaryPanelContainer" type="PanelContainer" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"PanelContainer_Tertiary"
+
+[node name="Label" type="Label" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer/TertiaryPanelContainer"]
+layout_mode = 2
+theme_type_variation = &"Label_Medium"
+text = "Tertiary"
+horizontal_alignment = 1
+
+[node name="QuaternaryPanelContainer" type="PanelContainer" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"PanelContainer_Quaternary"
+
+[node name="Label" type="Label" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer/QuaternaryPanelContainer"]
+layout_mode = 2
+theme_type_variation = &"Label_Medium"
+text = "Quaternary"
+horizontal_alignment = 1
+
+[node name="QuinaryPanelContainer" type="PanelContainer" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"PanelContainer_Quinary"
+
+[node name="Label" type="Label" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer/QuinaryPanelContainer"]
+layout_mode = 2
+theme_type_variation = &"Label_Medium"
+text = "Quinary"
+horizontal_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonsLabel" type="Label" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Label_Large"
+text = "Buttons"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NormalButton" type="Button" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"Button_Medium"
+text = "Normal"
+
+[node name="HoveredButton" type="Button" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"Button_Medium_Hover_Demo"
+text = "Hovered"
+
+[node name="PressedButton" type="Button" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"Button_Medium"
+toggle_mode = true
+button_pressed = true
+text = "Pressed"
+
+[node name="DisabledButton" type="Button" parent="SettingsCenterContainer/SharedCenterHBoxContainer/PreviewPanelPanelContainer/PreviewPanelMarginContainer/PreviewPanelVBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"Button_Medium"
+disabled = true
+text = "Disabled"
+
+[node name="MainSettings" parent="SettingsCenterContainer/SharedCenterHBoxContainer" instance=ExtResource("3_7p4gp")]
 unique_name_in_owner = true
 layout_mode = 2
 

@@ -52,12 +52,18 @@ extends Control
 @onready var theme_test_h_separator: HSeparator = %ThemeTestHSeparator
 @onready var theme_test_buttons_h_box_container: HBoxContainer = %ThemeTestButtonsHBoxContainer
 @onready var color_palette_menu_button: Button = %ColorPaletteMenuButton
+@onready var preview_panel_check_button: CheckButton = %PreviewPanelCheckButton
 
 const COLOR_PALETTE_LABEL_BUTTON_GROUP = preload("res://gui/main_helper/color_palette_label_button_group.tres")
 
 const MAIN_THEME = preload("res://theme/main_theme.tres")
 # Regular Panels: squared edges, no border
 const PANEL_BACKGROUND = preload("res://theme/theme_parts/panel_background.tres")
+const PANEL_PRIMARY = preload("res://theme/theme_parts/panel_primary.tres")
+const PANEL_SECONDARY = preload("res://theme/theme_parts/panel_secondary.tres")
+const PANEL_TERTIARY = preload("res://theme/theme_parts/panel_tertiary.tres")
+const PANEL_QUATERNARY = preload("res://theme/theme_parts/panel_quaternary.tres")
+const PANEL_QUINARY = preload("res://theme/theme_parts/panel_quinary.tres")
 const PANEL_TRANSPARENCY_DEFAULT = preload("res://theme/theme_parts/panel_transparency_default.tres")
 const PANEL_TRANSPARENCY_WARNING = preload("res://theme/theme_parts/panel_transparency_warning.tres")
 # Popup Panels: rounded edges, colored border
@@ -788,6 +794,7 @@ func set_themes_medium_font(size_parameter: int) -> void:
 	MAIN_THEME.set_font_size("font_size", "Label_Medium", size_parameter)
 	MAIN_THEME.set_font_size("font_size", "LineEdit_Medium", size_parameter)
 	MAIN_THEME.set_font_size("font_size", "Button_Medium", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "Button_Medium_Hover_Demo", size_parameter)
 	MAIN_THEME.set_font_size("font_size", "OptionButton_Medium", size_parameter)
 	MAIN_THEME.set_font_size("font_size", "PopupMenu_Medium", size_parameter)
 	MAIN_THEME.set_font_size("font_size", "CheckButton_Medium", size_parameter)
@@ -817,22 +824,27 @@ func set_themes_background_color(color_parameter: Color) -> void:
 
 func set_themes_primary_color(color_parameter: Color) -> void:
 	POPUP_PRIMARY.set("bg_color", color_parameter)
+	PANEL_PRIMARY.set("bg_color", color_parameter)
 
 
 func set_themes_secondary_color(color_parameter: Color) -> void:
 	POPUP_SECONDARY.set("bg_color", color_parameter)
+	PANEL_SECONDARY.set("bg_color", color_parameter)
 
 
 func set_themes_tertiary_color(color_parameter: Color) -> void:
 	POPUP_TERTIARY.set("bg_color", color_parameter)
+	PANEL_TERTIARY.set("bg_color", color_parameter)
 
 
 func set_themes_quaternary_color(color_parameter: Color) -> void:
 	POPUP_QUATERNARY.set("bg_color", color_parameter)
+	PANEL_QUATERNARY.set("bg_color", color_parameter)
 
 
 func set_themes_quinary_color(color_parameter: Color) -> void:
 	POPUP_QUINARY.set("bg_color", color_parameter)
+	PANEL_QUINARY.set("bg_color", color_parameter)
 
 
 func set_themes_border_line_color(color_parameter: Color) -> void:

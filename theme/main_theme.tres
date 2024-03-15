@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=17 format=3 uid="uid://dec2b8xmm6paj"]
+[gd_resource type="Theme" load_steps=24 format=3 uid="uid://dec2b8xmm6paj"]
 
 [ext_resource type="StyleBox" uid="uid://s0we4cgk3yhc" path="res://theme/theme_parts/button_hover_box.tres" id="1_eye2p"]
 [ext_resource type="StyleBox" uid="uid://12c5oqtc8shq" path="res://theme/theme_parts/button_disabled_box.tres" id="1_uvynl"]
@@ -9,13 +9,20 @@
 [ext_resource type="StyleBox" uid="uid://btp1xeut358gv" path="res://theme/theme_parts/panel_background.tres" id="7_l4vuo"]
 [ext_resource type="StyleBox" uid="uid://b6g3cuwnxssbu" path="res://theme/theme_parts/popup_primary.tres" id="8_tmhir"]
 [ext_resource type="StyleBox" uid="uid://c0h43wg8air6l" path="res://theme/theme_parts/panel_transparency_warning.tres" id="9_3seaj"]
+[ext_resource type="StyleBox" uid="uid://bri13jnq4x4nn" path="res://theme/theme_parts/popup_quaternary.tres" id="9_26bvo"]
 [ext_resource type="StyleBox" uid="uid://cea2jdrtxv378" path="res://theme/theme_parts/popup_tertiary.tres" id="10_bsxl7"]
+[ext_resource type="StyleBox" uid="uid://3cov8u7cnku6" path="res://theme/theme_parts/popup_quinary.tres" id="10_f6mpq"]
 [ext_resource type="StyleBox" uid="uid://dornspis7gy4s" path="res://theme/theme_parts/popup_secondary.tres" id="11_c6ole"]
 [ext_resource type="StyleBox" uid="uid://bb7nj2frqg87q" path="res://theme/theme_parts/separator_line_vertical.tres" id="12_78tm2"]
+[ext_resource type="StyleBox" uid="uid://7k04lotgffip" path="res://theme/theme_parts/panel_primary.tres" id="12_wx5bw"]
+[ext_resource type="StyleBox" uid="uid://chj783y6b4ais" path="res://theme/theme_parts/panel_quaternary.tres" id="13_7koca"]
+[ext_resource type="StyleBox" uid="uid://b72vfpv1yp2uh" path="res://theme/theme_parts/panel_quinary.tres" id="14_6xbps"]
+[ext_resource type="StyleBox" uid="uid://duocn153smm81" path="res://theme/theme_parts/panel_secondary.tres" id="15_d5kok"]
+[ext_resource type="StyleBox" uid="uid://dbk2jo6wrwqkw" path="res://theme/theme_parts/panel_tertiary.tres" id="16_fusgj"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i3ehq"]
 
-[sub_resource type="Image" id="Image_q61sj"]
+[sub_resource type="Image" id="Image_sbt43"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 76, 255, 255, 255, 75, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 99, 255, 255, 255, 191, 255, 255, 255, 191, 255, 255, 255, 99, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 4, 255, 255, 255, 122, 255, 255, 255, 191, 255, 255, 255, 188, 255, 255, 255, 188, 255, 255, 255, 191, 255, 255, 255, 121, 255, 255, 255, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 12, 255, 255, 255, 142, 255, 255, 255, 191, 255, 255, 255, 181, 255, 255, 255, 53, 255, 255, 255, 54, 255, 255, 255, 181, 255, 255, 255, 191, 255, 255, 255, 142, 255, 255, 255, 12, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 71, 255, 255, 255, 191, 255, 255, 255, 171, 255, 255, 255, 36, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 36, 255, 255, 255, 171, 255, 255, 255, 191, 255, 255, 255, 71, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 86, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 255, 255, 255, 86, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 86, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 255, 255, 255, 86, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 71, 255, 255, 255, 191, 255, 255, 255, 171, 255, 255, 255, 36, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 36, 255, 255, 255, 171, 255, 255, 255, 191, 255, 255, 255, 71, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 12, 255, 255, 255, 142, 255, 255, 255, 191, 255, 255, 255, 181, 255, 255, 255, 54, 255, 255, 255, 54, 255, 255, 255, 182, 255, 255, 255, 191, 255, 255, 255, 142, 255, 255, 255, 12, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 4, 255, 255, 255, 121, 255, 255, 255, 191, 255, 255, 255, 188, 255, 255, 255, 188, 255, 255, 255, 191, 255, 255, 255, 121, 255, 255, 255, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 98, 255, 255, 255, 191, 255, 255, 255, 191, 255, 255, 255, 98, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 75, 255, 255, 255, 75, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -25,7 +32,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_ejad2"]
-image = SubResource("Image_q61sj")
+image = SubResource("Image_sbt43")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_u1ofj"]
 
@@ -44,6 +51,9 @@ Button_Large/base_type = &"Button"
 Button_Large/font_sizes/font_size = 40
 Button_Medium/base_type = &"Button"
 Button_Medium/font_sizes/font_size = 30
+Button_Medium_Hover_Demo/base_type = &"Button"
+Button_Medium_Hover_Demo/font_sizes/font_size = 30
+Button_Medium_Hover_Demo/styles/normal = ExtResource("1_eye2p")
 CheckButton/font_sizes/font_size = 20
 CheckButton/styles/hover_pressed = ExtResource("1_eye2p")
 CheckButton_Medium/base_type = &"CheckButton"
@@ -98,12 +108,26 @@ PanelContainer_Background/base_type = &"PanelContainer"
 PanelContainer_Background/styles/panel = ExtResource("7_l4vuo")
 PanelContainer_Blank/base_type = &"PanelContainer"
 PanelContainer_Blank/styles/panel = SubResource("StyleBoxEmpty_i3ehq")
+PanelContainer_Quaternary/base_type = &"PanelContainer"
+PanelContainer_Quaternary/styles/panel = ExtResource("9_26bvo")
+PanelContainer_Quinary/base_type = &"PanelContainer"
+PanelContainer_Quinary/styles/panel = ExtResource("10_f6mpq")
 PanelContainer_Red_Transparency/base_type = &"PanelContainer"
 PanelContainer_Red_Transparency/styles/panel = ExtResource("9_3seaj")
 PanelContainer_Tertiary/base_type = &"PanelContainer"
 PanelContainer_Tertiary/styles/panel = ExtResource("10_bsxl7")
 Panel_Container_Secondary/base_type = &"PanelContainer"
 Panel_Container_Secondary/styles/panel = ExtResource("11_c6ole")
+Panel_Primary/base_type = &"Panel"
+Panel_Primary/styles/panel = ExtResource("12_wx5bw")
+Panel_Quaternary/base_type = &"Panel"
+Panel_Quaternary/styles/panel = ExtResource("13_7koca")
+Panel_Quinary/base_type = &"Panel"
+Panel_Quinary/styles/panel = ExtResource("14_6xbps")
+Panel_Secondary/base_type = &"Panel"
+Panel_Secondary/styles/panel = ExtResource("15_d5kok")
+Panel_Tertiary/base_type = &"Panel"
+Panel_Tertiary/styles/panel = ExtResource("16_fusgj")
 PopupMenu/font_sizes/font_size = 20
 PopupMenu/styles/panel = ExtResource("8_tmhir")
 PopupMenu_Medium/base_type = &"PopupMenu"
