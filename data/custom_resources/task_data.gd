@@ -51,7 +51,9 @@ func export_json_from_resource() -> Dictionary:
 
 func import_json_to_resource(data_parameter: Dictionary) -> void:
 	var imported_assigned_user_name: String = data_parameter.assigned_user_name
-	var imported_assigned_user_color := Color.from_string(data_parameter.assigned_user_color, Color.BLACK)
+	var imported_assigned_user_color := Color.from_string(data_parameter.assigned_user_color,
+		Color.BLACK
+	)
 	var imported_month_checkbox_dictionary := {}
 	for imported_month in data_parameter.month_checkbox_dictionary:
 		var imported_checkbox_array := []
@@ -229,7 +231,9 @@ func clear_self_checkboxes() -> void:
 func section_transfer() -> void:
 	if section == previous_section:
 		return
-	prints("Transfering from", DataGlobal.Section.keys()[previous_section], "to", DataGlobal.Section.keys()[section])
+	prints("Transfering from", DataGlobal.Section.keys()[previous_section],
+		"to", DataGlobal.Section.keys()[section]
+	)
 	match previous_section:
 		DataGlobal.Section.YEARLY:
 			DataGlobal.active_data_task_tracking.spreadsheet_year_data.erase(self)

@@ -4,8 +4,8 @@ extends PanelContainer
 @onready var current_checkbox_color_rect_bottom: ColorRect = %CurrentCheckboxColorRectBottom
 @onready var current_checkbox_border_color_rect: ColorRect = %CurrentCheckboxBorderColorRect
 
-@onready var current_checkbox_status_label: Label = $CurrentCheckboxMargin/CurrentCheckboxVBox/CurrentCheckboxStatusLabel
-@onready var task_tracking_current_checkbox_profile_label: Label = $CurrentCheckboxMargin/CurrentCheckboxVBox/CurrentCheckboxProfileLabel
+@onready var current_checkbox_status_label: Label = %CurrentCheckboxStatusLabel
+@onready var current_checkbox_profile_label: Label = %CurrentCheckboxProfileLabel
 
 var checkbox_status_keys = DataGlobal.Checkbox.keys()
 
@@ -37,7 +37,7 @@ func update_status() -> void:
 
 func update_profile() -> void:
 	var new_profile_text: String = DataGlobal.task_tracking_current_checkbox_profile[0]
-	task_tracking_current_checkbox_profile_label.set_text(new_profile_text)
+	current_checkbox_profile_label.set_text(new_profile_text)
 
 
 func update_checkbox_colors() -> void:

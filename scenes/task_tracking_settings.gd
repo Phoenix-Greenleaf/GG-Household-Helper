@@ -40,7 +40,9 @@ func _ready() -> void:
 
 
 func establish_connections() -> void:
-	task_new_checkbox_options_button_group.pressed.connect(_on_task_new_checkbox_options_button_group_pressed)
+	task_new_checkbox_options_button_group.pressed.connect(
+		_on_task_new_checkbox_options_button_group_pressed
+	)
 
 
 func disarm_danger_buttons() -> void:
@@ -180,7 +182,9 @@ func create_sheet_data_deathrow_button(task_set_info: Array) -> void:
 	var loaded_name: String = task_set_info[0]
 	var loaded_year := str(task_set_info[1])
 	deathrow_button.text = loaded_name + "\n" + loaded_year
-	deathrow_button.pressed.connect(_on_deathrow_button_pressed.bind(deathrow_button, type, task_set_info))
+	deathrow_button.pressed.connect(
+		_on_deathrow_button_pressed.bind(deathrow_button, type, task_set_info)
+	)
 
 
 func create_profile_deathrow_button(target_profile: Array, type: String) -> void:
@@ -188,7 +192,9 @@ func create_profile_deathrow_button(target_profile: Array, type: String) -> void
 	deletion_grid_container.add_child(deathrow_button)
 	deathrow_button.text = target_profile[0]
 	deathrow_button.add_theme_color_override("font_color", target_profile[1])
-	deathrow_button.pressed.connect(_on_deathrow_button_pressed.bind(deathrow_button, type, target_profile))
+	deathrow_button.pressed.connect(
+		_on_deathrow_button_pressed.bind(deathrow_button, type, target_profile)
+	)
 
 
 func grab_active_task_set_info() -> Array:
@@ -201,16 +207,24 @@ func grab_active_task_set_info() -> Array:
 
 func regen_all_checkboxes() -> void:
 	prints("Checkbox Regen Signal recieved")
-	if settings.reset_current_checkboxes_section == 0 or settings.reset_current_checkboxes_section == 1: 
+	if (settings.reset_current_checkboxes_section == 0
+		or settings.reset_current_checkboxes_section == 1
+	): 
 		regen_section_checkboxes(DataGlobal.active_data_task_tracking.spreadsheet_year_data)
 		prints("Year Regened")
-	if settings.reset_current_checkboxes_section == 0 or settings.reset_current_checkboxes_section == 2: 
+	if (settings.reset_current_checkboxes_section == 0
+		or settings.reset_current_checkboxes_section == 2
+	): 
 		regen_section_checkboxes(DataGlobal.active_data_task_tracking.spreadsheet_month_data)
 		prints("Month Regened")
-	if settings.reset_current_checkboxes_section == 0 or settings.reset_current_checkboxes_section == 3: 
+	if (settings.reset_current_checkboxes_section == 0
+		or settings.reset_current_checkboxes_section == 3
+	): 
 		regen_section_checkboxes(DataGlobal.active_data_task_tracking.spreadsheet_week_data)
 		prints("Week Regened")
-	if settings.reset_current_checkboxes_section == 0 or settings.reset_current_checkboxes_section == 4: 
+	if (settings.reset_current_checkboxes_section == 0
+		or settings.reset_current_checkboxes_section == 4
+	): 
 		regen_section_checkboxes(DataGlobal.active_data_task_tracking.spreadsheet_day_data)
 		prints("Day Regened")
 
@@ -223,42 +237,50 @@ func regen_section_checkboxes(section) -> void:
 				"All":
 					continue
 				"January":
-					if settings.reset_current_checkboxes_month == 0 or settings.reset_current_checkboxes_month == 1:
+					if regen_section_check(1):
 						task_data.month_checkbox_dictionary[month_iteration].clear()
 				"February":
-					if settings.reset_current_checkboxes_month == 0 or settings.reset_current_checkboxes_month == 2:
+					if regen_section_check(2):
 						task_data.month_checkbox_dictionary[month_iteration].clear()
 				"March":
-					if settings.reset_current_checkboxes_month == 0 or settings.reset_current_checkboxes_month == 3:
+					if regen_section_check(3):
 						task_data.month_checkbox_dictionary[month_iteration].clear()
 				"April":
-					if settings.reset_current_checkboxes_month == 0 or settings.reset_current_checkboxes_month == 4:
+					if regen_section_check(4):
 						task_data.month_checkbox_dictionary[month_iteration].clear()
 				"May":
-					if settings.reset_current_checkboxes_month == 0 or settings.reset_current_checkboxes_month == 5:
+					if regen_section_check(5):
 						task_data.month_checkbox_dictionary[month_iteration].clear()
 				"June":
-					if settings.reset_current_checkboxes_month == 0 or settings.reset_current_checkboxes_month == 6:
+					if regen_section_check(6):
 						task_data.month_checkbox_dictionary[month_iteration].clear()
 				"July":
-					if settings.reset_current_checkboxes_month == 0 or settings.reset_current_checkboxes_month == 7:
+					if regen_section_check(7):
 						task_data.month_checkbox_dictionary[month_iteration].clear()
 				"August":
-					if settings.reset_current_checkboxes_month == 0 or settings.reset_current_checkboxes_month == 8:
+					if regen_section_check(8):
 						task_data.month_checkbox_dictionary[month_iteration].clear()
 				"September":
-					if settings.reset_current_checkboxes_month == 0 or settings.reset_current_checkboxes_month == 9:
+					if regen_section_check(9):
 						task_data.month_checkbox_dictionary[month_iteration].clear()
 				"October":
-					if settings.reset_current_checkboxes_month == 0 or settings.reset_current_checkboxes_month == 10:
+					if regen_section_check(10):
 						task_data.month_checkbox_dictionary[month_iteration].clear()
 				"November":
-					if settings.reset_current_checkboxes_month == 0 or settings.reset_current_checkboxes_month == 11:
+					if regen_section_check(11):
 						task_data.month_checkbox_dictionary[month_iteration].clear()
 				"December":
-					if settings.reset_current_checkboxes_month == 0 or settings.reset_current_checkboxes_month == 12:
+					if regen_section_check(12):
 						task_data.month_checkbox_dictionary[month_iteration].clear()
 		task_data.generate_all_checkboxes()
+
+
+func regen_section_check(month_check_parameter: int) -> bool:
+	var is_section_targeted: bool = (
+		settings.reset_current_checkboxes_month == 0
+		or settings.reset_current_checkboxes_month == month_check_parameter
+	)
+	return is_section_targeted
 
 
 func load_reset_current_checkbox_options() -> void:
@@ -296,7 +318,9 @@ func _on_auto_load_check_button_toggled(button_pressed: bool) -> void:
 		return
 	if not settings.default_data:
 		prints("Default data is needed to enable auto-load")
-		DataGlobal.button_based_message(default_data_display_button, "Auto-load requires Default Data")
+		DataGlobal.button_based_message(default_data_display_button,
+			"Auto-load requires Default Data"
+		)
 		auto_load_check_button.set_pressed_no_signal(false)
 		return
 	settings.enable_auto_load_default_data = true
@@ -350,7 +374,9 @@ func _on_deletion_back_button_pressed() -> void:
 func _on_remove_profile_button_pressed() -> void:
 	if not DataGlobal.active_data_task_tracking:
 		prints("Remove Profile Error: No data to load profiles from")
-		DataGlobal.button_based_message(remove_profile_button, "Error: No data to load profiles from!")
+		DataGlobal.button_based_message(remove_profile_button,
+			"Error: No data to load profiles from!"
+		)
 		return
 	deletion_background_panel_container.visible = true
 	for profile_iteration in DataGlobal.active_data_task_tracking.user_profiles:
@@ -364,7 +390,9 @@ func _on_delete_task_sheet_button_pressed() -> void:
 		create_sheet_data_deathrow_button(set_info)
 
 
-func _on_deathrow_button_pressed(pressed_button: Button, remove_type: String, target: Array) -> void:
+func _on_deathrow_button_pressed(pressed_button: Button, remove_type: String,
+	target: Array
+) -> void:
 	prints("Deathrow button pressed")
 	pressed_button.queue_free()
 	match remove_type:
@@ -388,7 +416,9 @@ func _on_deathrow_button_pressed(pressed_button: Button, remove_type: String, ta
 func _on_purge_profile_data_button_pressed() -> void:
 	if not DataGlobal.active_data_task_tracking:
 		prints("Purge Profile Data Error: No data to load profiles from")
-		DataGlobal.button_based_message(purge_profile_data_button, "Error: No data to load profiles from!")
+		DataGlobal.button_based_message(purge_profile_data_button,
+			"Error: No data to load profiles from!"
+		)
 		return
 	deletion_background_panel_container.visible = true
 	full_scan()
@@ -425,13 +455,17 @@ func _on_reset_checkboxes_button_pressed() -> void:
 
 func _on_reset_checkboxes_section_option_button_item_selected(index: int) -> void:
 	settings.reset_current_checkboxes_section = index
-	prints("Reset Checkboxes Section selected:", reset_checkboxes_section_option_button.get_item_text(index), index)
+	prints("Reset Checkboxes Section selected:",
+		reset_checkboxes_section_option_button.get_item_text(index), index
+	)
 	reload_settings()
 
 
 func _on_reset_checkboxes_month_option_button_item_selected(index: int) -> void:
 	settings.reset_current_checkboxes_month = index
-	prints("Reset Checkboxes Month selected:", reset_checkboxes_month_option_button.get_item_text(index), index)
+	prints("Reset Checkboxes Month selected:",
+		reset_checkboxes_month_option_button.get_item_text(index), index
+	)
 	reload_settings()
 
 

@@ -2,6 +2,10 @@ extends Node
 
 signal _on_main_settings_back_button_pressed
 
+signal _on_theme_settings_color_palettes_loaded
+signal _on_theme_settings_color_palette_updated
+signal _on_theme_settings_color_palette_reset(palette_parameter: String)
+
 signal _on_task_set_data_active_data_switched
 signal _on_task_set_data_modified
 signal _on_task_set_data_saved
@@ -18,6 +22,7 @@ signal _on_task_editor_save_button_pressed
 signal _on_task_editor_grid_reload_pressed
 signal _on_task_editor_group_dropdown_items_changed
 signal _on_task_editor_assigned_user_dropdown_items_changed
+
 
 
 

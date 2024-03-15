@@ -1,0 +1,78 @@
+[gd_scene load_steps=3 format=3 uid="uid://cisnan0qbk7wr"]
+
+[ext_resource type="Script" path="res://gui/main_helper/theme_palette_picker_popup.gd" id="1_2mkuq"]
+[ext_resource type="PackedScene" uid="uid://dmxpuvrkuq7tc" path="res://gui/main_helper/color_palette_strip.tscn" id="1_hlqf1"]
+
+[node name="ThemePalettePickerPopup" type="PanelContainer"]
+offset_right = 946.0
+offset_bottom = 270.0
+script = ExtResource("1_2mkuq")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="MainVBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TitlePanelContainer" type="PanelContainer" parent="MarginContainer/MainVBoxContainer"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/MainVBoxContainer/TitlePanelContainer"]
+layout_mode = 2
+text = "Theme Color Palettes"
+horizontal_alignment = 1
+
+[node name="PaletteHBoxContainer" type="HBoxContainer" parent="MarginContainer/MainVBoxContainer"]
+layout_mode = 2
+
+[node name="PresetPaletteVBoxContainer" type="VBoxContainer" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PresetPalettePanelContainer" type="PanelContainer" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/PresetPaletteVBoxContainer"]
+layout_mode = 2
+
+[node name="PresetPaletteLabel" type="Label" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/PresetPaletteVBoxContainer/PresetPalettePanelContainer"]
+layout_mode = 2
+text = "Preset Palettes"
+horizontal_alignment = 1
+
+[node name="ColorPaletteStrip" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/PresetPaletteVBoxContainer" instance=ExtResource("1_hlqf1")]
+layout_mode = 2
+
+[node name="ColorPaletteStrip2" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/PresetPaletteVBoxContainer" instance=ExtResource("1_hlqf1")]
+layout_mode = 2
+
+[node name="ColorPaletteStrip3" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/PresetPaletteVBoxContainer" instance=ExtResource("1_hlqf1")]
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer"]
+layout_mode = 2
+
+[node name="CustomPaletteVBoxContainer" type="VBoxContainer" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CustomPalettePanelContainer" type="PanelContainer" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/CustomPaletteVBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/CustomPaletteVBoxContainer/CustomPalettePanelContainer"]
+layout_mode = 2
+text = "Custom Palettes"
+horizontal_alignment = 1
+
+[node name="ColorPaletteStrip" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/CustomPaletteVBoxContainer" instance=ExtResource("1_hlqf1")]
+layout_mode = 2
+
+[node name="ColorPaletteStrip2" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/CustomPaletteVBoxContainer" instance=ExtResource("1_hlqf1")]
+layout_mode = 2
+
+[node name="ColorPaletteStrip3" parent="MarginContainer/MainVBoxContainer/PaletteHBoxContainer/CustomPaletteVBoxContainer" instance=ExtResource("1_hlqf1")]
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="MarginContainer/MainVBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Close"

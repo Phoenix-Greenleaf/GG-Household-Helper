@@ -44,13 +44,17 @@ func connect_type_updates() -> void:
 		"Section":
 			pass
 		"Group":
-			SignalBus._on_task_editor_group_dropdown_items_changed.connect(update_dropdown_items)
+			SignalBus._on_task_editor_group_dropdown_items_changed.connect(
+				update_dropdown_items
+			)
 		"Time Of Day":
 			pass
 		"Priority":
 			pass
 		"Assigned User":
-			SignalBus._on_task_editor_assigned_user_dropdown_items_changed.connect(update_dropdown_items)
+			SignalBus._on_task_editor_assigned_user_dropdown_items_changed.connect(
+				update_dropdown_items
+			)
 		_:
 			pass
 
@@ -96,10 +100,14 @@ func _on_dropdown_item_selected(index_parameter) -> void:
 			saved_task.group = get_item_text(index_parameter)
 			prints("Group selected:", saved_task.group)
 		"Time Of Day":
-			prints("Time of Day selected:", get_item_text(index_parameter), time_of_day[index_parameter])
+			prints("Time of Day selected:", get_item_text(index_parameter),
+				time_of_day[index_parameter]
+			)
 			saved_task.time_of_day = time_of_day[index_parameter]
 		"Priority":
-			prints("Priority selected:", DataGlobal.Priority.find_key(index_parameter), "index", index_parameter)
+			prints("Priority selected:", DataGlobal.Priority.find_key(index_parameter),
+				"index", index_parameter
+			)
 			saved_task.priority = index_parameter
 		"Assigned User":
 			var assigned_user_name: String = self.get_item_text(index_parameter)
@@ -112,12 +120,13 @@ func _on_dropdown_item_selected(index_parameter) -> void:
 				for current_profile in DataGlobal.active_data_task_tracking.user_profiles:
 					profile_names.append(current_profile[0])
 				var assigned_user_profile_index = profile_names.find(assigned_user_name)
-				var assigned_user_profile = DataGlobal.active_data_task_tracking.user_profiles[assigned_user_profile_index]
+				var assigned_user_profile = (
+					DataGlobal.active_data_task_tracking.user_profiles[assigned_user_profile_index]
+				)
 				prints("Profile selected on dropdown:", assigned_user_profile[0])
 				saved_task.assigned_user = assigned_user_profile
 		_:
 			prints("OptionButton active data update failed")
 			return
 	SignalBus._on_task_set_data_modified.emit()
-	print_verbose("DropdownCell", saved_task.name, "func _on_dropdown_item_selected emits '_on_task_set_data_modified'")
 

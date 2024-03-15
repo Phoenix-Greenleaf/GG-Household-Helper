@@ -76,7 +76,8 @@ func starting_visibilities() -> void:
 func sync_position() -> void:
 	var offset_x: int = 0
 	var offset_y: int = 0
-	var menu_transform: Transform2D = paired_checkbox_menu_button.get_global_transform_with_canvas()
+	var menu_transform: Transform2D
+	menu_transform = paired_checkbox_menu_button.get_global_transform_with_canvas()
 	var menu_origin = menu_transform.origin
 	var menu_position_x: int = menu_origin.x
 	var menu_position_y: int = menu_origin.y
@@ -98,7 +99,9 @@ func load_existing_profiles() -> void:
 	if current_profiles.size() == 0:
 		prints("No profiles to load: Checkbox Selection Popup")
 		return
-	prints("Loading existing profiles: Checkbox Selection Popup", current_profiles.size())
+	prints("Loading existing profiles: Checkbox Selection Popup",
+		current_profiles.size()
+	)
 	for profile in current_profiles:
 		add_profile(profile)
 
@@ -138,7 +141,6 @@ func create_new_profile(profile_name: String, profile_color: Color) -> void:
 	DataGlobal.active_data_task_tracking.user_profiles.append(new_profile)
 	add_profile(new_profile)
 	SignalBus._on_task_set_data_modified.emit()
-	#prints(self, "func create_new_profile emits '_on_task_set_data_modified'")
 
 
 func connect_paired_menu_button() -> void:
@@ -296,7 +298,9 @@ func _on_edit_profile_menu_accept_pressed() -> void:
 	var profile_index = DataGlobal.active_data_task_tracking.user_profiles.find(previous_profile)
 	if profile_index == -1:
 		prints("Error locating previous profile for replacement!")
-	prints("Replacing", DataGlobal.active_data_task_tracking.user_profiles[profile_index], "with", edited_profile)
+	prints("Replacing", DataGlobal.active_data_task_tracking.user_profiles[profile_index],
+		"with", edited_profile
+	)
 	DataGlobal.active_data_task_tracking.user_profiles[profile_index] = edited_profile
 	var profile_buttons = get_tree().get_nodes_in_group("profile_children")
 	for profile in profile_buttons:
@@ -337,8 +341,12 @@ func update_edit_profile_menu() -> void:
 	if edit_profile_menu.visible:
 		edit_profile_button.visible = false
 	edit_profile_name_line_edit.text = DataGlobal.task_tracking_current_checkbox_profile[0]
-	edit_profile_color_picker_button.set_pick_color(DataGlobal.task_tracking_current_checkbox_profile[1])
-	edit_profile_button.add_theme_color_override("font_color", DataGlobal.task_tracking_current_checkbox_profile[1])
+	edit_profile_color_picker_button.set_pick_color(
+		DataGlobal.task_tracking_current_checkbox_profile[1]
+	)
+	edit_profile_button.add_theme_color_override(
+		"font_color", DataGlobal.task_tracking_current_checkbox_profile[1]
+	)
 
 
 func replacement_scan(previous_profile, new_profile) -> void:

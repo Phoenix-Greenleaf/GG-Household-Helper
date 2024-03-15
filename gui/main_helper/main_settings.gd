@@ -22,8 +22,6 @@ extends Control
 @onready var test_change_timer: Timer = %TestChangeTimer
 @onready var cancel_changes_button: Button = %CancelChangesButton
 
-
-
 @onready var theme_title_size_spin_box: SpinBox = %ThemeTitleSizeSpinBox
 @onready var theme_sub_title_size_spin_box: SpinBox = %ThemeSubTitleSizeSpinBox
 @onready var theme_large_size_spin_box: SpinBox = %ThemeLargeSizeSpinBox
@@ -31,7 +29,9 @@ extends Control
 @onready var theme_small_size_spin_box: SpinBox = %ThemeSmallSizeSpinBox
 @onready var theme_font_color_picker_button: ColorPickerButton = %ThemeFontColorPickerButton
 @onready var theme_outline_color_picker_button: ColorPickerButton = %ThemeOutlineColorPickerButton
-@onready var theme_main_color_picker_button: ColorPickerButton = %ThemeMainColorPickerButton
+@onready var theme_background_color_picker_button: ColorPickerButton = %ThemeBackgroundColorPickerButton
+@onready var theme_border_line_color_picker_button: ColorPickerButton = %ThemeBorderLineColorPickerButton
+@onready var theme_primary_color_picker_button: ColorPickerButton = %ThemePrimaryColorPickerButton
 @onready var theme_secondary_color_picker_button: ColorPickerButton = %ThemeSecondaryColorPickerButton
 @onready var theme_tertiary_color_picker_button: ColorPickerButton = %ThemeTertiaryColorPickerButton
 @onready var theme_quaternary_color_picker_button: ColorPickerButton = %ThemeQuaternaryColorPickerButton
@@ -51,13 +51,30 @@ extends Control
 @onready var theme_test_change_timer: Timer = %ThemeTestChangeTimer
 @onready var theme_test_h_separator: HSeparator = %ThemeTestHSeparator
 @onready var theme_test_buttons_h_box_container: HBoxContainer = %ThemeTestButtonsHBoxContainer
+@onready var color_palette_menu_button: Button = %ColorPaletteMenuButton
+@onready var preview_panel_check_button: CheckButton = %PreviewPanelCheckButton
+
+const COLOR_PALETTE_LABEL_BUTTON_GROUP = preload("res://gui/main_helper/color_palette_label_button_group.tres")
 
 const MAIN_THEME = preload("res://theme/main_theme.tres")
-
-const PANEL_BACKGROUND_MAIN = preload("res://theme/theme_parts/panel_background_main.tres")
-const PANEL_POPUP_MAIN = preload("res://theme/theme_parts/panel_popup_main.tres")
-const PANEL_POPUP_SECONDARY = preload("res://theme/theme_parts/panel_popup_secondary.tres")
-const PANEL_POPUP_TERTIARY = preload("res://theme/theme_parts/panel_popup_tertiary.tres")
+# Regular Panels: squared edges, no border
+const PANEL_BACKGROUND = preload("res://theme/theme_parts/panel_background.tres")
+const PANEL_PRIMARY = preload("res://theme/theme_parts/panel_primary.tres")
+const PANEL_SECONDARY = preload("res://theme/theme_parts/panel_secondary.tres")
+const PANEL_TERTIARY = preload("res://theme/theme_parts/panel_tertiary.tres")
+const PANEL_QUATERNARY = preload("res://theme/theme_parts/panel_quaternary.tres")
+const PANEL_QUINARY = preload("res://theme/theme_parts/panel_quinary.tres")
+const PANEL_TRANSPARENCY_DEFAULT = preload("res://theme/theme_parts/panel_transparency_default.tres")
+const PANEL_TRANSPARENCY_WARNING = preload("res://theme/theme_parts/panel_transparency_warning.tres")
+# Popup Panels: rounded edges, colored border
+const POPUP_PRIMARY = preload("res://theme/theme_parts/popup_primary.tres")
+const POPUP_SECONDARY = preload("res://theme/theme_parts/popup_secondary.tres")
+const POPUP_TERTIARY = preload("res://theme/theme_parts/popup_tertiary.tres")
+const POPUP_QUATERNARY = preload("res://theme/theme_parts/popup_quaternary.tres")
+const POPUP_QUINARY = preload("res://theme/theme_parts/popup_quinary.tres")
+const POPUP_TRANSPARENCY_DEFAULT = preload("res://theme/theme_parts/popup_transparency_default.tres")
+const POPUP_TRANSPARENCY_WARNING = preload("res://theme/theme_parts/popup_transparency_warning.tres")
+# unsure that these popup_transparencies are needed
 
 const BUTTON_DISABLED_BOX = preload("res://theme/theme_parts/button_disabled_box.tres")
 const BUTTON_FOCUS_BOX = preload("res://theme/theme_parts/button_focus_box.tres")
@@ -65,8 +82,8 @@ const BUTTON_HOVER_BOX = preload("res://theme/theme_parts/button_hover_box.tres"
 const BUTTON_NORMAL_BOX = preload("res://theme/theme_parts/button_normal_box.tres")
 const BUTTON_PRESSED_BOX = preload("res://theme/theme_parts/button_pressed_box.tres")
 
-const PANEL_BACKGROUND_TRANSPARENCY_RED = preload("res://theme/theme_parts/panel_background_transparency_red.tres")
-const PANEL_POPUP_TRANSPARENCY = preload("res://theme/theme_parts/panel_popup_transparency.tres")
+const SEPARATOR_LINE = preload("res://theme/theme_parts/separator_line.tres")
+const SEPARATOR_LINE_VERTICAL = preload("res://theme/theme_parts/separator_line_vertical.tres")
 
 @onready var settings = DataGlobal.active_settings_main
 
@@ -89,7 +106,6 @@ var testing_active: bool = false
 var test_time: int = 13
 
 var ignore_window_resize: bool = true
-
 
 var resolution_list: Array = [
 	600,
@@ -128,7 +144,9 @@ var theme_medium_size: int
 var theme_small_size: int
 var theme_font_color: Color
 var theme_outlines_color: Color
-var theme_main_color: Color
+var theme_background_color: Color
+var theme_border_line_color: Color
+var theme_primary_color: Color
 var theme_secondary_color: Color
 var theme_tertiary_color: Color
 var theme_quaternary_color: Color
@@ -141,12 +159,16 @@ var theme_button_hover_color: Color
 var theme_transparency_default_color: Color
 var theme_transparency_warning_color: Color
 
+var theme_current_color_palette: String
+var theme_loaded_color_palette: String
+var theme_palette_reset_needs_saving: bool = false
+
 
 
 func _ready() -> void:
+	connect_signals()
 	load_all_settings()
 	initialize_all_sections()
-	connect_signals()
 	fix_theme_variations()
 	toggle_changed_settings_section()
 	theme_toggle_changed_settings_section()
@@ -213,7 +235,9 @@ func initialize_option_buttons() -> void:
 	initialize_display_preference_options()
 
 
-func initialize_resolution_lists(button_parameter: OptionButton, native_resolution_paramter: int) -> void:
+func initialize_resolution_lists(button_parameter: OptionButton,
+	native_resolution_paramter: int
+) -> void:
 	button_parameter.clear()
 	for resolution_iteration in resolution_list:
 		if resolution_iteration == native_resolution_paramter:
@@ -228,7 +252,9 @@ func initialize_display_preference_options() -> void:
 	for display_iteration in screen_count:
 		var monitor_name: String = "Monitor " + str(display_iteration + 1)
 		var monitor_size: Vector2i = DisplayServer.screen_get_size(display_iteration)
-		var monitor_size_string: String = "  (" + str(monitor_size.x) + " x " + str(monitor_size.y) + ")"
+		var monitor_size_string: String = ("  (" + str(monitor_size.x) + " x "
+			+ str(monitor_size.y) + ")"
+		)
 		display_preference_option_button.add_item(monitor_name + monitor_size_string)
 
 
@@ -236,6 +262,29 @@ func connect_signals() -> void:
 	test_change_timer.timeout.connect(test_changes_end)
 	theme_test_change_timer.timeout.connect(theme_test_changes_end)
 	get_tree().get_root().size_changed.connect(window_resized)
+	COLOR_PALETTE_LABEL_BUTTON_GROUP.pressed.connect(theme_palette_button_pressed)
+	SignalBus._on_theme_settings_color_palettes_loaded.connect(theme_select_current_palette_button)
+	SignalBus._on_theme_settings_color_palette_reset.connect(theme_reset_palette)
+	connect_theme_color_pickers()
+
+
+func connect_theme_color_pickers() -> void:
+	theme_font_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_outline_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_background_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_border_line_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_primary_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_secondary_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_tertiary_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_quaternary_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_quinary_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_button_default_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_button_disabled_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_button_focus_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_button_pressed_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_button_hover_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_transparency_default_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
+	theme_transparency_warning_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
 
 
 func load_all_settings() -> void:
@@ -292,7 +341,9 @@ func apply_both_resolutions(width_parameter: int, height_parameter: int) -> void
 	toggle_custom_resolution_container()
 
 
-func apply_resolution(button_parameter: OptionButton, spinbox_parameter: SpinBox, resolution_parameter: int) -> void:
+func apply_resolution(button_parameter: OptionButton, spinbox_parameter: SpinBox,
+	resolution_parameter: int
+) -> void:
 	spinbox_parameter.value = resolution_parameter
 	if resolution_parameter not in resolution_list:
 		button_parameter.select(resolution_list.size())
@@ -304,7 +355,9 @@ func apply_resolution(button_parameter: OptionButton, spinbox_parameter: SpinBox
 
 
 func toggle_custom_resolution_container() -> void:
-	if resolution_height_option_button.selected != resolution_list.size() and resolution_width_option_button.selected != resolution_list.size():
+	if (resolution_height_option_button.selected != resolution_list.size()
+		and resolution_width_option_button.selected != resolution_list.size()
+	):
 		custom_resolution_h_box_container.visible = false
 		return
 	custom_resolution_h_box_container.visible = true
@@ -312,7 +365,9 @@ func toggle_custom_resolution_container() -> void:
 	toggle_custom_dimension_disable(resolution_width_option_button, custom_width_spin_box)
 
 
-func toggle_custom_dimension_disable(option_button_parameter: OptionButton, spin_box_parameter: SpinBox) -> void:
+func toggle_custom_dimension_disable(option_button_parameter: OptionButton,
+	spin_box_parameter: SpinBox
+) -> void:
 	if option_button_parameter.selected == resolution_list.size():
 		spin_box_parameter.editable = true
 	else:
@@ -402,7 +457,12 @@ func changed_settings_check() -> bool:
 func test_changes_start() -> void:
 	test_mass_disable(true)
 	disable_main_settings_tab_container_all_tabs(true)
-	set_window(display_preference_option_button.selected, display_mode_option_button.selected, borderless_check_button.button_pressed, int(custom_width_spin_box.value), int(custom_height_spin_box.value))
+	set_window(display_preference_option_button.selected,
+		display_mode_option_button.selected,
+		borderless_check_button.button_pressed,
+		int(custom_width_spin_box.value),
+		int(custom_height_spin_box.value)
+	)
 	test_button.text = "Cancel Test"
 	save_warning_label.text = "Test Active, will revert in:"
 	testing_active = true
@@ -448,7 +508,9 @@ func save_display_settings() -> void:
 	apply_display_settings_to_menu()
 
 
-func set_window(current_screen_parameter: int, mode_parameter: int, borderless_parameter: int, width_parameter: int, height_parameter: int) -> void:
+func set_window(current_screen_parameter: int, mode_parameter: int,
+	borderless_parameter: int, width_parameter: int, height_parameter: int
+) -> void:
 	ignore_window_resize = true
 	var window_instance = get_window()
 	if mode_parameter == 1:
@@ -484,7 +546,9 @@ func toggle_accept_button() -> void:
 		1:
 			accept_button.disabled = !theme_changed_settings_check()
 		_:
-			printerr("Accept button error: Tab not found. ", main_settings_tab_container.current_tab)
+			printerr("Accept button error: Tab not found. ",
+				main_settings_tab_container.current_tab
+			)
 
 func initialize_theme() -> void:
 	apply_theme_settings_to_menu()
@@ -498,9 +562,17 @@ func apply_theme_settings_to_menu() -> void:
 	theme_large_size_spin_box.value = theme_large_size
 	theme_medium_size_spin_box.value = theme_medium_size
 	theme_small_size_spin_box.value = theme_small_size
+	apply_theme_color_palette_to_menu()
+
+
+func apply_theme_color_palette_to_menu() -> void:
+	theme_current_color_palette = theme_loaded_color_palette
+	color_palette_menu_button.text = "Current Color Palette:\n" + theme_current_color_palette.capitalize()
+	theme_background_color_picker_button.color = theme_background_color
+	theme_border_line_color_picker_button.color = theme_border_line_color
 	theme_font_color_picker_button.color = theme_font_color
 	theme_outline_color_picker_button.color = theme_outlines_color
-	theme_main_color_picker_button.color = theme_main_color
+	theme_primary_color_picker_button.color = theme_primary_color
 	theme_secondary_color_picker_button.color = theme_secondary_color
 	theme_tertiary_color_picker_button.color = theme_tertiary_color
 	theme_quaternary_color_picker_button.color = theme_quaternary_color
@@ -512,7 +584,6 @@ func apply_theme_settings_to_menu() -> void:
 	theme_button_hover_color_picker_button.color = theme_button_hover_color
 	theme_transparency_default_color_picker_button.color = theme_transparency_default_color
 	theme_transparency_warning_color_picker_button.color = theme_transparency_warning_color
-	theme_disable_changed_settings_section(true)
 
 
 func theme_toggle_changed_settings_section() -> void:
@@ -543,7 +614,11 @@ func theme_changed_settings_check() -> bool:
 		return true
 	if theme_outlines_color != theme_outline_color_picker_button.color:
 		return true
-	if theme_main_color != theme_main_color_picker_button.color:
+	if theme_background_color != theme_background_color_picker_button.color:
+		return true
+	if theme_border_line_color != theme_border_line_color_picker_button.color:
+		return true
+	if theme_primary_color != theme_primary_color_picker_button.color:
 		return true
 	if theme_secondary_color != theme_secondary_color_picker_button.color:
 		return true
@@ -566,6 +641,16 @@ func theme_changed_settings_check() -> bool:
 	if theme_transparency_default_color != theme_transparency_default_color_picker_button.color:
 		return true
 	if theme_transparency_warning_color != theme_transparency_warning_color_picker_button.color:
+		return true
+	if theme_font_color != theme_font_color_picker_button.color:
+		return true
+	if theme_outlines_color != theme_outline_color_picker_button.color:
+		return true
+	if theme_border_line_color != theme_border_line_color_picker_button.color:
+		return true
+	if theme_current_color_palette != theme_loaded_color_palette:
+		return true
+	if theme_palette_reset_needs_saving:
 		return true
 	return false
 
@@ -597,7 +682,8 @@ func theme_test_changes_end() -> void:
 	if not theme_test_change_timer.is_stopped():
 		theme_test_change_timer.stop()
 	theme_test_change_timer_label.text = ""
-	toggle_changed_settings_section()
+	theme_select_current_palette_button()
+	theme_toggle_changed_settings_section()
 
 
 func load_theme_settings() -> void:
@@ -606,20 +692,29 @@ func load_theme_settings() -> void:
 	theme_large_size = settings.theme_large_size
 	theme_medium_size = settings.theme_medium_size
 	theme_small_size = settings.theme_small_size
-	theme_font_color = settings.theme_font_color
-	theme_outlines_color = settings.theme_outlines_color
-	theme_main_color = settings.theme_main_color
-	theme_secondary_color = settings.theme_secondary_color
-	theme_tertiary_color = settings.theme_tertiary_color
-	theme_quaternary_color = settings.theme_quaternary_color
-	theme_quinary_color = settings.theme_quinary_color
-	theme_button_default_color = settings.theme_button_default_color
-	theme_button_disabled_color = settings.theme_button_disabled_color
-	theme_button_focus_color = settings.theme_button_focus_color
-	theme_button_pressed_color = settings.theme_button_pressed_color
-	theme_button_hover_color = settings.theme_button_hover_color
-	theme_transparency_default_color = settings.theme_transparency_default_color
-	theme_transparency_warning_color = settings.theme_transparency_warning_color
+	theme_current_color_palette = settings.theme_current_color_palette
+	theme_loaded_color_palette = settings.theme_current_color_palette
+	load_theme_color_palette()
+
+
+func load_theme_color_palette() -> void:
+	var color_profile = settings.theme_color_palettes[theme_current_color_palette]
+	theme_font_color = Color(color_profile.theme_font_color)
+	theme_outlines_color = Color(color_profile.theme_outlines_color)
+	theme_background_color = Color(color_profile.theme_background_color)
+	theme_border_line_color = Color(color_profile.theme_border_line_color)
+	theme_primary_color = Color(color_profile.theme_primary_color)
+	theme_secondary_color = Color(color_profile.theme_secondary_color)
+	theme_tertiary_color = Color(color_profile.theme_tertiary_color)
+	theme_quaternary_color = Color(color_profile.theme_quaternary_color)
+	theme_quinary_color = Color(color_profile.theme_quinary_color)
+	theme_button_default_color = Color(color_profile.theme_button_default_color)
+	theme_button_disabled_color = Color(color_profile.theme_button_disabled_color)
+	theme_button_focus_color = Color(color_profile.theme_button_focus_color)
+	theme_button_pressed_color = Color(color_profile.theme_button_pressed_color)
+	theme_button_hover_color = Color(color_profile.theme_button_hover_color)
+	theme_transparency_default_color = Color(color_profile.theme_transparency_default_color)
+	theme_transparency_warning_color = Color(color_profile.theme_transparency_warning_color)
 
 
 func save_theme_settings() -> void:
@@ -628,125 +723,247 @@ func save_theme_settings() -> void:
 	settings.theme_large_size = theme_large_size_spin_box.value
 	settings.theme_medium_size = theme_medium_size_spin_box.value
 	settings.theme_small_size = theme_small_size_spin_box.value
-	settings.theme_font_color = theme_font_color_picker_button.color
-	settings.theme_outlines_color = theme_outline_color_picker_button.color
-	settings.theme_main_color = theme_main_color_picker_button.color
-	settings.theme_secondary_color = theme_secondary_color_picker_button.color
-	settings.theme_tertiary_color = theme_tertiary_color_picker_button.color
-	settings.theme_quaternary_color = theme_quaternary_color_picker_button.color
-	settings.theme_quinary_color = theme_quinary_color_picker_button.color
-	settings.theme_button_default_color = theme_button_default_color_picker_button.color
-	settings.theme_button_disabled_color = theme_button_disabled_color_picker_button.color
-	settings.theme_button_focus_color = theme_button_focus_color_picker_button.color
-	settings.theme_button_pressed_color = theme_button_pressed_color_picker_button.color
-	settings.theme_button_hover_color = theme_button_hover_color_picker_button.color
-	settings.theme_transparency_default_color = theme_transparency_default_color_picker_button.color
-	settings.theme_transparency_warning_color = theme_transparency_warning_color_picker_button.color
+	settings.theme_current_color_palette = theme_current_color_palette
+	var color_profile = settings.theme_color_palettes[theme_current_color_palette]
+	color_profile.theme_font_color = theme_font_color_picker_button.color.to_html()
+	color_profile.theme_outlines_color = theme_outline_color_picker_button.color.to_html()
+	color_profile.theme_background_color = theme_background_color_picker_button.color.to_html()
+	color_profile.theme_border_line_color = theme_border_line_color_picker_button.color.to_html()
+	color_profile.theme_primary_color = theme_primary_color_picker_button.color.to_html()
+	color_profile.theme_secondary_color = theme_secondary_color_picker_button.color.to_html()
+	color_profile.theme_tertiary_color = theme_tertiary_color_picker_button.color.to_html()
+	color_profile.theme_quaternary_color = theme_quaternary_color_picker_button.color.to_html()
+	color_profile.theme_quinary_color = theme_quinary_color_picker_button.color.to_html()
+	color_profile.theme_button_default_color = theme_button_default_color_picker_button.color.to_html()
+	color_profile.theme_button_disabled_color = theme_button_disabled_color_picker_button.color.to_html()
+	color_profile.theme_button_focus_color = theme_button_focus_color_picker_button.color.to_html()
+	color_profile.theme_button_pressed_color = theme_button_pressed_color_picker_button.color.to_html()
+	color_profile.theme_button_hover_color = theme_button_hover_color_picker_button.color.to_html()
+	color_profile.theme_transparency_default_color = theme_transparency_default_color_picker_button.color.to_html()
+	color_profile.theme_transparency_warning_color = theme_transparency_warning_color_picker_button.color.to_html()
+	theme_palette_reset_needs_saving = false
 	DataGlobal.save_settings_main()
 	load_theme_settings()
-	apply_display_settings_to_menu()
+	apply_theme_settings_to_menu()
 
 
 func set_themes() -> void:
-	MAIN_THEME.set_font_size("font_size", "Label", theme_small_size)
-	MAIN_THEME.set_font_size("font_size", "Label_Medium", theme_medium_size)
-	MAIN_THEME.set_font_size("font_size", "Label_Large", theme_large_size)
-	MAIN_THEME.set_font_size("font_size", "Label_Title_Secondary", theme_sub_title_size)
-	MAIN_THEME.set_font_size("font_size", "Label_Title", theme_title_size)
+	set_themes_all_font_sizes()
+	set_themes_all_colors()
+
+
+func set_themes_all_font_sizes() -> void:
+	set_themes_small_font(theme_small_size)
+	set_themes_medium_font(theme_medium_size)
+	set_themes_large_font(theme_large_size)
+	set_themes_sub_title_font(theme_sub_title_size)
+	set_themes_title_font(theme_title_size)
+
+
+func set_themes_all_colors() -> void:
+	set_themes_background_color(theme_background_color)
+	set_themes_primary_color(theme_primary_color)
+	set_themes_secondary_color(theme_secondary_color)
+	set_themes_tertiary_color(theme_tertiary_color)
+	set_themes_quaternary_color(theme_quaternary_color)
+	set_themes_quinary_color(theme_quinary_color)
+	set_themes_border_line_color(theme_border_line_color)
+	set_themes_font_color(theme_font_color)
+	set_themes_outline_color(theme_outlines_color)
+	set_themes_button_default_color(theme_button_default_color)
+	set_themes_button_disabled_color(theme_button_disabled_color)
+	set_themes_button_focus_color(theme_button_focus_color)
+	set_themes_button_pressed_color(theme_button_pressed_color)
+	set_themes_button_hover_color(theme_button_hover_color)
+	set_themes_transparency_default_color(theme_transparency_default_color)
+	set_themes_transparency_warning_color(theme_transparency_warning_color)
+
+
+func set_themes_small_font(size_parameter: int) -> void:
+	MAIN_THEME.set_font_size("font_size", "Label", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "LineEdit", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "Button", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "OptionButton", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "PopupMenu", size_parameter) 
+	MAIN_THEME.set_font_size("font_size", "CheckButton", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "TabContainer", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "TextEdit", size_parameter)
+
+
+func set_themes_medium_font(size_parameter: int) -> void:
+	MAIN_THEME.set_font_size("font_size", "Label_Medium", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Medium", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "Button_Medium", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "Button_Medium_Hover_Demo", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "OptionButton_Medium", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "PopupMenu_Medium", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "CheckButton_Medium", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "TabContainer_Medium", size_parameter)
+
+
+func set_themes_large_font(size_parameter: int) -> void:
+	MAIN_THEME.set_font_size("font_size", "Label_Large", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Large", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "Button_Large", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "TabContainer_Large", size_parameter)
+
+
+func set_themes_sub_title_font(size_parameter: int) -> void:
+	MAIN_THEME.set_font_size("font_size", "Label_Title_Secondary", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Title_Secondary", size_parameter)
+
+
+func set_themes_title_font(size_parameter: int) -> void:
+	MAIN_THEME.set_font_size("font_size", "Label_Title", size_parameter)
+	MAIN_THEME.set_font_size("font_size", "LineEdit_Title", size_parameter)
+
+
+func set_themes_background_color(color_parameter: Color) -> void:
+	PANEL_BACKGROUND.set("bg_color", color_parameter)
+
+
+func set_themes_primary_color(color_parameter: Color) -> void:
+	POPUP_PRIMARY.set("bg_color", color_parameter)
+	PANEL_PRIMARY.set("bg_color", color_parameter)
+
+
+func set_themes_secondary_color(color_parameter: Color) -> void:
+	POPUP_SECONDARY.set("bg_color", color_parameter)
+	PANEL_SECONDARY.set("bg_color", color_parameter)
+
+
+func set_themes_tertiary_color(color_parameter: Color) -> void:
+	POPUP_TERTIARY.set("bg_color", color_parameter)
+	PANEL_TERTIARY.set("bg_color", color_parameter)
+
+
+func set_themes_quaternary_color(color_parameter: Color) -> void:
+	POPUP_QUATERNARY.set("bg_color", color_parameter)
+	PANEL_QUATERNARY.set("bg_color", color_parameter)
+
+
+func set_themes_quinary_color(color_parameter: Color) -> void:
+	POPUP_QUINARY.set("bg_color", color_parameter)
+	PANEL_QUINARY.set("bg_color", color_parameter)
+
+
+func set_themes_border_line_color(color_parameter: Color) -> void:
+	BUTTON_NORMAL_BOX.set("border_color", color_parameter)
+	BUTTON_DISABLED_BOX.set("border_color", color_parameter)
+	BUTTON_PRESSED_BOX.set("border_color", color_parameter)
+	BUTTON_HOVER_BOX.set("border_color", color_parameter)
+
+	POPUP_PRIMARY.set("border_color", color_parameter)
+	POPUP_SECONDARY.set("border_color", color_parameter)
+	POPUP_TERTIARY.set("border_color", color_parameter)
+	POPUP_QUATERNARY.set("border_color", color_parameter)
+	POPUP_QUINARY.set("border_color", color_parameter)
+
+	POPUP_TRANSPARENCY_DEFAULT.set("border_color", color_parameter)
+	POPUP_TRANSPARENCY_WARNING.set("border_color", color_parameter)
+
+	SEPARATOR_LINE.set("color", color_parameter)
+	SEPARATOR_LINE_VERTICAL.set("color", color_parameter)
+
+func set_themes_font_color(color_parameter: Color) -> void:
+	MAIN_THEME.set_color("font_color", "Label", color_parameter)
+	MAIN_THEME.set_color("font_color", "LineEdit", color_parameter)
+	MAIN_THEME.set_color("font_color", "OptionButton", color_parameter)
+	MAIN_THEME.set_color("font_color", "PopupMenu", color_parameter) 
+	MAIN_THEME.set_color("font_color", "CheckButton", color_parameter)
+	MAIN_THEME.set_color("font_color", "TextEdit", color_parameter)
 	
-	MAIN_THEME.set_font_size("font_size", "LineEdit", theme_small_size)
-	MAIN_THEME.set_font_size("font_size", "LineEdit_Medium", theme_medium_size)
-	MAIN_THEME.set_font_size("font_size", "LineEdit_Large", theme_large_size)
-	MAIN_THEME.set_font_size("font_size", "LineEdit_Title_Secondary", theme_sub_title_size)
-	MAIN_THEME.set_font_size("font_size", "LineEdit_Title", theme_title_size)
+	MAIN_THEME.set_color("font_color", "Button", color_parameter)
+	MAIN_THEME.set_color("font_focus_color", "Button", color_parameter)
+	MAIN_THEME.set_color("font_hover_color", "Button", color_parameter)
+	MAIN_THEME.set_color("font_pressed_color", "Button", color_parameter)
+	MAIN_THEME.set_color("font_hover_pressed_color", "Button", color_parameter)
+	MAIN_THEME.set_color("font_disabled_color", "Button", Color(color_parameter, 0.5))
 	
-	MAIN_THEME.set_font_size("font_size", "Button", theme_small_size)
-	MAIN_THEME.set_font_size("font_size", "Button_Medium", theme_medium_size)
-	MAIN_THEME.set_font_size("font_size", "Button_Large", theme_large_size)
-	
-	MAIN_THEME.set_font_size("font_size", "OptionButton", theme_small_size)
-	MAIN_THEME.set_font_size("font_size", "OptionButton_Medium", theme_medium_size)
-	
-	MAIN_THEME.set_font_size("font_size", "PopupMenu", theme_small_size) 
-	MAIN_THEME.set_font_size("font_size", "PopupMenu_Medium", theme_medium_size)
-	
-	MAIN_THEME.set_font_size("font_size", "CheckButton", theme_small_size)
-	MAIN_THEME.set_font_size("font_size", "CheckButton_Medium", theme_medium_size)
-	
-	MAIN_THEME.set_font_size("font_size", "TabContainer", theme_small_size)
-	MAIN_THEME.set_font_size("font_size", "TabContainer_Medium", theme_medium_size)
-	MAIN_THEME.set_font_size("font_size", "TabContainer_Large", theme_large_size)
-	
-	MAIN_THEME.set_font_size("font_size", "TextEdit", theme_small_size)
-	
-	PANEL_BACKGROUND_MAIN.set("bg_color", theme_main_color)
-	#PANEL_POPUP_MAIN.set("bg_color", theme_main_color)
-	PANEL_POPUP_SECONDARY.set("bg_color", theme_secondary_color)
-	PANEL_POPUP_TERTIARY.set("bg_color", theme_tertiary_color)
-	
-	BUTTON_DISABLED_BOX.set("bg_color", theme_button_disabled_color)
-	BUTTON_FOCUS_BOX.set("border_color", theme_button_focus_color)
-	BUTTON_HOVER_BOX.set("bg_color", theme_button_hover_color)
-	BUTTON_NORMAL_BOX.set("bg_color", theme_button_default_color)
-	BUTTON_PRESSED_BOX.set("bg_color", theme_button_pressed_color)
-	
-	PANEL_BACKGROUND_TRANSPARENCY_RED.set("bg_color", theme_transparency_warning_color)
-	PANEL_POPUP_TRANSPARENCY.set("bg_color", theme_transparency_default_color)
+	MAIN_THEME.set_color("font_unselected_color", "TabContainer", color_parameter)
+	MAIN_THEME.set_color("font_focus_color", "TabContainer", color_parameter)
+	MAIN_THEME.set_color("font_hover_color", "TabContainer", color_parameter)
+	MAIN_THEME.set_color("font_selected_color", "TabContainer", color_parameter)
+	MAIN_THEME.set_color("font_hover_pressed_color", "TabContainer", color_parameter)
+	MAIN_THEME.set_color("font_disabled_color", "TabContainer", Color(color_parameter, 0.5))
+
+
+func set_themes_outline_color(color_parameter: Color) -> void:
+	MAIN_THEME.set_color("font_outline_color", "Label", color_parameter)
+	MAIN_THEME.set_color("font_outline_color", "LineEdit", color_parameter)
+	MAIN_THEME.set_color("font_outline_color", "Button", color_parameter)
+	MAIN_THEME.set_color("font_outline_color", "OptionButton", color_parameter)
+	MAIN_THEME.set_color("font_outline_color", "PopupMenu", color_parameter) 
+	MAIN_THEME.set_color("font_outline_color", "CheckButton", color_parameter)
+	MAIN_THEME.set_color("font_outline_color", "TabContainer", color_parameter)
+	MAIN_THEME.set_color("font_outline_color", "TextEdit", color_parameter)
+
+
+func set_themes_button_default_color(color_parameter: Color) -> void:
+	BUTTON_NORMAL_BOX.set("bg_color", color_parameter)
+
+
+func set_themes_button_disabled_color(color_parameter: Color) -> void:
+	BUTTON_DISABLED_BOX.set("bg_color", color_parameter)
+
+
+func set_themes_button_focus_color(color_parameter: Color) -> void:
+	BUTTON_FOCUS_BOX.set("border_color", color_parameter)
+
+
+func set_themes_button_pressed_color(color_parameter: Color) -> void:
+	BUTTON_PRESSED_BOX.set("bg_color", color_parameter)
+
+
+func set_themes_button_hover_color(color_parameter: Color) -> void:
+	BUTTON_HOVER_BOX.set("bg_color", color_parameter)
+
+
+func set_themes_transparency_default_color(color_parameter: Color) -> void:
+	PANEL_TRANSPARENCY_DEFAULT.set("bg_color", color_parameter)
+	POPUP_TRANSPARENCY_DEFAULT.set("bg_color", color_parameter)
+
+
+func set_themes_transparency_warning_color(color_parameter: Color) -> void:
+	PANEL_TRANSPARENCY_WARNING.set("bg_color", color_parameter)
+	POPUP_TRANSPARENCY_WARNING.set("bg_color", color_parameter)
 
 
 func test_themes() -> void:
+	test_themes_all_font_sizes()
+	test_themes_all_colors()
+
+
+func test_themes_all_font_sizes() -> void:
 	var test_font_small := int(theme_small_size_spin_box.value)
 	var test_font_medium := int(theme_medium_size_spin_box.value)
 	var test_font_large := int(theme_large_size_spin_box.value)
 	var test_font_sub_title := int(theme_sub_title_size_spin_box.value)
 	var test_font_title := int(theme_title_size_spin_box.value)
-	
-	
-	
-	MAIN_THEME.set_font_size("font_size", "Label", test_font_small)
-	MAIN_THEME.set_font_size("font_size", "Label_Medium", test_font_medium)
-	MAIN_THEME.set_font_size("font_size", "Label_Large", test_font_large)
-	MAIN_THEME.set_font_size("font_size", "Label_Title_Secondary", test_font_sub_title)
-	MAIN_THEME.set_font_size("font_size", "Label_Title", test_font_title)
-	
-	MAIN_THEME.set_font_size("font_size", "LineEdit", test_font_small)
-	MAIN_THEME.set_font_size("font_size", "LineEdit_Medium", test_font_medium)
-	MAIN_THEME.set_font_size("font_size", "LineEdit_Large", test_font_large)
-	MAIN_THEME.set_font_size("font_size", "LineEdit_Title_Secondary", test_font_sub_title)
-	MAIN_THEME.set_font_size("font_size", "LineEdit_Title", test_font_title)
-	
-	MAIN_THEME.set_font_size("font_size", "Button", test_font_small)
-	MAIN_THEME.set_font_size("font_size", "Button_Medium", test_font_medium)
-	MAIN_THEME.set_font_size("font_size", "Button_Large", test_font_large)
-	
-	MAIN_THEME.set_font_size("font_size", "OptionButton", test_font_small)
-	MAIN_THEME.set_font_size("font_size", "OptionButton_Medium", test_font_medium)
-	
-	MAIN_THEME.set_font_size("font_size", "PopupMenu", test_font_small)
-	MAIN_THEME.set_font_size("font_size", "PopupMenu_Medium", test_font_medium)
-	
-	MAIN_THEME.set_font_size("font_size", "CheckButton", test_font_small)
-	MAIN_THEME.set_font_size("font_size", "CheckButton_Medium", test_font_medium)
-	
-	MAIN_THEME.set_font_size("font_size", "TabContainer", test_font_small)
-	MAIN_THEME.set_font_size("font_size", "TabContainer_Medium", test_font_medium)
-	MAIN_THEME.set_font_size("font_size", "TabContainer_Large", test_font_large)
-	
-	MAIN_THEME.set_font_size("font_size", "TextEdit", test_font_small)
-	
-	PANEL_BACKGROUND_MAIN.set("bg_color", theme_main_color_picker_button.color)
-	#PANEL_POPUP_MAIN.set("bg_color", theme_main_color_picker_button.color)
-	PANEL_POPUP_SECONDARY.set("bg_color", theme_secondary_color_picker_button.color)
-	PANEL_POPUP_TERTIARY.set("bg_color", theme_tertiary_color_picker_button.color)
-	
-	BUTTON_DISABLED_BOX.set("bg_color", theme_button_disabled_color_picker_button.color)
-	BUTTON_FOCUS_BOX.set("border_color", theme_button_focus_color_picker_button.color)
-	BUTTON_HOVER_BOX.set("bg_color", theme_button_hover_color_picker_button.color)
-	BUTTON_NORMAL_BOX.set("bg_color", theme_button_default_color_picker_button.color)
-	BUTTON_PRESSED_BOX.set("bg_color", theme_button_pressed_color_picker_button.color)
-	
-	PANEL_BACKGROUND_TRANSPARENCY_RED.set("bg_color", theme_transparency_warning_color_picker_button.color)
-	PANEL_POPUP_TRANSPARENCY.set("bg_color", theme_transparency_default_color_picker_button.color)
+	set_themes_small_font(test_font_small)
+	set_themes_medium_font(test_font_medium)
+	set_themes_large_font(test_font_large)
+	set_themes_sub_title_font(test_font_sub_title)
+	set_themes_title_font(test_font_title)
+
+
+func test_themes_all_colors() -> void:
+	set_themes_background_color(theme_background_color_picker_button.color)
+	set_themes_primary_color(theme_primary_color_picker_button.color)
+	set_themes_secondary_color(theme_secondary_color_picker_button.color)
+	set_themes_tertiary_color(theme_tertiary_color_picker_button.color)
+	set_themes_quaternary_color(theme_quaternary_color_picker_button.color)
+	set_themes_quinary_color(theme_quinary_color_picker_button.color)
+	set_themes_border_line_color(theme_border_line_color_picker_button.color)
+	set_themes_font_color(theme_font_color_picker_button.color)
+	set_themes_outline_color(theme_outline_color_picker_button.color)
+	set_themes_button_default_color(theme_button_default_color_picker_button.color)
+	set_themes_button_disabled_color(theme_button_disabled_color_picker_button.color)
+	set_themes_button_focus_color(theme_button_focus_color_picker_button.color)
+	set_themes_button_hover_color(theme_button_hover_color_picker_button.color)
+	set_themes_button_pressed_color(theme_button_pressed_color_picker_button.color)
+	set_themes_transparency_default_color(theme_transparency_default_color_picker_button.color)
+	set_themes_transparency_warning_color(theme_transparency_warning_color_picker_button.color)
 
 
 func accept_button_display_settings() -> void:
@@ -769,11 +986,79 @@ func accept_button_theme_settings() -> void:
 		theme_test_changes_end()
 		prints("End test: Accepted")
 	save_theme_settings()
-	theme_toggle_changed_settings_section()
 	set_themes()
+	SignalBus._on_theme_settings_color_palette_updated.emit()
+	theme_toggle_changed_settings_section()
+	theme_select_current_palette_button()
 
 
+func theme_select_current_palette_button() -> void:
+	var palette_button_list: Array = COLOR_PALETTE_LABEL_BUTTON_GROUP.get_buttons()
+	if palette_button_list.size() == 0:
+		return
+	prints("Attempting to select palette button:", theme_current_color_palette)
+	for button_iteration in palette_button_list:
+		var button_text =  button_iteration.text.to_lower()
+		if button_text == theme_current_color_palette:
+			button_iteration.set_pressed_no_signal(true)
+			color_palette_menu_button.text = "Current Color Palette:\n" + button_iteration.text.capitalize()
+			continue
+		button_iteration.set_pressed_no_signal(false)
+	theme_custom_palette_check()
 
+
+func theme_palette_button_pressed(button_pressed: Button) -> void:
+	theme_current_color_palette = button_pressed.text.to_lower()
+	color_palette_menu_button.text = "Current Color Palette:\n" + button_pressed.text
+	theme_load_palette_to_menu(theme_current_color_palette)
+	theme_toggle_changed_settings_section()
+
+
+func theme_load_palette_to_menu(palette_parameter) -> void:
+	var loaded_palette = settings.theme_color_palettes[palette_parameter]
+	theme_background_color_picker_button.color = Color(loaded_palette.theme_background_color)
+	theme_primary_color_picker_button.color = Color(loaded_palette.theme_primary_color)
+	theme_secondary_color_picker_button.color = Color(loaded_palette.theme_secondary_color)
+	theme_tertiary_color_picker_button.color = Color(loaded_palette.theme_tertiary_color)
+	theme_quaternary_color_picker_button.color = Color(loaded_palette.theme_quaternary_color)
+	theme_quinary_color_picker_button.color = Color(loaded_palette.theme_quinary_color)
+	theme_border_line_color_picker_button.color = Color(loaded_palette.theme_border_line_color)
+	theme_font_color_picker_button.color = Color(loaded_palette.theme_font_color)
+	theme_outline_color_picker_button.color = Color(loaded_palette.theme_outlines_color)
+	theme_button_default_color_picker_button.color = Color(loaded_palette.theme_button_default_color)
+	theme_button_disabled_color_picker_button.color = Color(loaded_palette.theme_button_disabled_color)
+	theme_button_focus_color_picker_button.color = Color(loaded_palette.theme_button_focus_color)
+	theme_button_hover_color_picker_button.color = Color(loaded_palette.theme_button_hover_color)
+	theme_button_pressed_color_picker_button.color = Color(loaded_palette.theme_button_pressed_color)
+	theme_transparency_default_color_picker_button.color = Color(loaded_palette.theme_transparency_default_color)
+	theme_transparency_warning_color_picker_button.color = Color(loaded_palette.theme_transparency_warning_color)
+
+
+func theme_custom_palette_check() -> bool:
+	if theme_current_color_palette.ends_with("custom"):
+		return true
+	return false
+
+
+func theme_preset_palette_swaps_to_custom_when_edited(_discarded_parameter) -> void:
+	if theme_custom_palette_check():
+		return
+	prints("Changing palette from preset to custom!")
+	theme_current_color_palette += " custom"
+	theme_select_current_palette_button()
+	theme_load_palette_to_menu(theme_current_color_palette)
+	theme_toggle_changed_settings_section()
+
+
+func theme_reset_palette(palette_parameter: String) -> void:
+	var preset_palette = palette_parameter.left(-7)
+	prints("Reseting palette:", palette_parameter, "to", preset_palette)
+	settings.theme_color_palettes[palette_parameter] = settings.theme_color_palettes[preset_palette]
+	SignalBus._on_theme_settings_color_palette_updated.emit()
+	if palette_parameter == theme_current_color_palette:
+		theme_load_palette_to_menu(palette_parameter)
+	theme_palette_reset_needs_saving = true
+	theme_toggle_changed_settings_section()
 
 
 func _on_reset_button_pressed() -> void:
@@ -863,6 +1148,7 @@ func _on_cancel_changes_button_pressed() -> void:
 			apply_theme_settings_to_menu()
 			set_themes()
 			theme_toggle_changed_settings_section()
+			theme_select_current_palette_button()
 		_:
 			prints("Cancel Button Error: Tab not found:", main_settings_tab_container.current_tab)
 
@@ -884,6 +1170,7 @@ func _on_theme_test_button_pressed() -> void:
 
 func _on_theme_cancel_changes_button_pressed() -> void:
 	apply_theme_settings_to_menu()
+	theme_select_current_palette_button()
 	theme_toggle_changed_settings_section()
 
 

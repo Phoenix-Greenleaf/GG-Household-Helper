@@ -321,8 +321,12 @@ func _on_daily_button_toggled(button_pressed: bool) -> void:
 
 func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
-		if DataGlobal.task_tracking_current_toggled_editor_mode != DataGlobal.task_tracking_editor_modes["Checkbox"]:
-			DataGlobal.task_tracking_current_toggled_editor_mode = DataGlobal.task_tracking_editor_modes["Checkbox"]
+		if (DataGlobal.task_tracking_current_toggled_editor_mode
+			!= DataGlobal.task_tracking_editor_modes["Checkbox"]
+		):
+			DataGlobal.task_tracking_current_toggled_editor_mode = (
+				DataGlobal.task_tracking_editor_modes["Checkbox"]
+			)
 			SignalBus._on_task_editor_mode_changed.emit()
 			prints("Checkbox Mode toggled")
 		else:
@@ -331,8 +335,12 @@ func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void:
 
 func _on_info_mode_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
-		if DataGlobal.task_tracking_current_toggled_editor_mode != DataGlobal.task_tracking_editor_modes["Info"]:
-			DataGlobal.task_tracking_current_toggled_editor_mode = DataGlobal.task_tracking_editor_modes["Info"]
+		if (DataGlobal.task_tracking_current_toggled_editor_mode
+			!= DataGlobal.task_tracking_editor_modes["Info"]
+		):
+			DataGlobal.task_tracking_current_toggled_editor_mode = (
+				DataGlobal.task_tracking_editor_modes["Info"]
+			)
 			SignalBus._on_task_editor_mode_changed.emit()
 			prints("Info Mode toggled")
 		else:

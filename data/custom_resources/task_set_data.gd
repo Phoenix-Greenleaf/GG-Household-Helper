@@ -46,7 +46,11 @@ func export_task_data_array(raw_array_parameter: Array, export_array_parameter: 
 func import_json_to_resource(data_parameter: Dictionary) -> void:
 	var user_profile_import: Array = []
 	for unformatted_profile in data_parameter.user_profiles:
-		var formatted_profile := [unformatted_profile[0], Color.from_string(unformatted_profile[1], Color.BLACK)]
+		var formatted_profile: Array = [
+			unformatted_profile[0],
+			Color.from_string(unformatted_profile[1],
+			Color.BLACK)
+		]
 		user_profile_import.append(formatted_profile)
 	var spreadsheet_year_data_import: Array = []
 	import_task_data_array(data_parameter.spreadsheet_year_data, spreadsheet_year_data_import)

@@ -109,10 +109,14 @@ func set_time_unit() -> void:
 
 
 func toggle_info_checkbox_modes() -> void:
-	if DataGlobal.task_tracking_current_toggled_editor_mode == DataGlobal.task_tracking_editor_modes["Info"]:
+	if (DataGlobal.task_tracking_current_toggled_editor_mode
+		== DataGlobal.task_tracking_editor_modes["Info"]
+	):
 		get_tree().set_group("Info", "visible", true)
 		get_tree().set_group("Checkbox", "visible", false)
-	elif DataGlobal.task_tracking_current_toggled_editor_mode == DataGlobal.task_tracking_editor_modes["Checkbox"]:
+	elif (DataGlobal.task_tracking_current_toggled_editor_mode
+		== DataGlobal.task_tracking_editor_modes["Checkbox"]
+	):
 		get_tree().set_group("Checkbox", "visible", true)
 		get_tree().set_group("Info", "visible", false)
 	else:
@@ -214,7 +218,11 @@ func create_new_task_data() -> void: #task code, the data side
 	var new_task_section := DataGlobal.task_tracking_current_toggled_section
 	new_task.section = new_task_section
 	new_task.previous_section = new_task_section
-	var new_task_assigned_user: Array = DataGlobal.task_tracking_user_profiles_dropdown_items[task_add_assigned_user_option_button.selected]
+	var new_task_assigned_user: Array = (
+		DataGlobal.task_tracking_user_profiles_dropdown_items[
+			task_add_assigned_user_option_button.selected  #double broken up, will it run?
+		]
+	)
 	new_task.assigned_user = new_task_assigned_user
 	var new_task_schedule_start: float = task_add_schedule_start_spin_box.value
 	new_task.scheduling_start = new_task_schedule_start
@@ -293,7 +301,9 @@ func create_header_row() -> void:
 			create_header_cell(header_cell_array[iteration], "Info")
 	var checkbox = "Checkbox"
 	var current_section = DataGlobal.task_tracking_current_toggled_section
-	var current_month = DataGlobal.Month.find_key(DataGlobal.task_tracking_current_toggled_month).capitalize()
+	var current_month = DataGlobal.Month.find_key(
+		DataGlobal.task_tracking_current_toggled_month
+	).capitalize()
 	var current_year = DataGlobal.active_data_task_tracking.task_set_year
 	match current_section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
@@ -332,9 +342,13 @@ func set_grid_columns() -> void:
 		prints("Columns not set")
 		return
 	var header_size: int = 0
-	if DataGlobal.task_tracking_current_toggled_editor_mode == DataGlobal.task_tracking_editor_modes["Info"]:
+	if (DataGlobal.task_tracking_current_toggled_editor_mode
+		== DataGlobal.task_tracking_editor_modes["Info"]
+	):
 		header_size = full_header_size - checkbox_header_size
-	elif DataGlobal.task_tracking_current_toggled_editor_mode == DataGlobal.task_tracking_editor_modes["Checkbox"]:
+	elif (DataGlobal.task_tracking_current_toggled_editor_mode
+		== DataGlobal.task_tracking_editor_modes["Checkbox"]
+	):
 		header_size = full_header_size - info_header_size
 	else:
 		prints("Header row size has gone wrong")
@@ -345,11 +359,17 @@ func set_grid_columns() -> void:
 func create_task_row_cells() -> void: #task "physical" nodes, display side
 	create_text_cell(current_task.name, "Task Name")  #1
 	create_dropdown_cell(section_dropdown_items, current_task.section, "Section") #2
-	create_dropdown_cell(DataGlobal.task_tracking_task_group_dropdown_items, current_task.group, "Group") #3
+	create_dropdown_cell(DataGlobal.task_tracking_task_group_dropdown_items,
+		current_task.group, "Group"
+	) #3
 	var info = "Info"
-	create_dropdown_cell(DataGlobal.task_tracking_user_profiles_dropdown_items, current_task.assigned_user, "Assigned User", info) #4
+	create_dropdown_cell(DataGlobal.task_tracking_user_profiles_dropdown_items,
+		current_task.assigned_user, "Assigned User", info
+	) #4
 	create_multi_line_cell(current_task.description, info) #5
-	create_dropdown_cell(time_of_day_dropdown_items, current_task.time_of_day, "Time Of Day", info) #6
+	create_dropdown_cell(time_of_day_dropdown_items, current_task.time_of_day,
+		"Time Of Day", info
+	) #6
 	create_dropdown_cell(priority_dropdown_items, current_task.priority, "Priority", info) #7
 	create_text_cell(current_task.location, "Location", info) #8
 	create_number_cell(current_task.scheduling_start, "Schedule Start", info) #9
@@ -362,7 +382,9 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 			for month_iteration in current_task.month_checkbox_dictionary:
 				if month_iteration == "All":
 					continue
-				var checkbox_data: TaskCheckboxData = current_task.month_checkbox_dictionary[month_iteration][0]
+				var checkbox_data: TaskCheckboxData = (
+					current_task.month_checkbox_dictionary[month_iteration][0]
+				)
 				var checkbox_state: DataGlobal.Checkbox = checkbox_data.checkbox_status
 				var checkbox_user: Array = checkbox_data.assigned_user
 				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)
@@ -403,7 +425,9 @@ func create_header_cell(text, column_group: String = "") -> void:
 	add_cell_to_groups(cell, column_group)
 
 
-func create_dropdown_cell(dropdown_items: Array, selected_item, current_type: String, column_group: String = "") -> void:
+func create_dropdown_cell(dropdown_items: Array, selected_item,
+	current_type: String, column_group: String = ""
+) -> void:
 	var cell: OptionButton = dropdown_cell.instantiate()
 	self.add_child(cell)
 	cell.saved_task = current_task
@@ -433,7 +457,9 @@ func create_number_cell(number: int, current_type: String, column_group: String 
 	add_cell_to_groups(cell, column_group)
 
 
-func create_checkbox_cell(state: DataGlobal.Checkbox, user_profile: Array, cell_position: int, column_group: String = "") -> void:
+func create_checkbox_cell(state: DataGlobal.Checkbox, user_profile: Array,
+	cell_position: int, column_group: String = ""
+) -> void:
 	var cell: PanelContainer = checkbox_cell.instantiate()
 	self.add_child(cell)
 	cell.saved_position = cell_position

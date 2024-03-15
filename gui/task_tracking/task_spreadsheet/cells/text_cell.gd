@@ -26,4 +26,3 @@ func update_active_data(text_parameter) -> void:
 			prints("LineEdit active data update failed")
 			return
 	SignalBus._on_task_set_data_modified.emit()
-	print_verbose("TextCell", saved_task.name, "func update_active_data emits '_on_task_set_data_modified'")
