@@ -88,7 +88,7 @@ func sync_position() -> void:
 
 
 func update_menu_button_witdth() -> void:
-	menu_button_width = paired_checkbox_menu_button.size.x
+	menu_button_width = int(paired_checkbox_menu_button.size.x)
 
 
 func load_existing_profiles() -> void:
