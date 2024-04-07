@@ -9,6 +9,7 @@ script = ExtResource("1_tkxta")
 
 [node name="MainVBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
+theme_type_variation = &"VBoxContainer_No_Space"
 
 [node name="OptionsPanelContainer" type="PanelContainer" parent="MainVBoxContainer"]
 unique_name_in_owner = true
@@ -55,9 +56,11 @@ size_flags_horizontal = 0
 max_value = 10.0
 alignment = 1
 
-[node name="HeaderLabel" type="Label" parent="MainVBoxContainer"]
+[node name="HeaderButton" type="Button" parent="MainVBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+toggle_mode = true
 text = "Header Title"
-horizontal_alignment = 1
-vertical_alignment = 1
+flat = true
+
+[connection signal="toggled" from="MainVBoxContainer/HeaderButton" to="." method="_on_header_button_toggled"]
