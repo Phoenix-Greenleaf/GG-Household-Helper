@@ -442,6 +442,7 @@ script = ExtResource("6_j3l32")
 
 [node name="CheckboxSelectionPopup" parent="." node_paths=PackedStringArray("paired_checkbox_menu_button") instance=ExtResource("6_okd6i")]
 unique_name_in_owner = true
+visible = false
 z_index = 2
 z_as_relative = false
 layout_mode = 0

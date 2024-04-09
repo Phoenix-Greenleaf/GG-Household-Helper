@@ -1,7 +1,7 @@
 extends PanelContainer
 
 
-@onready var options_panel_container: PanelContainer = %OptionsPanelContainer
+@onready var options_h_box_container: HBoxContainer = %OptionsHBoxContainer
 @onready var sorting_button: Button = %SortingButton
 @onready var order_spin_box: SpinBox = %OrderSpinBox
 @onready var header_button: Button = %HeaderButton
@@ -20,7 +20,7 @@ func _ready() -> void:
 
 
 func header_options_visible(visible_parameter: bool) -> void:
-	options_panel_container.visible = visible_parameter
+	options_h_box_container.visible = visible_parameter
 
 
 func _on_header_button_toggled(toggled_on: bool) -> void:

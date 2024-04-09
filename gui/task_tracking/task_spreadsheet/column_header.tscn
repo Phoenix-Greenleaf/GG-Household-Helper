@@ -5,51 +5,48 @@
 [node name="ColumnHeader" type="PanelContainer"]
 offset_right = 12.0
 offset_bottom = 12.0
+theme_type_variation = &"PanelContainer_Quinary"
 script = ExtResource("1_tkxta")
 
 [node name="MainVBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 theme_type_variation = &"VBoxContainer_No_Space"
 
-[node name="OptionsPanelContainer" type="PanelContainer" parent="MainVBoxContainer"]
+[node name="OptionsHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer"]
 unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"PanelContainer_Quinary"
-
-[node name="OptionsHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/OptionsPanelContainer"]
 layout_mode = 2
 theme_type_variation = &"HBoxContainer_No_Space"
 
-[node name="PanelContainer" type="PanelContainer" parent="MainVBoxContainer/OptionsPanelContainer/OptionsHBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MainVBoxContainer/OptionsHBoxContainer"]
 layout_mode = 2
 
-[node name="SortingVBoxContainer" type="VBoxContainer" parent="MainVBoxContainer/OptionsPanelContainer/OptionsHBoxContainer/PanelContainer"]
+[node name="SortingVBoxContainer" type="VBoxContainer" parent="MainVBoxContainer/OptionsHBoxContainer/PanelContainer"]
 layout_mode = 2
 
-[node name="SortingLabel" type="Label" parent="MainVBoxContainer/OptionsPanelContainer/OptionsHBoxContainer/PanelContainer/SortingVBoxContainer"]
+[node name="SortingLabel" type="Label" parent="MainVBoxContainer/OptionsHBoxContainer/PanelContainer/SortingVBoxContainer"]
 layout_mode = 2
 text = "Sorting"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SortingButton" type="Button" parent="MainVBoxContainer/OptionsPanelContainer/OptionsHBoxContainer/PanelContainer/SortingVBoxContainer"]
+[node name="SortingButton" type="Button" parent="MainVBoxContainer/OptionsHBoxContainer/PanelContainer/SortingVBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "[Modes]"
 
-[node name="OrderPanelContainer" type="PanelContainer" parent="MainVBoxContainer/OptionsPanelContainer/OptionsHBoxContainer"]
+[node name="OrderPanelContainer" type="PanelContainer" parent="MainVBoxContainer/OptionsHBoxContainer"]
 layout_mode = 2
 
-[node name="OrderVBoxContainer" type="VBoxContainer" parent="MainVBoxContainer/OptionsPanelContainer/OptionsHBoxContainer/OrderPanelContainer"]
+[node name="OrderVBoxContainer" type="VBoxContainer" parent="MainVBoxContainer/OptionsHBoxContainer/OrderPanelContainer"]
 layout_mode = 2
 
-[node name="OrderLabel" type="Label" parent="MainVBoxContainer/OptionsPanelContainer/OptionsHBoxContainer/OrderPanelContainer/OrderVBoxContainer"]
+[node name="OrderLabel" type="Label" parent="MainVBoxContainer/OptionsHBoxContainer/OrderPanelContainer/OrderVBoxContainer"]
 layout_mode = 2
 text = "Order"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="OrderSpinBox" type="SpinBox" parent="MainVBoxContainer/OptionsPanelContainer/OptionsHBoxContainer/OrderPanelContainer/OrderVBoxContainer"]
+[node name="OrderSpinBox" type="SpinBox" parent="MainVBoxContainer/OptionsHBoxContainer/OrderPanelContainer/OrderVBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -61,6 +58,5 @@ unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
 text = "Header Title"
-flat = true
 
 [connection signal="toggled" from="MainVBoxContainer/HeaderButton" to="." method="_on_header_button_toggled"]

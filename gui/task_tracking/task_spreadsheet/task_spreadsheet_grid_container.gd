@@ -48,8 +48,9 @@ var current_text_edit_cell: MultiLineCell
 
 var last_main_cell_position = 3
 var header_cell_array: Array = [
+#   "order number"
 	"Task", #1
-	"Section", #2
+	"Section", #2 (y/m/w/d)
 	"Group", #3
 	"Assignment", #4
 	"Description", #5
@@ -220,7 +221,7 @@ func create_new_task_data() -> void: #task code, the data side
 	new_task.previous_section = new_task_section
 	var new_task_assigned_user: Array = (
 		DataGlobal.task_tracking_user_profiles_dropdown_items[
-			task_add_assigned_user_option_button.selected  #double broken up, will it run?
+			task_add_assigned_user_option_button.selected
 		]
 	)
 	new_task.assigned_user = new_task_assigned_user
@@ -284,6 +285,7 @@ func load_existing_data() -> void:
 				process_task(data_iteration)
 	toggle_info_checkbox_modes()
 
+
 func update_existing_groups_option_button_items() -> void:
 	existing_groups_option_button.clear()
 	existing_groups_option_button.add_item("Existing Groups")
@@ -342,16 +344,21 @@ func set_grid_columns() -> void:
 		prints("Columns not set")
 		return
 	var header_size: int = 0
-	if (DataGlobal.task_tracking_current_toggled_editor_mode
-		== DataGlobal.task_tracking_editor_modes["Info"]
-	):
-		header_size = full_header_size - checkbox_header_size
-	elif (DataGlobal.task_tracking_current_toggled_editor_mode
-		== DataGlobal.task_tracking_editor_modes["Checkbox"]
-	):
-		header_size = full_header_size - info_header_size
-	else:
-		prints("Header row size has gone wrong")
+	#if (DataGlobal.task_tracking_current_toggled_editor_mode
+		#== DataGlobal.task_tracking_editor_modes["Info"]
+	#):
+		#header_size = full_header_size - checkbox_header_size
+	#elif (DataGlobal.task_tracking_current_toggled_editor_mode
+		#== DataGlobal.task_tracking_editor_modes["Checkbox"]
+	#):
+		#header_size = full_header_size - info_header_size
+	#else:
+		#prints("Header row size has gone wrong")
+	
+	""" check the column checkboxes, see how many are active
+		iterate over button/group, add to header_size
+	"""
+	
 	self.columns = header_size
 
 
