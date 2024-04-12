@@ -88,7 +88,7 @@ func _ready() -> void:
 
 func ready_connections() -> void:
 	SignalBus._on_task_set_data_active_data_switched.connect(update_grid_spreadsheet)
-	SignalBus._on_task_editor_mode_changed.connect(toggle_info_checkbox_modes)
+	SignalBus._on_task_editor_column_visibility_toggled.connect(toggle_column_visibility)
 	SignalBus._on_task_editor_section_changed.connect(section_or_month_changed)
 	SignalBus._on_task_editor_month_changed.connect(section_or_month_changed)
 	get_viewport().gui_focus_changed.connect(_on_focus_changed)
@@ -109,7 +109,7 @@ func set_time_unit() -> void:
 			task_add_units_per_cycle_label.text = "Days per Cycle:"
 
 
-func toggle_info_checkbox_modes() -> void:
+func toggle_column_visibility() -> void:
 	if (DataGlobal.task_tracking_current_toggled_editor_mode
 		== DataGlobal.task_tracking_editor_modes["Info"]
 	):
@@ -283,7 +283,7 @@ func load_existing_data() -> void:
 		DataGlobal.Section.DAILY:
 			for data_iteration in DataGlobal.active_data_task_tracking.spreadsheet_day_data:
 				process_task(data_iteration)
-	toggle_info_checkbox_modes()
+	toggle_column_visibility()
 
 
 func update_existing_groups_option_button_items() -> void:
@@ -599,7 +599,7 @@ func _on_accept_new_task_button_pressed() -> void:
 	create_new_task_data()
 	close_new_task_panel()
 	new_task_field_reset()
-	toggle_info_checkbox_modes()
+	toggle_column_visibility()
 	SignalBus._on_task_set_data_modified.emit()
 	update_existing_groups_option_button_items()
 

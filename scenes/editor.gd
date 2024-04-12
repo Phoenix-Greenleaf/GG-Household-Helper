@@ -319,7 +319,7 @@ func _on_daily_button_toggled(button_pressed: bool) -> void:
 			prints("Daily Section ALREADY TOGGLED")
 
 
-func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void:
+func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void: #to be changed to the new column checkboxes
 	if (button_pressed):
 		if (DataGlobal.task_tracking_current_toggled_editor_mode
 			!= DataGlobal.task_tracking_editor_modes["Checkbox"]
@@ -327,13 +327,13 @@ func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void:
 			DataGlobal.task_tracking_current_toggled_editor_mode = (
 				DataGlobal.task_tracking_editor_modes["Checkbox"]
 			)
-			SignalBus._on_task_editor_mode_changed.emit()
+			SignalBus._on_task_editor_column_visibility_toggled.emit()
 			prints("Checkbox Mode toggled")
 		else:
 			prints("Checkbox Mode ALREADY TOGGLED")
 
 
-func _on_info_mode_button_toggled(button_pressed: bool) -> void:
+func _on_info_mode_button_toggled(button_pressed: bool) -> void:  #to be changed to the new column checkboxes
 	if (button_pressed):
 		if (DataGlobal.task_tracking_current_toggled_editor_mode
 			!= DataGlobal.task_tracking_editor_modes["Info"]
@@ -341,7 +341,7 @@ func _on_info_mode_button_toggled(button_pressed: bool) -> void:
 			DataGlobal.task_tracking_current_toggled_editor_mode = (
 				DataGlobal.task_tracking_editor_modes["Info"]
 			)
-			SignalBus._on_task_editor_mode_changed.emit()
+			SignalBus._on_task_editor_column_visibility_toggled.emit()
 			prints("Info Mode toggled")
 		else:
 			prints("Info Mode ALREADY TOGGLED")
