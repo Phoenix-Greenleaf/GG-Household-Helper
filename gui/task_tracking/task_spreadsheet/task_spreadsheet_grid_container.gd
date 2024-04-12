@@ -110,18 +110,9 @@ func set_time_unit() -> void:
 
 
 func toggle_column_visibility() -> void:
-	if (DataGlobal.task_tracking_current_toggled_editor_mode
-		== DataGlobal.task_tracking_editor_modes["Info"]
-	):
-		get_tree().set_group("Info", "visible", true)
-		get_tree().set_group("Checkbox", "visible", false)
-	elif (DataGlobal.task_tracking_current_toggled_editor_mode
-		== DataGlobal.task_tracking_editor_modes["Checkbox"]
-	):
-		get_tree().set_group("Checkbox", "visible", true)
-		get_tree().set_group("Info", "visible", false)
-	else:
-		prints("Mode toggle has gone wrong")
+	for column_key in DataGlobal.task_tracking_current_column_visibility:
+		var column_visibility: bool = DataGlobal.task_tracking_current_column_visibility[column_key]
+		get_tree().set_group(column_key, "visible", column_visibility)
 	set_grid_columns()
 
 

@@ -82,14 +82,13 @@ var filepath_task_tracking_settings: String = (settings_folder
 var default_profile: Array = ["No Profile", Color.WHITE]
 var month_strings: Array[String]
 
-var task_tracking_editor_modes: Dictionary = {"Checkbox": 0, "Info": 1}
 var task_tracking_current_checkbox_state: Checkbox = Checkbox.ACTIVE
 var task_tracking_current_checkbox_profile: Array = default_profile
 var task_tracking_focus_checkbox_state: int
 var task_tracking_focus_checkbox_profile: Array
 var task_tracking_current_toggled_section: Section = Section.YEARLY
 var task_tracking_current_toggled_month: Month = Month.JANUARY
-var task_tracking_current_toggled_editor_mode: int = task_tracking_editor_modes["Checkbox"]
+var task_tracking_current_column_visibility: Dictionary = {}
 var task_tracking_current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
 var task_tracking_task_group_dropdown_items: Array 
 var task_tracking_user_profiles_dropdown_items: Array
