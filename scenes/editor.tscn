@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=11 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scenes/editor.gd" id="1_nkaig"]
 [ext_resource type="ButtonGroup" uid="uid://dstnxfnckpqs0" path="res://gui/task_tracking/editor_mode_button_group.tres" id="2_ludcj"]
@@ -8,6 +8,7 @@
 [ext_resource type="Theme" uid="uid://dec2b8xmm6paj" path="res://theme/main_theme.tres" id="5_fnfo6"]
 [ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/task_spreadsheet_grid_container.gd" id="6_j3l32"]
 [ext_resource type="PackedScene" uid="uid://c7tqndbd8llst" path="res://gui/task_tracking/checkbox_selection_popup.tscn" id="6_okd6i"]
+[ext_resource type="Script" path="res://scenes/header_grid_container.gd" id="7_hb7ai"]
 [ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/task_tracking/data_manager/task_data_manager.tscn" id="7_io7f7"]
 
 [node name="Editor" type="Control"]
@@ -424,8 +425,10 @@ follow_focus = true
 vertical_scroll_mode = 0
 
 [node name="HeaderGridContainer" type="GridContainer" parent="MainMargin/MainHBox/NonSideVBox/HeaderScrollContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+script = ExtResource("7_hb7ai")
 
 [node name="SpreadsheetScrollContainer" type="ScrollContainer" parent="MainMargin/MainHBox/NonSideVBox"]
 layout_mode = 2

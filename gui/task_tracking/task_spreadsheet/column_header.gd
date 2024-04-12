@@ -28,7 +28,7 @@ func initialize_sorting_modes() -> void:
 
 
 func set_header_text() -> void:
-	header_button.text = sorting_modes[sorting_mode_index]
+	sorting_button.text = sorting_modes[sorting_mode_index]
 
 
 func set_sorting_mode(mode_index_parameter: int) -> void:
