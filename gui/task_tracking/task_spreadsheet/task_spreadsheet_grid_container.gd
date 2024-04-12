@@ -33,6 +33,7 @@ var number_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/number
 var text_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/text_cell.tscn")
 var task_checkbox_clear_button_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/task_checkbox_clear_button_cell.tscn")
 var delete_task_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/delete_task_data_cell.tscn")
+const COLUMN_HEADER = preload("res://gui/task_tracking/task_spreadsheet/column_header.tscn")
 
 var row_group: String = ""
 var blank_counter: int = 0
@@ -417,8 +418,8 @@ func create_text_cell(text: String, current_type: String, column_group: String =
 
 
 func create_header_cell(text, column_group: String = "") -> void:
-	var cell: LineEdit = text_cell.instantiate()
-	#self.add_child(cell)
+	var cell: PanelContainer = COLUMN_HEADER.instantiate()
+	SignalBus._on_task_editor_header_cell_created.emit(cell)
 	cell.text = text
 	add_cell_to_groups(cell, column_group)
 

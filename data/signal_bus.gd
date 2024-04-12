@@ -22,7 +22,7 @@ signal _on_task_editor_save_button_pressed
 signal _on_task_editor_grid_reload_pressed
 signal _on_task_editor_group_dropdown_items_changed
 signal _on_task_editor_assigned_user_dropdown_items_changed
-
+signal _on_task_editor_header_cell_created(cell_parameter)
 
 
 
