@@ -418,7 +418,7 @@ func create_text_cell(text: String, current_type: String, column_group: String =
 
 func create_header_cell(text, column_group: String = "") -> void:
 	var cell: LineEdit = text_cell.instantiate()
-	self.add_child(cell)
+	#self.add_child(cell)
 	cell.text = text
 	add_cell_to_groups(cell, column_group)
 
