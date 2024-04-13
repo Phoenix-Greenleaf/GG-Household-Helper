@@ -24,16 +24,20 @@ func _ready() -> void:
 
 func initialize_sorting_modes() -> void:
 	sorting_mode_index = 0
-	set_header_text()
+	set_sorting_button_text()
 
 
-func set_header_text() -> void:
+func set_sorting_button_text() -> void:
 	sorting_button.text = sorting_modes[sorting_mode_index]
 
 
 func set_sorting_mode(mode_index_parameter: int) -> void:
 	sorting_mode_index = mode_index_parameter
-	set_header_text()
+	set_sorting_button_text()
+
+
+func set_order_spin_box_value(value_parameter: int) -> void:
+	order_spin_box.value = value_parameter
 
 
 func header_options_visible(visible_parameter: bool) -> void:
@@ -49,5 +53,9 @@ func _on_sorting_button_pressed() -> void:
 	if sorting_mode_index == sorting_modes.size():
 		initialize_sorting_modes()
 	else:
-		set_header_text()
+		set_sorting_button_text()
 	SignalBus._on_task_editor_header_sorting_button_pressed.emit(sorting_mode_index)
+
+
+func _on_order_spin_box_value_changed(value: float) -> void:
+	SignalBus._on_task_editor_header_order_spin_box_value_changed.emit(value)
