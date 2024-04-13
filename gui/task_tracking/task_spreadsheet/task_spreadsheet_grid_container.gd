@@ -417,11 +417,13 @@ func create_text_cell(text: String, current_type: String, column_group: String =
 	add_cell_to_groups(cell, column_group)
 
 
-func create_header_cell(text, column_group: String = "") -> void:
+func create_header_cell(header_text: String, order_number: int, sorting_mode: int) -> void:
 	var cell: PanelContainer = COLUMN_HEADER.instantiate()
 	SignalBus._on_task_editor_header_cell_created.emit(cell)
-	cell.text = text
-	add_cell_to_groups(cell, column_group)
+	cell.header_button.text = header_text
+	cell.order_spin_box.set_value_no_signal(order_number)
+	cell.set_sorting_mode(sorting_mode)
+	add_cell_to_groups(cell, header_text)
 
 
 func create_dropdown_cell(dropdown_items: Array, selected_item,
