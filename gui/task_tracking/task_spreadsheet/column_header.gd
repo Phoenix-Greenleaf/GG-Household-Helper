@@ -48,5 +48,6 @@ func _on_sorting_button_pressed() -> void:
 	sorting_mode_index += 1
 	if sorting_mode_index == sorting_modes.size():
 		initialize_sorting_modes()
-		return
-	set_header_text()
+	else:
+		set_header_text()
+	SignalBus._on_task_editor_header_sorting_button_pressed.emit(sorting_mode_index)
