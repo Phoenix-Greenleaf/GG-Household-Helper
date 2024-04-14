@@ -60,4 +60,5 @@ toggle_mode = true
 text = "Header Title"
 
 [connection signal="pressed" from="MainVBoxContainer/OptionsHBoxContainer/PanelContainer/SortingVBoxContainer/SortingButton" to="." method="_on_sorting_button_pressed"]
+[connection signal="value_changed" from="MainVBoxContainer/OptionsHBoxContainer/OrderPanelContainer/OrderVBoxContainer/OrderSpinBox" to="." method="_on_order_spin_box_value_changed"]
 [connection signal="toggled" from="MainVBoxContainer/HeaderButton" to="." method="_on_header_button_toggled"]

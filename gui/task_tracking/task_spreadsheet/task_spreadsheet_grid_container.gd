@@ -287,6 +287,19 @@ func update_existing_groups_option_button_items() -> void:
 
 
 func create_header_row() -> void:
+	pass
+
+	"""
+	run find_header_size beforehand for the size variable
+	access column array
+	use array to access dictionary in specified order
+	populate header with dictionary data
+	"""
+
+
+
+
+
 	var header_size = header_cell_array.size()
 	for iteration in header_size:
 		if iteration < last_main_cell_position:
@@ -319,6 +332,14 @@ func create_header_row() -> void:
 	checkbox_header_size = get_tree().get_nodes_in_group("Checkbox").size()
 
 
+func find_header_size() -> void:
+	pass
+	#access the column dictionary
+	#tally up
+	#set variable
+
+
+
 func header_editing_prevention() -> void:
 	var header_nodes: Array[Node] = self.get_children()
 	for child in header_nodes:
@@ -328,34 +349,44 @@ func header_editing_prevention() -> void:
 func create_checkbox_header(header_string: String, header_length: int) -> void:
 	for number in header_length:
 		var header_number = " " + str(number + 1)
-		create_header_cell(header_string + header_number, "Checkbox")
+		#create_header_cell(header_string + header_number, "Checkbox")
 
 
 func set_grid_columns() -> void:
 	if not DataGlobal.active_data_task_tracking:
 		prints("Columns not set")
 		return
-	var header_size: int = 0
+	var column_count: int = 0
 	#if (DataGlobal.task_tracking_current_toggled_editor_mode
 		#== DataGlobal.task_tracking_editor_modes["Info"]
 	#):
-		#header_size = full_header_size - checkbox_header_size
+		#column_count = full_column_count - checkbox_column_count
 	#elif (DataGlobal.task_tracking_current_toggled_editor_mode
 		#== DataGlobal.task_tracking_editor_modes["Checkbox"]
 	#):
-		#header_size = full_header_size - info_header_size
+		#column_count = full_column_count - info_column_count
 	#else:
 		#prints("Header row size has gone wrong")
 	
-	""" check the column checkboxes, see how many are active
-		iterate over button/group, add to header_size
+	""" 
+	check the column checkboxes, see how many are active
+	iterate over button/group, add to column_count
 	"""
 	
-	self.columns = header_size
+	self.columns = column_count
 
 
 
 func create_task_row_cells() -> void: #task "physical" nodes, display side
+	
+	"""
+	sorting while task adding
+	reference the header row option values
+	split into modular columns
+	use column array and dictionary like the header row did
+	"""
+	
+	
 	create_text_cell(current_task.name, "Task Name")  #1
 	create_dropdown_cell(section_dropdown_items, current_task.section, "Section") #2
 	create_dropdown_cell(DataGlobal.task_tracking_task_group_dropdown_items,
