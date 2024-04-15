@@ -3,6 +3,8 @@ extends Node
 
 func load_data(filepath_parameter: String):
 	var file_to_load = FileAccess.open(filepath_parameter, FileAccess.READ)
+	if not file_to_load:
+		return null
 	var loaded_json_data = JSON.parse_string(file_to_load.get_as_text())
 	return loaded_json_data
 
