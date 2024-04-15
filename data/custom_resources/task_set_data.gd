@@ -76,6 +76,8 @@ func import_json_to_resource(data_parameter: Dictionary) -> void:
 	spreadsheet_month_data = import_spreadsheet_month_data(data_parameter)
 	spreadsheet_week_data = import_spreadsheet_week_data(data_parameter)
 	spreadsheet_day_data = import_spreadsheet_day_data(data_parameter)
+	column_data = import_column_data(data_parameter)
+	column_order = import_column_order(data_parameter)
 
 
 func import_user_profile(data_parameter: Dictionary) -> Array:
@@ -125,8 +127,55 @@ func import_spreadsheet_day_data(data_parameter: Dictionary) -> Array:
 	return spreadsheet_day_data_import
 
 
+func import_column_data(data_parameter: Dictionary) -> Dictionary:
+	if not data_parameter.column_data:
+		return new_column_data_dictionary()
+	return data_parameter.column_data
+
+
+func import_column_order(data_parameter: Dictionary) -> Array:
+	if not data_parameter.column_order:
+		return new_column_order_array()
+	return data_parameter.column_order
+
+
 func import_task_data_array(raw_array_parameter: Array, import_array_parameter: Array) -> void:
 	for task_iteration in raw_array_parameter:
 		var imported_task := TaskData.new()
 		imported_task.import_json_to_resource(task_iteration)
 		import_array_parameter.append(imported_task)
+
+
+func new_column_data_dictionary() -> Dictionary:
+# now we have to grab the other columns, from where they used to be handled. 
+	var data_dictionary := {  # [column order, # of column, visible 
+		"Order": [1, 1, true],
+		"Task": [2, 1, true],
+		"Section": [3, 1, true], #(y/m/w/d)
+		"Group": [4, 1, true], 
+		"Assignment": [5, 1, true], 
+		"Description": [6, 1, true], 
+		"Time Of Day": [7, 1, true],
+		"Priority": [8, 1, true],
+		"Location": [9, 1, true],
+		"TrackerCheckboxes": [10, 5, true],
+		"Schedule Start": [11, 1, true],
+		"Units/Cycle": [12, 1, true],
+		"Delete Task": [13, 1, true],
+	}
+	return data_dictionary
+
+
+func new_column_order_array() -> Array:
+	var new_dictionary = new_column_data_dictionary()
+	var order_array := []
+	for dictionary_entry in new_dictionary:
+		order_array.append([dictionary_entry, new_dictionary[dictionary_entry[0]]])
+	order_array.sort_custom(sort_ascending)
+	return order_array
+
+
+func sort_ascending(a, b):
+	if a[1] < b[1]:
+		return true
+	return false
