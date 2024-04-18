@@ -178,7 +178,7 @@ func new_single_column_data_dictionary(
 	single_column_data["Column Count"] = column_count_parameter
 	single_column_data["Sorting Mode"] = sorting_mode_parameter
 	single_column_data["Sorting Enabled"] = sorting_enabled_parameter
-	single_column_data["Visible"] = column_visible_parameter
+	single_column_data["Column Visible"] = column_visible_parameter
 	return single_column_data
 
 

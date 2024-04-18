@@ -34,6 +34,7 @@ var text_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/text_cel
 var task_checkbox_clear_button_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/task_checkbox_clear_button_cell.tscn")
 var delete_task_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/delete_task_data_cell.tscn")
 const COLUMN_HEADER = preload("res://gui/task_tracking/task_spreadsheet/column_header.tscn")
+const COLUMN_VISIBILITY_CHECKBOX = preload("res://gui/task_tracking/task_spreadsheet/column_visibility_checkbox.tscn")
 
 var row_group: String = ""
 var blank_counter: int = 0
@@ -388,6 +389,21 @@ func set_grid_columns() -> void:
 	"""
 	
 	self.columns = column_count
+
+
+func create_column_visibility_checkboxes() -> void:
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	var column_order: Array = DataGlobal.active_data_task_tracking.column_order
+	for column_iteration in column_order:
+		var cell: CheckBox = COLUMN_VISIBILITY_CHECKBOX.instantiate() #change for visibility checkbox when made
+		SignalBus._on_task_editor_column_visibility_checkbox_created.emit(cell) #change
+		cell.set_column_title(column_iteration)
+		var current_column: Dictionary = column_data[column_iteration]
+		cell.column_visible(current_column["Column Visible"])
+
+
+func check_column_visibility() -> void:
+	pass
 
 
 

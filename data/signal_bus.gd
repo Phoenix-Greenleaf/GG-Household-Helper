@@ -12,7 +12,7 @@ signal _on_task_set_data_saved
 signal _on_task_data_manager_close_manager_button_pressed
 signal _on_task_editor_section_changed
 signal _on_task_editor_month_changed
-signal _on_task_editor_column_visibility_toggled
+signal _on_task_editor_column_visibility_toggled(column: String, toggle: bool)
 signal _on_task_editor_checkbox_mode_changed
 signal _on_task_editor_checkbox_selection_changed
 signal _on_task_editor_profile_selection_changed
@@ -22,9 +22,10 @@ signal _on_task_editor_save_button_pressed
 signal _on_task_editor_grid_reload_pressed
 signal _on_task_editor_group_dropdown_items_changed
 signal _on_task_editor_assigned_user_dropdown_items_changed
-signal _on_task_editor_header_cell_created(cell)
+signal _on_task_editor_header_cell_created(cell: PanelContainer)
 signal _on_task_editor_header_sorting_button_pressed(mode_index: int)
 signal _on_task_editor_header_order_spin_box_value_changed(value: int)
+signal _on_task_editor_column_visibility_checkbox_created(cell: CheckBox)
 
 
 
