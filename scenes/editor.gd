@@ -21,6 +21,8 @@ extends Control
 @onready var checkbox_inspect_toggle: Button = %CheckboxInspectToggle
 @onready var info_mode_button: Button = %InfoModeButton
 @onready var checkbox_mode_button: Button = %CheckboxModeButton
+@onready var column_visibility_grid_container: GridContainer = %ColumnVisibilityGridContainer
+
 
 var last_toggled_month: int = 1
 
@@ -71,6 +73,17 @@ func connect_other_signal_bus() -> void:
 	SignalBus._on_task_set_data_saved.connect(save_waring_reset)
 	SignalBus._on_task_editor_data_manager_remote_open_pressed.connect(remote_open_data_manager)
 	SignalBus._on_task_editor_save_button_pressed.connect(save_active_data)
+	SignalBus._on_task_editor_column_visibility_checkbox_created.connect(add_column_visibility_checkbox)
+
+
+func add_column_visibility_checkbox(cell_parameter: CheckBox) -> void:
+	column_visibility_grid_container.add_child(cell_parameter)
+
+
+func clear_column_visibility_checkboxes() -> void:
+	for child_iteration in column_visibility_grid_container.get_children():
+		column_visibility_grid_container.remove_child(child_iteration)
+		child_iteration.queue_free()
 
 
 func connect_month_menu() -> void:
