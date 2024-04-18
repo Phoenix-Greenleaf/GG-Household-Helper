@@ -5,6 +5,10 @@ extends PanelContainer
 @onready var sorting_button: Button = %SortingButton
 @onready var order_spin_box: SpinBox = %OrderSpinBox
 @onready var header_button: Button = %HeaderButton
+@onready var sorting_panel_container: PanelContainer = %SortingPanelContainer
+@onready var order_panel_container: PanelContainer = %OrderPanelContainer
+
+
 
 var sorting_mode_index: int
 
@@ -42,6 +46,14 @@ func set_order_spin_box_value(value_parameter: int) -> void:
 
 func header_options_visible(visible_parameter: bool) -> void:
 	options_h_box_container.visible = visible_parameter
+
+
+func sorting_enabled(sorting_parameter: bool = true) -> void:
+	sorting_panel_container.visible = sorting_parameter
+
+
+func ordering_enabled(ordering_parameter: bool = true) -> void:
+	order_panel_container.visible = ordering_parameter
 
 
 func _on_header_button_toggled(toggled_on: bool) -> void:

@@ -41,27 +41,10 @@ var section_dropdown_items: Array
 var time_of_day_dropdown_items: Array
 var priority_dropdown_items: Array
 var full_header_size: int 
-var info_header_size: int
-var checkbox_header_size: int
+var current_header_size: int
 var current_task: TaskData
 var current_focus: Control
 var current_text_edit_cell: MultiLineCell
-
-var last_main_cell_position = 3
-var header_cell_array: Array = [
-#   "order number"
-	"Task", #1
-	"Section", #2 (y/m/w/d)
-	"Group", #3
-	"Assignment", #4
-	"Description", #5
-	"Time Of Day", #6
-	"Priority", #7
-	"Location", #8
-	"Schedule Start", #9
-	"Units/Cycle", #10
-	"Delete Task", #11
-]
 
 
 
@@ -95,19 +78,6 @@ func ready_connections() -> void:
 	get_viewport().gui_focus_changed.connect(_on_focus_changed)
 	SignalBus._on_task_editor_task_delete_button_primed_and_pressed.connect(delete_task_row)
 	SignalBus._on_task_editor_grid_reload_pressed.connect(reload_grid)
-
-
-func set_time_unit() -> void:
-	match DataGlobal.task_tracking_current_toggled_section:
-		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
-			header_cell_array[9] = "Months/Cycle"
-			task_add_units_per_cycle_label.text = "Months per Cycle:"
-		DataGlobal.Section.WEEKLY:
-			header_cell_array[9] = "Weeks/Cycle"
-			task_add_units_per_cycle_label.text = "Weeks per Cycle:"
-		DataGlobal.Section.DAILY:
-			header_cell_array[9] = "Days/Cycle"
-			task_add_units_per_cycle_label.text = "Days per Cycle:"
 
 
 func toggle_column_visibility() -> void:
@@ -259,7 +229,6 @@ func load_existing_data() -> void:
 	if not DataGlobal.active_data_task_tracking:
 		prints("No existing data to load")
 		return
-	set_time_unit()
 	create_header_row()
 	update_existing_groups_option_button_items()
 	match DataGlobal.task_tracking_current_toggled_section:
@@ -287,69 +256,114 @@ func update_existing_groups_option_button_items() -> void:
 
 
 func create_header_row() -> void:
-	pass
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	var column_order: Array = DataGlobal.active_data_task_tracking.column_order
+	full_header_size = 0
+	for column_iteration in column_order:
+		match column_iteration:
+			"TrackerCheckboxes":
+				create_checkbox_column_header(column_iteration)
+			"Units/Cycle":
+				create_time_unit_column_header(column_iteration)
+			_:
+				create_standard_column_header(column_iteration)
 
-	"""
-	run find_header_size beforehand for the size variable
-	access column array
-	use array to access dictionary in specified order
-	populate header with dictionary data
-	"""
+
+func create_standard_column_header(column_parameter: String) -> void:
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	var current_column_data: Dictionary = column_data[column_parameter]
+	var header_text: String = column_parameter
+	var column_order: int = current_column_data["Column Order"]
+	var ordering_enabled: bool = true
+	var sorting_mode: int = current_column_data["Sorting Mode"]
+	var sorting_enabled: bool = current_column_data["Sorting Enabled"]
+	var column_group: String = column_parameter
+	full_header_size += 1
+	create_header_cell(header_text, column_order, ordering_enabled, sorting_mode, sorting_enabled, column_group)
 
 
+func create_time_unit_column_header(column_parameter: String) -> void:
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	var current_column_data: Dictionary = column_data[column_parameter]
+	var header_text: String = ""
+	var column_order: int = current_column_data["Column Order"]
+	var ordering_enabled: bool = true
+	var sorting_mode: int = current_column_data["Sorting Mode"]
+	var sorting_enabled: bool = current_column_data["Sorting Enabled"]
+	var column_group: String = column_parameter
+	match DataGlobal.task_tracking_current_toggled_section:
+		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+			header_text = "Months/Cycle"
+			task_add_units_per_cycle_label.text = "Months per Cycle:"
+		DataGlobal.Section.WEEKLY:
+			header_text = "Weeks/Cycle"
+			task_add_units_per_cycle_label.text = "Weeks per Cycle:"
+		DataGlobal.Section.DAILY:
+			header_text = "Days/Cycle"
+			task_add_units_per_cycle_label.text = "Days per Cycle:"
+	full_header_size += 1
+	create_header_cell(header_text, column_order, ordering_enabled, sorting_mode, sorting_enabled, column_group)
 
 
-
-	var header_size = header_cell_array.size()
-	for iteration in header_size:
-		if iteration < last_main_cell_position:
-			create_header_cell(header_cell_array[iteration])
-		else:
-			create_header_cell(header_cell_array[iteration], "Info")
-	var checkbox = "Checkbox"
+func create_checkbox_column_header(column_parameter: String) -> void:
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	var current_column_data: Dictionary = column_data[column_parameter]
+	var column_order: int = current_column_data["Column Order"]
+	var ordering_enabled: bool = true
+	var sorting_mode: int = current_column_data["Sorting Mode"]
+	var sorting_enabled: bool = current_column_data["Sorting Enabled"]
+	var checkbox := "Checkboxes"
+	var header_text: String = checkbox
+	var column_group: String = checkbox
 	var current_section = DataGlobal.task_tracking_current_toggled_section
 	var current_month = DataGlobal.Month.find_key(
 		DataGlobal.task_tracking_current_toggled_month
 	).capitalize()
 	var current_year = DataGlobal.active_data_task_tracking.task_set_year
+	var first_column: bool = true
 	match current_section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+			full_header_size += 12
 			for month in DataGlobal.month_strings:
 				if month == "All":
 					continue
-				create_header_cell(month, checkbox)
-			create_header_cell("Reset Task Checkboxes", "Checkbox")
+				if first_column:
+					create_header_cell(month, column_order, ordering_enabled, sorting_mode, false, column_group)
+					first_column = false
+					continue
+				create_header_cell(month, column_order, false, sorting_mode, false, column_group)
 		DataGlobal.Section.WEEKLY:
-			create_checkbox_header("Week", 5)
-			create_header_cell("Reset " + current_month + " Checkboxes", "Checkbox")
+			full_header_size += 5
+			header_text = "Week "
+			for week_iteration in 5:
+				var header_number = str(week_iteration + 1)
+				var combined_string: String = header_text + header_number
+				if first_column:
+					create_header_cell(combined_string, column_order, ordering_enabled, sorting_mode, false, column_group)
+					first_column = false
+					continue
+				create_header_cell(combined_string, column_order, false, sorting_mode, false, column_group)
 		DataGlobal.Section.DAILY:
-			var days = DataGlobal.days_in_month_finder(current_month, current_year)
-			create_checkbox_header("Day", days)
-			create_header_cell("Reset " + current_month + " Checkboxes", "Checkbox")
-	header_editing_prevention()
-	full_header_size = self.get_child_count()
-	info_header_size = get_tree().get_nodes_in_group("Info").size()
-	checkbox_header_size = get_tree().get_nodes_in_group("Checkbox").size()
+			var number_of_days = DataGlobal.days_in_month_finder(current_month, current_year)
+			full_header_size += number_of_days
+			header_text = "Day "
+			for day_iteration in number_of_days:
+				var header_number = str(day_iteration + 1)
+				var combined_string: String = header_text + header_number
+				if first_column:
+					create_header_cell(combined_string, column_order, ordering_enabled, sorting_mode, false, column_group)
+					first_column = false
+					continue
+				create_header_cell(combined_string, column_order, false, sorting_mode, false, column_group)
 
-
-func find_header_size() -> void:
-	pass
-	#access the column dictionary
-	#tally up
-	#set variable
-
-
+			#create_header_cell("Reset Task Checkboxes", "Checkbox")
+			#create_header_cell("Reset " + current_month + " Checkboxes", "Checkbox")
+			#create_header_cell("Reset " + current_month + " Checkboxes", "Checkbox")
 
 func header_editing_prevention() -> void:
 	var header_nodes: Array[Node] = self.get_children()
 	for child in header_nodes:
 		child.mouse_filter = 2
-
-
-func create_checkbox_header(header_string: String, header_length: int) -> void:
-	for number in header_length:
-		var header_number = " " + str(number + 1)
-		#create_header_cell(header_string + header_number, "Checkbox")
 
 
 func set_grid_columns() -> void:
@@ -448,13 +462,22 @@ func create_text_cell(text: String, current_type: String, column_group: String =
 	add_cell_to_groups(cell, column_group)
 
 
-func create_header_cell(header_text: String, order_number: int, sorting_mode: int) -> void:
+func create_header_cell(
+	header_text_parameter: String,
+	order_parameter: int,
+	ordering_enabled_parameter: bool,
+	sorting_mode_parameter: int,
+	sorting_enabled_parameter: bool,
+	column_group_parameter: String,
+) -> void:
 	var cell: PanelContainer = COLUMN_HEADER.instantiate()
 	SignalBus._on_task_editor_header_cell_created.emit(cell)
-	cell.header_button.text = header_text
-	cell.order_spin_box.set_value_no_signal(order_number)
-	cell.set_sorting_mode(sorting_mode)
-	add_cell_to_groups(cell, header_text)
+	cell.header_button.text = header_text_parameter
+	cell.order_spin_box.set_value_no_signal(order_parameter)
+	cell.ordering_enabled(ordering_enabled_parameter)
+	cell.set_sorting_mode(sorting_mode_parameter)
+	cell.sorting_enabled(sorting_enabled_parameter)
+	add_cell_to_groups(cell, column_group_parameter)
 
 
 func create_dropdown_cell(dropdown_items: Array, selected_item,

@@ -17,24 +17,26 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"HBoxContainer_No_Space"
 
-[node name="PanelContainer" type="PanelContainer" parent="MainVBoxContainer/OptionsHBoxContainer"]
+[node name="SortingPanelContainer" type="PanelContainer" parent="MainVBoxContainer/OptionsHBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="SortingVBoxContainer" type="VBoxContainer" parent="MainVBoxContainer/OptionsHBoxContainer/PanelContainer"]
+[node name="SortingVBoxContainer" type="VBoxContainer" parent="MainVBoxContainer/OptionsHBoxContainer/SortingPanelContainer"]
 layout_mode = 2
 
-[node name="SortingLabel" type="Label" parent="MainVBoxContainer/OptionsHBoxContainer/PanelContainer/SortingVBoxContainer"]
+[node name="SortingLabel" type="Label" parent="MainVBoxContainer/OptionsHBoxContainer/SortingPanelContainer/SortingVBoxContainer"]
 layout_mode = 2
 text = "Sorting"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SortingButton" type="Button" parent="MainVBoxContainer/OptionsHBoxContainer/PanelContainer/SortingVBoxContainer"]
+[node name="SortingButton" type="Button" parent="MainVBoxContainer/OptionsHBoxContainer/SortingPanelContainer/SortingVBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "[Modes]"
 
 [node name="OrderPanelContainer" type="PanelContainer" parent="MainVBoxContainer/OptionsHBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="OrderVBoxContainer" type="VBoxContainer" parent="MainVBoxContainer/OptionsHBoxContainer/OrderPanelContainer"]
@@ -59,6 +61,6 @@ layout_mode = 2
 toggle_mode = true
 text = "Header Title"
 
-[connection signal="pressed" from="MainVBoxContainer/OptionsHBoxContainer/PanelContainer/SortingVBoxContainer/SortingButton" to="." method="_on_sorting_button_pressed"]
+[connection signal="pressed" from="MainVBoxContainer/OptionsHBoxContainer/SortingPanelContainer/SortingVBoxContainer/SortingButton" to="." method="_on_sorting_button_pressed"]
 [connection signal="value_changed" from="MainVBoxContainer/OptionsHBoxContainer/OrderPanelContainer/OrderVBoxContainer/OrderSpinBox" to="." method="_on_order_spin_box_value_changed"]
 [connection signal="toggled" from="MainVBoxContainer/HeaderButton" to="." method="_on_header_button_toggled"]
