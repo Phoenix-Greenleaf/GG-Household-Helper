@@ -148,29 +148,46 @@ func import_task_data_array(raw_array_parameter: Array, import_array_parameter: 
 
 func new_column_data_dictionary() -> Dictionary:
 # now we have to grab the other columns, from where they used to be handled. 
-	var data_dictionary := {  # [column order, # of column, visible 
-		"Order": [1, 1, true],
-		"Task": [2, 1, true],
-		"Section": [3, 1, true], #(y/m/w/d)
-		"Group": [4, 1, true], 
-		"Assignment": [5, 1, true], 
-		"Description": [6, 1, true], 
-		"Time Of Day": [7, 1, true],
-		"Priority": [8, 1, true],
-		"Location": [9, 1, true],
-		"TrackerCheckboxes": [10, 5, true],
-		"Schedule Start": [11, 1, true],
-		"Units/Cycle": [12, 1, true],
-		"Delete Task": [13, 1, true],
+	var data_dictionary := {  # [column order, # of column, sorting mode, sorting enabled, visible]
+		"Order": new_single_column_data_dictionary(1, 1, 0, true, true),
+		"Task": new_single_column_data_dictionary(2, 1, 0, true, true),
+		"Section": new_single_column_data_dictionary(3, 1, 0, true, true), #(y/m/w/d)
+		"Group": new_single_column_data_dictionary(4, 1, 0, true, true),
+		"Assignment": new_single_column_data_dictionary(5, 1, 0, true, true),
+		"Description": new_single_column_data_dictionary(6, 1, 0, true, true),
+		"Time Of Day": new_single_column_data_dictionary(7, 1, 0, true, true),
+		"Priority": new_single_column_data_dictionary(8, 1, 0, true, true),
+		"Location": new_single_column_data_dictionary(9, 1, 0, true, true),
+		"TrackerCheckboxes": new_single_column_data_dictionary(10, 5, 0, true, true),
+		"Schedule Start": new_single_column_data_dictionary(11, 1, 0, true, true),
+		"Units/Cycle": new_single_column_data_dictionary(12, 1, 0, true, true),
+		"Delete Task": new_single_column_data_dictionary(13, 1, 0, true, true),
 	}
 	return data_dictionary
+
+
+func new_single_column_data_dictionary(
+	column_order_parameter,
+	column_count_parameter,
+	sorting_mode_parameter,
+	sorting_enabled_parameter,
+	column_visible_parameter,
+) -> Dictionary:
+	var single_column_data: Dictionary = {}
+	single_column_data["Column Order"] = column_order_parameter
+	single_column_data["Column Count"] = column_count_parameter
+	single_column_data["Sorting Mode"] = sorting_mode_parameter
+	single_column_data["Sorting Enabled"] = sorting_enabled_parameter
+	single_column_data["Visible"] = column_visible_parameter
+	return single_column_data
 
 
 func new_column_order_array() -> Array:
 	var new_dictionary = new_column_data_dictionary()
 	var order_array := []
-	for dictionary_entry in new_dictionary:
-		order_array.append([dictionary_entry, new_dictionary[dictionary_entry[0]]])
+	for column_entry in new_dictionary:
+		var column_dictonary = new_dictionary[column_entry]
+		order_array.append([column_entry, column_dictonary["Column Order"]])
 	order_array.sort_custom(sort_ascending)
 	return order_array
 
