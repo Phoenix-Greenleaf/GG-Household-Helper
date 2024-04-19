@@ -19,6 +19,8 @@ func update_active_data(number_parameter: float) -> void:
 			saved_task.units_per_cycle = int_number
 		"Schedule Start":
 			saved_task.scheduling_start = int_number
+		"Row Order":
+			saved_task.row_order = int_number
 		_:
 			prints("SpinBox func update_active_data failed! saved_type:", saved_type)
 			prints("Spinbox Task", saved_task.name)

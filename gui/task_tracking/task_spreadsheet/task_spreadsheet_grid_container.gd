@@ -46,6 +46,7 @@ var current_header_size: int
 var current_task: TaskData
 var current_focus: Control
 var current_text_edit_cell: MultiLineCell
+var sorting_count: int
 
 
 
@@ -266,7 +267,11 @@ func create_header_row() -> void:
 	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
 	var column_order: Array = DataGlobal.active_data_task_tracking.column_order
 	full_header_size = 0
+	sorting_count = 0
 	for column_iteration in column_order:
+		if column_data[column_iteration["Sorting Enabled"]]:
+			if column_data[column_iteration["Sorting Mode"]] != 0:
+				sorting_count += 1
 		match column_iteration:
 			"TrackerCheckboxes":
 				create_checkbox_column_header(column_iteration)
@@ -402,35 +407,121 @@ func create_column_visibility_checkboxes() -> void:
 		cell.column_visible(current_column["Column Visible"])
 
 
-func create_task_row_cells() -> void: #task "physical" nodes, display side
-	
+func sort_task_array() -> void:
+
+	if not DataGlobal.active_data_task_tracking:
+		prints("No existing data to load")
+		return
+	match DataGlobal.task_tracking_current_toggled_section:
+		DataGlobal.Section.YEARLY:
+			for data_iteration in DataGlobal.active_data_task_tracking.spreadsheet_year_data:
+				process_task(data_iteration)
+		DataGlobal.Section.MONTHLY:
+			for data_iteration in DataGlobal.active_data_task_tracking.spreadsheet_month_data:
+				process_task(data_iteration)
+		DataGlobal.Section.WEEKLY:
+			for data_iteration in DataGlobal.active_data_task_tracking.spreadsheet_week_data:
+				process_task(data_iteration)
+		DataGlobal.Section.DAILY:
+			DataGlobal.active_data_task_tracking.spreadsheet_day_data.sort_custom(multi_sort)
+
+
+func multi_sort(a, b) -> bool:
+	return false
+
+
+	for level_iteration in sorting_count:
+		pass
+
+
+func recursive_sort() -> void:
+	pass
+
+
 	"""
 	sorting while task adding
 	reference the header row option values
-	split into modular columns
-	use column array and dictionary like the header row did
+	-sorting mode
+	-sorting order
+	-recur as needed
 	"""
-	
-	
-	create_text_cell(current_task.name, "Task Name")  #1
-	create_dropdown_cell(section_dropdown_items, current_task.section, "Section") #2
-	create_dropdown_cell(DataGlobal.task_tracking_task_group_dropdown_items,
-		current_task.group, "Group"
-	) #3
-	var info = "Info"
-	create_dropdown_cell(DataGlobal.task_tracking_user_profiles_dropdown_items,
-		current_task.assigned_user, "Assigned User", info
-	) #4
-	create_multi_line_cell(current_task.description, info) #5
-	create_dropdown_cell(time_of_day_dropdown_items, current_task.time_of_day,
-		"Time Of Day", info
-	) #6
-	create_dropdown_cell(priority_dropdown_items, current_task.priority, "Priority", info) #7
-	create_text_cell(current_task.location, "Location", info) #8
-	create_number_cell(current_task.scheduling_start, "Schedule Start", info) #9
-	create_number_cell(current_task.units_per_cycle, "Units/Cycle", info) #10
-	create_delete_task_cell("Delete Task", info) #11
-	var checkbox = "Checkbox"
+
+
+func ascending_sort(a, b) -> bool:
+	return false
+
+
+func descending_sort(a, b) -> bool:
+	return false
+
+
+func create_task_row_cells() -> void: #task "physical" nodes, display side
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	var column_order: Array = DataGlobal.active_data_task_tracking.column_order
+	for column_iteration in column_order:
+		var current_column: Dictionary = column_data[column_iteration]
+		match column_iteration:
+			"Order":
+				create_number_cell(
+					current_task.row_order,
+					"Row Order",
+					column_iteration,
+				)
+			"Task":
+				create_text_cell(current_task.name, "Task Name", column_iteration)
+			"Section":
+				create_dropdown_cell(
+					section_dropdown_items,
+					current_task.section,
+					"Section",
+					column_iteration
+				)
+			"Group":
+				create_dropdown_cell(
+					DataGlobal.task_tracking_task_group_dropdown_items,
+					current_task.group,
+					"Group",
+					column_iteration,
+				)
+			"Assignment":
+				create_dropdown_cell(
+					DataGlobal.task_tracking_user_profiles_dropdown_items,
+					current_task.assigned_user,
+					"Assigned User",
+					column_iteration,
+				)
+			"Description":
+				create_multi_line_cell(current_task.description, column_iteration)
+			"Time Of Day":
+				create_dropdown_cell(
+					time_of_day_dropdown_items,
+					current_task.time_of_day,
+					"Time Of Day",
+					column_iteration
+				)
+			"Priority":
+				create_dropdown_cell(
+					priority_dropdown_items,
+					current_task.priority,
+					"Priority",
+					column_iteration,
+				)
+			"Location":
+				create_text_cell(current_task.location, "Location", column_iteration)
+			"TrackerCheckboxes":
+				create_all_checkbox_cells()
+			"Schedule Start":
+				create_number_cell(current_task.scheduling_start, "Schedule Start", column_iteration)
+			"Units/Cycle":
+				create_number_cell(current_task.units_per_cycle, "Units/Cycle", column_iteration)
+			"Delete Task":
+				create_delete_task_cell("Delete Task", column_iteration)
+			_:
+				printerr("Unknown column")
+
+
+func create_all_checkbox_cells() -> void:
+	var checkbox = "Checkboxes"
 	var checkbox_position = 1
 	match current_task.section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
@@ -491,8 +582,11 @@ func create_header_cell(
 	add_cell_to_groups(cell, column_group_parameter)
 
 
-func create_dropdown_cell(dropdown_items: Array, selected_item,
-	current_type: String, column_group: String = ""
+func create_dropdown_cell(
+	dropdown_items: Array,
+	selected_item,
+	current_type: String,
+	column_group: String = ""
 ) -> void:
 	var cell: OptionButton = dropdown_cell.instantiate()
 	self.add_child(cell)

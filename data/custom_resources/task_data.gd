@@ -17,6 +17,7 @@ class_name TaskData
 @export var task_year: int
 @export var month_checkbox_dictionary: Dictionary
 @export var description: String
+@export var row_order: int
 
 var scheduling_array: Array
 var currently_scheduling: int
@@ -39,6 +40,7 @@ func export_json_from_resource() -> Dictionary:
 		"task_year": task_year,
 		"month_checkbox_dictionary": format_month_checkbox_dictionary(),
 		"description": description,
+		"row_order": row_order,
 	}
 	return json_data
 
@@ -79,6 +81,14 @@ func import_json_to_resource(data_parameter: Dictionary) -> void:
 	task_year = data_parameter.task_year
 	month_checkbox_dictionary = imported_month_checkbox_dictionary
 	description = data_parameter.description
+	import_row_order(data_parameter.row_order)
+
+
+func import_row_order(order_parameter) -> void:
+	if not order_parameter:
+		return
+	row_order = order_parameter
+
 
 
 func offbrand_init() -> void:

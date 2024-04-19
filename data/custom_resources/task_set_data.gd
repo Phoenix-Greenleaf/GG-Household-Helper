@@ -151,17 +151,17 @@ func new_column_data_dictionary() -> Dictionary:
 	var data_dictionary := {  # [column order, # of column, sorting mode, sorting enabled, visible]
 		"Order": new_single_column_data_dictionary(1, 1, 0, true, true),
 		"Task": new_single_column_data_dictionary(2, 1, 0, true, true),
-		"Section": new_single_column_data_dictionary(3, 1, 0, true, true), #(y/m/w/d)
+		"Section": new_single_column_data_dictionary(3, 1, 0, false, true), #(y/m/w/d)
 		"Group": new_single_column_data_dictionary(4, 1, 0, true, true),
 		"Assignment": new_single_column_data_dictionary(5, 1, 0, true, true),
-		"Description": new_single_column_data_dictionary(6, 1, 0, true, true),
+		"Description": new_single_column_data_dictionary(6, 1, 0, false, true),
 		"Time Of Day": new_single_column_data_dictionary(7, 1, 0, true, true),
 		"Priority": new_single_column_data_dictionary(8, 1, 0, true, true),
 		"Location": new_single_column_data_dictionary(9, 1, 0, true, true),
-		"TrackerCheckboxes": new_single_column_data_dictionary(10, 5, 0, true, true),
-		"Schedule Start": new_single_column_data_dictionary(11, 1, 0, true, true),
+		"TrackerCheckboxes": new_single_column_data_dictionary(10, 5, 0, false, true),
+		"Schedule Start": new_single_column_data_dictionary(11, 1, 0, false, true),
 		"Units/Cycle": new_single_column_data_dictionary(12, 1, 0, true, true),
-		"Delete Task": new_single_column_data_dictionary(13, 1, 0, true, true),
+		"Delete Task": new_single_column_data_dictionary(13, 1, 0, false, true),
 	}
 	return data_dictionary
 
