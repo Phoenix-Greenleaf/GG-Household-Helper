@@ -88,7 +88,6 @@ var task_tracking_focus_checkbox_state: int
 var task_tracking_focus_checkbox_profile: Array
 var task_tracking_current_toggled_section: Section = Section.YEARLY
 var task_tracking_current_toggled_month: Month = Month.JANUARY
-var task_tracking_current_column_visibility: Dictionary = {}
 var task_tracking_current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
 var task_tracking_task_group_dropdown_items: Array 
 var task_tracking_user_profiles_dropdown_items: Array

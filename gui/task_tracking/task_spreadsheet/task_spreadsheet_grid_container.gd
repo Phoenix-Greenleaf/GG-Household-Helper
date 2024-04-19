@@ -81,11 +81,17 @@ func ready_connections() -> void:
 	SignalBus._on_task_editor_grid_reload_pressed.connect(reload_grid)
 
 
-func toggle_column_visibility() -> void:
-	for column_key in DataGlobal.task_tracking_current_column_visibility:
-		var column_visibility: bool = DataGlobal.task_tracking_current_column_visibility[column_key]
-		get_tree().set_group(column_key, "visible", column_visibility)
+func apply_all_column_visibility() -> void:
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	for column_key in column_data:
+		var current_column_data: Dictionary = column_data[column_key]
+		var column_visibility: bool = current_column_data["Column Visible"]
+		toggle_column_visibility(column_key, column_visibility)
 	set_grid_columns()
+
+
+func toggle_column_visibility(column_parameter: String, visible_parameter: bool) -> void:
+	get_tree().set_group(column_parameter, "visible", visible_parameter)
 
 
 func get_dropdown_items_from_global() -> void:
@@ -245,7 +251,7 @@ func load_existing_data() -> void:
 		DataGlobal.Section.DAILY:
 			for data_iteration in DataGlobal.active_data_task_tracking.spreadsheet_day_data:
 				process_task(data_iteration)
-	toggle_column_visibility()
+	apply_all_column_visibility()
 
 
 func update_existing_groups_option_button_items() -> void:
@@ -268,6 +274,11 @@ func create_header_row() -> void:
 				create_time_unit_column_header(column_iteration)
 			_:
 				create_standard_column_header(column_iteration)
+
+
+			#create_header_cell("Reset Task Checkboxes", "Checkbox")
+			#create_header_cell("Reset " + current_month + " Checkboxes", "Checkbox")
+			#create_header_cell("Reset " + current_month + " Checkboxes", "Checkbox")
 
 
 func create_standard_column_header(column_parameter: String) -> void:
@@ -357,9 +368,6 @@ func create_checkbox_column_header(column_parameter: String) -> void:
 					continue
 				create_header_cell(combined_string, column_order, false, sorting_mode, false, column_group)
 
-			#create_header_cell("Reset Task Checkboxes", "Checkbox")
-			#create_header_cell("Reset " + current_month + " Checkboxes", "Checkbox")
-			#create_header_cell("Reset " + current_month + " Checkboxes", "Checkbox")
 
 func header_editing_prevention() -> void:
 	var header_nodes: Array[Node] = self.get_children()
@@ -371,24 +379,16 @@ func set_grid_columns() -> void:
 	if not DataGlobal.active_data_task_tracking:
 		prints("Columns not set")
 		return
-	var column_count: int = 0
-	#if (DataGlobal.task_tracking_current_toggled_editor_mode
-		#== DataGlobal.task_tracking_editor_modes["Info"]
-	#):
-		#column_count = full_column_count - checkbox_column_count
-	#elif (DataGlobal.task_tracking_current_toggled_editor_mode
-		#== DataGlobal.task_tracking_editor_modes["Checkbox"]
-	#):
-		#column_count = full_column_count - info_column_count
-	#else:
-		#prints("Header row size has gone wrong")
-	
-	""" 
-	check the column checkboxes, see how many are active
-	iterate over button/group, add to column_count
-	"""
-	
-	self.columns = column_count
+	var active_column_count: int = 0
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	for column_key in column_data:
+		var current_column_data: Dictionary = column_data[column_key]
+		var column_visibility: bool = current_column_data["Column Visible"]
+		if not column_visibility:
+			continue
+		var current_column_count: int = current_column_data["Column Count"]
+		active_column_count += current_column_count
+	columns = active_column_count
 
 
 func create_column_visibility_checkboxes() -> void:
@@ -400,11 +400,6 @@ func create_column_visibility_checkboxes() -> void:
 		cell.set_column_title(column_iteration)
 		var current_column: Dictionary = column_data[column_iteration]
 		cell.column_visible(current_column["Column Visible"])
-
-
-func check_column_visibility() -> void:
-	pass
-
 
 
 func create_task_row_cells() -> void: #task "physical" nodes, display side
@@ -663,7 +658,7 @@ func _on_accept_new_task_button_pressed() -> void:
 	create_new_task_data()
 	close_new_task_panel()
 	new_task_field_reset()
-	toggle_column_visibility()
+	apply_all_column_visibility()
 	SignalBus._on_task_set_data_modified.emit()
 	update_existing_groups_option_button_items()
 
