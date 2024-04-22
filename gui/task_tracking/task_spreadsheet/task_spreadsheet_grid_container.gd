@@ -268,9 +268,11 @@ func create_header_row() -> void:
 	var column_order: Array = DataGlobal.active_data_task_tracking.column_order
 	full_header_size = 0
 	sorting_count = 0
-	for column_iteration in column_order:
-		if column_data[column_iteration["Sorting Enabled"]]:
-			if column_data[column_iteration["Sorting Mode"]] != 0:
+	for column_array_iteration in column_order:
+		var column_iteration: String = column_array_iteration[0]
+		var iteration_data: Dictionary = column_data[column_iteration]
+		if iteration_data["Sorting Enabled"]:
+			if iteration_data["Sorting Mode"] != 0:
 				sorting_count += 1
 		match column_iteration:
 			"TrackerCheckboxes":
@@ -458,7 +460,8 @@ func descending_sort(a, b) -> bool:
 func create_task_row_cells() -> void: #task "physical" nodes, display side
 	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
 	var column_order: Array = DataGlobal.active_data_task_tracking.column_order
-	for column_iteration in column_order:
+	for column_array_iteration in column_order:
+		var column_iteration: String = column_array_iteration[0]
 		var current_column: Dictionary = column_data[column_iteration]
 		match column_iteration:
 			"Order":

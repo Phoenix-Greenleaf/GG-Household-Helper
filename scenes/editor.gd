@@ -19,8 +19,6 @@ extends Control
 @onready var daily_button: Button = %DailyButton
 @onready var checkbox_apply_toggle: Button = %CheckboxApplyToggle
 @onready var checkbox_inspect_toggle: Button = %CheckboxInspectToggle
-@onready var info_mode_button: Button = %InfoModeButton
-@onready var checkbox_mode_button: Button = %CheckboxModeButton
 @onready var column_visibility_grid_container: GridContainer = %ColumnVisibilityGridContainer
 
 
@@ -101,7 +99,7 @@ func get_save_safety_group_nodes() -> void:
 func set_buttons() -> void:
 	set_section_buttons()
 	set_checkbox_mode_buttons()
-	set_editor_mode_buttons()
+	#set_editor_mode_buttons()
 	set_month_selection_menu()
 
 
@@ -131,14 +129,14 @@ func set_checkbox_mode_buttons() -> void:
 			checkbox_inspect_toggle.set_pressed_no_signal(true)
 
 
-func set_editor_mode_buttons() -> void:
-	info_mode_button.set_pressed_no_signal(false)
-	checkbox_mode_button.set_pressed_no_signal(false)
-	match DataGlobal.task_tracking_current_toggled_editor_mode:
-		1: #"Info"
-			info_mode_button.set_pressed_no_signal(true)
-		0: #"Checkbox"
-			checkbox_mode_button.set_pressed_no_signal(true)
+#func set_editor_mode_buttons() -> void:
+	#info_mode_button.set_pressed_no_signal(false)
+	#checkbox_mode_button.set_pressed_no_signal(false)
+	#match DataGlobal.task_tracking_current_toggled_editor_mode:
+		#1: #"Info"
+			#info_mode_button.set_pressed_no_signal(true)
+		#0: #"Checkbox"
+			#checkbox_mode_button.set_pressed_no_signal(true)
 
 
 func set_month_selection_menu() -> void:

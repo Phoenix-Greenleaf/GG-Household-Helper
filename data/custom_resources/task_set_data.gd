@@ -81,8 +81,7 @@ func import_json_to_resource(data_parameter: Dictionary) -> void:
 
 
 func import_user_profile(data_parameter: Dictionary) -> Array:
-	if not data_parameter.user_profiles:
-		#load default data?
+	if not data_parameter.has("user_profiles"):
 		return []
 	var user_profile_import: Array = []
 	for unformatted_profile in data_parameter.user_profiles:
@@ -96,7 +95,7 @@ func import_user_profile(data_parameter: Dictionary) -> Array:
 
 
 func import_spreadsheet_year_data(data_parameter: Dictionary) -> Array:
-	if not data_parameter.spreadsheet_year_data:
+	if not data_parameter.has("spreadsheet_year_data"):
 		return []
 	var spreadsheet_year_data_import: Array = []
 	import_task_data_array(data_parameter.spreadsheet_year_data, spreadsheet_year_data_import)
@@ -104,7 +103,7 @@ func import_spreadsheet_year_data(data_parameter: Dictionary) -> Array:
 
 
 func import_spreadsheet_month_data(data_parameter: Dictionary) -> Array:
-	if not data_parameter.spreadsheet_month_data:
+	if not data_parameter.has("spreadsheet_month_data"):
 		return []
 	var spreadsheet_month_data_import: Array = []
 	import_task_data_array(data_parameter.spreadsheet_month_data, spreadsheet_month_data_import)
@@ -112,7 +111,7 @@ func import_spreadsheet_month_data(data_parameter: Dictionary) -> Array:
 
 
 func import_spreadsheet_week_data(data_parameter: Dictionary) -> Array:
-	if not data_parameter.spreadsheet_week_data:
+	if not data_parameter.has("spreadsheet_week_data"):
 		return []
 	var spreadsheet_week_data_import: Array = []
 	import_task_data_array(data_parameter.spreadsheet_week_data, spreadsheet_week_data_import)
@@ -120,7 +119,7 @@ func import_spreadsheet_week_data(data_parameter: Dictionary) -> Array:
 
 
 func import_spreadsheet_day_data(data_parameter: Dictionary) -> Array:
-	if not data_parameter.spreadsheet_day_data:
+	if not data_parameter.has("spreadsheet_day_data"):
 		return []
 	var spreadsheet_day_data_import: Array = []
 	import_task_data_array(data_parameter.spreadsheet_day_data, spreadsheet_day_data_import)
@@ -128,13 +127,13 @@ func import_spreadsheet_day_data(data_parameter: Dictionary) -> Array:
 
 
 func import_column_data(data_parameter: Dictionary) -> Dictionary:
-	if not data_parameter.column_data:
+	if not data_parameter.has("column_data"):
 		return new_column_data_dictionary()
 	return data_parameter.column_data
 
 
 func import_column_order(data_parameter: Dictionary) -> Array:
-	if not data_parameter.column_order:
+	if not data_parameter.has("column_order"):
 		return new_column_order_array()
 	return data_parameter.column_order
 

@@ -81,13 +81,12 @@ func import_json_to_resource(data_parameter: Dictionary) -> void:
 	task_year = data_parameter.task_year
 	month_checkbox_dictionary = imported_month_checkbox_dictionary
 	description = data_parameter.description
-	import_row_order(data_parameter.row_order)
+	import_row_order(data_parameter)
 
 
-func import_row_order(order_parameter) -> void:
-	if not order_parameter:
-		return
-	row_order = order_parameter
+func import_row_order(data_parameter) -> void:
+	if data_parameter.has("row_order"):
+		row_order = data_parameter.row_order
 
 
 

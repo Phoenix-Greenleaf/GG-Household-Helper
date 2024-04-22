@@ -11,7 +11,6 @@ func connect_spinbox_update() -> void:
 	self.value_changed.connect(update_active_data)
 
 
-
 func update_active_data(number_parameter: float) -> void:
 	var int_number: int = number_parameter as int
 	match saved_type:
