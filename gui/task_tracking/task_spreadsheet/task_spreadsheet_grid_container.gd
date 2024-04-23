@@ -65,11 +65,11 @@ func _ready() -> void:
 	var title = DataGlobal.active_data_task_tracking.task_set_title
 	var year = DataGlobal.active_data_task_tracking.task_set_year
 	prints("TaskGrid found:", title, ":", year)
-	load_existing_data()
+	#load_existing_data()
 	DataGlobal.task_editor_update_user_profile_dropdown_items()
 	update_task_add_options()
-	editing_lock_button.button_pressed = true
-	editing_lock_button.button_pressed = false
+	#editing_lock_button.button_pressed = true
+	#editing_lock_button.button_pressed = false
 
 
 func ready_connections() -> void:
@@ -281,6 +281,7 @@ func create_header_row() -> void:
 				create_time_unit_column_header(column_iteration)
 			_:
 				create_standard_column_header(column_iteration)
+	prints("Full header size:", full_header_size)
 
 
 			#create_header_cell("Reset Task Checkboxes", "Checkbox")
@@ -396,6 +397,8 @@ func set_grid_columns() -> void:
 		var current_column_count: int = current_column_data["Column Count"]
 		active_column_count += current_column_count
 	columns = active_column_count
+	SignalBus._on_task_editor_grid_column_count_changed.emit(active_column_count)
+	prints("Active Column Count:", active_column_count)
 
 
 func create_column_visibility_checkboxes() -> void:

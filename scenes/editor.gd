@@ -21,7 +21,6 @@ extends Control
 @onready var checkbox_inspect_toggle: Button = %CheckboxInspectToggle
 @onready var column_visibility_grid_container: GridContainer = %ColumnVisibilityGridContainer
 
-
 var last_toggled_month: int = 1
 
 var Weekday: Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
@@ -32,6 +31,7 @@ var quit_index: int = 8
 var to_main_menu_index: int = 7
 var to_task_menu_index: int = 6
 var task_settings_index: int = 1
+
 
 
 func _ready() -> void:
@@ -48,8 +48,6 @@ func _ready() -> void:
 		add_task_button.disabled = false
 		SignalBus._on_task_editor_section_changed.emit()
 	SceneTransition.fade_from_black()
-
-
 
 
 func connection_cental() -> void:

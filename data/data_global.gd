@@ -300,6 +300,7 @@ func load_data_task_set(task_set_name: String, task_set_year: int) -> void:
 	prints("task set filepath to load:", task_set_filepath)
 	var json_data = JsonSaveManager.load_data(task_set_filepath)
 	active_data_task_tracking.import_json_to_resource(json_data)
+	prints("load_data_task_set complete!")
 
 
 func task_set_data_reloaded() -> void:
