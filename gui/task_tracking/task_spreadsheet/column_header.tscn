@@ -3,14 +3,15 @@
 [ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/column_header.gd" id="1_tkxta"]
 
 [node name="ColumnHeader" type="PanelContainer"]
-offset_right = 12.0
-offset_bottom = 12.0
+offset_right = 199.0
+offset_bottom = 124.0
 theme_type_variation = &"PanelContainer_Quinary"
 script = ExtResource("1_tkxta")
 
 [node name="MainVBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 theme_type_variation = &"VBoxContainer_No_Space"
+alignment = 2
 
 [node name="OptionsHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer"]
 unique_name_in_owner = true

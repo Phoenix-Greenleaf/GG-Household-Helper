@@ -110,7 +110,7 @@ func reload_grid() -> void:
 
 
 func section_or_month_changed() -> void:
-	reload_grid()
+	SignalBus._on_task_editor_grid_reload_pressed.emit()
 	update_task_add_options()
 
 
@@ -384,6 +384,7 @@ func header_editing_prevention() -> void:
 
 
 func set_grid_columns() -> void:
+	prints("Set Grid Columns Function")
 	if not DataGlobal.active_data_task_tracking:
 		prints("Columns not set")
 		return
@@ -393,12 +394,25 @@ func set_grid_columns() -> void:
 		var current_column_data: Dictionary = column_data[column_key]
 		var column_visibility: bool = current_column_data["Column Visible"]
 		if not column_visibility:
+			prints(column_key, "not visible.")
 			continue
 		var current_column_count: int = current_column_data["Column Count"]
+		if column_key == "TrackerCheckboxes":
+			match DataGlobal.task_tracking_current_toggled_section:
+				DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+					current_column_count = 12
+				DataGlobal.Section.DAILY:
+					var current_month = DataGlobal.task_tracking_current_toggled_month
+					var current_year = DataGlobal.active_data_task_tracking.task_set_year
+					var number_of_days = DataGlobal.days_in_month_finder(current_month, current_year)
+					current_column_count = number_of_days
+				_:
+					pass
 		active_column_count += current_column_count
+		prints(column_key, "visible. Current:", current_column_count, "Total:", active_column_count)
 	columns = active_column_count
 	SignalBus._on_task_editor_grid_column_count_changed.emit(active_column_count)
-	prints("Active Column Count:", active_column_count)
+	prints("Final Active Column Count:", active_column_count)
 
 
 func create_column_visibility_checkboxes() -> void:
@@ -522,8 +536,10 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 				create_number_cell(current_task.units_per_cycle, "Units/Cycle", column_iteration)
 			"Delete Task":
 				create_delete_task_cell("Delete Task", column_iteration)
+			"Reset Checkboxes":
+				create_checkbox_clear_cell(column_iteration)
 			_:
-				printerr("Unknown column")
+				printerr("Unknown column: ", column_iteration)
 
 
 func create_all_checkbox_cells() -> void:
@@ -541,7 +557,6 @@ func create_all_checkbox_cells() -> void:
 				var checkbox_user: Array = checkbox_data.assigned_user
 				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)
 				checkbox_position += 1
-			create_checkbox_clear_cell(checkbox)
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
 			var current_month = DataGlobal.task_tracking_current_toggled_month
 			var month_key = DataGlobal.Month.find_key(current_month).capitalize()
@@ -551,7 +566,6 @@ func create_all_checkbox_cells() -> void:
 				var checkbox_user: Array = checkbox_data.assigned_user
 				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)
 				checkbox_position += 1
-			create_checkbox_clear_cell(checkbox)
 
 
 func add_cell_to_groups(cell_parameter, column_group_parameter) -> void:
@@ -586,6 +600,7 @@ func create_header_cell(
 	cell.set_sorting_mode(sorting_mode_parameter)
 	cell.sorting_enabled(sorting_enabled_parameter)
 	add_cell_to_groups(cell, column_group_parameter)
+	prints("Created Header:", header_text_parameter, "  Header Count:", full_header_size)
 
 
 func create_dropdown_cell(
