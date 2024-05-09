@@ -24,6 +24,7 @@ var sorting_modes = [
 func _ready() -> void:
 	header_options_visible(false)
 	initialize_sorting_modes()
+	connect_signals()
 
 
 func initialize_sorting_modes() -> void:
@@ -33,6 +34,10 @@ func initialize_sorting_modes() -> void:
 
 func set_sorting_button_text() -> void:
 	sorting_button.text = sorting_modes[sorting_mode_index]
+
+
+func connect_signals() -> void:
+	SignalBus._on_task_editor_column_visibility_toggled.connect(toggle_column_visibility)
 
 
 func set_sorting_mode(mode_index_parameter: int) -> void:
@@ -54,6 +59,10 @@ func sorting_enabled(sorting_parameter: bool = true) -> void:
 
 func ordering_enabled(ordering_parameter: bool = true) -> void:
 	order_panel_container.visible = ordering_parameter
+
+
+func toggle_column_visibility(column_parameter: String, visible_parameter: bool) -> void:
+	get_tree().call_group(column_parameter, "set_visible", visible_parameter)
 
 
 func _on_header_button_toggled(toggled_on: bool) -> void:

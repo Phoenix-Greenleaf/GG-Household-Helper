@@ -20,6 +20,8 @@ extends Control
 @onready var checkbox_apply_toggle: Button = %CheckboxApplyToggle
 @onready var checkbox_inspect_toggle: Button = %CheckboxInspectToggle
 @onready var column_visibility_grid_container: GridContainer = %ColumnVisibilityGridContainer
+@onready var header_scroll_container: ScrollContainer = %HeaderScrollContainer
+@onready var spreadsheet_scroll_container: ScrollContainer = %SpreadsheetScrollContainer
 
 var last_toggled_month: int = 1
 
@@ -47,6 +49,7 @@ func _ready() -> void:
 		update_current_tasksheet_label()
 		add_task_button.disabled = false
 		SignalBus._on_task_editor_section_changed.emit()
+	link_spreadsheet_header_scrolling()
 	SceneTransition.fade_from_black()
 
 
@@ -70,6 +73,12 @@ func connect_other_signal_bus() -> void:
 	SignalBus._on_task_editor_data_manager_remote_open_pressed.connect(remote_open_data_manager)
 	SignalBus._on_task_editor_save_button_pressed.connect(save_active_data)
 	SignalBus._on_task_editor_column_visibility_checkbox_created.connect(add_column_visibility_checkbox)
+
+
+func link_spreadsheet_header_scrolling() -> void:
+	var header_scroll_bar = header_scroll_container.get_h_scroll_bar()
+	var spreadsheet_scroll_bar = spreadsheet_scroll_container.get_h_scroll_bar()
+	spreadsheet_scroll_bar.share(header_scroll_bar)
 
 
 func add_column_visibility_checkbox(cell_parameter: CheckBox) -> void:
