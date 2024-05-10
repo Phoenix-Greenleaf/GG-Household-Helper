@@ -27,6 +27,8 @@ signal _on_task_editor_header_sorting_button_pressed(mode_index: int)
 signal _on_task_editor_header_order_spin_box_value_changed(value: int)
 signal _on_task_editor_column_visibility_checkbox_created(cell: CheckBox)
 signal _on_task_editor_grid_column_count_changed(new_count: int)
+signal _on_task_editor_grid_column_sizes_mismatched
+signal _on_task_editor_header_row_created
 
 
 

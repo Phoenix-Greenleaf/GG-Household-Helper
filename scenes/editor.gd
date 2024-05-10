@@ -22,6 +22,7 @@ extends Control
 @onready var column_visibility_grid_container: GridContainer = %ColumnVisibilityGridContainer
 @onready var header_scroll_container: ScrollContainer = %HeaderScrollContainer
 @onready var spreadsheet_scroll_container: ScrollContainer = %SpreadsheetScrollContainer
+@onready var header_grid_container: GridContainer = %HeaderGridContainer
 
 var last_toggled_month: int = 1
 
@@ -73,6 +74,7 @@ func connect_other_signal_bus() -> void:
 	SignalBus._on_task_editor_data_manager_remote_open_pressed.connect(remote_open_data_manager)
 	SignalBus._on_task_editor_save_button_pressed.connect(save_active_data)
 	SignalBus._on_task_editor_column_visibility_checkbox_created.connect(add_column_visibility_checkbox)
+	SignalBus._on_task_editor_grid_column_sizes_mismatched.connect(resize_grids_columns)
 
 
 func link_spreadsheet_header_scrolling() -> void:
@@ -295,6 +297,46 @@ func month_menu_switch(passed_id: int, passed_month: DataGlobal.Month) -> void:
 			DataGlobal.task_tracking_current_toggled_month = passed_month
 			month_selection_menu_popup.set_item_disabled(last_toggled_month, false)
 			last_toggled_month = passed_id
+
+
+func resize_grids_columns() -> void:
+	prints("Resizing Columns:")
+	var number_of_children: int = header_grid_container.get_child_count()
+	if number_of_children == 0:
+		return
+	var header_children: Array = header_grid_container.get_children()
+	await header_children[0].resized
+	var spreadsheet_children: Array = []
+	prints("Number of children:", number_of_children)
+	for child_iteration in number_of_children:
+		var current_child = task_spreadsheet_grid_container.get_child(child_iteration)
+		spreadsheet_children.append(current_child)
+	for comparison_iteration in number_of_children:
+		var header_node: Control = header_children[comparison_iteration]
+		if not header_node.visible:
+			prints("Skipping non-visible column:", comparison_iteration)
+			continue
+		var spreadsheet_node: Control = spreadsheet_children[comparison_iteration]
+		header_node.set_custom_minimum_size(Vector2.ZERO)
+		spreadsheet_node.set_custom_minimum_size(Vector2.ZERO)
+		var width_index: int = 0
+		var header_node_size = header_node.size
+		var spreadsheet_node_size = spreadsheet_node.size
+		prints("Header:", header_node_size[width_index], "    vs   Sheet:", spreadsheet_node_size[width_index])
+		if header_node_size[width_index] == spreadsheet_node_size[width_index]:
+			prints("Already Equal")
+			continue
+		if header_node_size[width_index] > spreadsheet_node_size[width_index]:
+			spreadsheet_node_size[width_index] = header_node_size[width_index]
+			spreadsheet_node.set_custom_minimum_size(spreadsheet_node_size)
+			prints("Header Bigger")
+		elif header_node_size[width_index] < spreadsheet_node_size[width_index]:
+			header_node_size[width_index] = spreadsheet_node_size[width_index]
+			header_node.set_custom_minimum_size(header_node_size)
+			prints("Spreadsheet Bigger")
+		else:
+			printerr("resize_grids_columns unhappy")
+		
 
 
 func _on_yearly_button_toggled(button_pressed: bool) -> void:

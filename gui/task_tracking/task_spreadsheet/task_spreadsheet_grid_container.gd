@@ -106,7 +106,8 @@ func get_dropdown_items_from_global() -> void:
 
 func reload_grid() -> void:
 	clear_grid_children()
-	load_existing_data()
+	await load_existing_data()
+	SignalBus._on_task_editor_grid_column_sizes_mismatched.emit()
 
 
 func section_or_month_changed() -> void:
@@ -217,6 +218,7 @@ func create_new_task_data() -> void: #task code, the data side
 	DataGlobal.task_editor_scan_task_for_group(new_task)
 	update_existing_groups_option_button_items()
 	process_task(new_task)
+	SignalBus._on_task_editor_grid_column_sizes_mismatched.emit()
 
 
 func process_task(target_task) -> void:
@@ -233,10 +235,10 @@ func new_task_field_reset() -> void:
 	task_add_units_per_cycle_spin_box.value = 0
 
 
-func load_existing_data() -> void:
+func load_existing_data() -> bool:
 	if not DataGlobal.active_data_task_tracking:
 		prints("No existing data to load")
-		return
+		return true
 	create_header_row()
 	update_existing_groups_option_button_items()
 	match DataGlobal.task_tracking_current_toggled_section:
@@ -253,6 +255,7 @@ func load_existing_data() -> void:
 			for data_iteration in DataGlobal.active_data_task_tracking.spreadsheet_day_data:
 				process_task(data_iteration)
 	apply_all_column_visibility()
+	return true
 
 
 func update_existing_groups_option_button_items() -> void:
@@ -282,6 +285,7 @@ func create_header_row() -> void:
 			_:
 				create_standard_column_header(column_iteration)
 	prints("Full header size:", full_header_size)
+	SignalBus._on_task_editor_header_row_created.emit()
 
 
 			#create_header_cell("Reset Task Checkboxes", "Checkbox")
