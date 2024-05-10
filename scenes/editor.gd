@@ -25,6 +25,8 @@ extends Control
 @onready var header_grid_container: GridContainer = %HeaderGridContainer
 
 var last_toggled_month: int = 1
+var spreadsheet_grids_resizing_enabled: bool = false
+var grids_resize_lockout_count = 0
 
 var Weekday: Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 var month_strings = DataGlobal.month_strings
@@ -75,12 +77,31 @@ func connect_other_signal_bus() -> void:
 	SignalBus._on_task_editor_save_button_pressed.connect(save_active_data)
 	SignalBus._on_task_editor_column_visibility_checkbox_created.connect(add_column_visibility_checkbox)
 	SignalBus._on_task_editor_grid_column_sizes_mismatched.connect(resize_grids_columns)
+	SignalBus._on_task_editor_header_cell_resized.connect(remove_resize_lockout)
+	SignalBus._on_task_editor_header_row_created.connect(set_grids_resizing_lockout)
 
 
 func link_spreadsheet_header_scrolling() -> void:
 	var header_scroll_bar = header_scroll_container.get_h_scroll_bar()
 	var spreadsheet_scroll_bar = spreadsheet_scroll_container.get_h_scroll_bar()
 	spreadsheet_scroll_bar.share(header_scroll_bar)
+
+
+func set_grids_resizing_lockout(lockout_count_parameter: int) -> void:
+	grids_resize_lockout_count = lockout_count_parameter
+	spreadsheet_grids_resizing_enabled = false
+	prints("Grids resizing lockout set:", lockout_count_parameter)
+
+
+func remove_resize_lockout() -> void:
+	if grids_resize_lockout_count == 0:
+		return
+	grids_resize_lockout_count -= 1
+	if grids_resize_lockout_count == 0:
+		spreadsheet_grids_resizing_enabled = true
+		resize_grids_columns()
+		return
+	prints("Lockouts Left:", grids_resize_lockout_count)
 
 
 func add_column_visibility_checkbox(cell_parameter: CheckBox) -> void:
@@ -108,7 +129,6 @@ func get_save_safety_group_nodes() -> void:
 func set_buttons() -> void:
 	set_section_buttons()
 	set_checkbox_mode_buttons()
-	#set_editor_mode_buttons()
 	set_month_selection_menu()
 
 
@@ -136,16 +156,6 @@ func set_checkbox_mode_buttons() -> void:
 			checkbox_apply_toggle.set_pressed_no_signal(true)
 		DataGlobal.CheckboxToggle.INSPECT:
 			checkbox_inspect_toggle.set_pressed_no_signal(true)
-
-
-#func set_editor_mode_buttons() -> void:
-	#info_mode_button.set_pressed_no_signal(false)
-	#checkbox_mode_button.set_pressed_no_signal(false)
-	#match DataGlobal.task_tracking_current_toggled_editor_mode:
-		#1: #"Info"
-			#info_mode_button.set_pressed_no_signal(true)
-		#0: #"Checkbox"
-			#checkbox_mode_button.set_pressed_no_signal(true)
 
 
 func set_month_selection_menu() -> void:
@@ -300,12 +310,15 @@ func month_menu_switch(passed_id: int, passed_month: DataGlobal.Month) -> void:
 
 
 func resize_grids_columns() -> void:
-	prints("Resizing Columns:")
+	if not spreadsheet_grids_resizing_enabled:
+		prints("Resizing spreadsheet grid columns disabled.")
+		return
 	var number_of_children: int = header_grid_container.get_child_count()
 	if number_of_children == 0:
+		prints("No grids to resize.")
 		return
+	prints("Resizing Columns:")
 	var header_children: Array = header_grid_container.get_children()
-	await header_children[0].resized
 	var spreadsheet_children: Array = []
 	prints("Number of children:", number_of_children)
 	for child_iteration in number_of_children:

@@ -80,3 +80,8 @@ func _on_sorting_button_pressed() -> void:
 
 func _on_order_spin_box_value_changed(value: float) -> void:
 	SignalBus._on_task_editor_header_order_spin_box_value_changed.emit(value)
+
+
+func _on_resized() -> void:
+	prints("Resizing Header Cell:", name, "   Size:", size)
+	SignalBus._on_task_editor_header_cell_resized.emit()
