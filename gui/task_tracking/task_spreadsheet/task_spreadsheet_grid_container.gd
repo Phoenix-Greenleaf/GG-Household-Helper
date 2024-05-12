@@ -47,6 +47,14 @@ var current_task: TaskData
 var current_focus: Control
 var current_text_edit_cell: MultiLineCell
 var sorting_count: int
+var task_first_row: bool = true
+var current_grid_section: int
+var column_pairs: Dictionary
+
+enum GRID_SECTION {
+	HEADER,
+	TASK_SHEET,
+}
 
 
 
@@ -106,8 +114,8 @@ func get_dropdown_items_from_global() -> void:
 
 func reload_grid() -> void:
 	clear_grid_children()
+	task_first_row = true
 	load_existing_data()
-	SignalBus._on_task_editor_grid_column_sizes_mismatched.emit()
 
 
 func section_or_month_changed() -> void:
@@ -218,7 +226,6 @@ func create_new_task_data() -> void: #task code, the data side
 	DataGlobal.task_editor_scan_task_for_group(new_task)
 	update_existing_groups_option_button_items()
 	process_task(new_task)
-	SignalBus._on_task_editor_grid_column_sizes_mismatched.emit()
 
 
 func process_task(target_task) -> void:
@@ -255,7 +262,7 @@ func load_existing_data() -> void:
 			for data_iteration in DataGlobal.active_data_task_tracking.spreadsheet_day_data:
 				process_task(data_iteration)
 	apply_all_column_visibility()
-	return
+	SignalBus._on_task_editor_new_column_pairs_created.emit(column_pairs)
 
 
 func update_existing_groups_option_button_items() -> void:
@@ -267,8 +274,10 @@ func update_existing_groups_option_button_items() -> void:
 
 
 func create_header_row() -> void:
+	current_grid_section = GRID_SECTION.HEADER
 	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
 	var column_order: Array = DataGlobal.active_data_task_tracking.column_order
+	column_pairs = {}
 	full_header_size = 0
 	sorting_count = 0
 	for column_array_iteration in column_order:
@@ -285,12 +294,7 @@ func create_header_row() -> void:
 			_:
 				create_standard_column_header(column_iteration)
 	prints("Full header size:", full_header_size)
-	SignalBus._on_task_editor_header_row_created.emit(full_header_size)
 
-
-			#create_header_cell("Reset Task Checkboxes", "Checkbox")
-			#create_header_cell("Reset " + current_month + " Checkboxes", "Checkbox")
-			#create_header_cell("Reset " + current_month + " Checkboxes", "Checkbox")
 
 
 func create_standard_column_header(column_parameter: String) -> void:
@@ -347,19 +351,19 @@ func create_checkbox_column_header(column_parameter: String) -> void:
 	var first_column: bool = true
 	match current_section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
-			full_header_size += 12
 			for month in DataGlobal.month_strings:
 				if month == "All":
 					continue
+				full_header_size += 1
 				if first_column:
 					create_header_cell(month, column_order, ordering_enabled, sorting_mode, false, column_group)
 					first_column = false
 					continue
 				create_header_cell(month, column_order, false, sorting_mode, false, column_group)
 		DataGlobal.Section.WEEKLY:
-			full_header_size += 5
 			header_text = "Week "
 			for week_iteration in 5:
+				full_header_size += 1
 				var header_number = str(week_iteration + 1)
 				var combined_string: String = header_text + header_number
 				if first_column:
@@ -369,9 +373,9 @@ func create_checkbox_column_header(column_parameter: String) -> void:
 				create_header_cell(combined_string, column_order, false, sorting_mode, false, column_group)
 		DataGlobal.Section.DAILY:
 			var number_of_days = DataGlobal.days_in_month_finder(current_month, current_year)
-			full_header_size += number_of_days
 			header_text = "Day "
 			for day_iteration in number_of_days:
+				full_header_size += 1
 				var header_number = str(day_iteration + 1)
 				var combined_string: String = header_text + header_number
 				if first_column:
@@ -480,11 +484,14 @@ func descending_sort(a, b) -> bool:
 
 
 func create_task_row_cells() -> void: #task "physical" nodes, display side
+	current_grid_section = GRID_SECTION.TASK_SHEET
 	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
 	var column_order: Array = DataGlobal.active_data_task_tracking.column_order
+	full_header_size = 0
 	for column_array_iteration in column_order:
 		var column_iteration: String = column_array_iteration[0]
 		var current_column: Dictionary = column_data[column_iteration]
+		full_header_size += 1
 		match column_iteration:
 			"Order":
 				create_number_cell(
@@ -545,6 +552,7 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 				create_checkbox_clear_cell(column_iteration)
 			_:
 				printerr("Unknown column: ", column_iteration)
+	task_first_row = false
 
 
 func create_all_checkbox_cells() -> void:
@@ -573,11 +581,24 @@ func create_all_checkbox_cells() -> void:
 				checkbox_position += 1
 
 
-func add_cell_to_groups(cell_parameter, column_group_parameter) -> void:
+func add_cell_to_groups(cell_parameter, column_group_parameter: String) -> void:
 	if row_group != "":
 		cell_parameter.add_to_group(row_group)
 	if column_group_parameter != "":
 		cell_parameter.add_to_group(column_group_parameter)
+		if not task_first_row:
+			return
+		var column_pair_name: String = column_group_parameter + str(full_header_size)
+		cell_parameter.column_pair = column_pair_name
+		if column_pairs.has(column_pair_name):
+			column_pairs[column_pair_name].append(cell_parameter)
+		column_pairs[column_pair_name] = [cell_parameter]
+
+
+func set_first_row_flag(cell_to_check) -> void:
+	if not task_first_row:
+		return
+	cell_to_check.first_row_flag = true
 
 
 func create_text_cell(text: String, current_type: String, column_group: String = "") -> void:
@@ -587,6 +608,7 @@ func create_text_cell(text: String, current_type: String, column_group: String =
 	cell.saved_task = current_task
 	cell.saved_type = current_type
 	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)
 
 
 func create_header_cell(
@@ -605,7 +627,7 @@ func create_header_cell(
 	cell.set_sorting_mode(sorting_mode_parameter)
 	cell.sorting_enabled(sorting_enabled_parameter)
 	add_cell_to_groups(cell, column_group_parameter)
-	prints("Created Header:", header_text_parameter, "  Header Count:", full_header_size)
+	#prints("Created Header:", header_text_parameter, "  Header Count:", full_header_size)
 
 
 func create_dropdown_cell(
@@ -621,7 +643,8 @@ func create_dropdown_cell(
 	cell.dropdown_items = dropdown_items
 	cell.update_dropdown_items(selected_item)
 	cell.connect_type_updates()
-	add_cell_to_groups(cell, column_group) 
+	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)
 
 
 func create_multi_line_cell(multi_text_parameter: String, column_group: String = "") -> void:
@@ -630,7 +653,8 @@ func create_multi_line_cell(multi_text_parameter: String, column_group: String =
 	cell.saved_task = current_task
 	cell.initialize_data(multi_text_parameter)
 	cell.pressed.connect(_on_description_button_pressed.bind(cell))
-	add_cell_to_groups(cell, column_group) 
+	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell) 
 
 
 func create_number_cell(number: int, current_type: String, column_group: String = "") -> void:
@@ -641,6 +665,7 @@ func create_number_cell(number: int, current_type: String, column_group: String 
 	cell.saved_type = current_type
 	cell.connect_spinbox_update()
 	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)
 
 
 func create_checkbox_cell(state: DataGlobal.Checkbox, user_profile: Array,
@@ -654,6 +679,7 @@ func create_checkbox_cell(state: DataGlobal.Checkbox, user_profile: Array,
 	cell.saved_state = state
 	cell.update_checkbox()
 	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)
 
 
 func create_checkbox_clear_cell(column_group: String = "") -> void:
@@ -662,6 +688,7 @@ func create_checkbox_clear_cell(column_group: String = "") -> void:
 	cell.saved_task = current_task
 	cell.prep_button()
 	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)
 
 
 func create_delete_task_cell(current_type: String, column_group: String = "") -> void:
@@ -671,6 +698,7 @@ func create_delete_task_cell(current_type: String, column_group: String = "") ->
 	cell.saved_task = current_task
 	cell.prep_delete_button()
 	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)
 
 
 func delete_task_row(target_task: TaskData) -> void:

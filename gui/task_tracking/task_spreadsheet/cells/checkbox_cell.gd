@@ -14,6 +14,8 @@ extends PanelContainer
 
 var white := Color(1, 1, 1)
 var black := Color(0, 0, 0)
+var first_row_flag: bool = false
+var column_pair: String
 
 
 func _ready() -> void:
@@ -79,6 +81,8 @@ func update_current_border(color_parameter: Color) -> void:
 
 
 func _on_resized() -> void:
+	if first_row_flag:
+		SignalBus._on_task_editor_grid_column_resized.emit(column_pair)
 	cell_x = self.size.x
 	cell_y = self.size.y
 	if not cell_checkbox_border_color_rect:

@@ -5,3 +5,5 @@
 [node name="TaskCheckboxClearButtonCell" type="Button"]
 text = "CLEAR"
 script = ExtResource("1_n8axc")
+
+[connection signal="resized" from="." to="." method="_on_resized"]

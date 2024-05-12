@@ -2,6 +2,10 @@ extends Button
 
 @export var saved_task: TaskData
 
+var first_row_flag: bool = false
+var column_pair: String
+
+
 func _ready() -> void:
 	pressed.connect(_on_task_checkbox_clear_button_pressed)
 
@@ -17,3 +21,9 @@ func _on_task_checkbox_clear_button_pressed() -> void:
 func prep_button() -> void:
 	var task_name: String = saved_task.name
 	text = "Reset '" + task_name + "'"
+
+
+func _on_resized() -> void:
+	if not first_row_flag:
+		return
+	SignalBus._on_task_editor_grid_column_resized.emit(column_pair)

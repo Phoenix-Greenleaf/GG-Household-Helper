@@ -7,3 +7,5 @@ alignment = 1
 expand_to_text_length = true
 select_all_on_focus = true
 script = ExtResource("1_kwdxx")
+
+[connection signal="resized" from="." to="." method="_on_resized"]

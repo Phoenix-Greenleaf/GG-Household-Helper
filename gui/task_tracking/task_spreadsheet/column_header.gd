@@ -8,11 +8,8 @@ extends PanelContainer
 @onready var sorting_panel_container: PanelContainer = %SortingPanelContainer
 @onready var order_panel_container: PanelContainer = %OrderPanelContainer
 
-
-
+var column_pair: String
 var sorting_mode_index: int
-
-
 var sorting_modes = [
 	"None",
 	"Ascend",
@@ -84,4 +81,4 @@ func _on_order_spin_box_value_changed(value: float) -> void:
 
 func _on_resized() -> void:
 	prints("Resizing Header Cell:", name, "   Size:", size)
-	SignalBus._on_task_editor_header_cell_resized.emit()
+	SignalBus._on_task_editor_grid_column_resized.emit(column_pair)

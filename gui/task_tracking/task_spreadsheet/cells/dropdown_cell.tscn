@@ -4,3 +4,5 @@
 
 [node name="DropdownCell" type="OptionButton"]
 script = ExtResource("1_qsxg2")
+
+[connection signal="resized" from="." to="." method="_on_resized"]

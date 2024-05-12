@@ -30,6 +30,8 @@ var priority: Array = [
 
 var profile_names: Array
 var selected_item
+var first_row_flag: bool = false
+var column_pair: String
 
 
 
@@ -130,3 +132,9 @@ func _on_dropdown_item_selected(index_parameter) -> void:
 			return
 	SignalBus._on_task_set_data_modified.emit()
 
+
+
+func _on_resized() -> void:
+	if not first_row_flag:
+		return
+	SignalBus._on_task_editor_grid_column_resized.emit(column_pair)

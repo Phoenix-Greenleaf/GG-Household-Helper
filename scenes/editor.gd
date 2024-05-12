@@ -26,7 +26,7 @@ extends Control
 
 var last_toggled_month: int = 1
 var spreadsheet_grids_resizing_enabled: bool = false
-var grids_resize_lockout_count = 0
+var column_node_pairs: Dictionary
 
 var Weekday: Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 var month_strings = DataGlobal.month_strings
@@ -76,32 +76,14 @@ func connect_other_signal_bus() -> void:
 	SignalBus._on_task_editor_data_manager_remote_open_pressed.connect(remote_open_data_manager)
 	SignalBus._on_task_editor_save_button_pressed.connect(save_active_data)
 	SignalBus._on_task_editor_column_visibility_checkbox_created.connect(add_column_visibility_checkbox)
-	SignalBus._on_task_editor_grid_column_sizes_mismatched.connect(resize_grids_columns)
-	SignalBus._on_task_editor_header_cell_resized.connect(remove_resize_lockout)
-	SignalBus._on_task_editor_header_row_created.connect(set_grids_resizing_lockout)
+	SignalBus._on_task_editor_new_column_pairs_created.connect(update_column_pair_dictonary)
+	SignalBus._on_task_editor_grid_column_resized.connect(resize_grids_column)
 
 
 func link_spreadsheet_header_scrolling() -> void:
 	var header_scroll_bar = header_scroll_container.get_h_scroll_bar()
 	var spreadsheet_scroll_bar = spreadsheet_scroll_container.get_h_scroll_bar()
 	spreadsheet_scroll_bar.share(header_scroll_bar)
-
-
-func set_grids_resizing_lockout(lockout_count_parameter: int) -> void:
-	grids_resize_lockout_count = lockout_count_parameter
-	spreadsheet_grids_resizing_enabled = false
-	prints("Grids resizing lockout set:", lockout_count_parameter)
-
-
-func remove_resize_lockout() -> void:
-	if grids_resize_lockout_count == 0:
-		return
-	grids_resize_lockout_count -= 1
-	if grids_resize_lockout_count == 0:
-		spreadsheet_grids_resizing_enabled = true
-		resize_grids_columns()
-		return
-	prints("Lockouts Left:", grids_resize_lockout_count)
 
 
 func add_column_visibility_checkbox(cell_parameter: CheckBox) -> void:
@@ -124,6 +106,10 @@ func connect_menu_button_popup() -> void:
 
 func get_save_safety_group_nodes() -> void: 
 	save_safety_nodes = get_tree().get_nodes_in_group("save_safety")
+
+
+func update_column_pair_dictonary(dictionary_parameter: Dictionary) -> void:
+	column_node_pairs = dictionary_parameter
 
 
 func set_buttons() -> void:
@@ -309,47 +295,36 @@ func month_menu_switch(passed_id: int, passed_month: DataGlobal.Month) -> void:
 			last_toggled_month = passed_id
 
 
-func resize_grids_columns() -> void:
+func resize_grids_column(column_pair_parameter: String) -> void:
 	if not spreadsheet_grids_resizing_enabled:
 		prints("Resizing spreadsheet grid columns disabled.")
 		return
-	var number_of_children: int = header_grid_container.get_child_count()
-	if number_of_children == 0:
-		prints("No grids to resize.")
-		return
 	prints("Resizing Columns:")
-	var header_children: Array = header_grid_container.get_children()
-	var spreadsheet_children: Array = []
-	prints("Number of children:", number_of_children)
-	for child_iteration in number_of_children:
-		var current_child = task_spreadsheet_grid_container.get_child(child_iteration)
-		spreadsheet_children.append(current_child)
-	for comparison_iteration in number_of_children:
-		var header_node: Control = header_children[comparison_iteration]
-		if not header_node.visible:
-			prints("Skipping non-visible column:", comparison_iteration)
-			continue
-		var spreadsheet_node: Control = spreadsheet_children[comparison_iteration]
-		header_node.set_custom_minimum_size(Vector2.ZERO)
-		spreadsheet_node.set_custom_minimum_size(Vector2.ZERO)
-		var width_index: int = 0
-		var header_node_size = header_node.size
-		var spreadsheet_node_size = spreadsheet_node.size
-		prints("Header:", header_node_size[width_index], "    vs   Sheet:", spreadsheet_node_size[width_index])
-		if header_node_size[width_index] == spreadsheet_node_size[width_index]:
-			prints("Already Equal")
-			continue
-		if header_node_size[width_index] > spreadsheet_node_size[width_index]:
-			spreadsheet_node_size[width_index] = header_node_size[width_index]
-			spreadsheet_node.set_custom_minimum_size(spreadsheet_node_size)
-			prints("Header Bigger")
-		elif header_node_size[width_index] < spreadsheet_node_size[width_index]:
-			header_node_size[width_index] = spreadsheet_node_size[width_index]
-			header_node.set_custom_minimum_size(header_node_size)
-			prints("Spreadsheet Bigger")
-		else:
-			printerr("resize_grids_columns unhappy")
-		
+	var column_node_pair: Array = column_node_pairs[column_pair_parameter]
+	var header_cell: Control = column_node_pair[0]
+	var sheet_cell: Control = column_node_pair[1]
+	if not header_cell.visible:
+			prints("Skipping non-visible column:", column_pair_parameter)
+			return
+	header_cell.set_custom_minimum_size(Vector2.ZERO)
+	sheet_cell.set_custom_minimum_size(Vector2.ZERO)
+	var width_index: int = 0
+	var header_node_size = header_cell.size
+	var spreadsheet_node_size = sheet_cell.size
+	prints("Header:", header_node_size[width_index], "    vs   Sheet:", spreadsheet_node_size[width_index])
+	if header_node_size[width_index] == spreadsheet_node_size[width_index]:
+		prints("Already Equal")
+		return
+	if header_node_size[width_index] > spreadsheet_node_size[width_index]:
+		spreadsheet_node_size[width_index] = header_node_size[width_index]
+		sheet_cell.set_custom_minimum_size(spreadsheet_node_size)
+		prints("Header Bigger")
+	elif header_node_size[width_index] < spreadsheet_node_size[width_index]:
+		header_node_size[width_index] = spreadsheet_node_size[width_index]
+		header_cell.set_custom_minimum_size(header_node_size)
+		prints("Spreadsheet Bigger")
+	else:
+		printerr("resize_grids_columns unhappy")
 
 
 func _on_yearly_button_toggled(button_pressed: bool) -> void:
