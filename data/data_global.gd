@@ -64,6 +64,7 @@ enum FileType {
 var active_settings_main: MainSettingsData
 var active_data_task_tracking: TaskSetData
 var active_settings_task_tracking: TaskSettingsData
+var themes_initiated: bool = false
 
 var json_extension: String = ".json"
 var user_folder: String = "user://"

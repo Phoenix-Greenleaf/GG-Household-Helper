@@ -110,6 +110,14 @@ func get_save_safety_group_nodes() -> void:
 
 func update_column_pair_dictonary(dictionary_parameter: Dictionary) -> void:
 	column_node_pairs = dictionary_parameter
+	print_pair_dictionary()
+	initial_grids_resize()
+
+
+func print_pair_dictionary() -> void:
+	prints("Column Pair Dictionary:")
+	for pair_key in column_node_pairs.keys():
+		prints(pair_key, column_node_pairs[pair_key])
 
 
 func set_buttons() -> void:
@@ -300,11 +308,13 @@ func resize_grids_column(column_pair_parameter: String) -> void:
 		prints("Resizing spreadsheet grid columns disabled.")
 		return
 	prints("Resizing Columns:")
+	spreadsheet_grids_resizing_enabled = false
 	var column_node_pair: Array = column_node_pairs[column_pair_parameter]
 	var header_cell: Control = column_node_pair[0]
 	var sheet_cell: Control = column_node_pair[1]
 	if not header_cell.visible:
 			prints("Skipping non-visible column:", column_pair_parameter)
+			spreadsheet_grids_resizing_enabled = true
 			return
 	header_cell.set_custom_minimum_size(Vector2.ZERO)
 	sheet_cell.set_custom_minimum_size(Vector2.ZERO)
@@ -314,17 +324,26 @@ func resize_grids_column(column_pair_parameter: String) -> void:
 	prints("Header:", header_node_size[width_index], "    vs   Sheet:", spreadsheet_node_size[width_index])
 	if header_node_size[width_index] == spreadsheet_node_size[width_index]:
 		prints("Already Equal")
+		spreadsheet_grids_resizing_enabled = true
 		return
 	if header_node_size[width_index] > spreadsheet_node_size[width_index]:
 		spreadsheet_node_size[width_index] = header_node_size[width_index]
 		sheet_cell.set_custom_minimum_size(spreadsheet_node_size)
+		spreadsheet_grids_resizing_enabled = true
 		prints("Header Bigger")
 	elif header_node_size[width_index] < spreadsheet_node_size[width_index]:
 		header_node_size[width_index] = spreadsheet_node_size[width_index]
 		header_cell.set_custom_minimum_size(header_node_size)
+		spreadsheet_grids_resizing_enabled = true
 		prints("Spreadsheet Bigger")
 	else:
 		printerr("resize_grids_columns unhappy")
+
+
+func initial_grids_resize() -> void:
+	spreadsheet_grids_resizing_enabled = true
+	for column_pair_key in column_node_pairs.keys():
+		resize_grids_column(column_pair_key)
 
 
 func _on_yearly_button_toggled(button_pressed: bool) -> void:

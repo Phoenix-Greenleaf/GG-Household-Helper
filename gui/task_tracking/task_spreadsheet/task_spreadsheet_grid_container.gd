@@ -592,6 +592,7 @@ func add_cell_to_groups(cell_parameter, column_group_parameter: String) -> void:
 		cell_parameter.column_pair = column_pair_name
 		if column_pairs.has(column_pair_name):
 			column_pairs[column_pair_name].append(cell_parameter)
+			return
 		column_pairs[column_pair_name] = [cell_parameter]
 
 
