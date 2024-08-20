@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://w1asykppubil"]
+
+[ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/column_visibility_checkbox.gd" id="1_jmmc2"]
+
+[node name="ColumnVisibilityCheckbox" type="CheckBox"]
+theme_type_variation = &"PanelContainer_Quaternary"
+text = "[Column]"
+script = ExtResource("1_jmmc2")
+
+[connection signal="toggled" from="." to="." method="_on_toggled"]

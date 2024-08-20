@@ -14,9 +14,10 @@ config/name="Household Helper"
 config/description="Productivity suite for individuals and groups"
 config/version="2.0.0.1"
 run/main_scene="res://scenes/intro_screens.tscn"
-config/features=PackedStringArray("4.2", "Forward Plus")
+config/features=PackedStringArray("4.3", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
+boot_splash/fullsize=false
 config/icon="res://images/HH Icon.ico"
 config/macos_native_icon="res://images/HH Icon.ico"
 config/windows_native_icon="res://images/HH Icon.ico"
@@ -30,11 +31,14 @@ gd="*res://addons/godot-action/utils_gd_action.tscn"
 SceneTransition="*res://scenes/scene_transition.tscn"
 JsonSaveManager="*res://data/json_save_manager.gd"
 
+[debug]
+
+gdscript/warnings/unused_variable=0
+
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=3
 window/energy_saving/keep_screen_on=false
 window/stretch/aspect="ignore"
 

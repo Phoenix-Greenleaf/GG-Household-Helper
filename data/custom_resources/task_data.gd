@@ -17,6 +17,7 @@ class_name TaskData
 @export var task_year: int
 @export var month_checkbox_dictionary: Dictionary
 @export var description: String
+@export var row_order: int
 
 var scheduling_array: Array
 var currently_scheduling: int
@@ -24,12 +25,6 @@ var currently_scheduling: int
 
 
 func export_json_from_resource() -> Dictionary:
-	var month_checkbox_dictionary_export := {}
-	for unformatted_month in month_checkbox_dictionary:
-		var formatted_checkboxes := []
-		for unformatted_checkbox in month_checkbox_dictionary[unformatted_month]:
-			formatted_checkboxes.append(unformatted_checkbox.export_json_from_resouce())
-		month_checkbox_dictionary_export[unformatted_month] = formatted_checkboxes
 	var json_data: Dictionary = {
 		"name": name,
 		"section": section,
@@ -43,10 +38,21 @@ func export_json_from_resource() -> Dictionary:
 		"scheduling_start": scheduling_start,
 		"units_per_cycle": units_per_cycle,
 		"task_year": task_year,
-		"month_checkbox_dictionary": month_checkbox_dictionary_export,
+		"month_checkbox_dictionary": format_month_checkbox_dictionary(),
 		"description": description,
+		"row_order": row_order,
 	}
 	return json_data
+
+
+func format_month_checkbox_dictionary() -> Dictionary:
+	var month_checkbox_dictionary_export := {}
+	for unformatted_month in month_checkbox_dictionary:
+		var formatted_checkboxes := []
+		for unformatted_checkbox in month_checkbox_dictionary[unformatted_month]:
+			formatted_checkboxes.append(unformatted_checkbox.export_json_from_resouce())
+		month_checkbox_dictionary_export[unformatted_month] = formatted_checkboxes
+	return month_checkbox_dictionary_export
 
 
 func import_json_to_resource(data_parameter: Dictionary) -> void:
@@ -75,6 +81,13 @@ func import_json_to_resource(data_parameter: Dictionary) -> void:
 	task_year = data_parameter.task_year
 	month_checkbox_dictionary = imported_month_checkbox_dictionary
 	description = data_parameter.description
+	import_row_order(data_parameter)
+
+
+func import_row_order(data_parameter) -> void:
+	if data_parameter.has("row_order"):
+		row_order = data_parameter.row_order
+
 
 
 func offbrand_init() -> void:

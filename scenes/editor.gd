@@ -19,10 +19,14 @@ extends Control
 @onready var daily_button: Button = %DailyButton
 @onready var checkbox_apply_toggle: Button = %CheckboxApplyToggle
 @onready var checkbox_inspect_toggle: Button = %CheckboxInspectToggle
-@onready var info_mode_button: Button = %InfoModeButton
-@onready var checkbox_mode_button: Button = %CheckboxModeButton
+@onready var column_visibility_grid_container: GridContainer = %ColumnVisibilityGridContainer
+@onready var header_scroll_container: ScrollContainer = %HeaderScrollContainer
+@onready var spreadsheet_scroll_container: ScrollContainer = %SpreadsheetScrollContainer
+@onready var header_grid_container: GridContainer = %HeaderGridContainer
 
 var last_toggled_month: int = 1
+var spreadsheet_grids_resizing_enabled: bool = false
+var column_node_pairs: Dictionary
 
 var Weekday: Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 var month_strings = DataGlobal.month_strings
@@ -32,6 +36,7 @@ var quit_index: int = 8
 var to_main_menu_index: int = 7
 var to_task_menu_index: int = 6
 var task_settings_index: int = 1
+
 
 
 func _ready() -> void:
@@ -47,9 +52,8 @@ func _ready() -> void:
 		update_current_tasksheet_label()
 		add_task_button.disabled = false
 		SignalBus._on_task_editor_section_changed.emit()
+	link_spreadsheet_header_scrolling()
 	SceneTransition.fade_from_black()
-
-
 
 
 func connection_cental() -> void:
@@ -71,6 +75,25 @@ func connect_other_signal_bus() -> void:
 	SignalBus._on_task_set_data_saved.connect(save_waring_reset)
 	SignalBus._on_task_editor_data_manager_remote_open_pressed.connect(remote_open_data_manager)
 	SignalBus._on_task_editor_save_button_pressed.connect(save_active_data)
+	SignalBus._on_task_editor_column_visibility_checkbox_created.connect(add_column_visibility_checkbox)
+	SignalBus._on_task_editor_new_column_pairs_created.connect(update_column_pair_dictonary)
+	SignalBus._on_task_editor_grid_column_resized.connect(resize_grids_column)
+
+
+func link_spreadsheet_header_scrolling() -> void:
+	var header_scroll_bar = header_scroll_container.get_h_scroll_bar()
+	var spreadsheet_scroll_bar = spreadsheet_scroll_container.get_h_scroll_bar()
+	spreadsheet_scroll_bar.share(header_scroll_bar)
+
+
+func add_column_visibility_checkbox(cell_parameter: CheckBox) -> void:
+	column_visibility_grid_container.add_child(cell_parameter)
+
+
+func clear_column_visibility_checkboxes() -> void:
+	for child_iteration in column_visibility_grid_container.get_children():
+		column_visibility_grid_container.remove_child(child_iteration)
+		child_iteration.queue_free()
 
 
 func connect_month_menu() -> void:
@@ -85,10 +108,21 @@ func get_save_safety_group_nodes() -> void:
 	save_safety_nodes = get_tree().get_nodes_in_group("save_safety")
 
 
+func update_column_pair_dictonary(dictionary_parameter: Dictionary) -> void:
+	column_node_pairs = dictionary_parameter
+	print_pair_dictionary()
+	initial_grids_resize()
+
+
+func print_pair_dictionary() -> void:
+	prints("Column Pair Dictionary:")
+	for pair_key in column_node_pairs.keys():
+		prints(pair_key, column_node_pairs[pair_key])
+
+
 func set_buttons() -> void:
 	set_section_buttons()
 	set_checkbox_mode_buttons()
-	set_editor_mode_buttons()
 	set_month_selection_menu()
 
 
@@ -116,16 +150,6 @@ func set_checkbox_mode_buttons() -> void:
 			checkbox_apply_toggle.set_pressed_no_signal(true)
 		DataGlobal.CheckboxToggle.INSPECT:
 			checkbox_inspect_toggle.set_pressed_no_signal(true)
-
-
-func set_editor_mode_buttons() -> void:
-	info_mode_button.set_pressed_no_signal(false)
-	checkbox_mode_button.set_pressed_no_signal(false)
-	match DataGlobal.task_tracking_current_toggled_editor_mode:
-		1: #"Info"
-			info_mode_button.set_pressed_no_signal(true)
-		0: #"Checkbox"
-			checkbox_mode_button.set_pressed_no_signal(true)
 
 
 func set_month_selection_menu() -> void:
@@ -279,6 +303,49 @@ func month_menu_switch(passed_id: int, passed_month: DataGlobal.Month) -> void:
 			last_toggled_month = passed_id
 
 
+func resize_grids_column(column_pair_parameter: String) -> void:
+	if not spreadsheet_grids_resizing_enabled:
+		prints("Resizing spreadsheet grid columns disabled.")
+		return
+	prints("Resizing Columns:")
+	spreadsheet_grids_resizing_enabled = false
+	var column_node_pair: Array = column_node_pairs[column_pair_parameter]
+	var header_cell: Control = column_node_pair[0]
+	var sheet_cell: Control = column_node_pair[1]
+	if not header_cell.visible:
+			prints("Skipping non-visible column:", column_pair_parameter)
+			spreadsheet_grids_resizing_enabled = true
+			return
+	header_cell.set_custom_minimum_size(Vector2.ZERO)
+	sheet_cell.set_custom_minimum_size(Vector2.ZERO)
+	var width_index: int = 0
+	var header_node_size = header_cell.size
+	var spreadsheet_node_size = sheet_cell.size
+	prints("Header:", header_node_size[width_index], "    vs   Sheet:", spreadsheet_node_size[width_index])
+	if header_node_size[width_index] == spreadsheet_node_size[width_index]:
+		prints("Already Equal")
+		spreadsheet_grids_resizing_enabled = true
+		return
+	if header_node_size[width_index] > spreadsheet_node_size[width_index]:
+		spreadsheet_node_size[width_index] = header_node_size[width_index]
+		sheet_cell.set_custom_minimum_size(spreadsheet_node_size)
+		spreadsheet_grids_resizing_enabled = true
+		prints("Header Bigger")
+	elif header_node_size[width_index] < spreadsheet_node_size[width_index]:
+		header_node_size[width_index] = spreadsheet_node_size[width_index]
+		header_cell.set_custom_minimum_size(header_node_size)
+		spreadsheet_grids_resizing_enabled = true
+		prints("Spreadsheet Bigger")
+	else:
+		printerr("resize_grids_columns unhappy")
+
+
+func initial_grids_resize() -> void:
+	spreadsheet_grids_resizing_enabled = true
+	for column_pair_key in column_node_pairs.keys():
+		resize_grids_column(column_pair_key)
+
+
 func _on_yearly_button_toggled(button_pressed: bool) -> void:
 	if (button_pressed):
 		if DataGlobal.task_tracking_current_toggled_section != DataGlobal.Section.YEARLY:
@@ -319,7 +386,7 @@ func _on_daily_button_toggled(button_pressed: bool) -> void:
 			prints("Daily Section ALREADY TOGGLED")
 
 
-func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void:
+func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void: #to be changed to the new column checkboxes
 	if (button_pressed):
 		if (DataGlobal.task_tracking_current_toggled_editor_mode
 			!= DataGlobal.task_tracking_editor_modes["Checkbox"]
@@ -327,13 +394,13 @@ func _on_checkbox_mode_button_toggled(button_pressed: bool) -> void:
 			DataGlobal.task_tracking_current_toggled_editor_mode = (
 				DataGlobal.task_tracking_editor_modes["Checkbox"]
 			)
-			SignalBus._on_task_editor_mode_changed.emit()
+			SignalBus._on_task_editor_column_visibility_toggled.emit()
 			prints("Checkbox Mode toggled")
 		else:
 			prints("Checkbox Mode ALREADY TOGGLED")
 
 
-func _on_info_mode_button_toggled(button_pressed: bool) -> void:
+func _on_info_mode_button_toggled(button_pressed: bool) -> void:  #to be changed to the new column checkboxes
 	if (button_pressed):
 		if (DataGlobal.task_tracking_current_toggled_editor_mode
 			!= DataGlobal.task_tracking_editor_modes["Info"]
@@ -341,7 +408,7 @@ func _on_info_mode_button_toggled(button_pressed: bool) -> void:
 			DataGlobal.task_tracking_current_toggled_editor_mode = (
 				DataGlobal.task_tracking_editor_modes["Info"]
 			)
-			SignalBus._on_task_editor_mode_changed.emit()
+			SignalBus._on_task_editor_column_visibility_toggled.emit()
 			prints("Info Mode toggled")
 		else:
 			prints("Info Mode ALREADY TOGGLED")

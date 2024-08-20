@@ -4,3 +4,5 @@
 
 [node name="MultiLineCell" type="Button"]
 script = ExtResource("1_vc24t")
+
+[connection signal="resized" from="." to="." method="_on_resized"]

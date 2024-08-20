@@ -64,6 +64,7 @@ enum FileType {
 var active_settings_main: MainSettingsData
 var active_data_task_tracking: TaskSetData
 var active_settings_task_tracking: TaskSettingsData
+var themes_initiated: bool = false
 
 var json_extension: String = ".json"
 var user_folder: String = "user://"
@@ -82,14 +83,12 @@ var filepath_task_tracking_settings: String = (settings_folder
 var default_profile: Array = ["No Profile", Color.WHITE]
 var month_strings: Array[String]
 
-var task_tracking_editor_modes: Dictionary = {"Checkbox": 0, "Info": 1}
 var task_tracking_current_checkbox_state: Checkbox = Checkbox.ACTIVE
 var task_tracking_current_checkbox_profile: Array = default_profile
 var task_tracking_focus_checkbox_state: int
 var task_tracking_focus_checkbox_profile: Array
 var task_tracking_current_toggled_section: Section = Section.YEARLY
 var task_tracking_current_toggled_month: Month = Month.JANUARY
-var task_tracking_current_toggled_editor_mode: int = task_tracking_editor_modes["Checkbox"]
 var task_tracking_current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
 var task_tracking_task_group_dropdown_items: Array 
 var task_tracking_user_profiles_dropdown_items: Array
@@ -302,6 +301,7 @@ func load_data_task_set(task_set_name: String, task_set_year: int) -> void:
 	prints("task set filepath to load:", task_set_filepath)
 	var json_data = JsonSaveManager.load_data(task_set_filepath)
 	active_data_task_tracking.import_json_to_resource(json_data)
+	prints("load_data_task_set complete!")
 
 
 func task_set_data_reloaded() -> void:
@@ -367,5 +367,3 @@ func task_editor_scan_task_for_group(scan_task: TaskData) -> void:
 	if task_tracking_task_group_dropdown_items.has(scan_task.group):
 		return
 	task_tracking_task_group_dropdown_items.append(scan_task.group)
-
-

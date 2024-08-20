@@ -33,6 +33,8 @@ var number_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/number
 var text_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/text_cell.tscn")
 var task_checkbox_clear_button_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/task_checkbox_clear_button_cell.tscn")
 var delete_task_cell = preload("res://gui/task_tracking/task_spreadsheet/cells/delete_task_data_cell.tscn")
+const COLUMN_HEADER = preload("res://gui/task_tracking/task_spreadsheet/column_header.tscn")
+const COLUMN_VISIBILITY_CHECKBOX = preload("res://gui/task_tracking/task_spreadsheet/column_visibility_checkbox.tscn")
 
 var row_group: String = ""
 var blank_counter: int = 0
@@ -40,26 +42,19 @@ var section_dropdown_items: Array
 var time_of_day_dropdown_items: Array
 var priority_dropdown_items: Array
 var full_header_size: int 
-var info_header_size: int
-var checkbox_header_size: int
+var current_header_size: int
 var current_task: TaskData
 var current_focus: Control
 var current_text_edit_cell: MultiLineCell
+var sorting_count: int
+var task_first_row: bool = true
+var current_grid_section: int
+var column_pairs: Dictionary
 
-var last_main_cell_position = 3
-var header_cell_array: Array = [
-	"Task", #1
-	"Section", #2
-	"Group", #3
-	"Assignment", #4
-	"Description", #5
-	"Time Of Day", #6
-	"Priority", #7
-	"Location", #8
-	"Schedule Start", #9
-	"Units/Cycle", #10
-	"Delete Task", #11
-]
+enum GRID_SECTION {
+	HEADER,
+	TASK_SHEET,
+}
 
 
 
@@ -78,16 +73,16 @@ func _ready() -> void:
 	var title = DataGlobal.active_data_task_tracking.task_set_title
 	var year = DataGlobal.active_data_task_tracking.task_set_year
 	prints("TaskGrid found:", title, ":", year)
-	load_existing_data()
+	#load_existing_data()
 	DataGlobal.task_editor_update_user_profile_dropdown_items()
 	update_task_add_options()
-	editing_lock_button.button_pressed = true
-	editing_lock_button.button_pressed = false
+	#editing_lock_button.button_pressed = true
+	#editing_lock_button.button_pressed = false
 
 
 func ready_connections() -> void:
 	SignalBus._on_task_set_data_active_data_switched.connect(update_grid_spreadsheet)
-	SignalBus._on_task_editor_mode_changed.connect(toggle_info_checkbox_modes)
+	SignalBus._on_task_editor_column_visibility_toggled.connect(toggle_column_visibility)
 	SignalBus._on_task_editor_section_changed.connect(section_or_month_changed)
 	SignalBus._on_task_editor_month_changed.connect(section_or_month_changed)
 	get_viewport().gui_focus_changed.connect(_on_focus_changed)
@@ -95,33 +90,17 @@ func ready_connections() -> void:
 	SignalBus._on_task_editor_grid_reload_pressed.connect(reload_grid)
 
 
-func set_time_unit() -> void:
-	match DataGlobal.task_tracking_current_toggled_section:
-		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
-			header_cell_array[9] = "Months/Cycle"
-			task_add_units_per_cycle_label.text = "Months per Cycle:"
-		DataGlobal.Section.WEEKLY:
-			header_cell_array[9] = "Weeks/Cycle"
-			task_add_units_per_cycle_label.text = "Weeks per Cycle:"
-		DataGlobal.Section.DAILY:
-			header_cell_array[9] = "Days/Cycle"
-			task_add_units_per_cycle_label.text = "Days per Cycle:"
-
-
-func toggle_info_checkbox_modes() -> void:
-	if (DataGlobal.task_tracking_current_toggled_editor_mode
-		== DataGlobal.task_tracking_editor_modes["Info"]
-	):
-		get_tree().set_group("Info", "visible", true)
-		get_tree().set_group("Checkbox", "visible", false)
-	elif (DataGlobal.task_tracking_current_toggled_editor_mode
-		== DataGlobal.task_tracking_editor_modes["Checkbox"]
-	):
-		get_tree().set_group("Checkbox", "visible", true)
-		get_tree().set_group("Info", "visible", false)
-	else:
-		prints("Mode toggle has gone wrong")
+func apply_all_column_visibility() -> void:
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	for column_key in column_data:
+		var current_column_data: Dictionary = column_data[column_key]
+		var column_visibility: bool = current_column_data["Column Visible"]
+		toggle_column_visibility(column_key, column_visibility)
 	set_grid_columns()
+
+
+func toggle_column_visibility(column_parameter: String, visible_parameter: bool) -> void:
+	get_tree().set_group(column_parameter, "visible", visible_parameter)
 
 
 func get_dropdown_items_from_global() -> void:
@@ -135,11 +114,12 @@ func get_dropdown_items_from_global() -> void:
 
 func reload_grid() -> void:
 	clear_grid_children()
+	task_first_row = true
 	load_existing_data()
 
 
 func section_or_month_changed() -> void:
-	reload_grid()
+	SignalBus._on_task_editor_grid_reload_pressed.emit()
 	update_task_add_options()
 
 
@@ -220,7 +200,7 @@ func create_new_task_data() -> void: #task code, the data side
 	new_task.previous_section = new_task_section
 	var new_task_assigned_user: Array = (
 		DataGlobal.task_tracking_user_profiles_dropdown_items[
-			task_add_assigned_user_option_button.selected  #double broken up, will it run?
+			task_add_assigned_user_option_button.selected
 		]
 	)
 	new_task.assigned_user = new_task_assigned_user
@@ -266,7 +246,6 @@ func load_existing_data() -> void:
 	if not DataGlobal.active_data_task_tracking:
 		prints("No existing data to load")
 		return
-	set_time_unit()
 	create_header_row()
 	update_existing_groups_option_button_items()
 	match DataGlobal.task_tracking_current_toggled_section:
@@ -282,7 +261,9 @@ func load_existing_data() -> void:
 		DataGlobal.Section.DAILY:
 			for data_iteration in DataGlobal.active_data_task_tracking.spreadsheet_day_data:
 				process_task(data_iteration)
-	toggle_info_checkbox_modes()
+	apply_all_column_visibility()
+	SignalBus._on_task_editor_new_column_pairs_created.emit(column_pairs)
+
 
 func update_existing_groups_option_button_items() -> void:
 	existing_groups_option_button.clear()
@@ -293,36 +274,115 @@ func update_existing_groups_option_button_items() -> void:
 
 
 func create_header_row() -> void:
-	var header_size = header_cell_array.size()
-	for iteration in header_size:
-		if iteration < last_main_cell_position:
-			create_header_cell(header_cell_array[iteration])
-		else:
-			create_header_cell(header_cell_array[iteration], "Info")
-	var checkbox = "Checkbox"
+	current_grid_section = GRID_SECTION.HEADER
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	var column_order: Array = DataGlobal.active_data_task_tracking.column_order
+	column_pairs = {}
+	full_header_size = 0
+	sorting_count = 0
+	for column_array_iteration in column_order:
+		var column_iteration: String = column_array_iteration[0]
+		var iteration_data: Dictionary = column_data[column_iteration]
+		if iteration_data["Sorting Enabled"]:
+			if iteration_data["Sorting Mode"] != 0:
+				sorting_count += 1
+		match column_iteration:
+			"TrackerCheckboxes":
+				create_checkbox_column_header(column_iteration)
+			"Units/Cycle":
+				create_time_unit_column_header(column_iteration)
+			_:
+				create_standard_column_header(column_iteration)
+	prints("Full header size:", full_header_size)
+
+
+
+func create_standard_column_header(column_parameter: String) -> void:
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	var current_column_data: Dictionary = column_data[column_parameter]
+	var header_text: String = column_parameter
+	var column_order: int = current_column_data["Column Order"]
+	var ordering_enabled: bool = true
+	var sorting_mode: int = current_column_data["Sorting Mode"]
+	var sorting_enabled: bool = current_column_data["Sorting Enabled"]
+	var column_group: String = column_parameter
+	full_header_size += 1
+	create_header_cell(header_text, column_order, ordering_enabled, sorting_mode, sorting_enabled, column_group)
+
+
+func create_time_unit_column_header(column_parameter: String) -> void:
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	var current_column_data: Dictionary = column_data[column_parameter]
+	var header_text: String = ""
+	var column_order: int = current_column_data["Column Order"]
+	var ordering_enabled: bool = true
+	var sorting_mode: int = current_column_data["Sorting Mode"]
+	var sorting_enabled: bool = current_column_data["Sorting Enabled"]
+	var column_group: String = column_parameter
+	match DataGlobal.task_tracking_current_toggled_section:
+		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+			header_text = "Months/Cycle"
+			task_add_units_per_cycle_label.text = "Months per Cycle:"
+		DataGlobal.Section.WEEKLY:
+			header_text = "Weeks/Cycle"
+			task_add_units_per_cycle_label.text = "Weeks per Cycle:"
+		DataGlobal.Section.DAILY:
+			header_text = "Days/Cycle"
+			task_add_units_per_cycle_label.text = "Days per Cycle:"
+	full_header_size += 1
+	create_header_cell(header_text, column_order, ordering_enabled, sorting_mode, sorting_enabled, column_group)
+
+
+func create_checkbox_column_header(column_parameter: String) -> void:
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	var current_column_data: Dictionary = column_data[column_parameter]
+	var column_order: int = current_column_data["Column Order"]
+	var ordering_enabled: bool = true
+	var sorting_mode: int = current_column_data["Sorting Mode"]
+	var sorting_enabled: bool = current_column_data["Sorting Enabled"]
+	var checkbox := "Checkboxes"
+	var header_text: String = checkbox
+	var column_group: String = checkbox
 	var current_section = DataGlobal.task_tracking_current_toggled_section
 	var current_month = DataGlobal.Month.find_key(
 		DataGlobal.task_tracking_current_toggled_month
 	).capitalize()
 	var current_year = DataGlobal.active_data_task_tracking.task_set_year
+	var first_column: bool = true
 	match current_section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
 			for month in DataGlobal.month_strings:
 				if month == "All":
 					continue
-				create_header_cell(month, checkbox)
-			create_header_cell("Reset Task Checkboxes", "Checkbox")
+				full_header_size += 1
+				if first_column:
+					create_header_cell(month, column_order, ordering_enabled, sorting_mode, false, column_group)
+					first_column = false
+					continue
+				create_header_cell(month, column_order, false, sorting_mode, false, column_group)
 		DataGlobal.Section.WEEKLY:
-			create_checkbox_header("Week", 5)
-			create_header_cell("Reset " + current_month + " Checkboxes", "Checkbox")
+			header_text = "Week "
+			for week_iteration in 5:
+				full_header_size += 1
+				var header_number = str(week_iteration + 1)
+				var combined_string: String = header_text + header_number
+				if first_column:
+					create_header_cell(combined_string, column_order, ordering_enabled, sorting_mode, false, column_group)
+					first_column = false
+					continue
+				create_header_cell(combined_string, column_order, false, sorting_mode, false, column_group)
 		DataGlobal.Section.DAILY:
-			var days = DataGlobal.days_in_month_finder(current_month, current_year)
-			create_checkbox_header("Day", days)
-			create_header_cell("Reset " + current_month + " Checkboxes", "Checkbox")
-	header_editing_prevention()
-	full_header_size = self.get_child_count()
-	info_header_size = get_tree().get_nodes_in_group("Info").size()
-	checkbox_header_size = get_tree().get_nodes_in_group("Checkbox").size()
+			var number_of_days = DataGlobal.days_in_month_finder(current_month, current_year)
+			header_text = "Day "
+			for day_iteration in number_of_days:
+				full_header_size += 1
+				var header_number = str(day_iteration + 1)
+				var combined_string: String = header_text + header_number
+				if first_column:
+					create_header_cell(combined_string, column_order, ordering_enabled, sorting_mode, false, column_group)
+					first_column = false
+					continue
+				create_header_cell(combined_string, column_order, false, sorting_mode, false, column_group)
 
 
 func header_editing_prevention() -> void:
@@ -331,51 +391,172 @@ func header_editing_prevention() -> void:
 		child.mouse_filter = 2
 
 
-func create_checkbox_header(header_string: String, header_length: int) -> void:
-	for number in header_length:
-		var header_number = " " + str(number + 1)
-		create_header_cell(header_string + header_number, "Checkbox")
-
-
 func set_grid_columns() -> void:
+	prints("Set Grid Columns Function")
 	if not DataGlobal.active_data_task_tracking:
 		prints("Columns not set")
 		return
-	var header_size: int = 0
-	if (DataGlobal.task_tracking_current_toggled_editor_mode
-		== DataGlobal.task_tracking_editor_modes["Info"]
-	):
-		header_size = full_header_size - checkbox_header_size
-	elif (DataGlobal.task_tracking_current_toggled_editor_mode
-		== DataGlobal.task_tracking_editor_modes["Checkbox"]
-	):
-		header_size = full_header_size - info_header_size
-	else:
-		prints("Header row size has gone wrong")
-	self.columns = header_size
+	var active_column_count: int = 0
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	for column_key in column_data:
+		var current_column_data: Dictionary = column_data[column_key]
+		var column_visibility: bool = current_column_data["Column Visible"]
+		if not column_visibility:
+			prints(column_key, "not visible.")
+			continue
+		var current_column_count: int = current_column_data["Column Count"]
+		if column_key == "TrackerCheckboxes":
+			match DataGlobal.task_tracking_current_toggled_section:
+				DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+					current_column_count = 12
+				DataGlobal.Section.DAILY:
+					var current_month_int: int = DataGlobal.task_tracking_current_toggled_month
+					var current_month_string: String = DataGlobal.month_strings[current_month_int]
+					var current_year = DataGlobal.active_data_task_tracking.task_set_year
+					var number_of_days = DataGlobal.days_in_month_finder(current_month_string, current_year)
+					current_column_count = number_of_days
+				_:
+					pass
+		active_column_count += current_column_count
+		prints(column_key, "visible. Current:", current_column_count, "Total:", active_column_count)
+	columns = active_column_count
+	SignalBus._on_task_editor_grid_column_count_changed.emit(active_column_count)
+	prints("Final Active Column Count:", active_column_count)
 
+
+func create_column_visibility_checkboxes() -> void:
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	var column_order: Array = DataGlobal.active_data_task_tracking.column_order
+	for column_iteration in column_order:
+		var cell: CheckBox = COLUMN_VISIBILITY_CHECKBOX.instantiate() #change for visibility checkbox when made
+		SignalBus._on_task_editor_column_visibility_checkbox_created.emit(cell) #change
+		cell.set_column_title(column_iteration)
+		var current_column: Dictionary = column_data[column_iteration]
+		cell.column_visible(current_column["Column Visible"])
+
+
+func sort_task_array() -> void:
+
+	if not DataGlobal.active_data_task_tracking:
+		prints("No existing data to load")
+		return
+	match DataGlobal.task_tracking_current_toggled_section:
+		DataGlobal.Section.YEARLY:
+			for data_iteration in DataGlobal.active_data_task_tracking.spreadsheet_year_data:
+				process_task(data_iteration)
+		DataGlobal.Section.MONTHLY:
+			for data_iteration in DataGlobal.active_data_task_tracking.spreadsheet_month_data:
+				process_task(data_iteration)
+		DataGlobal.Section.WEEKLY:
+			for data_iteration in DataGlobal.active_data_task_tracking.spreadsheet_week_data:
+				process_task(data_iteration)
+		DataGlobal.Section.DAILY:
+			DataGlobal.active_data_task_tracking.spreadsheet_day_data.sort_custom(multi_sort)
+
+
+func multi_sort(a, b) -> bool:
+	return false
+
+
+	for level_iteration in sorting_count:
+		pass
+
+
+func recursive_sort() -> void:
+	pass
+
+
+	"""
+	sorting while task adding
+	reference the header row option values
+	-sorting mode
+	-sorting order
+	-recur as needed
+	"""
+
+
+func ascending_sort(a, b) -> bool:
+	return false
+
+
+func descending_sort(a, b) -> bool:
+	return false
 
 
 func create_task_row_cells() -> void: #task "physical" nodes, display side
-	create_text_cell(current_task.name, "Task Name")  #1
-	create_dropdown_cell(section_dropdown_items, current_task.section, "Section") #2
-	create_dropdown_cell(DataGlobal.task_tracking_task_group_dropdown_items,
-		current_task.group, "Group"
-	) #3
-	var info = "Info"
-	create_dropdown_cell(DataGlobal.task_tracking_user_profiles_dropdown_items,
-		current_task.assigned_user, "Assigned User", info
-	) #4
-	create_multi_line_cell(current_task.description, info) #5
-	create_dropdown_cell(time_of_day_dropdown_items, current_task.time_of_day,
-		"Time Of Day", info
-	) #6
-	create_dropdown_cell(priority_dropdown_items, current_task.priority, "Priority", info) #7
-	create_text_cell(current_task.location, "Location", info) #8
-	create_number_cell(current_task.scheduling_start, "Schedule Start", info) #9
-	create_number_cell(current_task.units_per_cycle, "Units/Cycle", info) #10
-	create_delete_task_cell("Delete Task", info) #11
-	var checkbox = "Checkbox"
+	current_grid_section = GRID_SECTION.TASK_SHEET
+	var column_data: Dictionary = DataGlobal.active_data_task_tracking.column_data
+	var column_order: Array = DataGlobal.active_data_task_tracking.column_order
+	full_header_size = 0
+	for column_array_iteration in column_order:
+		var column_iteration: String = column_array_iteration[0]
+		var current_column: Dictionary = column_data[column_iteration]
+		full_header_size += 1
+		match column_iteration:
+			"Order":
+				create_number_cell(
+					current_task.row_order,
+					"Row Order",
+					column_iteration,
+				)
+			"Task":
+				create_text_cell(current_task.name, "Task Name", column_iteration)
+			"Section":
+				create_dropdown_cell(
+					section_dropdown_items,
+					current_task.section,
+					"Section",
+					column_iteration
+				)
+			"Group":
+				create_dropdown_cell(
+					DataGlobal.task_tracking_task_group_dropdown_items,
+					current_task.group,
+					"Group",
+					column_iteration,
+				)
+			"Assignment":
+				create_dropdown_cell(
+					DataGlobal.task_tracking_user_profiles_dropdown_items,
+					current_task.assigned_user,
+					"Assigned User",
+					column_iteration,
+				)
+			"Description":
+				create_multi_line_cell(current_task.description, column_iteration)
+			"Time Of Day":
+				create_dropdown_cell(
+					time_of_day_dropdown_items,
+					current_task.time_of_day,
+					"Time Of Day",
+					column_iteration
+				)
+			"Priority":
+				create_dropdown_cell(
+					priority_dropdown_items,
+					current_task.priority,
+					"Priority",
+					column_iteration,
+				)
+			"Location":
+				create_text_cell(current_task.location, "Location", column_iteration)
+			"TrackerCheckboxes":
+				create_all_checkbox_cells()
+			"Schedule Start":
+				create_number_cell(current_task.scheduling_start, "Schedule Start", column_iteration)
+			"Units/Cycle":
+				create_number_cell(current_task.units_per_cycle, "Units/Cycle", column_iteration)
+			"Delete Task":
+				create_delete_task_cell("Delete Task", column_iteration)
+			"Reset Checkboxes":
+				create_checkbox_clear_cell(column_iteration)
+			_:
+				printerr("Unknown column: ", column_iteration)
+	task_first_row = false
+
+
+func create_all_checkbox_cells() -> void:
+	var checkbox = "Checkboxes"
 	var checkbox_position = 1
 	match current_task.section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
@@ -389,7 +570,6 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 				var checkbox_user: Array = checkbox_data.assigned_user
 				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)
 				checkbox_position += 1
-			create_checkbox_clear_cell(checkbox)
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
 			var current_month = DataGlobal.task_tracking_current_toggled_month
 			var month_key = DataGlobal.Month.find_key(current_month).capitalize()
@@ -399,14 +579,27 @@ func create_task_row_cells() -> void: #task "physical" nodes, display side
 				var checkbox_user: Array = checkbox_data.assigned_user
 				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)
 				checkbox_position += 1
-			create_checkbox_clear_cell(checkbox)
 
 
-func add_cell_to_groups(cell_parameter, column_group_parameter) -> void:
+func add_cell_to_groups(cell_parameter, column_group_parameter: String) -> void:
 	if row_group != "":
 		cell_parameter.add_to_group(row_group)
 	if column_group_parameter != "":
 		cell_parameter.add_to_group(column_group_parameter)
+		if not task_first_row:
+			return
+		var column_pair_name: String = column_group_parameter + str(full_header_size)
+		cell_parameter.column_pair = column_pair_name
+		if column_pairs.has(column_pair_name):
+			column_pairs[column_pair_name].append(cell_parameter)
+			return
+		column_pairs[column_pair_name] = [cell_parameter]
+
+
+func set_first_row_flag(cell_to_check) -> void:
+	if not task_first_row:
+		return
+	cell_to_check.first_row_flag = true
 
 
 func create_text_cell(text: String, current_type: String, column_group: String = "") -> void:
@@ -416,17 +609,33 @@ func create_text_cell(text: String, current_type: String, column_group: String =
 	cell.saved_task = current_task
 	cell.saved_type = current_type
 	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)
 
 
-func create_header_cell(text, column_group: String = "") -> void:
-	var cell: LineEdit = text_cell.instantiate()
-	self.add_child(cell)
-	cell.text = text
-	add_cell_to_groups(cell, column_group)
+func create_header_cell(
+	header_text_parameter: String,
+	order_parameter: int,
+	ordering_enabled_parameter: bool,
+	sorting_mode_parameter: int,
+	sorting_enabled_parameter: bool,
+	column_group_parameter: String,
+) -> void:
+	var cell: PanelContainer = COLUMN_HEADER.instantiate()
+	SignalBus._on_task_editor_header_cell_created.emit(cell)
+	cell.header_button.text = header_text_parameter
+	cell.order_spin_box.set_value_no_signal(order_parameter)
+	cell.ordering_enabled(ordering_enabled_parameter)
+	cell.set_sorting_mode(sorting_mode_parameter)
+	cell.sorting_enabled(sorting_enabled_parameter)
+	add_cell_to_groups(cell, column_group_parameter)
+	#prints("Created Header:", header_text_parameter, "  Header Count:", full_header_size)
 
 
-func create_dropdown_cell(dropdown_items: Array, selected_item,
-	current_type: String, column_group: String = ""
+func create_dropdown_cell(
+	dropdown_items: Array,
+	selected_item,
+	current_type: String,
+	column_group: String = ""
 ) -> void:
 	var cell: OptionButton = dropdown_cell.instantiate()
 	self.add_child(cell)
@@ -435,7 +644,8 @@ func create_dropdown_cell(dropdown_items: Array, selected_item,
 	cell.dropdown_items = dropdown_items
 	cell.update_dropdown_items(selected_item)
 	cell.connect_type_updates()
-	add_cell_to_groups(cell, column_group) 
+	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)
 
 
 func create_multi_line_cell(multi_text_parameter: String, column_group: String = "") -> void:
@@ -444,7 +654,8 @@ func create_multi_line_cell(multi_text_parameter: String, column_group: String =
 	cell.saved_task = current_task
 	cell.initialize_data(multi_text_parameter)
 	cell.pressed.connect(_on_description_button_pressed.bind(cell))
-	add_cell_to_groups(cell, column_group) 
+	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell) 
 
 
 func create_number_cell(number: int, current_type: String, column_group: String = "") -> void:
@@ -455,6 +666,7 @@ func create_number_cell(number: int, current_type: String, column_group: String 
 	cell.saved_type = current_type
 	cell.connect_spinbox_update()
 	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)
 
 
 func create_checkbox_cell(state: DataGlobal.Checkbox, user_profile: Array,
@@ -468,6 +680,7 @@ func create_checkbox_cell(state: DataGlobal.Checkbox, user_profile: Array,
 	cell.saved_state = state
 	cell.update_checkbox()
 	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)
 
 
 func create_checkbox_clear_cell(column_group: String = "") -> void:
@@ -476,6 +689,7 @@ func create_checkbox_clear_cell(column_group: String = "") -> void:
 	cell.saved_task = current_task
 	cell.prep_button()
 	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)
 
 
 func create_delete_task_cell(current_type: String, column_group: String = "") -> void:
@@ -485,6 +699,7 @@ func create_delete_task_cell(current_type: String, column_group: String = "") ->
 	cell.saved_task = current_task
 	cell.prep_delete_button()
 	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)
 
 
 func delete_task_row(target_task: TaskData) -> void:
@@ -592,7 +807,7 @@ func _on_accept_new_task_button_pressed() -> void:
 	create_new_task_data()
 	close_new_task_panel()
 	new_task_field_reset()
-	toggle_info_checkbox_modes()
+	apply_all_column_visibility()
 	SignalBus._on_task_set_data_modified.emit()
 	update_existing_groups_option_button_items()
 

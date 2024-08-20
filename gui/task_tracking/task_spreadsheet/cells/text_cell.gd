@@ -3,6 +3,10 @@ extends LineEdit
 @export var saved_task: TaskData
 @export var saved_type: String
 
+var first_row_flag: bool = false
+var column_pair: String
+
+
 func _ready() -> void:
 	name = "TextCell"
 	self.text_changed.connect(update_active_data)
@@ -26,3 +30,9 @@ func update_active_data(text_parameter) -> void:
 			prints("LineEdit active data update failed")
 			return
 	SignalBus._on_task_set_data_modified.emit()
+
+
+func _on_resized() -> void:
+	if not first_row_flag:
+		return
+	SignalBus._on_task_editor_grid_column_resized.emit(column_pair)

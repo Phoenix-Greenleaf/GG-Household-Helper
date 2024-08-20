@@ -4,3 +4,5 @@
 
 [node name="DeleteTaskDataCell" type="Button"]
 script = ExtResource("1_mnbcs")
+
+[connection signal="resized" from="." to="." method="_on_resized"]

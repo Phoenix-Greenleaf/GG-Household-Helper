@@ -35,4 +35,3 @@ func _on_display_screens_button_pressed() -> void:
 
 func _on_settings_button_pressed() -> void:
 	SceneTransition.fade_to_black("res://scenes/main_settings_screen.tscn")
-
