@@ -367,5 +367,3 @@ func task_editor_scan_task_for_group(scan_task: TaskData) -> void:
 	if task_tracking_task_group_dropdown_items.has(scan_task.group):
 		return
 	task_tracking_task_group_dropdown_items.append(scan_task.group)
-
-

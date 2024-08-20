@@ -29,6 +29,3 @@ signal _on_task_editor_column_visibility_checkbox_created(cell: CheckBox)
 signal _on_task_editor_grid_column_count_changed(new_count: int)
 signal _on_task_editor_new_column_pairs_created(column_pairs: Dictionary)
 signal _on_task_editor_grid_column_resized(column_pair_name: String)
-
-
-
