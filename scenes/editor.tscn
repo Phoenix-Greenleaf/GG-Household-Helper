@@ -74,6 +74,7 @@ popup/item_5/separator = true
 popup/item_6/text = "Task Tracking Menu"
 popup/item_6/id = 6
 popup/item_7/text = "Main Menu"
+popup/item_7/id = 7
 popup/item_8/text = "Quit"
 popup/item_8/id = 3
 

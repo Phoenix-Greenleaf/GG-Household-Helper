@@ -12,8 +12,8 @@ config_version=5
 
 config/name="Household Helper"
 config/description="Productivity suite for individuals and groups"
-config/version="2.0.0.1"
-run/main_scene="res://scenes/intro_screens.tscn"
+config/version="3.0.0.0"
+run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
@@ -26,7 +26,6 @@ config/windows_native_icon="res://images/HH Icon.ico"
 
 DataGlobal="*res://data/data_global.gd"
 SignalBus="*res://data/signal_bus.gd"
-sp="*res://addons/awesome_splash/utils_splash.gd"
 gd="*res://addons/godot-action/utils_gd_action.tscn"
 SceneTransition="*res://scenes/scene_transition.tscn"
 JsonSaveManager="*res://data/json_save_manager.gd"
@@ -44,7 +43,7 @@ window/stretch/aspect="ignore"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/awesome_splash/plugin.cfg", "res://addons/godot-action/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-action/plugin.cfg")
 
 [gui]
 

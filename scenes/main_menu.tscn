@@ -46,12 +46,6 @@ text = "Household Helper"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="SecondaryLabel" type="Label" parent="MenuCenter/MiddleManagement/TitleVBox"]
-layout_mode = 2
-theme_type_variation = &"Label_Title_Secondary"
-text = "Productivity Application Suite"
-horizontal_alignment = 1
-
 [node name="MenuVBox" type="VBoxContainer" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
 
