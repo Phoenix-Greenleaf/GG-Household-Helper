@@ -100,6 +100,7 @@ theme_type_variation = &"Button_Large"
 text = "Back to Main Menu"
 
 [node name="Notes" type="Label" parent="MenuCenter/MiddleManagement"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Dev Notes: Displays stand at priority number three. I want useful info boards, that can be scrolled through and sometimes interacted with. Buttons list some examples, but are definately not final."

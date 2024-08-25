@@ -1,0 +1,521 @@
+[gd_scene load_steps=10 format=3 uid="uid://dcunatisg8ibr"]
+
+[ext_resource type="Script" path="res://scenes/editor.gd" id="1_nkaig"]
+[ext_resource type="ButtonGroup" uid="uid://tci5j17kmt8l" path="res://gui/task_tracking/section_button_group.tres" id="2_rjskt"]
+[ext_resource type="PackedScene" uid="uid://ds4yxf6rofxhb" path="res://gui/task_tracking/current_checkbox_button.tscn" id="3_droll"]
+[ext_resource type="ButtonGroup" uid="uid://c4hrg6nv6u6tb" path="res://gui/task_tracking/checkbox_toggle.tres" id="4_2dypo"]
+[ext_resource type="Theme" uid="uid://dec2b8xmm6paj" path="res://theme/main_theme.tres" id="5_fnfo6"]
+[ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/task_spreadsheet_grid_container.gd" id="6_j3l32"]
+[ext_resource type="PackedScene" uid="uid://c7tqndbd8llst" path="res://gui/task_tracking/checkbox_selection_popup.tscn" id="6_okd6i"]
+[ext_resource type="Script" path="res://scenes/header_grid_container.gd" id="7_hb7ai"]
+[ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/task_tracking/data_manager/task_data_manager.tscn" id="7_io7f7"]
+
+[node name="Editor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_nkaig")
+
+[node name="BackgroundPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainHBox" type="HBoxContainer" parent="MainMargin"]
+layout_mode = 2
+
+[node name="SideMenuScrollContainer" type="ScrollContainer" parent="MainMargin/MainHBox"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="SideMenuVBox" type="VBoxContainer" parent="MainMargin/MainHBox/SideMenuScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"VBoxContainer_No_Space"
+
+[node name="MenuButton" type="MenuButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+unique_name_in_owner = true
+z_index = 4
+z_as_relative = false
+layout_mode = 2
+text = "Task Sheet
+Menu"
+flat = false
+item_count = 9
+popup/item_0/text = "Save Files"
+popup/item_0/id = 1
+popup/item_1/text = "Task Settings"
+popup/item_1/id = 8
+popup/item_2/text = "Change Logs"
+popup/item_2/id = 2
+popup/item_2/disabled = true
+popup/item_3/id = 4
+popup/item_3/separator = true
+popup/item_4/text = "Task Data Manager"
+popup/item_4/id = 5
+popup/item_5/id = 6
+popup/item_5/separator = true
+popup/item_6/text = "Task Tracking Menu"
+popup/item_6/id = 6
+popup/item_7/text = "Main Menu"
+popup/item_7/id = 7
+popup/item_8/text = "Quit"
+popup/item_8/id = 3
+
+[node name="HSeparator4" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+
+[node name="CheckboxModeLabel" type="Label" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+text = "Checkbox Mode"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="CheckboxApplyToggle" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("4_2dypo")
+text = "Apply"
+
+[node name="CheckboxInspectToggle" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = ExtResource("4_2dypo")
+text = "Inspect"
+
+[node name="HSeparator5" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+
+[node name="EditingLockButton" type="CheckButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Editing
+Lock"
+
+[node name="HSeparator7" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+
+[node name="CurrentCheckboxButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox" instance=ExtResource("3_droll")]
+unique_name_in_owner = true
+z_index = 3
+z_as_relative = false
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+
+[node name="SectionSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+text = "Section"
+horizontal_alignment = 1
+
+[node name="YearlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("5_fnfo6")
+toggle_mode = true
+button_pressed = true
+button_group = ExtResource("2_rjskt")
+text = "Yearly"
+
+[node name="MonthlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("5_fnfo6")
+toggle_mode = true
+button_group = ExtResource("2_rjskt")
+text = "Monthly"
+
+[node name="WeeklyButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("5_fnfo6")
+toggle_mode = true
+button_group = ExtResource("2_rjskt")
+text = "Weekly"
+
+[node name="DailyButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("5_fnfo6")
+toggle_mode = true
+button_group = ExtResource("2_rjskt")
+text = "Daily"
+
+[node name="HSeparator3" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+
+[node name="MonthSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+text = "Month"
+horizontal_alignment = 1
+
+[node name="MonthSelectionMenu" type="MenuButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "January"
+flat = false
+item_count = 13
+popup/item_0/separator = true
+popup/item_1/text = "January"
+popup/item_1/id = 1
+popup/item_1/disabled = true
+popup/item_2/text = "February"
+popup/item_2/id = 2
+popup/item_3/text = "March"
+popup/item_3/id = 3
+popup/item_4/text = "April"
+popup/item_4/id = 4
+popup/item_5/text = "May"
+popup/item_5/id = 5
+popup/item_6/text = "June"
+popup/item_6/id = 6
+popup/item_7/text = "July"
+popup/item_7/id = 7
+popup/item_8/text = "August"
+popup/item_8/id = 8
+popup/item_9/text = "September"
+popup/item_9/id = 9
+popup/item_10/text = "October"
+popup/item_10/id = 10
+popup/item_11/text = "November"
+popup/item_11/id = 11
+popup/item_12/text = "December"
+popup/item_12/id = 12
+
+[node name="HSeparator" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+
+[node name="ColumnVisibilityLabel" type="Label" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+text = "Column Visibility"
+horizontal_alignment = 1
+
+[node name="ColumnVisibilityPanelContainer" type="PanelContainer" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+theme_type_variation = &"PanelContainer_Quaternary"
+
+[node name="ColumnVisibilityGridContainer" type="GridContainer" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/ColumnVisibilityPanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 2
+
+[node name="NonSideVBox" type="VBoxContainer" parent="MainMargin/MainHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TopMenuHBox" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="CurrentSaveLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Current File: YEAR"
+
+[node name="SaveWarningButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "No Data Loaded!"
+
+[node name="HBoxFarSide" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="StandardNavigation" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/HBoxFarSide"]
+layout_mode = 2
+size_flags_horizontal = 8
+disabled = true
+toggle_mode = true
+button_pressed = true
+text = "Standard Navigation"
+
+[node name="SavedNavigation" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/HBoxFarSide"]
+layout_mode = 2
+size_flags_horizontal = 8
+disabled = true
+toggle_mode = true
+text = "Saved Navigation"
+
+[node name="VSeparator2" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/HBoxFarSide"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="StandardFilters" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/HBoxFarSide"]
+layout_mode = 2
+size_flags_horizontal = 8
+disabled = true
+toggle_mode = true
+text = "Standard Filters"
+
+[node name="SavedFilters" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/HBoxFarSide"]
+layout_mode = 2
+size_flags_horizontal = 8
+disabled = true
+toggle_mode = true
+text = "Saved Filters"
+
+[node name="VSeparator" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/HBoxFarSide"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="CurrentDateLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/HBoxFarSide"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Date Goes Here"
+
+[node name="BottomMenuHBox" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox"]
+layout_mode = 2
+
+[node name="TaskAddPanel" type="PanelContainer" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="TaskAddMargin" type="MarginContainer" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin"]
+layout_mode = 2
+theme_type_variation = &"HBoxContainer_No_Space"
+
+[node name="AddTaskButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Add Task"
+
+[node name="VSeparator6" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TaskTitleLineEdit" type="LineEdit" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Task Title"
+expand_to_text_length = true
+clear_button_enabled = true
+
+[node name="VSeparator5" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TaskGroupLineEdit" type="LineEdit" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Task Group"
+expand_to_text_length = true
+clear_button_enabled = true
+
+[node name="ExistingGroupsOption" type="OptionButton" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+fit_to_longest_item = false
+item_count = 1
+popup/item_0/text = "Existing Groups"
+
+[node name="VSeparator4" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TaskAddAssignedUserLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Assigned to:"
+
+[node name="TaskAddAssignedUserOptionButton" type="OptionButton" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 1
+popup/item_0/text = "No Assigned User"
+
+[node name="VSeparator3" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TaskAddScheduleStartLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Schedule Start:"
+
+[node name="TaskAddScheduleStartSpinBox" type="SpinBox" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 30.0
+rounded = true
+alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TaskAddUnitsPerCycleLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Units per Cycle:"
+
+[node name="TaskAddUnitsPerCycleSpinBox" type="SpinBox" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 30.0
+rounded = true
+alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AcceptNewTaskButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Accept"
+
+[node name="HBoxLowerFarside" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="HeaderScrollContainer" type="ScrollContainer" parent="MainMargin/MainHBox/NonSideVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 0
+
+[node name="HeaderGridContainer" type="GridContainer" parent="MainMargin/MainHBox/NonSideVBox/HeaderScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("7_hb7ai")
+
+[node name="SpreadsheetScrollContainer" type="ScrollContainer" parent="MainMargin/MainHBox/NonSideVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+
+[node name="TaskSpreadsheetGridContainer" type="GridContainer" parent="MainMargin/MainHBox/NonSideVBox/SpreadsheetScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 2
+script = ExtResource("6_j3l32")
+
+[node name="CheckboxSelectionPopup" parent="." node_paths=PackedStringArray("paired_checkbox_menu_button") instance=ExtResource("6_okd6i")]
+unique_name_in_owner = true
+visible = false
+z_index = 2
+z_as_relative = false
+layout_mode = 0
+offset_left = 191.0
+offset_top = 317.0
+offset_right = 1014.0
+offset_bottom = 539.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+paired_checkbox_menu_button = NodePath("../MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CurrentCheckboxButton")
+
+[node name="MultiTextPopupCenter" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MultiTextPopupPanelContainer" type="PanelContainer" parent="MultiTextPopupCenter"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="TaskTitle" type="Label" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox"]
+layout_mode = 2
+text = "Task:"
+
+[node name="TaskLabel" type="Label" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NOT LOADED"
+
+[node name="TextEdit" type="TextEdit" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(600, 600)
+layout_mode = 2
+text = "ALSO NOT LOADED"
+
+[node name="HBox2" type="HBoxContainer" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="AcceptMultiTextButton" type="Button" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2"]
+layout_mode = 2
+text = "Accept & Save"
+
+[node name="CancelMultiTextButton" type="Button" parent="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="DataManagerCenter" type="CenterContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="DataManager" parent="DataManagerCenter" instance=ExtResource("7_io7f7")]
+unique_name_in_owner = true
+z_index = 5
+z_as_relative = false
+layout_mode = 2
+
+[connection signal="pressed" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MenuButton" to="." method="_on_menu_button_pressed"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxApplyToggle" to="." method="_on_checkbox_apply_toggle_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxInspectToggle" to="." method="_on_checkbox_inspect_toggle_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/EditingLockButton" to="MainMargin/MainHBox/NonSideVBox/SpreadsheetScrollContainer/TaskSpreadsheetGridContainer" method="_on_editing_lock_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/YearlyButton" to="." method="_on_yearly_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MonthlyButton" to="." method="_on_monthly_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/WeeklyButton" to="." method="_on_weekly_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DailyButton" to="." method="_on_daily_button_toggled"]
+[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/SaveWarningButton" to="." method="_on_save_warning_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/AddTaskButton" to="MainMargin/MainHBox/NonSideVBox/SpreadsheetScrollContainer/TaskSpreadsheetGridContainer" method="_on_add_task_button_pressed"]
+[connection signal="item_selected" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/ExistingGroupsOption" to="MainMargin/MainHBox/NonSideVBox/SpreadsheetScrollContainer/TaskSpreadsheetGridContainer" method="_on_existing_groups_option_item_selected"]
+[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/AcceptNewTaskButton" to="MainMargin/MainHBox/NonSideVBox/SpreadsheetScrollContainer/TaskSpreadsheetGridContainer" method="_on_accept_new_task_button_pressed"]
+[connection signal="pressed" from="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2/AcceptMultiTextButton" to="MainMargin/MainHBox/NonSideVBox/SpreadsheetScrollContainer/TaskSpreadsheetGridContainer" method="_on_accept_multi_text_button_pressed"]
+[connection signal="pressed" from="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2/CancelMultiTextButton" to="." method="_on_cancel_multi_text_button_pressed"]

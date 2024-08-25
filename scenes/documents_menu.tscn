@@ -88,6 +88,7 @@ theme_type_variation = &"Button_Large"
 text = "Back to Main Menu"
 
 [node name="Notes" type="Label" parent="MenuCenter/MiddleManagement"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Dev Notes: This section is second to last, priority 4. Rules and Docs are super important, but this module's management is not critical to me right now. I want to impliment some change logs, for records and accountablility. "

@@ -88,6 +88,7 @@ theme_type_variation = &"Button_Large"
 text = "Back to Main Menu"
 
 [node name="Versoning" type="Label" parent="MenuCenter/MiddleManagement"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Dev Notes: Managing the home with live data. Last priority, number 5, due to complexity. Sensors, buttons, and home automation. "

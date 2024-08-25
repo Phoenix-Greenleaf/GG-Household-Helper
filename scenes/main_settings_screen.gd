@@ -9,7 +9,6 @@ var theme_tab_number: int = 1
 
 
 func _ready() -> void:
-	SceneTransition.fade_from_black()
 	SignalBus._on_main_settings_back_button_pressed.connect(exit_to_main_menu)
 	main_settings.color_palette_menu_button.pressed.connect(open_color_palette_menu)
 	theme_palette_picker_popup.close_button.pressed.connect(close_color_palette_menu)
@@ -20,7 +19,7 @@ func _ready() -> void:
 
 
 func exit_to_main_menu() -> void:
-	SceneTransition.fade_to_black("res://scenes/main_menu.tscn")
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 
 
 func open_color_palette_menu() -> void:

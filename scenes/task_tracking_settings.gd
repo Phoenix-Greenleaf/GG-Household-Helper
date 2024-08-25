@@ -36,7 +36,6 @@ func _ready() -> void:
 	load_all_settings()
 	disarm_danger_buttons()
 	deletion_background_panel_container.visible = false
-	SceneTransition.fade_from_black()
 
 
 func establish_connections() -> void:
@@ -295,11 +294,11 @@ func load_reset_current_checkbox_options() -> void:
 
 
 func _on_menu_back_button_pressed() -> void:
-	SceneTransition.fade_to_black("res://scenes/task_tracking_menu.tscn")
+	get_tree().change_scene_to_file("res://scenes/task_tracking_menu.tscn")
 
 
 func _on_sheets_back_button_pressed() -> void:
-	SceneTransition.fade_to_black("res://scenes/editor.tscn")
+	get_tree().change_scene_to_file("res://scenes/editor.tscn")
 
 
 func _on_regen_profiles_button_pressed() -> void:
@@ -467,8 +466,3 @@ func _on_reset_checkboxes_month_option_button_item_selected(index: int) -> void:
 		reset_checkboxes_month_option_button.get_item_text(index), index
 	)
 	reload_settings()
-
-
-
-
-

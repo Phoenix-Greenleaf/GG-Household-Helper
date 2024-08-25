@@ -53,7 +53,6 @@ func _ready() -> void:
 		add_task_button.disabled = false
 		SignalBus._on_task_editor_section_changed.emit()
 	link_spreadsheet_header_scrolling()
-	SceneTransition.fade_from_black()
 
 
 func connection_cental() -> void:
@@ -192,7 +191,7 @@ func menu_button_actions(id: int) -> void:
 		8:
 			save_active_data()
 			popup.visible = false
-			SceneTransition.fade_to_black("res://scenes/task_tracking_settings.tscn")
+			get_tree().change_scene_to_file("res://scenes/task_tracking_settings.tscn")
 
 
 func menu_quit_with_save_protection() -> void:
@@ -204,11 +203,11 @@ func menu_quit_with_save_protection() -> void:
 				popup.set_item_text(quit_index, "Confirm Quit")
 			2:
 				popup.visible = false
-				SceneTransition.fade_quit()
+				get_tree().quit()
 		quit_counter += 1
 	else:
 		popup.visible = false
-		SceneTransition.fade_quit()
+		get_tree().quit()
 
 
 func menu_to_main_menu_with_save_protection() -> void:
@@ -220,11 +219,11 @@ func menu_to_main_menu_with_save_protection() -> void:
 				popup.set_item_text(to_main_menu_index, "Confirm Quit")
 			2:
 				popup.visible = false
-				SceneTransition.fade_to_black("res://scenes/main_menu.tscn")
+				get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 		quit_counter += 1
 	else:
 		popup.visible = false
-		SceneTransition.fade_to_black("res://scenes/main_menu.tscn")
+		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 
 
 func menu_to_task_menu_with_save_protection() -> void:
@@ -236,11 +235,11 @@ func menu_to_task_menu_with_save_protection() -> void:
 				popup.set_item_text(to_task_menu_index, "Confirm Quit")
 			2:
 				popup.visible = false
-				SceneTransition.fade_to_black("res://scenes/task_tracking_menu.tscn")
+				get_tree().change_scene_to_file("res://scenes/task_tracking_menu.tscn")
 		quit_counter += 1
 	else:
 		popup.visible = false
-		SceneTransition.fade_to_black("res://scenes/task_tracking_menu.tscn")
+		get_tree().change_scene_to_file("res://scenes/task_tracking_menu.tscn")
 
 
 func update_current_tasksheet_label() -> void:
