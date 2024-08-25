@@ -21,10 +21,12 @@ config/windows_native_icon="res://images/HH Icon.ico"
 
 [autoload]
 
-DataGlobal="*res://data/data_global.gd"
-SignalBus="*res://data/signal_bus.gd"
+DataGlobal="*res://data/globals/data_global.gd"
+SignalBus="*res://data/globals/signal_bus.gd"
 gd="*res://addons/godot-action/utils_gd_action.tscn"
-JsonSaveManager="*res://data/json_save_manager.gd"
+JsonSaveManager="*res://data/globals/json_save_manager.gd"
+MainSettings="*res://data/globals/main_settings.gd"
+TaskTrackingSettings="*res://data/globals/task_tracking_settings.gd"
 
 [debug]
 

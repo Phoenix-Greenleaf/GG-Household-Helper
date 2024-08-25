@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://gui/main_helper/main_settings.gd" id="1_2sqv7"]
 
-[node name="MainSettings" type="PanelContainer"]
+[node name="MainSettingsMenu" type="PanelContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

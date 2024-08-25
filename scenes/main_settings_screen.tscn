@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bqfhkr2pj0dc5"]
 
 [ext_resource type="Script" path="res://scenes/main_settings_screen.gd" id="2_h52wi"]
-[ext_resource type="PackedScene" uid="uid://esmp6jtqggdn" path="res://gui/main_helper/main_settings.tscn" id="3_7p4gp"]
+[ext_resource type="PackedScene" uid="uid://esmp6jtqggdn" path="res://gui/main_helper/main_settings_menu.tscn" id="3_7p4gp"]
 [ext_resource type="PackedScene" uid="uid://cisnan0qbk7wr" path="res://gui/main_helper/theme_palette_picker_popup.tscn" id="3_abltf"]
 
 [node name="MainSettings" type="Control"]
