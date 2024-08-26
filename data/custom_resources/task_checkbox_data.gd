@@ -2,14 +2,14 @@ extends Resource
 
 class_name TaskCheckboxData
 
-@export var checkbox_status: DataGlobal.Checkbox
+@export var checkbox_status: TaskTrackingGlobal.Checkbox
 @export var assigned_user: Array
 
 
 
 func update_checkbox_data(
-	checkbox_status_parameter := DataGlobal.task_tracking_current_checkbox_state,
-	assigned_user_parameter: Array = DataGlobal.task_tracking_current_checkbox_profile,
+	checkbox_status_parameter := TaskTrackingGlobal.task_tracking_current_checkbox_state,
+	assigned_user_parameter: Array = TaskTrackingGlobal.task_tracking_current_checkbox_profile,
 	) -> void:
 		checkbox_status = checkbox_status_parameter
 		assigned_user = assigned_user_parameter

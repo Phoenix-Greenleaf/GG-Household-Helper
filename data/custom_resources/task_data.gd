@@ -143,13 +143,13 @@ func generate_month_checkboxes(month, number: int) -> void:
 
 
 func default_checkbox_option() -> Array:
-	var status: DataGlobal.Checkbox = DataGlobal.Checkbox.ACTIVE
-	var user: Array = DataGlobal.default_profile
-	match DataGlobal.active_settings_task_tracking.current_new_checkbox_option:
+	var status: TaskTrackingGlobal.Checkbox = TaskTrackingGlobal.Checkbox.ACTIVE
+	var user: Array = TaskTrackingGlobal.default_profile
+	match TaskTrackingGlobal.active_settings_task_tracking.current_new_checkbox_option:
 		TaskSettingsData.NewCheckboxOption.ACTIVE:
 			pass
 		TaskSettingsData.NewCheckboxOption.EXPIRED:
-			status = DataGlobal.Checkbox.EXPIRED
+			status = TaskTrackingGlobal.Checkbox.EXPIRED
 		TaskSettingsData.NewCheckboxOption.ASSIGNED:
 			if assigned_user:
 				user = assigned_user

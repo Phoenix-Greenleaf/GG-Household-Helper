@@ -2,6 +2,54 @@ extends Node
 
 
 # task tracking settings
+var active_data_task_tracking: TaskSetData
+var active_settings_task_tracking: TaskSettingsData
+
+var task_tracker_folder = "user://task_tracker_data/"
+var name_task_tracking_data: String = "task_tracking_"
+var name_task_tracking_settings: String = "task_tracking_settings"
+
+var filepath_task_tracking_settings: String = (DataGlobal.settings_folder
+	+ name_task_tracking_settings + DataGlobal.json_extension
+)
+
+
+var task_tracking_current_checkbox_state: Checkbox = Checkbox.ACTIVE
+var task_tracking_current_checkbox_profile: Array = default_profile
+var task_tracking_focus_checkbox_state: int
+var task_tracking_focus_checkbox_profile: Array
+var task_tracking_current_toggled_section: DataGlobal.Section = DataGlobal.Section.YEARLY
+var task_tracking_current_toggled_month: DataGlobal.Month = DataGlobal.Month.JANUARY
+var task_tracking_current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
+var task_tracking_task_group_dropdown_items: Array 
+var task_tracking_user_profiles_dropdown_items: Array
+
+
+var default_profile: Array = ["No Profile", Color.WHITE]
+
+enum Checkbox {
+	INACTIVE, #blank
+	ACTIVE, #white
+	IN_PROGRESS, #faint color
+	COMPLETED, #full color
+	EXPIRED,  #black
+}
+
+
+enum CheckboxToggle {
+	APPLY,
+	INSPECT
+}
+
+func _ready() -> void:
+	connect_signals()
+
+
+func connect_signals() -> void:
+	SignalBus._on_task_editor_profile_selection_changed.connect(
+		task_editor_update_user_profile_dropdown_items
+	)
+
 
 
 func create_settings_task_tracking() -> void:
@@ -37,8 +85,8 @@ func generate_task_set_filepath(task_set_name: String, task_set_year: int) -> St
 	var task_set_save_name: String = (name_task_tracking_data + task_set_name
 		+ "_" + str(task_set_year)
 	)
-	var task_set_filepath: String = generate_filepath(task_set_save_name,
-		FileType.TASK_TRACKING_DATA
+	var task_set_filepath: String = DataGlobal.generate_filepath(task_set_save_name,
+		DataGlobal.FileType.TASK_TRACKING_DATA
 	)
 	return task_set_filepath
 
@@ -47,7 +95,7 @@ func create_data_task_set(task_set_name: String, task_set_year: int) -> void:
 	var task_set_data := TaskSetData.new()
 	task_set_data.task_set_title = task_set_name
 	task_set_data.task_set_year = task_set_year
-	directory_check(task_tracker_folder)
+	DataGlobal.directory_check(task_tracker_folder)
 	active_data_task_tracking = task_set_data
 	save_data_task_set()
 	task_set_data_reloaded()

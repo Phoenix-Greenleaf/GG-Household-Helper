@@ -195,7 +195,7 @@ func create_new_task_data() -> void: #task code, the data side
 	new_task.name = new_task_title
 	var new_task_year = DataGlobal.active_data_task_tracking.task_set_year
 	new_task.task_year = new_task_year
-	var new_task_section := DataGlobal.task_tracking_current_toggled_section
+	var new_task_section := TaskTrackingGlobal.task_tracking_current_toggled_section
 	new_task.section = new_task_section
 	new_task.previous_section = new_task_section
 	var new_task_assigned_user: Array = (
@@ -566,7 +566,7 @@ func create_all_checkbox_cells() -> void:
 				var checkbox_data: TaskCheckboxData = (
 					current_task.month_checkbox_dictionary[month_iteration][0]
 				)
-				var checkbox_state: DataGlobal.Checkbox = checkbox_data.checkbox_status
+				var checkbox_state: TaskTrackingGlobal.Checkbox = TaskTrackingGlobal.checkbox_data.checkbox_status
 				var checkbox_user: Array = checkbox_data.assigned_user
 				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)
 				checkbox_position += 1
@@ -575,7 +575,7 @@ func create_all_checkbox_cells() -> void:
 			var month_key = DataGlobal.Month.find_key(current_month).capitalize()
 			var current_data: Array = current_task.month_checkbox_dictionary[month_key]
 			for checkbox_data in current_data:
-				var checkbox_state: DataGlobal.Checkbox = checkbox_data.checkbox_status
+				var checkbox_state: TaskTrackingGlobal.Checkbox = checkbox_data.checkbox_status
 				var checkbox_user: Array = checkbox_data.assigned_user
 				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)
 				checkbox_position += 1
@@ -669,7 +669,7 @@ func create_number_cell(number: int, current_type: String, column_group: String 
 	set_first_row_flag(cell)
 
 
-func create_checkbox_cell(state: DataGlobal.Checkbox, user_profile: Array,
+func create_checkbox_cell(state: TaskTrackingGlobal.Checkbox, user_profile: Array,
 	cell_position: int, column_group: String = ""
 ) -> void:
 	var cell: PanelContainer = checkbox_cell.instantiate()

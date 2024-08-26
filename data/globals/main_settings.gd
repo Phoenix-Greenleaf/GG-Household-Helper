@@ -2,6 +2,16 @@ extends Node
 
 
 # main settings
+var active_settings_main: MainSettingsData
+
+
+func _ready() -> void:
+	load_settings_main()
+	connect_signals()
+
+
+func connect_signals() -> void:
+	SignalBus._on_task_set_data_active_data_switched.connect(load_settings_main)
 
 
 func create_settings_main() -> void:
@@ -13,20 +23,20 @@ func create_settings_main() -> void:
 
 func save_settings_main() -> void:
 	var json_data = active_settings_main.export_json_from_resouce()
-	JsonSaveManager.save_data(filepath_main_settings, json_data)
+	JsonSaveManager.save_data(DataGlobal.filepath_main_settings, json_data)
 	prints("Main settings data saved")
 
 
 func load_settings_main() -> void:
-	directory_check(settings_folder)
+	DataGlobal.directory_check(DataGlobal.settings_folder)
 	if active_settings_main:
 		prints("Main settings exist")
 		return
-	if not FileAccess.file_exists(filepath_main_settings):
+	if not FileAccess.file_exists(DataGlobal.filepath_main_settings):
 		prints("Creating new main settings")
 		create_settings_main()
 		return
 	prints("Loading main settings")
 	active_settings_main = MainSettingsData.new()
-	var json_data = JsonSaveManager.load_data(filepath_main_settings)
+	var json_data = JsonSaveManager.load_data(DataGlobal.filepath_main_settings)
 	active_settings_main.import_json_to_resource(json_data)

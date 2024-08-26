@@ -26,7 +26,7 @@ SignalBus="*res://data/globals/signal_bus.gd"
 gd="*res://addons/godot-action/utils_gd_action.tscn"
 JsonSaveManager="*res://data/globals/json_save_manager.gd"
 MainSettings="*res://data/globals/main_settings.gd"
-TaskTrackingSettings="*res://data/globals/task_tracking_settings.gd"
+TaskTrackingGlobal="*res://data/globals/task_tracking_global.gd"
 
 [debug]
 

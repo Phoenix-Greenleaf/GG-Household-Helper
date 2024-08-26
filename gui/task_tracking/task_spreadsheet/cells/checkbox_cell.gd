@@ -3,7 +3,7 @@ extends PanelContainer
 @export var saved_position: int
 @export var saved_task: TaskData
 @export var saved_profile: Array
-@export var saved_state: DataGlobal.Checkbox
+@export var saved_state: TaskTrackingGlobal.Checkbox
 @export var saved_color: Color
 
 @onready var top: ColorRect = %TopColorRect
@@ -22,7 +22,7 @@ func _ready() -> void:
 	name = "CheckboxCell"
 
 func update_active_data() -> void:
-	match DataGlobal.task_tracking_current_toggled_section:
+	match TaskTrackingGlobal.task_tracking_current_toggled_section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
 			year_and_month_updater()
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
@@ -40,7 +40,7 @@ func year_and_month_updater() -> void:
 
 
 func day_and_week_updater() -> void: 
-	var current_month = DataGlobal.task_tracking_current_toggled_month
+	var current_month = TaskTrackingGlobal.task_tracking_current_toggled_month
 	var month_key = DataGlobal.Month.find_key(current_month).capitalize()
 	var current_position = saved_position - 1 
 	var current_data: TaskCheckboxData
@@ -53,19 +53,19 @@ func day_and_week_updater() -> void:
 func update_checkbox() -> void:
 	saved_color = saved_profile[1]
 	match saved_state:
-		DataGlobal.Checkbox.ACTIVE:
+		TaskTrackingGlobal.Checkbox.ACTIVE:
 			top.set_color(white)
 			bottom.set_color(white)
 			update_current_border(saved_color)
-		DataGlobal.Checkbox.IN_PROGRESS:
+		TaskTrackingGlobal.Checkbox.IN_PROGRESS:
 			top.set_color(white)
 			bottom.set_color(saved_color)
 			update_current_border(white)
-		DataGlobal.Checkbox.COMPLETED:
+		TaskTrackingGlobal.Checkbox.COMPLETED:
 			top.set_color(saved_color)
 			bottom.set_color(saved_color)
 			update_current_border(white)
-		DataGlobal.Checkbox.EXPIRED:
+		TaskTrackingGlobal.Checkbox.EXPIRED:
 			top.set_color(black)
 			bottom.set_color(black)
 			update_current_border(saved_color)
@@ -88,4 +88,3 @@ func _on_resized() -> void:
 	if not cell_checkbox_border_color_rect:
 		return
 	cell_checkbox_border_color_rect.resize_border(cell_x, cell_y)
-
