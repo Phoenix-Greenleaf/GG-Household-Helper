@@ -1,6 +1,6 @@
 extends Button
 
-@onready var saved_status: DataGlobal.Checkbox = DataGlobal.Checkbox.ACTIVE
+@onready var saved_status: TaskTrackingGlobal.Checkbox = TaskTrackingGlobal.Checkbox.ACTIVE
 
 
 func _ready() -> void:
@@ -8,7 +8,7 @@ func _ready() -> void:
 
 
 func toggle_to_focused_cell() -> void:
-	if DataGlobal.task_tracking_current_checkbox_state != saved_status:
+	if TaskTrackingGlobal.task_tracking_current_checkbox_state != saved_status:
 		self.set_pressed_no_signal(false)
 		return
 	self.set_pressed_no_signal(true)

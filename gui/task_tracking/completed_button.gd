@@ -1,6 +1,6 @@
 extends Button
 
-@onready var saved_status: DataGlobal.Checkbox = DataGlobal.Checkbox.COMPLETED
+@onready var saved_status: TaskTrackingGlobal.Checkbox = TaskTrackingGlobal.Checkbox.COMPLETED
 
 
 func _ready() -> void:
