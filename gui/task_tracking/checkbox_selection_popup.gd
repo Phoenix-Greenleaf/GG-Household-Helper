@@ -168,11 +168,11 @@ func random_color() -> Color:
 	return Color(red, green, blue)
 
 
-func status_change(new_state: DataGlobal.Checkbox) -> void:
+func status_change(new_state: TaskTrackingGlobal.Checkbox) -> void:
 	if new_state == DataGlobal.task_tracking_current_checkbox_state:
 		prints("STATUS ALREADY TOGGLED")
 		return
-	DataGlobal.task_tracking_current_checkbox_state = new_state
+	TaskTrackingGlobal.task_tracking_current_checkbox_state = new_state
 	update_paired_menu()
 
 
