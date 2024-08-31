@@ -257,4 +257,5 @@ filters = PackedStringArray("*.csv ; Comma Separated Values")
 [connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/CloneBackButton" to="." method="_on_clone_back_button_pressed"]
 [connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/CloneCancelButton" to="." method="_on_clone_cancel_button_pressed"]
 [connection signal="pressed" from="MainMargin/DataManagerVBox/TaskCSVHBox/ImportTasksheet" to="." method="_on_import_tasksheet_pressed"]
+[connection signal="pressed" from="MainMargin/DataManagerVBox/CloseManager" to="." method="_on_close_manager_pressed"]
 [connection signal="file_selected" from="ImportTaskFileDialog" to="." method="_on_import_task_file_dialog_file_selected"]

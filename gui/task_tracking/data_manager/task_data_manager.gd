@@ -1,5 +1,7 @@
 extends PanelContainer
 
+@export var visibility_node: Control
+
 @onready var close_manager_button: Button = %CloseManager
 @onready var import_task_file_dialog: FileDialog = $ImportTaskFileDialog
 @onready var task_data_title_line_edit: LineEdit = %TaskDataTitleLineEdit
@@ -35,7 +37,6 @@ func _ready() -> void:
 
 
 func connect_signal_bus() -> void:
-	close_manager_button.pressed.connect(emit_exit_signal)
 	SignalBus._on_task_set_data_active_data_switched.connect(update_current_tasksheet_label)
 	SignalBus._on_task_set_data_modified.connect(safety_toggle.bind(true))
 	SignalBus._on_task_set_data_saved.connect(safety_toggle.bind(false))
@@ -43,10 +44,6 @@ func connect_signal_bus() -> void:
 
 func safety_toggle(new_bool) -> void:
 	safe_lock_active = new_bool
-
-
-func emit_exit_signal() -> void:
-	SignalBus._on_task_data_manager_close_manager_button_pressed.emit()
 
 
 func update_current_tasksheet_label() -> void:
@@ -213,3 +210,7 @@ func _on_clone_back_button_pressed() -> void:
 	clone_spin_box.visible = false
 	clone_back_button.visible = false
 	clone_label.text = "Clone Title"
+
+
+func _on_close_manager_pressed() -> void:
+	TaskSignalBus._on_data_manager_close_manager_button_pressed.emit()

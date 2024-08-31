@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=21 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scenes/task_editor.gd" id="1_b0ww1"]
 [ext_resource type="ButtonGroup" uid="uid://c4hrg6nv6u6tb" path="res://gui/task_tracking/checkbox_toggle.tres" id="2_38p0l"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" path="res://scenes/task_editor/monthly_button.gd" id="10_etwfq"]
 [ext_resource type="Script" path="res://scenes/task_editor/weekly_button.gd" id="11_ecy4k"]
 [ext_resource type="Script" path="res://scenes/task_editor/daily_button.gd" id="12_ycygh"]
+[ext_resource type="Script" path="res://scenes/task_editor/multi_text_popup_center.gd" id="18_5n1d3"]
 [ext_resource type="Script" path="res://scenes/task_editor/data_manager_center.gd" id="18_t6koh"]
 
 [node name="TaskEditor" type="Control"]
@@ -444,8 +445,9 @@ size_flags_horizontal = 0
 size_flags_vertical = 4
 paired_checkbox_menu_button = NodePath("../MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CurrentCheckboxButton")
 
-[node name="MultiTextPopupCenter" type="CenterContainer" parent="."]
+[node name="MultiTextPopupCenter" type="CenterContainer" parent="." node_paths=PackedStringArray("text_edit")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -453,6 +455,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("18_5n1d3")
+text_edit = NodePath("MultiTextPopupPanelContainer/VBoxContainer/TextEdit")
 
 [node name="MultiTextPopupPanelContainer" type="PanelContainer" parent="MultiTextPopupCenter"]
 layout_mode = 2
@@ -502,11 +506,12 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("18_t6koh")
 
-[node name="DataManager" parent="DataManagerCenter" instance=ExtResource("10_7t8qi")]
+[node name="DataManager" parent="DataManagerCenter" node_paths=PackedStringArray("visibility_node") instance=ExtResource("10_7t8qi")]
 unique_name_in_owner = true
 z_index = 5
 z_as_relative = false
 layout_mode = 2
+visibility_node = NodePath("..")
 
 [connection signal="pressed" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MenuButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MenuButton" method="_on_pressed"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxApplyToggle" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxApplyToggle" method="_on_toggled"]
@@ -521,4 +526,4 @@ layout_mode = 2
 [connection signal="item_selected" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/ExistingGroupsOption" to="MainMargin/MainHBox/NonSideVBox/SpreadsheetScrollContainer/TaskSpreadsheetGridContainer" method="_on_existing_groups_option_item_selected"]
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/AcceptNewTaskButton" to="MainMargin/MainHBox/NonSideVBox/SpreadsheetScrollContainer/TaskSpreadsheetGridContainer" method="_on_accept_new_task_button_pressed"]
 [connection signal="pressed" from="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2/AcceptMultiTextButton" to="MainMargin/MainHBox/NonSideVBox/SpreadsheetScrollContainer/TaskSpreadsheetGridContainer" method="_on_accept_multi_text_button_pressed"]
-[connection signal="pressed" from="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2/CancelMultiTextButton" to="." method="_on_cancel_multi_text_button_pressed"]
+[connection signal="pressed" from="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2/CancelMultiTextButton" to="MultiTextPopupCenter" method="_on_cancel_multi_text_button_pressed"]

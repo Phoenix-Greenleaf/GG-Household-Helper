@@ -1,30 +1,11 @@
 extends Control
 
-@onready var menu_button: MenuButton = %MenuButton
-
 @onready var current_date_label:= %CurrentDateLabel as Label
-@onready var data_manager_center: CenterContainer = $DataManagerCenter
-@onready var data_manager: PanelContainer = %DataManager
 @onready var current_save_label: Label = %CurrentSaveLabel
-@onready var task_spreadsheet_grid_container: GridContainer = %TaskSpreadsheetGridContainer
-@onready var month_selection_menu_button: MenuButton = %MonthSelectionMenu
-
 @onready var save_warning_button: Button = %SaveWarningButton
 @onready var add_task_button: Button = %AddTaskButton
-@onready var multi_text_popup_center: CenterContainer = %MultiTextPopupCenter
-@onready var text_edit: TextEdit = %TextEdit
-@onready var yearly_button: Button = %YearlyButton
-@onready var monthly_button: Button = %MonthlyButton
-@onready var weekly_button: Button = %WeeklyButton
-@onready var daily_button: Button = %DailyButton
-@onready var checkbox_apply_toggle: Button = %CheckboxApplyToggle
-@onready var checkbox_inspect_toggle: Button = %CheckboxInspectToggle
-@onready var header_scroll_container: ScrollContainer = %HeaderScrollContainer
-@onready var spreadsheet_scroll_container: ScrollContainer = %SpreadsheetScrollContainer
-@onready var header_grid_container: GridContainer = %HeaderGridContainer
 
 var last_toggled_month: int = 1
-
 var Weekday: Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 var month_strings = DataGlobal.month_strings
 var save_safety_nodes: Array
@@ -41,7 +22,6 @@ func _ready() -> void:
 	connection_cental()
 	set_current_date_label()
 	add_task_button.disabled = true
-	multi_text_popup_center.visible = false
 	if DataGlobal.active_data_task_tracking:
 		update_current_tasksheet_label()
 		add_task_button.disabled = false
@@ -50,14 +30,8 @@ func _ready() -> void:
 
 
 func connection_cental() -> void:
-	connect_data_manager()
 	connect_other_signal_bus()
 	get_save_safety_group_nodes()
-
-
-func connect_data_manager() -> void:
-	SignalBus._on_task_data_manager_close_manager_button_pressed.connect(close_data_manager_popup)
-	data_manager_center.visible = false
 
 
 func connect_other_signal_bus() -> void:
@@ -89,10 +63,6 @@ func update_current_tasksheet_label() -> void:
 	SignalBus._on_task_set_data_saved.emit()
 
 
-func close_data_manager_popup() -> void:
-	data_manager_center.visible = false
-
-
 func section_enum_to_string() -> String:
 	var section_enum: int = DataGlobal.task_tracking_current_toggled_section
 	var section_keys: Array = DataGlobal.Section.keys()
@@ -112,6 +82,13 @@ func save_waring_reset() -> void:
 		add_task_button.disabled = false
 
 
+func save_active_data() -> void:
+	if DataGlobal.active_data_task_tracking:
+		save_warning_button.text = "Data Saved"
+		DataGlobal.save_data_task_set()
+		SignalBus._on_task_set_data_saved.emit()
+
+
 func _on_save_warning_button_pressed() -> void:
 	if save_warning_button.text == "Data Saved":
 		DataGlobal.button_based_message(save_warning_button, "Already Saved!")
@@ -124,15 +101,3 @@ func _on_save_warning_button_pressed() -> void:
 		return
 	else:
 		save_active_data()
-
-
-func save_active_data() -> void:
-	if DataGlobal.active_data_task_tracking:
-		save_warning_button.text = "Data Saved"
-		DataGlobal.save_data_task_set()
-		SignalBus._on_task_set_data_saved.emit()
-
-
-func _on_cancel_multi_text_button_pressed() -> void:
-	multi_text_popup_center.visible = false
-	text_edit.clear()
