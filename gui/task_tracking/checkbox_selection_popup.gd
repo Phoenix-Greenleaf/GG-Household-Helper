@@ -92,10 +92,10 @@ func update_menu_button_witdth() -> void:
 
 
 func load_existing_profiles() -> void:
-	if not DataGlobal.active_data_task_tracking:
+	if not TaskTrackingGlobal.active_data:
 		prints("No Current Data to load profiles: Checkbox Selection Popup")
 		return
-	var current_profiles: Array = DataGlobal.active_data_task_tracking.user_profiles
+	var current_profiles: Array = TaskTrackingGlobal.active_data.user_profiles
 	if current_profiles.size() == 0:
 		prints("No profiles to load: Checkbox Selection Popup")
 		return
@@ -119,13 +119,13 @@ func add_profile(target_profile: Array) -> void:
 
 
 func add_default_profile() -> void:
-	add_profile(DataGlobal.default_profile)
+	add_profile(TaskTrackingGlobal.default_profile)
 	#remove ability to edit the default
 
 
 func update_status_colors() -> void:
 	#prints("Update status colors:")
-	var current_color = DataGlobal.task_tracking_current_checkbox_profile[1]
+	var current_color = TaskTrackingGlobal.current_checkbox_profile[1]
 	completed_color_rect.set_color(current_color)
 	in_progress_bottom_color_rect.set_color(current_color)
 	if current_color == Color(1, 1, 1):
@@ -138,7 +138,7 @@ func update_status_colors() -> void:
 
 func create_new_profile(profile_name: String, profile_color: Color) -> void:
 	var new_profile: Array = [profile_name, profile_color]
-	DataGlobal.active_data_task_tracking.user_profiles.append(new_profile)
+	TaskTrackingGlobal.active_data.user_profiles.append(new_profile)
 	add_profile(new_profile)
 	TaskSignalBus._on_data_set_modified.emit()
 
@@ -169,7 +169,7 @@ func random_color() -> Color:
 
 
 func status_change(new_state: TaskTrackingGlobal.Checkbox) -> void:
-	if new_state == DataGlobal.task_tracking_current_checkbox_state:
+	if new_state == TaskTrackingGlobal.current_checkbox_state:
 		prints("STATUS ALREADY TOGGLED")
 		return
 	TaskTrackingGlobal.task_tracking_current_checkbox_state = new_state
@@ -179,18 +179,18 @@ func status_change(new_state: TaskTrackingGlobal.Checkbox) -> void:
 func _on_profile_button_toggled(button_pressed: bool, target_profile: Array) -> void:
 	if not button_pressed:
 		return
-	if target_profile == DataGlobal.task_tracking_current_checkbox_profile:
+	if target_profile == TaskTrackingGlobal.current_checkbox_profile:
 		prints("PROFILE ALREADY TOGGLED")
 		return
 	default_profile_status_limiter(target_profile)
-	DataGlobal.task_tracking_current_checkbox_profile = target_profile
+	TaskTrackingGlobal.current_checkbox_profile = target_profile
 	update_status_colors()
 	update_paired_menu()
 	update_edit_profile_menu()
 
 
 func default_profile_status_limiter(profile_parameter: Array) -> void:
-	if profile_parameter == DataGlobal.default_profile:
+	if profile_parameter == TaskTrackingGlobal.default_profile:
 		in_progress_panel_container.visible = false
 		completed_panel_container.visible = false
 		edit_profile_button.visible = false
@@ -204,13 +204,13 @@ func default_profile_status_limiter(profile_parameter: Array) -> void:
 func _on_status_button_toggled(button_pressed: BaseButton) -> void:
 	match button_pressed:
 		active_button:
-			status_change(DataGlobal.Checkbox.ACTIVE)
+			status_change(TaskTrackingGlobal.Checkbox.ACTIVE)
 		in_progress_button:
-			status_change(DataGlobal.Checkbox.IN_PROGRESS)
+			status_change(TaskTrackingGlobal.Checkbox.IN_PROGRESS)
 		completed_button:
-			status_change(DataGlobal.Checkbox.COMPLETED)
+			status_change(TaskTrackingGlobal.Checkbox.COMPLETED)
 		expired_button:
-			status_change(DataGlobal.Checkbox.EXPIRED)
+			status_change(TaskTrackingGlobal.Checkbox.EXPIRED)
 		_:
 			prints("Status button error")
 
@@ -290,18 +290,18 @@ func _on_edit_profile_menu_accept_pressed() -> void:
 		edit_profile_color_picker_button.set_pick_color(random_color())
 		return
 	var edited_profile: Array = [profile_name, profile_color]
-	var previous_profile: Array = DataGlobal.task_tracking_current_checkbox_profile
+	var previous_profile: Array = TaskTrackingGlobal.current_checkbox_profile
 	if edited_profile == previous_profile:
 		prints("No changes made to profile!")
 		DataGlobal.button_based_message(edit_profile_menu_accept, "No changes!")
 		return
-	var profile_index = DataGlobal.active_data_task_tracking.user_profiles.find(previous_profile)
+	var profile_index = TaskTrackingGlobal.active_data.user_profiles.find(previous_profile)
 	if profile_index == -1:
 		prints("Error locating previous profile for replacement!")
-	prints("Replacing", DataGlobal.active_data_task_tracking.user_profiles[profile_index],
+	prints("Replacing", TaskTrackingGlobal.active_data.user_profiles[profile_index],
 		"with", edited_profile
 	)
-	DataGlobal.active_data_task_tracking.user_profiles[profile_index] = edited_profile
+	TaskTrackingGlobal.active_data.user_profiles[profile_index] = edited_profile
 	var profile_buttons = get_tree().get_nodes_in_group("profile_children")
 	for profile in profile_buttons:
 		if profile.saved_profile == previous_profile:
@@ -309,7 +309,7 @@ func _on_edit_profile_menu_accept_pressed() -> void:
 	edit_profile_button.visible = true
 	edit_profile_menu.visible = false
 	replacement_scan(previous_profile, edited_profile)
-	DataGlobal.task_tracking_current_checkbox_profile = edited_profile
+	TaskTrackingGlobal.current_checkbox_profile = edited_profile
 	TaskSignalBus._on_save_button_pressed.emit()
 	TaskSignalBus._on_active_data_set_switched.emit()
 	update_edit_profile_menu()
@@ -333,23 +333,23 @@ func _on_edit_profile_button_pressed() -> void:
 
 
 func update_edit_profile_menu() -> void:
-	if DataGlobal.task_tracking_current_checkbox_profile == DataGlobal.default_profile:
+	if TaskTrackingGlobal.current_checkbox_profile == TaskTrackingGlobal.default_profile:
 		edit_profile_button.visible = false
 	else:
 		edit_profile_button.visible = true
 	if edit_profile_menu.visible:
 		edit_profile_button.visible = false
-	edit_profile_name_line_edit.text = DataGlobal.task_tracking_current_checkbox_profile[0]
+	edit_profile_name_line_edit.text = TaskTrackingGlobal.current_checkbox_profile[0]
 	edit_profile_color_picker_button.set_pick_color(
-		DataGlobal.task_tracking_current_checkbox_profile[1]
+		TaskTrackingGlobal.current_checkbox_profile[1]
 	)
 	edit_profile_button.add_theme_color_override(
-		"font_color", DataGlobal.task_tracking_current_checkbox_profile[1]
+		"font_color", TaskTrackingGlobal.current_checkbox_profile[1]
 	)
 
 
 func replacement_scan(previous_profile, new_profile) -> void:
-	var current_data = DataGlobal.active_data_task_tracking
+	var current_data = TaskTrackingGlobal.active_data
 	scan_section(current_data.spreadsheet_year_data, previous_profile, new_profile)
 	scan_section(current_data.spreadsheet_month_data, previous_profile, new_profile)
 	scan_section(current_data.spreadsheet_week_data, previous_profile, new_profile)

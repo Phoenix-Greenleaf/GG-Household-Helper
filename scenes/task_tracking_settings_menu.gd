@@ -29,8 +29,8 @@ var scan_data: TaskSetData
 
 
 func _ready() -> void:
-	DataGlobal.load_settings_task_tracking()
-	settings = DataGlobal.active_settings_task_tracking
+	TaskTrackingGlobal.load_settings_task_tracking()
+	settings = TaskTrackingGlobal.active_settings
 	new_checkbox_options = settings.NewCheckboxOption
 	establish_connections()
 	load_all_settings()
@@ -126,7 +126,7 @@ func reset_buttons() -> void:
 
 func full_scan() -> void:
 	scanned_profiles = []
-	scan_data = DataGlobal.active_data_task_tracking
+	scan_data = TaskTrackingGlobal.active_data
 	scan_section(scan_data.spreadsheet_year_data)
 	scan_section(scan_data.spreadsheet_month_data)
 	scan_section(scan_data.spreadsheet_week_data)
@@ -141,14 +141,14 @@ func scan_section(target_section) -> void:
 				var profile_iteration: Array = checkbox_iteration.assigned_user
 				if scanned_profiles.has(profile_iteration):
 					continue
-				if profile_iteration == DataGlobal.default_profile:
+				if profile_iteration == TaskTrackingGlobal.default_profile:
 					continue
 				scanned_profiles.append(profile_iteration)
 				prints(profile_iteration[0], "added to Scan Array")
 
 
 func full_purge(profile_to_purge) -> void:
-	scan_data = DataGlobal.active_data_task_tracking
+	scan_data = TaskTrackingGlobal.active_data
 	purge_section(scan_data.spreadsheet_year_data, profile_to_purge)
 	purge_section(scan_data.spreadsheet_month_data, profile_to_purge)
 	purge_section(scan_data.spreadsheet_week_data, profile_to_purge)
@@ -159,14 +159,14 @@ func full_purge(profile_to_purge) -> void:
 func purge_section(target_section, target_profile) -> void:
 	for task_iteration in target_section:
 		if task_iteration.assigned_user == target_profile:
-			task_iteration.assigned_user = DataGlobal.default_profile
+			task_iteration.assigned_user = TaskTrackingGlobal.default_profile
 		for month_iteration in task_iteration.month_checkbox_dictionary:
 			var checkbox_array = task_iteration.month_checkbox_dictionary[month_iteration]
 			for checkbox_iteration in checkbox_array:
 				var profile_iteration: Array = checkbox_iteration.assigned_user
 				if profile_iteration == target_profile:
-					checkbox_iteration.assigned_user = DataGlobal.default_profile
-					checkbox_iteration.checkbox_status = DataGlobal.Checkbox.ACTIVE
+					checkbox_iteration.assigned_user = TaskTrackingGlobal.default_profile
+					checkbox_iteration.checkbox_status = TaskTrackingGlobal.Checkbox.ACTIVE
 
 
 func reload_settings() -> void:
@@ -198,8 +198,8 @@ func create_profile_deathrow_button(target_profile: Array, type: String) -> void
 
 func grab_active_task_set_info() -> Array:
 	var active_task_set_info = [
-		DataGlobal.active_data_task_tracking.task_set_title,
-		DataGlobal.active_data_task_tracking.task_set_year,
+		TaskTrackingGlobal.active_data.task_set_title,
+		TaskTrackingGlobal.active_data.task_set_year,
 		]
 	return active_task_set_info
 
@@ -209,22 +209,22 @@ func regen_all_checkboxes() -> void:
 	if (settings.reset_current_checkboxes_section == 0
 		or settings.reset_current_checkboxes_section == 1
 	): 
-		regen_section_checkboxes(DataGlobal.active_data_task_tracking.spreadsheet_year_data)
+		regen_section_checkboxes(TaskTrackingGlobal.active_data.spreadsheet_year_data)
 		prints("Year Regened")
 	if (settings.reset_current_checkboxes_section == 0
 		or settings.reset_current_checkboxes_section == 2
 	): 
-		regen_section_checkboxes(DataGlobal.active_data_task_tracking.spreadsheet_month_data)
+		regen_section_checkboxes(TaskTrackingGlobal.active_data.spreadsheet_month_data)
 		prints("Month Regened")
 	if (settings.reset_current_checkboxes_section == 0
 		or settings.reset_current_checkboxes_section == 3
 	): 
-		regen_section_checkboxes(DataGlobal.active_data_task_tracking.spreadsheet_week_data)
+		regen_section_checkboxes(TaskTrackingGlobal.active_data.spreadsheet_week_data)
 		prints("Week Regened")
 	if (settings.reset_current_checkboxes_section == 0
 		or settings.reset_current_checkboxes_section == 4
 	): 
-		regen_section_checkboxes(DataGlobal.active_data_task_tracking.spreadsheet_day_data)
+		regen_section_checkboxes(TaskTrackingGlobal.active_data.spreadsheet_day_data)
 		prints("Day Regened")
 
 
@@ -303,10 +303,10 @@ func _on_sheets_back_button_pressed() -> void:
 
 func _on_regen_profiles_button_pressed() -> void:
 	full_scan()
-	DataGlobal.active_data_task_tracking.user_profiles.clear()
+	TaskTrackingGlobal.active_data.user_profiles.clear()
 	for scan_iteration in scanned_profiles:
-		DataGlobal.active_data_task_tracking.user_profiles.append(scan_iteration)
-	DataGlobal.save_settings_task_tracking()
+		TaskTrackingGlobal.active_data.user_profiles.append(scan_iteration)
+	TaskTrackingGlobal.save_settings_task_tracking()
 	TaskSignalBus._on_profile_selection_changed.emit() #better signal to emit?
 
 
@@ -335,11 +335,11 @@ func _on_reset_default_settings_button_pressed() -> void:
 
 
 func _on_set_default_data_button_pressed() -> void:
-	if not DataGlobal.active_data_task_tracking:
+	if not TaskTrackingGlobal.active_data:
 		prints("No data to set as default")
 		DataGlobal.button_based_message(default_data_display_button, "No Data to set as Default!")
 		return
-	settings.default_data = DataGlobal.get_active_task_set_info()
+	settings.default_data = TaskTrackingGlobal.get_active_task_set_info()
 	reload_settings()
 
 
@@ -371,14 +371,14 @@ func _on_deletion_back_button_pressed() -> void:
 
 
 func _on_remove_profile_button_pressed() -> void:
-	if not DataGlobal.active_data_task_tracking:
+	if not TaskTrackingGlobal.active_data:
 		prints("Remove Profile Error: No data to load profiles from")
 		DataGlobal.button_based_message(remove_profile_button,
 			"Error: No data to load profiles from!"
 		)
 		return
 	deletion_background_panel_container.visible = true
-	for profile_iteration in DataGlobal.active_data_task_tracking.user_profiles:
+	for profile_iteration in TaskTrackingGlobal.active_data.user_profiles:
 		create_profile_deathrow_button(profile_iteration, "profile")
 
 
@@ -396,24 +396,24 @@ func _on_deathrow_button_pressed(pressed_button: Button, remove_type: String,
 	pressed_button.queue_free()
 	match remove_type:
 		"profile":
-			DataGlobal.active_data_task_tracking.user_profiles.erase(target)
-			DataGlobal.save_data_task_set()
+			TaskTrackingGlobal.active_data.user_profiles.erase(target)
+			TaskTrackingGlobal.save_data_task_set()
 		"profile data":
 			full_purge(target)
-			DataGlobal.save_data_task_set()
+			TaskTrackingGlobal.save_data_task_set()
 		"sheet data":
-			if DataGlobal.active_settings_task_tracking.default_data == target:
-				DataGlobal.active_settings_task_tracking.default_data = []
-			if DataGlobal.active_data_task_tracking:
+			if TaskTrackingGlobal.active_settings.default_data == target:
+				TaskTrackingGlobal.active_settings.default_data = []
+			if TaskTrackingGlobal.active_data:
 				if grab_active_task_set_info() == target:
-					DataGlobal.active_data_task_tracking = null
+					TaskTrackingGlobal.active_data = null
 			reload_settings()
 			var target_filepath = DataGlobal.generate_task_set_filepath(target[0], target[1])
 			OS.move_to_trash(ProjectSettings.globalize_path(target_filepath))
 
 
 func _on_purge_profile_data_button_pressed() -> void:
-	if not DataGlobal.active_data_task_tracking:
+	if not TaskTrackingGlobal.active_data:
 		prints("Purge Profile Data Error: No data to load profiles from")
 		DataGlobal.button_based_message(purge_profile_data_button,
 			"Error: No data to load profiles from!"
@@ -432,9 +432,9 @@ func _on_description_preview_length_spin_box_value_changed(value: float) -> void
 
 
 func _on_unload_current_data_button_pressed() -> void:
-	DataGlobal.active_data_task_tracking = null
-	DataGlobal.task_tracking_current_checkbox_profile = DataGlobal.default_profile
-	DataGlobal.task_tracking_current_checkbox_state = DataGlobal.Checkbox.ACTIVE
+	TaskTrackingGlobal.active_data = null
+	TaskTrackingGlobal.current_checkbox_profile = TaskTrackingGlobal.default_profile
+	TaskTrackingGlobal.current_checkbox_state = TaskTrackingGlobal.Checkbox.ACTIVE
 	if settings.enable_auto_load_default_data:
 		settings.enable_auto_load_default_data = false
 	reload_settings()

@@ -18,11 +18,11 @@ var task_settings_index: int = 1
 
 
 func _ready() -> void:
-	DataGlobal.load_settings_task_tracking()
+	TaskTrackingGlobal.load_settings_task_tracking()
 	connection_cental()
 	set_current_date_label()
 	add_task_button.disabled = true
-	if DataGlobal.active_data_task_tracking:
+	if TaskTrackingGlobal.active_data:
 		update_current_tasksheet_label()
 		add_task_button.disabled = false
 		TaskSignalBus._on_section_changed.emit()
@@ -57,8 +57,8 @@ func set_current_date_label() -> void:
 
 
 func update_current_tasksheet_label() -> void:
-	var title = DataGlobal.active_data_task_tracking.task_set_title
-	var year = DataGlobal.active_data_task_tracking.task_set_year
+	var title = TaskTrackingGlobal.active_data.task_set_title
+	var year = TaskTrackingGlobal.active_data.task_set_year
 	var new_label = title + ": " + str(year)
 	current_save_label.text = new_label
 	TaskSignalBus._on_data_set_saved.emit()
@@ -84,9 +84,9 @@ func save_waring_reset() -> void:
 
 
 func save_active_data() -> void:
-	if DataGlobal.active_data_task_tracking:
+	if TaskTrackingGlobal.active_data:
 		save_warning_button.text = "Data Saved"
-		DataGlobal.save_data_task_set()
+		TaskTrackingGlobal.save_data_task_set()
 		TaskSignalBus._on_data_set_saved.emit()
 
 

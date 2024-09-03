@@ -1,6 +1,6 @@
 extends MenuButton
 
-
+@export var task_editor: Control
 @onready var menu_popup := get_popup()
 
 func connect_month_menu() -> void:
@@ -10,14 +10,14 @@ func connect_month_menu() -> void:
 
 func set_month_selection_menu() -> void:
 	var selected_month = DataGlobal.task_tracking_current_toggled_month
-	month_selection_menu_button.text = DataGlobal.month_strings[selected_month]
-	month_selection_menu_popup.set_item_disabled(selected_month, true)
+	task_editor.month_selection_menu_button.text = DataGlobal.month_strings[selected_month]
+	task_editor.month_selection_menu_popup.set_item_disabled(selected_month, true)
 
 
 
 func month_menu_button_actions(id: int) -> void:
-	var new_month: String = month_strings[id]
-	var old_month: String = month_strings[last_toggled_month]
+	var new_month: String = task_editor.month_strings[id]
+	var old_month: String = task_editor.month_strings[task_editor.last_toggled_month]
 	prints("Switching from", old_month, "to", new_month)
 	match id:
 		1:
@@ -49,8 +49,8 @@ func month_menu_button_actions(id: int) -> void:
 
 func month_menu_switch(passed_id: int, passed_month: DataGlobal.Month) -> void:
 			var month_keys = DataGlobal.Month.keys()
-			month_selection_menu_button.text = month_keys[passed_id].capitalize()
-			month_selection_menu_popup.set_item_disabled(passed_id, true)
+			task_editor.month_selection_menu_button.text = month_keys[passed_id].capitalize()
+			task_editor.month_selection_menu_popup.set_item_disabled(passed_id, true)
 			DataGlobal.task_tracking_current_toggled_month = passed_month
-			month_selection_menu_popup.set_item_disabled(last_toggled_month, false)
-			last_toggled_month = passed_id
+			task_editor.month_selection_menu_popup.set_item_disabled(task_editor.last_toggled_month, false)
+			task_editor.last_toggled_month = passed_id

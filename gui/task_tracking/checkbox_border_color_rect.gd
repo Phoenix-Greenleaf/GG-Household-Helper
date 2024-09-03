@@ -39,5 +39,3 @@ func resize_border(x: float, y: float) -> void:
 		return
 	current_x = x - current_width
 	current_y = y - current_width
-
-

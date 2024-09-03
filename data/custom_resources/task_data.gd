@@ -89,7 +89,6 @@ func import_row_order(data_parameter) -> void:
 		row_order = data_parameter.row_order
 
 
-
 func offbrand_init() -> void:
 	generate_month_dictionary()
 	generate_all_checkboxes()
@@ -164,8 +163,8 @@ func blackout_unscheduled(month_parameter) -> void:
 		if currently_scheduling in scheduling_array:
 			currently_scheduling += 1
 			continue
-		data_iteration.checkbox_status = DataGlobal.Checkbox.EXPIRED
-		data_iteration.assigned_user = DataGlobal.default_profile
+		data_iteration.checkbox_status = TaskTrackingGlobal.Checkbox.EXPIRED
+		data_iteration.assigned_user = TaskTrackingGlobal.default_profile
 		currently_scheduling += 1
 
 
@@ -249,22 +248,22 @@ func section_transfer() -> void:
 	)
 	match previous_section:
 		DataGlobal.Section.YEARLY:
-			DataGlobal.active_data_task_tracking.spreadsheet_year_data.erase(self)
+			TaskTrackingGlobal.active_data.spreadsheet_year_data.erase(self)
 		DataGlobal.Section.MONTHLY:
-			DataGlobal.active_data_task_tracking.spreadsheet_month_data.erase(self)
+			TaskTrackingGlobal.active_data.spreadsheet_month_data.erase(self)
 		DataGlobal.Section.WEEKLY:
-			DataGlobal.active_data_task_tracking.spreadsheet_week_data.erase(self)
+			TaskTrackingGlobal.active_data.spreadsheet_week_data.erase(self)
 		DataGlobal.Section.DAILY:
-			DataGlobal.active_data_task_tracking.spreadsheet_day_data.erase(self)
+			TaskTrackingGlobal.active_data.spreadsheet_day_data.erase(self)
 	match section:
 		DataGlobal.Section.YEARLY:
-			DataGlobal.active_data_task_tracking.spreadsheet_year_data.append(self)
+			TaskTrackingGlobal.active_data.spreadsheet_year_data.append(self)
 		DataGlobal.Section.MONTHLY:
-			DataGlobal.active_data_task_tracking.spreadsheet_month_data.append(self)
+			TaskTrackingGlobal.active_data.spreadsheet_month_data.append(self)
 		DataGlobal.Section.WEEKLY:
-			DataGlobal.active_data_task_tracking.spreadsheet_week_data.append(self)
+			TaskTrackingGlobal.active_data.spreadsheet_week_data.append(self)
 		DataGlobal.Section.DAILY:
-			DataGlobal.active_data_task_tracking.spreadsheet_day_data.append(self)
+			TaskTrackingGlobal.active_data.spreadsheet_day_data.append(self)
 	for month_iteration in month_checkbox_dictionary:
 		month_checkbox_dictionary[month_iteration].clear()
 	previous_section = section

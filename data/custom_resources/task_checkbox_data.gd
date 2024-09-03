@@ -8,7 +8,7 @@ class_name TaskCheckboxData
 
 
 func update_checkbox_data(
-	checkbox_status_parameter := TaskTrackingGlobal.task_tracking_current_checkbox_state,
+	checkbox_status_parameter := TaskTrackingGlobal.current_checkbox_state,
 	assigned_user_parameter: Array = TaskTrackingGlobal.task_tracking_current_checkbox_profile,
 	) -> void:
 		checkbox_status = checkbox_status_parameter

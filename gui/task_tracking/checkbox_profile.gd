@@ -8,7 +8,7 @@ extends PanelContainer
 
 
 func _ready() -> void:
-	var default_profile: Array = DataGlobal.default_profile
+	var default_profile: Array = TaskTrackingGlobal.default_profile
 	load_checkbox_profile(default_profile)
 	TaskSignalBus._on_checkbox_selection_changed.connect(toggle_to_focused_cell)
 
@@ -20,7 +20,7 @@ func load_checkbox_profile(target_profile: Array) -> void:
 
 
 func toggle_to_focused_cell() -> void:
-	if DataGlobal.task_tracking_current_checkbox_profile != saved_profile:
+	if TaskTrackingGlobal.current_checkbox_profile != saved_profile:
 		profile_button.set_pressed_no_signal(false)
 		return
 	profile_button.set_pressed_no_signal(true)

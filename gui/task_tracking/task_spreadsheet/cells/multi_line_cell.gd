@@ -27,7 +27,7 @@ func initialize_data(text_parameter: String) -> void:
 
 func update_button() -> void:
 	var description_preview_length: int = (
-		DataGlobal.active_settings_task_tracking.description_preview_length
+		TaskTrackingGlobal.active_settings.description_preview_length
 	)
 	var button_text := ""
 	if saved_task.description.length() > description_preview_length:

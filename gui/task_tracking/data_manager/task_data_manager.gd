@@ -32,7 +32,7 @@ func _ready() -> void:
 	connect_signal_bus()
 	starting_visibilities()
 	load_existing_task_sets()
-	if DataGlobal.active_data_task_tracking:
+	if TaskTrackingGlobal.active_data:
 		update_current_tasksheet_label()
 
 
@@ -48,8 +48,8 @@ func safety_toggle(new_bool) -> void:
 
 func update_current_tasksheet_label() -> void:
 	var intro_text = "Current Data: "
-	var title = DataGlobal.active_data_task_tracking.task_set_title
-	var year = DataGlobal.active_data_task_tracking.task_set_year
+	var title = TaskTrackingGlobal.active_data.task_set_title
+	var year = TaskTrackingGlobal.active_data.task_set_year
 	var new_label = intro_text + title + ": " + str(year)
 	current_tasksheet_label.text = new_label
 
@@ -103,7 +103,7 @@ func clone_menu_open() -> void:
 
 
 func clone_menu_reset() -> void:
-	if DataGlobal.active_data_task_tracking:
+	if TaskTrackingGlobal.active_data:
 		clone_data_button.visible = true
 		clone_data_panel.visible = false
 		clone_back_button.visible = false
@@ -115,9 +115,9 @@ func clone_menu_reset() -> void:
 
 func clone_menu_update() -> void:
 	clone_label.text = "Clone Title"
-	clone_line_edit.text = DataGlobal.active_data_task_tracking.task_set_title
+	clone_line_edit.text = TaskTrackingGlobal.active_data.task_set_title
 	clone_line_edit.visible = true
-	var new_year = DataGlobal.active_data_task_tracking.task_set_year + 1
+	var new_year = TaskTrackingGlobal.active_data.task_set_year + 1
 	clone_spin_box.set_value_no_signal(new_year)
 	clone_spin_box.visible = false
 
@@ -148,7 +148,7 @@ func _on_task_accept_button_pressed() -> void:
 		return
 	var new_tasksheet_year := int(task_data_year_spinbox.value)
 	var new_tasksheet_name: String = task_data_title_line_edit.text
-	DataGlobal.create_data_task_set(new_tasksheet_name, new_tasksheet_year)
+	TaskTrackingGlobal.create_data_task_set(new_tasksheet_name, new_tasksheet_year)
 	create_task_save_button(new_tasksheet_name, new_tasksheet_year)
 	task_field_reset()
 	show_new_task_button()
@@ -158,13 +158,13 @@ func _on_task_save_button_pressed(button_pressed: bool, name_parameter: String, 
 	if not button_pressed:
 		return
 	prints("Test _on_task_save_button_pressed:", name_parameter, year_parameter)
-	if DataGlobal.active_data_task_tracking:
+	if TaskTrackingGlobal.active_data:
 		if [name_parameter, year_parameter] == DataGlobal.get_active_task_set_info():
 			prints("Tasksheet data already loaded, skipping.")
 			DataGlobal.button_based_message(current_tasksheet_label, "Data Already Loaded!") 
 			return
 	if safe_lock_active:
-		DataGlobal.save_data_task_set()
+		TaskTrackingGlobal.save_data_task_set()
 	DataGlobal.load_data_task_set(name_parameter, year_parameter)
 	DataGlobal.task_set_data_reloaded()
 	clone_menu_reset()

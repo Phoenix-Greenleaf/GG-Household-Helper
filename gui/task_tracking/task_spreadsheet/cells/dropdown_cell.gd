@@ -72,17 +72,17 @@ func update_dropdown_items(selected_item_parameter = selected_item) -> void:
 				add_item(item)
 			selection_index = selected_item
 		"Group":
-			for item in DataGlobal.task_tracking_task_group_dropdown_items:
+			for item in TaskTrackingGlobal.task_group_dropdown_items:
 				add_item(item)
 			selection_index = dropdown_items.find(selected_item)
 		"Assigned User":
-			for profile in DataGlobal.task_tracking_user_profiles_dropdown_items:
+			for profile in TaskTrackingGlobal.user_profiles_dropdown_items:
 				var profile_name = profile[0]
 				if profile_name == "No Profile":
 					profile_name = "Not Assigned"
 				add_item(profile_name)
 			selection_index = dropdown_items.find(selected_item)
-			if selected_item == DataGlobal.default_profile:
+			if selected_item == TaskTrackingGlobal.default_profile:
 				selection_index = 0
 			if selection_index == -1:
 				prints("dropdown find error")
@@ -115,15 +115,15 @@ func _on_dropdown_item_selected(index_parameter) -> void:
 			var assigned_user_name: String = self.get_item_text(index_parameter)
 			prints("Selected User name:", assigned_user_name)
 			if assigned_user_name == "Not Assigned":
-				saved_task.assigned_user = DataGlobal.default_profile
+				saved_task.assigned_user = TaskTrackingGlobal.default_profile
 				prints("None / Default profile selected")
 			else:
 				profile_names.clear()
-				for current_profile in DataGlobal.active_data_task_tracking.user_profiles:
+				for current_profile in TaskTrackingGlobal.active_data.user_profiles:
 					profile_names.append(current_profile[0])
 				var assigned_user_profile_index = profile_names.find(assigned_user_name)
 				var assigned_user_profile = (
-					DataGlobal.active_data_task_tracking.user_profiles[assigned_user_profile_index]
+					TaskTrackingGlobal.active_data.user_profiles[assigned_user_profile_index]
 				)
 				prints("Profile selected on dropdown:", assigned_user_profile[0])
 				saved_task.assigned_user = assigned_user_profile

@@ -7,7 +7,7 @@ extends PanelContainer
 @onready var current_checkbox_status_label: Label = %CurrentCheckboxStatusLabel
 @onready var current_checkbox_profile_label: Label = %CurrentCheckboxProfileLabel
 
-var checkbox_status_keys = DataGlobal.Checkbox.keys()
+var checkbox_status_keys = TaskTrackingGlobal.Checkbox.keys()
 
 
 func _ready() -> void:
@@ -30,34 +30,34 @@ func disable_capslock() -> void:
 
 
 func update_status() -> void:
-	var new_status_enum = DataGlobal.task_tracking_current_checkbox_state
+	var new_status_enum = TaskTrackingGlobal.current_checkbox_state
 	var new_status_text: String = checkbox_status_keys[new_status_enum]
 	current_checkbox_status_label.set_text(new_status_text)
 
 
 func update_profile() -> void:
-	var new_profile_text: String = DataGlobal.task_tracking_current_checkbox_profile[0]
+	var new_profile_text: String = TaskTrackingGlobal.current_checkbox_profile[0]
 	current_checkbox_profile_label.set_text(new_profile_text)
 
 
 func update_checkbox_colors() -> void:
-	var profile_color: Color = DataGlobal.task_tracking_current_checkbox_profile[1]
+	var profile_color: Color = TaskTrackingGlobal.current_checkbox_profile[1]
 	var white := Color(1, 1, 1)
 	var black := Color(0, 0, 0)
-	match DataGlobal.task_tracking_current_checkbox_state:
-		DataGlobal.Checkbox.ACTIVE:
+	match TaskTrackingGlobal.current_checkbox_state:
+		TaskTrackingGlobal.Checkbox.ACTIVE:
 			current_checkbox_color_rect_top.set_color(white)
 			current_checkbox_color_rect_bottom.set_color(white)
 			update_current_border(profile_color)
-		DataGlobal.Checkbox.IN_PROGRESS:
+		TaskTrackingGlobal.Checkbox.IN_PROGRESS:
 			current_checkbox_color_rect_top.set_color(white)
 			current_checkbox_color_rect_bottom.set_color(profile_color)
 			update_current_border(white)
-		DataGlobal.Checkbox.COMPLETED:
+		TaskTrackingGlobal.Checkbox.COMPLETED:
 			current_checkbox_color_rect_top.set_color(profile_color)
 			current_checkbox_color_rect_bottom.set_color(profile_color)
 			update_current_border(white)
-		DataGlobal.Checkbox.EXPIRED:
+		TaskTrackingGlobal.Checkbox.EXPIRED:
 			current_checkbox_color_rect_top.set_color(black)
 			current_checkbox_color_rect_bottom.set_color(black)
 			update_current_border(profile_color)

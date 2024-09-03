@@ -60,7 +60,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 theme_type_variation = &"VBoxContainer_No_Space"
 
-[node name="MenuButton" type="MenuButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+[node name="MenuButton" type="MenuButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox" node_paths=PackedStringArray("task_editor")]
 unique_name_in_owner = true
 z_index = 4
 z_as_relative = false
@@ -89,6 +89,7 @@ popup/item_7/id = 7
 popup/item_8/text = "Quit"
 popup/item_8/id = 3
 script = ExtResource("2_57sr6")
+task_editor = NodePath("../../../../..")
 
 [node name="HSeparator4" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
@@ -188,7 +189,7 @@ layout_mode = 2
 text = "Month"
 horizontal_alignment = 1
 
-[node name="MonthSelectionMenu" type="MenuButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+[node name="MonthSelectionMenu" type="MenuButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox" node_paths=PackedStringArray("task_editor")]
 unique_name_in_owner = true
 layout_mode = 2
 text = "January"
@@ -221,6 +222,7 @@ popup/item_11/id = 11
 popup/item_12/text = "December"
 popup/item_12/id = 12
 script = ExtResource("7_fofm3")
+task_editor = NodePath("../../../../..")
 
 [node name="NonSideVBox" type="VBoxContainer" parent="MainMargin/MainHBox"]
 layout_mode = 2

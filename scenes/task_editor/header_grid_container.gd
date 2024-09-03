@@ -12,10 +12,6 @@ func signal_connections() -> void:
 	TaskSignalBus._on_grid_reload_pressed.connect(clear_header_children)
 
 
-
-
-
-
 func add_header_cell(cell_parameter) -> void:
 	self.add_child(cell_parameter)
 
