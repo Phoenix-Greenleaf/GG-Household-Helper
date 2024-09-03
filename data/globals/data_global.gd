@@ -62,15 +62,9 @@ var settings_folder = "user://settings/"
 
 var name_main_settings: String = "main_settings"
 
-
-
 var filepath_main_settings: String = settings_folder + name_main_settings + json_extension
 
-
-
 var month_strings: Array[String]
-
-
 
 var main_settings_active: bool = false
 

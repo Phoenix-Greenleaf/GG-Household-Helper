@@ -14,7 +14,7 @@ func _ready() -> void:
 func update_data(text_parameter: String) -> void:
 	saved_task.description = text_parameter
 	update_button()
-	SignalBus._on_task_set_data_modified.emit()
+	TaskSignalBus._on_data_set_modified.emit()
 	print_verbose("MultiLineCell", saved_task.name,
 		"func update_data emits '_on_task_set_data_modified'"
 	)
@@ -35,9 +35,3 @@ func update_button() -> void:
 	else:
 		button_text = saved_task.description
 	self.text = button_text
-
-
-func _on_resized() -> void:
-	if not first_row_flag:
-		return
-	SignalBus._on_task_editor_grid_column_resized.emit(column_pair)

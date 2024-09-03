@@ -4,7 +4,7 @@ extends Button
 
 
 func _ready() -> void:
-	SignalBus._on_task_editor_checkbox_selection_changed.connect(toggle_to_focused_cell)
+	TaskSignalBus._on_checkbox_selection_changed.connect(toggle_to_focused_cell)
 
 
 func toggle_to_focused_cell() -> void:

@@ -12,7 +12,7 @@ var checkbox_status_keys = DataGlobal.Checkbox.keys()
 
 func _ready() -> void:
 	disable_capslock()
-	SignalBus._on_task_editor_checkbox_selection_changed.connect(update_all)
+	TaskSignalBus._on_checkbox_selection_changed.connect(update_all)
 	update_all()
 
 

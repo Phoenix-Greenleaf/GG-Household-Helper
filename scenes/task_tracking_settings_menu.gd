@@ -307,7 +307,7 @@ func _on_regen_profiles_button_pressed() -> void:
 	for scan_iteration in scanned_profiles:
 		DataGlobal.active_data_task_tracking.user_profiles.append(scan_iteration)
 	DataGlobal.save_settings_task_tracking()
-	SignalBus._on_task_editor_profile_selection_changed.emit() #better signal to emit?
+	TaskSignalBus._on_profile_selection_changed.emit() #better signal to emit?
 
 
 func _on_auto_load_check_button_toggled(button_pressed: bool) -> void:

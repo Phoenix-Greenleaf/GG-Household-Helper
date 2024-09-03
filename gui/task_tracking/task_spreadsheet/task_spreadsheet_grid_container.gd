@@ -81,13 +81,13 @@ func _ready() -> void:
 
 
 func ready_connections() -> void:
-	SignalBus._on_task_set_data_active_data_switched.connect(update_grid_spreadsheet)
-	SignalBus._on_task_editor_column_visibility_toggled.connect(toggle_column_visibility)
-	SignalBus._on_task_editor_section_changed.connect(section_or_month_changed)
-	SignalBus._on_task_editor_month_changed.connect(section_or_month_changed)
+	TaskSignalBus._on_active_data_set_switched.connect(update_grid_spreadsheet)
+	TaskSignalBus._on_column_visibility_toggled.connect(toggle_column_visibility)
+	TaskSignalBus._on_section_changed.connect(section_or_month_changed)
+	TaskSignalBus._on_month_changed.connect(section_or_month_changed)
 	get_viewport().gui_focus_changed.connect(_on_focus_changed)
-	SignalBus._on_task_editor_task_delete_button_primed_and_pressed.connect(delete_task_row)
-	SignalBus._on_task_editor_grid_reload_pressed.connect(reload_grid)
+	TaskSignalBus._on_task_delete_button_primed_and_pressed.connect(delete_task_row)
+	TaskSignalBus._on_grid_reload_pressed.connect(reload_grid)
 
 
 func apply_all_column_visibility() -> void:
@@ -119,7 +119,7 @@ func reload_grid() -> void:
 
 
 func section_or_month_changed() -> void:
-	SignalBus._on_task_editor_grid_reload_pressed.emit()
+	TaskSignalBus._on_grid_reload_pressed.emit()
 	update_task_add_options()
 
 
@@ -248,7 +248,7 @@ func load_existing_data() -> void:
 		return
 	create_header_row()
 	update_existing_groups_option_button_items()
-	match DataGlobal.task_tracking_current_toggled_section:
+	match TaskTrackingGlobal.task_tracking_current_toggled_section:
 		DataGlobal.Section.YEARLY:
 			for data_iteration in DataGlobal.active_data_task_tracking.spreadsheet_year_data:
 				process_task(data_iteration)
@@ -319,7 +319,7 @@ func create_time_unit_column_header(column_parameter: String) -> void:
 	var sorting_mode: int = current_column_data["Sorting Mode"]
 	var sorting_enabled: bool = current_column_data["Sorting Enabled"]
 	var column_group: String = column_parameter
-	match DataGlobal.task_tracking_current_toggled_section:
+	match TaskTrackingGlobal.task_tracking_current_toggled_section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
 			header_text = "Months/Cycle"
 			task_add_units_per_cycle_label.text = "Months per Cycle:"
@@ -343,7 +343,7 @@ func create_checkbox_column_header(column_parameter: String) -> void:
 	var checkbox := "Checkboxes"
 	var header_text: String = checkbox
 	var column_group: String = checkbox
-	var current_section = DataGlobal.task_tracking_current_toggled_section
+	var current_section = TaskTrackingGlobal.task_tracking_current_toggled_section
 	var current_month = DataGlobal.Month.find_key(
 		DataGlobal.task_tracking_current_toggled_month
 	).capitalize()
@@ -406,7 +406,7 @@ func set_grid_columns() -> void:
 			continue
 		var current_column_count: int = current_column_data["Column Count"]
 		if column_key == "TrackerCheckboxes":
-			match DataGlobal.task_tracking_current_toggled_section:
+			match TaskTrackingGlobal.task_tracking_current_toggled_section:
 				DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
 					current_column_count = 12
 				DataGlobal.Section.DAILY:
@@ -420,7 +420,7 @@ func set_grid_columns() -> void:
 		active_column_count += current_column_count
 		prints(column_key, "visible. Current:", current_column_count, "Total:", active_column_count)
 	columns = active_column_count
-	SignalBus._on_task_editor_grid_column_count_changed.emit(active_column_count)
+	TaskSignalBus._on_grid_column_count_changed.emit(active_column_count)
 	prints("Final Active Column Count:", active_column_count)
 
 
@@ -440,7 +440,7 @@ func sort_task_array() -> void:
 	if not DataGlobal.active_data_task_tracking:
 		prints("No existing data to load")
 		return
-	match DataGlobal.task_tracking_current_toggled_section:
+	match TaskTrackingGlobal.task_tracking_current_toggled_section:
 		DataGlobal.Section.YEARLY:
 			for data_iteration in DataGlobal.active_data_task_tracking.spreadsheet_year_data:
 				process_task(data_iteration)
@@ -621,7 +621,7 @@ func create_header_cell(
 	column_group_parameter: String,
 ) -> void:
 	var cell: PanelContainer = COLUMN_HEADER.instantiate()
-	SignalBus._on_task_editor_header_cell_created.emit(cell)
+	TaskSignalBus._on_header_cell_created.emit(cell)
 	cell.header_button.text = header_text_parameter
 	cell.order_spin_box.set_value_no_signal(order_parameter)
 	cell.ordering_enabled(ordering_enabled_parameter)
@@ -708,7 +708,7 @@ func delete_task_row(target_task: TaskData) -> void:
 		if current_child.saved_task == target_task:
 			self.remove_child(current_child)
 			current_child.queue_free()
-	match DataGlobal.task_tracking_current_toggled_section:
+	match TaskTrackingGlobal.task_tracking_current_toggled_section:
 		DataGlobal.Section.YEARLY:
 			DataGlobal.active_data_task_tracking.spreadsheet_year_data.erase(target_task)
 		DataGlobal.Section.MONTHLY:
@@ -718,7 +718,7 @@ func delete_task_row(target_task: TaskData) -> void:
 		DataGlobal.Section.DAILY:
 			DataGlobal.active_data_task_tracking.spreadsheet_day_data.erase(target_task)
 	update_existing_groups_option_button_items()
-	SignalBus._on_task_set_data_modified.emit()
+	TaskSignalBus._on_data_set_modified.emit()
 
 
 func grid_editable(editable_bool: bool) -> void:
@@ -747,7 +747,7 @@ func selected_checkbox(target) -> void:
 			DataGlobal.task_tracking_current_checkbox_profile = focus_profile
 			DataGlobal.task_tracking_current_checkbox_state = focus_state
 			checkbox_selection_popup.default_profile_status_limiter(focus_profile)
-			SignalBus._on_task_editor_checkbox_selection_changed.emit()
+			TaskSignalBus._on_checkbox_selection_changed.emit()
 			checkbox_selection_popup.update_edit_profile_menu()
 
 
@@ -808,7 +808,7 @@ func _on_accept_new_task_button_pressed() -> void:
 	close_new_task_panel()
 	new_task_field_reset()
 	apply_all_column_visibility()
-	SignalBus._on_task_set_data_modified.emit()
+	TaskSignalBus._on_data_set_modified.emit()
 	update_existing_groups_option_button_items()
 
 

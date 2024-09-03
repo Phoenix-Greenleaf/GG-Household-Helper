@@ -37,9 +37,9 @@ func _ready() -> void:
 
 
 func connect_signal_bus() -> void:
-	SignalBus._on_task_set_data_active_data_switched.connect(update_current_tasksheet_label)
-	SignalBus._on_task_set_data_modified.connect(safety_toggle.bind(true))
-	SignalBus._on_task_set_data_saved.connect(safety_toggle.bind(false))
+	TaskSignalBus._on_active_data_set_switched.connect(update_current_tasksheet_label)
+	TaskSignalBus._on_data_set_modified.connect(safety_toggle.bind(true))
+	TaskSignalBus._on_data_set_saved.connect(safety_toggle.bind(false))
 
 
 func safety_toggle(new_bool) -> void:

@@ -28,10 +28,4 @@ func update_active_data(number_parameter: float) -> void:
 			prints("SpinBox func update_active_data failed! saved_type:", saved_type)
 			prints("Spinbox Task", saved_task.name)
 			return
-	SignalBus._on_task_set_data_modified.emit()
-
-
-func _on_resized() -> void:
-	if not first_row_flag:
-		return
-	SignalBus._on_task_editor_grid_column_resized.emit(column_pair)
+	TaskSignalBus._on_data_set_modified.emit()

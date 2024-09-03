@@ -29,10 +29,4 @@ func update_active_data(text_parameter) -> void:
 		_:
 			prints("LineEdit active data update failed")
 			return
-	SignalBus._on_task_set_data_modified.emit()
-
-
-func _on_resized() -> void:
-	if not first_row_flag:
-		return
-	SignalBus._on_task_editor_grid_column_resized.emit(column_pair)
+	TaskSignalBus._on_data_set_modified.emit()

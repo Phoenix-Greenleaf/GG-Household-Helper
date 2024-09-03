@@ -27,7 +27,7 @@ func update_active_data() -> void:
 			year_and_month_updater()
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
 			day_and_week_updater()
-	SignalBus._on_task_set_data_modified.emit()
+	TaskSignalBus._on_data_set_modified.emit()
 
 
 func year_and_month_updater() -> void: 
@@ -78,13 +78,3 @@ func update_current_border(color_parameter: Color) -> void:
 		cell_checkbox_border_color_rect.update_border()
 		return
 	cell_checkbox_border_color_rect.update_border(color_parameter)
-
-
-func _on_resized() -> void:
-	if first_row_flag:
-		SignalBus._on_task_editor_grid_column_resized.emit(column_pair)
-	cell_x = self.size.x
-	cell_y = self.size.y
-	if not cell_checkbox_border_color_rect:
-		return
-	cell_checkbox_border_color_rect.resize_border(cell_x, cell_y)

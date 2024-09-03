@@ -11,7 +11,7 @@ func _ready() -> void:
 
 
 func connect_signals() -> void:
-	SignalBus._on_task_set_data_active_data_switched.connect(load_settings_main)
+	TaskSignalBus._on_active_data_set_switched.connect(load_settings_main)
 
 
 func create_settings_main() -> void:

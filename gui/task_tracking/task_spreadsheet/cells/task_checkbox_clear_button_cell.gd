@@ -16,14 +16,8 @@ func _on_task_checkbox_clear_button_pressed() -> void:
 		return
 	if text == reset_safety_message:
 		saved_task.clear_self_checkboxes()
-		SignalBus._on_task_editor_grid_reload_pressed.emit()
+		TaskSignalBus._on_grid_reload_pressed.emit()
 
 func prep_button() -> void:
 	var task_name: String = saved_task.name
 	text = "Reset '" + task_name + "'"
-
-
-func _on_resized() -> void:
-	if not first_row_flag:
-		return
-	SignalBus._on_task_editor_grid_column_resized.emit(column_pair)

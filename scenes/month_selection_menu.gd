@@ -44,7 +44,7 @@ func month_menu_button_actions(id: int) -> void:
 			month_menu_switch(11, DataGlobal.Month.NOVEMBER)
 		12:
 			month_menu_switch(12, DataGlobal.Month.DECEMBER)
-	SignalBus._on_task_editor_month_changed.emit()
+	TaskSignalBus._on_month_changed.emit()
 
 
 func month_menu_switch(passed_id: int, passed_month: DataGlobal.Month) -> void:

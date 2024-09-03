@@ -8,7 +8,7 @@ extends PanelContainer
 
 func _ready() -> void:
 	initialize_button()
-	SignalBus._on_task_set_data_active_data_switched.connect(retoggle_button_group)
+	TaskSignalBus._on_active_data_set_switched.connect(retoggle_button_group)
 
 
 func initialize_button() -> void:

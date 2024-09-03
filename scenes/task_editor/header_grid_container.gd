@@ -7,9 +7,9 @@ func _ready() -> void:
 
 
 func signal_connections() -> void:
-	SignalBus._on_task_editor_header_cell_created.connect(add_header_cell)
-	SignalBus._on_task_editor_grid_column_count_changed.connect(set_columns)
-	SignalBus._on_task_editor_grid_reload_pressed.connect(clear_header_children)
+	TaskSignalBus._on_header_cell_created.connect(add_header_cell)
+	TaskSignalBus._on_grid_column_count_changed.connect(set_columns)
+	TaskSignalBus._on_grid_reload_pressed.connect(clear_header_children)
 
 
 

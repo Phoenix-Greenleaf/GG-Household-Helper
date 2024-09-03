@@ -25,7 +25,7 @@ func _ready() -> void:
 	if DataGlobal.active_data_task_tracking:
 		update_current_tasksheet_label()
 		add_task_button.disabled = false
-		SignalBus._on_task_editor_section_changed.emit()
+		TaskSignalBus._on_section_changed.emit()
 	print("========= Editor Scene Ready! =========")
 
 
@@ -35,10 +35,11 @@ func connection_cental() -> void:
 
 
 func connect_other_signal_bus() -> void:
-	SignalBus._on_task_set_data_active_data_switched.connect(update_current_tasksheet_label)
-	SignalBus._on_task_set_data_modified.connect(save_warning_triggered)
-	SignalBus._on_task_set_data_saved.connect(save_waring_reset)
-	SignalBus._on_task_editor_save_button_pressed.connect(save_active_data)
+	TaskSignalBus._on_active_data_set_switched.connect(update_current_tasksheet_label)
+	TaskSignalBus._on_data_set_modified.connect(save_warning_triggered)
+	TaskSignalBus._on_data_set_modified.connect(save_warning_triggered)
+	TaskSignalBus._on_data_set_saved.connect(save_waring_reset)
+	TaskSignalBus._on_save_button_pressed.connect(save_active_data)
 
 
 func get_save_safety_group_nodes() -> void: 
@@ -60,11 +61,11 @@ func update_current_tasksheet_label() -> void:
 	var year = DataGlobal.active_data_task_tracking.task_set_year
 	var new_label = title + ": " + str(year)
 	current_save_label.text = new_label
-	SignalBus._on_task_set_data_saved.emit()
+	TaskSignalBus._on_data_set_saved.emit()
 
 
 func section_enum_to_string() -> String:
-	var section_enum: int = DataGlobal.task_tracking_current_toggled_section
+	var section_enum: int = TaskTrackingGlobal.task_tracking_current_toggled_section
 	var section_keys: Array = DataGlobal.Section.keys()
 	var current_section_key: String = section_keys[section_enum]
 	return current_section_key.capitalize()
@@ -86,7 +87,7 @@ func save_active_data() -> void:
 	if DataGlobal.active_data_task_tracking:
 		save_warning_button.text = "Data Saved"
 		DataGlobal.save_data_task_set()
-		SignalBus._on_task_set_data_saved.emit()
+		TaskSignalBus._on_data_set_saved.emit()
 
 
 func _on_save_warning_button_pressed() -> void:

@@ -59,9 +59,9 @@ func _process(_delta: float) -> void:
 
 
 func signal_bus_connections() -> void:
-	SignalBus._on_task_editor_checkbox_selection_changed.connect(update_status_colors)
-	SignalBus._on_task_editor_profile_selection_changed.connect(reload_profiles)
-	SignalBus._on_task_set_data_saved.connect(unlock_new_profile)
+	TaskSignalBus._on_checkbox_selection_changed.connect(update_status_colors)
+	TaskSignalBus._on_profile_selection_changed.connect(reload_profiles)
+	TaskSignalBus._on_data_set_saved.connect(unlock_new_profile)
 
 
 func starting_visibilities() -> void:
@@ -140,7 +140,7 @@ func create_new_profile(profile_name: String, profile_color: Color) -> void:
 	var new_profile: Array = [profile_name, profile_color]
 	DataGlobal.active_data_task_tracking.user_profiles.append(new_profile)
 	add_profile(new_profile)
-	SignalBus._on_task_set_data_modified.emit()
+	TaskSignalBus._on_data_set_modified.emit()
 
 
 func connect_paired_menu_button() -> void:
@@ -158,7 +158,7 @@ func connect_status_button_group() -> void:
 
 
 func update_paired_menu() -> void:
-	SignalBus._on_task_editor_checkbox_selection_changed.emit()
+	TaskSignalBus._on_checkbox_selection_changed.emit()
 
 
 func random_color() -> Color:
@@ -221,7 +221,7 @@ func _on_menu_button_toggled(_button_pressed: bool) -> void:
 
 func _on_new_profile_button_pressed() -> void:
 	if new_profile_button.text == "Task Data\nNeeded!":
-		SignalBus._on_task_editor_data_manager_remote_open_pressed.emit()
+		TaskSignalBus._on_data_manager_remote_open_pressed.emit()
 		return
 	new_profile_button.visible = false
 	new_profile_menu.visible = true
@@ -247,7 +247,7 @@ func _on_profile_menu_accept_pressed() -> void:
 		profile_color_picker_button.set_pick_color(random_color())
 		return
 	create_new_profile(profile_name, profile_color)
-	SignalBus._on_task_editor_section_changed.emit()
+	TaskSignalBus._on_section_changed.emit()
 	new_profile_button.visible = true
 	new_profile_menu.visible = false
 
@@ -310,13 +310,12 @@ func _on_edit_profile_menu_accept_pressed() -> void:
 	edit_profile_menu.visible = false
 	replacement_scan(previous_profile, edited_profile)
 	DataGlobal.task_tracking_current_checkbox_profile = edited_profile
-	SignalBus._on_task_editor_save_button_pressed.emit()
-	SignalBus._on_task_set_data_active_data_switched.emit()
+	TaskSignalBus._on_save_button_pressed.emit()
+	TaskSignalBus._on_active_data_set_switched.emit()
 	update_edit_profile_menu()
 	reload_profiles()
-	SignalBus._on_task_editor_checkbox_selection_changed.emit()
-	SignalBus._on_task_editor_profile_selection_changed.emit()
-	SignalBus._on_task_editor_profile_data_changed.emit()
+	TaskSignalBus._on_checkbox_selection_changed.emit()
+	TaskSignalBus._on_profile_selection_changed.emit()
 
 
 func _on_edit_profile_menu_cancel_pressed() -> void:

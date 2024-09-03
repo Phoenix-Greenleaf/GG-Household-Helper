@@ -208,7 +208,7 @@ func enum_uno_reverse(target_value: int, target_enum: Dictionary) -> String:
 
 func clear_self_checkboxes() -> void:
 	prints("Clearing Self Checkboxes")
-	match DataGlobal.task_tracking_current_toggled_section:
+	match TaskTrackingGlobal.task_tracking_current_toggled_section:
 		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
 			for month_iteration in month_checkbox_dictionary:
 				month_checkbox_dictionary[month_iteration].clear()
@@ -269,4 +269,4 @@ func section_transfer() -> void:
 		month_checkbox_dictionary[month_iteration].clear()
 	previous_section = section
 	generate_all_checkboxes()
-	SignalBus._on_task_editor_grid_reload_pressed.emit()
+	TaskSignalBus._on_grid_reload_pressed.emit()

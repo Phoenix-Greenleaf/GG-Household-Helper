@@ -46,7 +46,7 @@ func connect_type_updates() -> void:
 		"Section":
 			pass
 		"Group":
-			SignalBus._on_task_editor_group_dropdown_items_changed.connect(
+			TaskSignalBus._on_group_dropdown_items_changed.connect(
 				update_dropdown_items
 			)
 		"Time Of Day":
@@ -54,7 +54,7 @@ func connect_type_updates() -> void:
 		"Priority":
 			pass
 		"Assigned User":
-			SignalBus._on_task_editor_assigned_user_dropdown_items_changed.connect(
+			TaskSignalBus._on_assigned_user_dropdown_items_changed.connect(
 				update_dropdown_items
 			)
 		_:
@@ -130,11 +130,4 @@ func _on_dropdown_item_selected(index_parameter) -> void:
 		_:
 			prints("OptionButton active data update failed")
 			return
-	SignalBus._on_task_set_data_modified.emit()
-
-
-
-func _on_resized() -> void:
-	if not first_row_flag:
-		return
-	SignalBus._on_task_editor_grid_column_resized.emit(column_pair)
+	TaskSignalBus._on_data_set_modified.emit()
