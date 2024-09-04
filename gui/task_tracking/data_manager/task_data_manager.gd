@@ -61,7 +61,7 @@ func starting_visibilities() -> void:
 
 
 func load_existing_task_sets() -> void:
-	var existing_files_info = DataGlobal.get_task_sets_info()
+	var existing_files_info = TaskTrackingGlobal.get_task_sets_info()
 	for file_info_iteration in existing_files_info:
 		var interation_name = file_info_iteration[0]
 		var interation_year = file_info_iteration[1]
@@ -165,7 +165,7 @@ func _on_task_save_button_pressed(button_pressed: bool, name_parameter: String, 
 			return
 	if safe_lock_active:
 		TaskTrackingGlobal.save_data_task_set()
-	DataGlobal.load_data_task_set(name_parameter, year_parameter)
+	TaskTrackingGlobal.load_data_task_set(name_parameter, year_parameter)
 	DataGlobal.task_set_data_reloaded()
 	clone_menu_reset()
 	clone_menu_update()

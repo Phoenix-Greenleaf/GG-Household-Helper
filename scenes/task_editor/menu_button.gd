@@ -1,7 +1,24 @@
 extends MenuButton
 
 @export var task_editor: Control
+@export var data_manager_center: Control
+
 @onready var popup := get_popup()
+
+var save_files_index: int = 0
+var save_files_text: String = "Save Files"
+var change_logs_index: int = 1
+var change_logs_text: String = "Change Logs"
+var task_settings_index: int = 2
+var task_settings_text: String = "Task Settings"
+var task_data_manager_index: int = 4
+var task_data_manager_text: String = "Task Data Manager"
+var to_task_menu_index: int = 6
+var to_task_menu_text: String = "Task Tracking Menu"
+var to_main_menu_index: int = 7
+var to_main_menu_text: String = "Main Menu"
+var quit_index: int = 8
+var quit_text: String = "Quit"
 
 
 
@@ -15,79 +32,78 @@ func connect_menu_button_popup() -> void:
 
 func menu_button_actions(id: int) -> void:
 	match id:
-		0:
-			menu_to_main_menu_with_save_protection()
-		1:
-			print("Save File Pressed")
+		save_files_index:
 			task_editor.save_active_data()
 			popup.hide()
-		2:
+		change_logs_index:
 			print("Change Logs Pressed")
 			popup.hide()
-		3:
-			menu_quit_with_save_protection()
-		5:
-			task_editor.data_manager_center.visible = true
+		task_settings_index:
+			to_task_settings_menu()
+		task_data_manager_index:
+			data_manager_center.visible = true
 			popup.hide()
-		6:
-			menu_to_task_menu_with_save_protection()
-		8:
-			task_editor.save_active_data()
-			popup.visible = false
-			get_tree().change_scene_to_file("res://scenes/task_tracking_settings.tscn")
+		to_task_menu_index:
+			to_task_menu()
+		to_main_menu_index:
+			to_main_menu()
+		quit_index:
+			quit_function()
 
 
-func menu_quit_with_save_protection() -> void:
+func to_task_settings_menu() -> void:
+	if not save_protection(task_settings_index):
+		return
+	get_tree().change_scene_to_file("res://scenes/task_tracking_settings_menu.tscn")
+
+
+func to_task_menu() -> void:
+	if not save_protection(to_task_menu_index):
+		return
+	get_tree().change_scene_to_file("res://scenes/task_tracking_main_menu.tscn")
+
+
+func to_main_menu() -> void:
+	if not save_protection(to_main_menu_index):
+		return
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
+
+func quit_function() -> void:
+	if not save_protection(quit_index):
+		return
+	get_tree().quit()
+
+
+func save_protection(index_parameter: int) -> bool:
 	if task_editor.save_warning_button.text == "DATA NEEDS SAVING!":
 		match task_editor.quit_counter:
 			0:
-				popup.set_item_text(task_editor.quit_index, "Not Saved!")
+				popup.set_item_text(index_parameter, "Not Saved!")
 			1:
-				popup.set_item_text(task_editor.quit_index, "Confirm Quit")
+				popup.set_item_text(index_parameter, "Confirm Quit")
 			2:
 				popup.visible = false
-				get_tree().quit()
+				return true
 		task_editor.quit_counter += 1
+		return false
 	else:
 		popup.visible = false
-		get_tree().quit()
+		return true
 
 
-func menu_to_main_menu_with_save_protection() -> void:
-	if task_editor.save_warning_button.text == "DATA NEEDS SAVING!":
-		match task_editor.quit_counter:
-			0:
-				popup.set_item_text(task_editor.to_main_menu_index, "Not Saved!")
-			1:
-				popup.set_item_text(task_editor.to_main_menu_index, "Confirm Quit")
-			2:
-				popup.visible = false
-				get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
-		task_editor.quit_counter += 1
-	else:
-		popup.visible = false
-		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+func correct_menu_item(item_index: int, item_text: String) -> void:
+	if popup.get_item_text(item_index) != item_text:
+		popup.set_item_text(item_index, item_text)
 
-
-func menu_to_task_menu_with_save_protection() -> void:
-	if task_editor.save_warning_button.text == "DATA NEEDS SAVING!":
-		match task_editor.quit_counter:
-			0:
-				popup.set_item_text(task_editor.to_task_menu_index, "Not Saved!")
-			1:
-				popup.set_item_text(task_editor.to_task_menu_index, "Confirm Quit")
-			2:
-				popup.visible = false
-				get_tree().change_scene_to_file("res://scenes/task_tracking_menu.tscn")
-		task_editor.quit_counter += 1
-	else:
-		popup.visible = false
-		get_tree().change_scene_to_file("res://scenes/task_tracking_menu.tscn")
 
 
 func _on_pressed() -> void:
-	popup.set_item_text(task_editor.quit_index, "Quit")
-	popup.set_item_text(task_editor.to_main_menu_index, "Main Menu")
-	popup.set_item_text(task_editor.to_task_menu_index, "Task Tracking Menu")
+	correct_menu_item(save_files_index, save_files_text)
+	correct_menu_item(change_logs_index, change_logs_text)
+	correct_menu_item(task_settings_index, task_settings_text)
+	correct_menu_item(task_data_manager_index, task_data_manager_text)
+	correct_menu_item(to_task_menu_index, to_task_menu_text)
+	correct_menu_item(to_main_menu_index, to_main_menu_text)
+	correct_menu_item(quit_index, quit_text)
 	task_editor.quit_counter = 0
-	pass # Replace with function body.

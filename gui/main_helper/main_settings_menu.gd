@@ -85,7 +85,7 @@ const BUTTON_PRESSED_BOX = preload("res://theme/theme_parts/button_pressed_box.t
 const SEPARATOR_LINE = preload("res://theme/theme_parts/separator_line.tres")
 const SEPARATOR_LINE_VERTICAL = preload("res://theme/theme_parts/separator_line_vertical.tres")
 
-@onready var settings = DataGlobal.active_settings_main
+@onready var settings = MainSettings.active_settings_main
 
 var current_setting_tab: int = 0
 
@@ -503,7 +503,7 @@ func save_display_settings() -> void:
 	settings.monitor_mode = display_mode_option_button.selected
 	settings.current_monitor = display_preference_option_button.selected
 	settings.borderless = borderless_check_button.button_pressed
-	DataGlobal.save_settings_main()
+	MainSettings.save_settings_main()
 	load_display_settings()
 	apply_display_settings_to_menu()
 
@@ -742,7 +742,7 @@ func save_theme_settings() -> void:
 	color_profile.theme_transparency_default_color = theme_transparency_default_color_picker_button.color.to_html()
 	color_profile.theme_transparency_warning_color = theme_transparency_warning_color_picker_button.color.to_html()
 	theme_palette_reset_needs_saving = false
-	DataGlobal.save_settings_main()
+	MainSettings.save_settings_main()
 	load_theme_settings()
 	apply_theme_settings_to_menu()
 
@@ -1067,7 +1067,7 @@ func _on_reset_button_pressed() -> void:
 		return
 	settings.reset_settings_display()
 	reset_button.text = "Settings Reset!"
-	DataGlobal.save_settings_main()
+	MainSettings.save_settings_main()
 	load_display_settings()
 	apply_display_settings_to_menu()
 	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
@@ -1180,7 +1180,7 @@ func _on_theme_reset_button_pressed() -> void:
 		return
 	settings.reset_settings_theme()
 	theme_reset_button.text = "Settings Reset!"
-	DataGlobal.save_settings_main()
+	MainSettings.save_settings_main()
 	load_theme_settings()
 	apply_theme_settings_to_menu()
 	set_themes()

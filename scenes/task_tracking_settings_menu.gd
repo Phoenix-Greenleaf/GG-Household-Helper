@@ -170,7 +170,7 @@ func purge_section(target_section, target_profile) -> void:
 
 
 func reload_settings() -> void:
-	DataGlobal.save_settings_task_tracking()
+	TaskTrackingGlobal.save_settings_task_tracking()
 	load_all_settings()
 
 
@@ -294,11 +294,11 @@ func load_reset_current_checkbox_options() -> void:
 
 
 func _on_menu_back_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/task_tracking_menu.tscn")
+	get_tree().change_scene_to_file("res://scenes/task_tracking_main_menu.tscn")
 
 
 func _on_sheets_back_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/editor.tscn")
+	get_tree().change_scene_to_file("res://scenes/task_editor.tscn")
 
 
 func _on_regen_profiles_button_pressed() -> void:

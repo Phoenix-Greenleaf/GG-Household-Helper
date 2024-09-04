@@ -128,7 +128,7 @@ func generate_filepath(save_name_parameter: String, current_file_type: FileType)
 	var save_filepath: String
 	match current_file_type:
 		FileType.TASK_TRACKING_DATA:
-			save_filepath = TaskTrackingGlobal.task_tracker_folder + save_name_parameter + json_extension
+			save_filepath = TaskTrackingGlobal.data_folder + save_name_parameter + json_extension
 			return save_filepath
 		_:
 			prints("Generate_filepath error for FileType:", current_file_type)

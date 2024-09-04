@@ -8,7 +8,7 @@ func _ready() -> void:
 
 
 func toggle_to_focused_cell() -> void:
-	if TaskTrackingGlobal.task_tracking_current_checkbox_state != saved_status:
+	if TaskTrackingGlobal.current_checkbox_state != saved_status:
 		self.set_pressed_no_signal(false)
 		return
 	self.set_pressed_no_signal(true)

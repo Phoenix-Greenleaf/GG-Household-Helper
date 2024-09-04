@@ -6,4 +6,4 @@ func _ready() -> void:
 
 
 func close_data_manager_screen() -> void:
-	get_tree().change_scene_to_file("res://scenes/task_tracking_menu.tscn")
+	get_tree().change_scene_to_file("res://scenes/task_tracking_main_menu.tscn")

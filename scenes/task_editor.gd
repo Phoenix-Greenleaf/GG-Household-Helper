@@ -10,10 +10,8 @@ var Weekday: Array = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "F
 var month_strings = DataGlobal.month_strings
 var save_safety_nodes: Array
 var quit_counter: int = 0
-var quit_index: int = 8
-var to_main_menu_index: int = 7
-var to_task_menu_index: int = 6
-var task_settings_index: int = 1
+
+
 
 
 
@@ -65,7 +63,7 @@ func update_current_tasksheet_label() -> void:
 
 
 func section_enum_to_string() -> String:
-	var section_enum: int = TaskTrackingGlobal.task_tracking_current_toggled_section
+	var section_enum: int = TaskTrackingGlobal.current_toggled_section
 	var section_keys: Array = DataGlobal.Section.keys()
 	var current_section_key: String = section_keys[section_enum]
 	return current_section_key.capitalize()

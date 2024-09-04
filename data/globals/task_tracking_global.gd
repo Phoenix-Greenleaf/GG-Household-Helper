@@ -14,8 +14,8 @@ var filepath_task_tracking_settings: String = (DataGlobal.settings_folder
 )
 
 
+@onready var current_checkbox_profile: Array = default_profile
 var current_checkbox_state: Checkbox = Checkbox.ACTIVE
-var current_checkbox_profile: Array = default_profile
 var focus_checkbox_state: int
 var focus_checkbox_profile: Array
 var current_toggled_section: DataGlobal.Section = DataGlobal.Section.YEARLY
@@ -170,7 +170,7 @@ func task_editor_update_user_profile_dropdown_items() -> void:
 
 func task_editor_update_task_group_dropdown_items() -> void:
 	task_group_dropdown_items.clear()
-	match TaskTrackingGlobal.task_tracking_current_toggled_section:
+	match TaskTrackingGlobal.current_toggled_section:
 		DataGlobal.Section.YEARLY:
 			for task_iteration in active_data.spreadsheet_year_data:
 				task_editor_scan_task_for_group(task_iteration)

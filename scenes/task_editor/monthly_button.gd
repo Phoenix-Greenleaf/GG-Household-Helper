@@ -8,15 +8,15 @@ func _ready() -> void:
 
 func initialize_button() -> void:
 	set_pressed_no_signal(false)
-	if TaskTrackingGlobal.task_tracking_current_toggled_section == DataGlobal.Section.MONTHLY:
+	if TaskTrackingGlobal.current_toggled_section == DataGlobal.Section.MONTHLY:
 		set_pressed_no_signal(true)
 
 
 func _on_toggled(toggled_on: bool) -> void:
 	if not toggled_on:
 		return
-	if TaskTrackingGlobal.task_tracking_current_toggled_section != DataGlobal.Section.MONTHLY:
-		TaskTrackingGlobal.task_tracking_current_toggled_section = DataGlobal.Section.MONTHLY
+	if TaskTrackingGlobal.current_toggled_section != DataGlobal.Section.MONTHLY:
+		TaskTrackingGlobal.current_toggled_section = DataGlobal.Section.MONTHLY
 		TaskSignalBus._on_section_changed.emit()
 		prints("Monthly Section Toggled")
 	else:

@@ -9,7 +9,7 @@ func connect_month_menu() -> void:
 
 
 func set_month_selection_menu() -> void:
-	var selected_month = DataGlobal.task_tracking_current_toggled_month
+	var selected_month = TaskTrackingGlobal.current_toggled_month
 	task_editor.month_selection_menu_button.text = DataGlobal.month_strings[selected_month]
 	task_editor.month_selection_menu_popup.set_item_disabled(selected_month, true)
 
@@ -51,6 +51,6 @@ func month_menu_switch(passed_id: int, passed_month: DataGlobal.Month) -> void:
 			var month_keys = DataGlobal.Month.keys()
 			task_editor.month_selection_menu_button.text = month_keys[passed_id].capitalize()
 			task_editor.month_selection_menu_popup.set_item_disabled(passed_id, true)
-			DataGlobal.task_tracking_current_toggled_month = passed_month
+			TaskTrackingGlobal.current_toggled_month = passed_month
 			task_editor.month_selection_menu_popup.set_item_disabled(task_editor.last_toggled_month, false)
 			task_editor.last_toggled_month = passed_id

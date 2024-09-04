@@ -47,7 +47,7 @@ func empty_palette_colums() -> void:
 
 
 func load_color_palettes() -> void:
-	var color_palettes: Dictionary = DataGlobal.active_settings_main.theme_color_palettes
+	var color_palettes: Dictionary = MainSettings.active_settings_main.theme_color_palettes
 	for palette_name in chromatic_array:
 		add_preset_palette(palette_name, color_palettes[palette_name])
 	for palette_name in custom_chromatic_array:

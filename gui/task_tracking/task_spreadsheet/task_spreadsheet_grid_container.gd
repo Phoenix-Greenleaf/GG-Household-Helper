@@ -66,7 +66,7 @@ func _ready() -> void:
 	var task_settings = TaskTrackingGlobal.active_settings
 	if task_settings.enable_auto_load_default_data:
 		var default_data_info = task_settings.default_data
-		DataGlobal.load_data_task_set(default_data_info[0], default_data_info[1])
+		TaskTrackingGlobal.load_data_task_set(default_data_info[0], default_data_info[1])
 	if !TaskTrackingGlobal.active_data:
 		prints("No Tasksheet found for TaskGrid....")
 		return
@@ -248,7 +248,7 @@ func load_existing_data() -> void:
 		return
 	create_header_row()
 	update_existing_groups_option_button_items()
-	match TaskTrackingGlobal.task_tracking_current_toggled_section:
+	match TaskTrackingGlobal.current_toggled_section:
 		DataGlobal.Section.YEARLY:
 			for data_iteration in TaskTrackingGlobal.active_data.spreadsheet_year_data:
 				process_task(data_iteration)
@@ -262,13 +262,13 @@ func load_existing_data() -> void:
 			for data_iteration in TaskTrackingGlobal.active_data.spreadsheet_day_data:
 				process_task(data_iteration)
 	apply_all_column_visibility()
-	SignalBus._on_task_editor_new_column_pairs_created.emit(column_pairs)
+	#SignalBus._on_task_editor_new_column_pairs_created.emit(column_pairs)
 
 
 func update_existing_groups_option_button_items() -> void:
 	existing_groups_option_button.clear()
 	existing_groups_option_button.add_item("Existing Groups")
-	DataGlobal.task_editor_update_task_group_dropdown_items()
+	TaskTrackingGlobal.task_editor_update_task_group_dropdown_items()
 	for item in TaskTrackingGlobal.task_group_dropdown_items:
 		existing_groups_option_button.add_item(item)
 
@@ -345,7 +345,7 @@ func create_checkbox_column_header(column_parameter: String) -> void:
 	var column_group: String = checkbox
 	var current_section = TaskTrackingGlobal.current_toggled_section
 	var current_month = DataGlobal.Month.find_key(
-		DataGlobal.task_tracking_current_toggled_month
+		TaskTrackingGlobal.current_toggled_month
 	).capitalize()
 	var current_year = TaskTrackingGlobal.active_data.task_set_year
 	var first_column: bool = true
@@ -429,7 +429,7 @@ func sort_task_array() -> void:
 	if not TaskTrackingGlobal.active_data:
 		prints("No existing data to load")
 		return
-	match TaskTrackingGlobal.task_tracking_current_toggled_section:
+	match TaskTrackingGlobal.current_toggled_section:
 		DataGlobal.Section.YEARLY:
 			for data_iteration in TaskTrackingGlobal.active_data.spreadsheet_year_data:
 				process_task(data_iteration)
@@ -546,12 +546,12 @@ func create_all_checkbox_cells() -> void:
 				var checkbox_data: TaskCheckboxData = (
 					current_task.month_checkbox_dictionary[month_iteration][0]
 				)
-				var checkbox_state: TaskTrackingGlobal.Checkbox = TaskTrackingGlobal.checkbox_data.checkbox_status
+				var checkbox_state: TaskTrackingGlobal.Checkbox = checkbox_data.checkbox_status
 				var checkbox_user: Array = checkbox_data.assigned_user
 				create_checkbox_cell(checkbox_state, checkbox_user, checkbox_position, checkbox)
 				checkbox_position += 1
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
-			var current_month = DataGlobal.task_tracking_current_toggled_month
+			var current_month = TaskTrackingGlobal.current_toggled_month
 			var month_key = DataGlobal.Month.find_key(current_month).capitalize()
 			var current_data: Array = current_task.month_checkbox_dictionary[month_key]
 			for checkbox_data in current_data:
@@ -566,14 +566,14 @@ func add_cell_to_groups(cell_parameter, column_group_parameter: String) -> void:
 		cell_parameter.add_to_group(row_group)
 	if column_group_parameter != "":
 		cell_parameter.add_to_group(column_group_parameter)
-		if not task_first_row:
-			return
-		var column_pair_name: String = column_group_parameter + str(full_header_size)
-		cell_parameter.column_pair = column_pair_name
-		if column_pairs.has(column_pair_name):
-			column_pairs[column_pair_name].append(cell_parameter)
-			return
-		column_pairs[column_pair_name] = [cell_parameter]
+		#if not task_first_row:
+			#return
+		#var column_pair_name: String = column_group_parameter + str(full_header_size)
+		#cell_parameter.column_pair = column_pair_name
+		#if column_pairs.has(column_pair_name):
+			#column_pairs[column_pair_name].append(cell_parameter)
+			#return
+		#column_pairs[column_pair_name] = [cell_parameter]
 
 
 func set_first_row_flag(cell_to_check) -> void:
@@ -604,9 +604,9 @@ func create_header_cell(
 	TaskSignalBus._on_header_cell_created.emit(cell)
 	cell.header_button.text = header_text_parameter
 	cell.order_spin_box.set_value_no_signal(order_parameter)
-	cell.ordering_enabled(ordering_enabled_parameter)
-	cell.set_sorting_mode(sorting_mode_parameter)
-	cell.sorting_enabled(sorting_enabled_parameter)
+	#cell.ordering_enabled(ordering_enabled_parameter)
+	#cell.set_sorting_mode(sorting_mode_parameter)
+	#cell.sorting_enabled(sorting_enabled_parameter)
 	add_cell_to_groups(cell, column_group_parameter)
 	#prints("Created Header:", header_text_parameter, "  Header Count:", full_header_size)
 
@@ -688,7 +688,7 @@ func delete_task_row(target_task: TaskData) -> void:
 		if current_child.saved_task == target_task:
 			self.remove_child(current_child)
 			current_child.queue_free()
-	match TaskTrackingGlobal.task_tracking_current_toggled_section:
+	match TaskTrackingGlobal.current_toggled_section:
 		DataGlobal.Section.YEARLY:
 			TaskTrackingGlobal.active_data.spreadsheet_year_data.erase(target_task)
 		DataGlobal.Section.MONTHLY:

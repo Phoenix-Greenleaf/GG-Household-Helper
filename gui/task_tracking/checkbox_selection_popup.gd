@@ -172,7 +172,7 @@ func status_change(new_state: TaskTrackingGlobal.Checkbox) -> void:
 	if new_state == TaskTrackingGlobal.current_checkbox_state:
 		prints("STATUS ALREADY TOGGLED")
 		return
-	TaskTrackingGlobal.task_tracking_current_checkbox_state = new_state
+	TaskTrackingGlobal.current_checkbox_state = new_state
 	update_paired_menu()
 
 
