@@ -12,9 +12,6 @@ var save_safety_nodes: Array
 var quit_counter: int = 0
 
 
-
-
-
 func _ready() -> void:
 	TaskTrackingGlobal.load_settings_task_tracking()
 	connection_cental()

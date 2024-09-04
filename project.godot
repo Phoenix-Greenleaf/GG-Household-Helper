@@ -28,6 +28,7 @@ JsonSaveManager="*res://data/globals/json_save_manager.gd"
 MainSettings="*res://data/globals/main_settings.gd"
 TaskTrackingGlobal="*res://data/globals/task_tracking_global.gd"
 TaskSignalBus="*res://data/globals/task_signal_bus.gd"
+SqlManager="*res://data/globals/sql_manager.gd"
 
 [debug]
 
