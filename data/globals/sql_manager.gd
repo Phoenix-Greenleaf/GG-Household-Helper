@@ -6,23 +6,30 @@ var household_name: String
 var household_default_name := "My"
 var database_standard_title: String = "_household_helper_data"
 
-var program_info_table := "Program Info"
-var user_info_table := "User Info"
-var task_info_table := "Task Info"
-var monthly_task_table := "Monthly Task"
-var weekly_task_table := "Weekly Task"
-var daily_task_table := "Daily Task"
-var changelog_table := "Change Log"
-var section_table := "Section"
+var program_info_table := "program_info"
+var user_info_table := "user_info"
+var task_info_table := "task_info"
+var monthly_tasks_table := "monthly_tasks"
+var weekly_tasks_table := "weekly_tasks"
+var daily_tasks_table := "daily_tasks"
+var changelog_table := "change_log"
+var sections_table := "sections"
+var event_info_table := "event_info"
 
 var unassigned_user_text := "Not Assigned"
 var unassigned_user_color := Color.WHITE
+
+var section_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Section)
+var month_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Month)
+var time_of_day_strings: Array = DataGlobal.enum_to_strings(DataGlobal.TimeOfDay)
+var priority_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Priority)
 
 var id := "id"
 var name_ := "name"
 var color_ := "color"
 var status := "status"
 var completed_by := "completed_by"
+var last_completed := "last_completed"
 var task := "task"
 var group := "group"
 var assigned_to := "assigned_to"
@@ -52,7 +59,7 @@ var char_part := "char("
 var not_null := "not_null"
 var primary_key := "primary_key"
 var auto_increment := "auto_increment"
-var foreign_key := "foreign_key" # {fk : foreign_table.foreign_column}
+var foreign_key := "foreign_key" # {"foreign_key" : "foreign_table.foreign_column"}
 
 
 
@@ -74,19 +81,21 @@ func create_new_database() -> void:
 	active_database = SQLite.new()
 	active_database.path = database_path()
 	active_database.foreign_keys = true
+	create_all_tables()
 
 
-func create_column_primary_id() -> Dictionary:
-	var column: Dictionary = {
-		id : {data_type:int_, primary_key:true, not_null:true, auto_increment:true}
-		}
-	return column
 
+func create_all_tables() -> void:
+	create_table_program_info()
+	create_table_user_info()
+	create_table_task_info()
+	create_table_event_info()
+	create_table_sections()
+	create_table_section_tasks(DataGlobal.Section.MONTHLY)
+	create_table_section_tasks(DataGlobal.Section.WEEKLY)
+	create_table_section_tasks(DataGlobal.Section.DAILY)
+	create_table_changelog()
 
-func add_column_primary_id(columns_parameter: Dictionary) -> Dictionary:
-	var combined_columns: Dictionary = create_column_primary_id()
-	combined_columns.merge(columns_parameter)
-	return combined_columns
 
 
 func create_table_user_info() -> void:
@@ -94,9 +103,26 @@ func create_table_user_info() -> void:
 		name_ : {data_type:text},
 		color_ : {data_type:text}
 	}
-	var table_data: Dictionary = add_column_primary_id(data_columns)
-	active_database.create_table(user_info_table, table_data)
+	create_new_table_with_primary_id(user_info_table, data_columns)
 	add_unassigned_user_row()
+
+
+func create_new_table_with_primary_id(table_title: String, data_columns: Dictionary) -> void:
+	var table_data: Dictionary = add_column_primary_id(data_columns)
+	active_database.create_table(table_title, table_data)
+
+
+func add_column_primary_id(data_parameter: Dictionary) -> Dictionary:
+	var combined_columns: Dictionary = create_column_primary_id()
+	combined_columns.merge(data_parameter)
+	return combined_columns
+
+
+func create_column_primary_id() -> Dictionary:
+	var column: Dictionary = {
+		id : {data_type:int_, primary_key:true, not_null:true, auto_increment:true}
+		}
+	return column
 
 
 func add_unassigned_user_row() -> void:
@@ -110,13 +136,14 @@ func add_unassigned_user_row() -> void:
 func create_table_task_info() -> void:
 	var data_columns: Dictionary = {
 		task : {data_type:text},
-		section : {data_type:int_, foreign_key:table_column_address(section_table, id)},
+		section : {data_type:int_, foreign_key:table_column_address(sections_table, id)},
 		group : {data_type:text},
 		assigned_to : {data_type:int_, foreign_key:table_column_address(user_info_table, id)},
 		description : {data_type:text},
 		time_of_day : {data_type:text},
 		priority : {data_type:text},
 		location : {data_type:text},
+		last_completed : {data_type:text},
 		daily_scheduling_start : {data_type:text},
 		days_per_cycle : {data_type:text},
 		daily_scheduling_end : {data_type:text},
@@ -127,8 +154,7 @@ func create_table_task_info() -> void:
 		months_per_cycle : {data_type:text},
 		monthly_scheduling_end : {data_type:text}
 	}
-	var table_data: Dictionary = add_column_primary_id(data_columns)
-	active_database.create_table(task_info_table, table_data)
+	create_new_table_with_primary_id(task_info_table, data_columns)
 
 
 func table_column_address(table_parameter: String, column_parameter: String) -> String:
@@ -136,43 +162,66 @@ func table_column_address(table_parameter: String, column_parameter: String) -> 
 	return address
 
 
-func create_table_section_tracking() -> void:
+func create_table_event_info() -> void:
+	var data_columns: Dictionary = {
+		status : {data_type:text},
+		assigned_to : {data_type:int_, foreign_key:table_column_address(user_info_table, id)},
+		completed_by : {data_type:int_, foreign_key:table_column_address(user_info_table, id)}
+	}
+	create_new_table_with_primary_id(event_info_table, data_columns)
+
+
+func create_table_sections() -> void:
 	var data_columns: Dictionary = {
 		year : {data_type:text},
 		month : {data_type:text},
 		section : {data_type:text},
 		}
-	var table_data: Dictionary = add_column_primary_id(data_columns)
-	active_database.create_table(section_table, table_data)
+	create_new_table_with_primary_id(sections_table, data_columns)
 
 
-func create_table_monthly_task() -> void:
-	var data_columns: Dictionary = {
+func create_table_section_tasks(section_parameter: DataGlobal.Section) -> void:
+	var event_count: int = 0
+	var event_units: String = ""
+	var event_section_title: String = ""
+	var data_columns: Dictionary = {}
+	match section_parameter:
+		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+			event_count = 12
+			event_units = "month"
+			event_section_title = monthly_tasks_table
+		DataGlobal.Section.WEEKLY:
+			event_count = 5
+			event_units = "week"
+			event_section_title = weekly_tasks_table
+		DataGlobal.Section.DAILY:
+			event_count = 31
+			event_units = "day"
+			event_section_title = daily_tasks_table
+	data_columns = section_tasks_standard_data()
+	add_columns_section_event_info(event_count, event_units, data_columns)
+	create_new_table_with_primary_id(event_section_title, data_columns)
+
+
+func section_tasks_standard_data() -> Dictionary:
+	var standard_data: Dictionary = {
 		task : {data_type:int_, foreign_key:table_column_address(task_info_table, id)},
-		section : {data_type:int_, foreign_key:table_column_address(section_table, id)},
-		name_ : {data_type:text},
-		name_ : {data_type:text},
-		name_ : {data_type:text},
-		name_ : {data_type:text},
+		section : {data_type:int_, foreign_key:table_column_address(sections_table, id)},
 	}
-	var table_data: Dictionary = add_column_primary_id(data_columns)
-	active_database.create_table(monthly_task_table, table_data)
+	return standard_data
 
 
-func create_table_weekly_task() -> void:
-	var data_columns: Dictionary = {
-		name_ : {data_type:text}
+func add_columns_section_event_info(event_count_parameter: int, event_units_parameter: String, data_parameter: Dictionary) -> void:
+	for event_iteration in event_count_parameter:
+		add_one_event_column(event_units_parameter, event_iteration, data_parameter)
+
+
+func add_one_event_column(section_text: String, current_number: int, data_parameter: Dictionary) -> void:
+	var column_text = section_text + "_" + str(current_number + 1)
+	var new_event: Dictionary = {
+		column_text : {data_type:int_, foreign_key:table_column_address(event_info_table, id)}
 	}
-	var table_data: Dictionary = add_column_primary_id(data_columns)
-	active_database.create_table(weekly_task_table, table_data)
-
-
-func create_table_daily_task() -> void:
-	var data_columns: Dictionary = {
-		name_ : {data_type:text}
-	}
-	var table_data: Dictionary = add_column_primary_id(data_columns)
-	active_database.create_table(daily_task_table, table_data)
+	data_parameter.merge(new_event)
 
 
 func create_table_program_info() -> void:
