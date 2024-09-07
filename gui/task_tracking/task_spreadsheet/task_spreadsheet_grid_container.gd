@@ -410,7 +410,7 @@ func set_grid_columns() -> void:
 				DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
 					current_column_count = 12
 				DataGlobal.Section.DAILY:
-					var current_month_int: int = DataGlobal.current_toggled_month
+					var current_month_int: int = TaskTrackingGlobal.current_toggled_month
 					var current_month_string: String = DataGlobal.month_strings[current_month_int]
 					var current_year = TaskTrackingGlobal.active_data.task_set_year
 					var number_of_days = DataGlobal.days_in_month_finder(current_month_string, current_year)

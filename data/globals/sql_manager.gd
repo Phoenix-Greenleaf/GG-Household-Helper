@@ -81,8 +81,8 @@ func create_new_database() -> void:
 	active_database = SQLite.new()
 	active_database.path = database_path()
 	active_database.foreign_keys = true
+	active_database.open_db()
 	create_all_tables()
-
 
 
 func create_all_tables() -> void:
@@ -95,7 +95,6 @@ func create_all_tables() -> void:
 	create_table_section_tasks(DataGlobal.Section.WEEKLY)
 	create_table_section_tasks(DataGlobal.Section.DAILY)
 	create_table_changelog()
-
 
 
 func create_table_user_info() -> void:
@@ -232,3 +231,32 @@ func create_table_program_info() -> void:
 func create_table_changelog() -> void:
 #	placeholder
 	pass
+
+
+# unstable science warning
+
+
+
+func add_data(table_parameter: String, row_data_parameter: Array) -> void:
+	active_database.insert_rows(table_parameter, row_data_parameter)
+
+
+func select_data(table_parameter: String, conditions_parameter: String, column_parameters: Array) -> Array:
+	var returned_data: Array = []
+	returned_data = active_database.select_rows(table_parameter, conditions_parameter, column_parameters)
+	return returned_data
+
+
+func query_data(query_parameter: String) -> Array:
+	var returned_data: Array = []
+	active_database.query(query_parameter)
+	returned_data = active_database.query_result
+	return returned_data
+
+
+func update_data(table_parameter: String, conditions_parameter: String, row_data_parameter: Dictionary) -> void:
+	active_database.update_rows(table_parameter, conditions_parameter, row_data_parameter)
+
+
+func remove_data(table_parameter: String, conditions_parameter: String) -> void:
+	active_database.delete_rows(table_parameter, conditions_parameter)
