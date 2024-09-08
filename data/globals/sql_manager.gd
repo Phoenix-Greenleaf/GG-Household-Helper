@@ -107,21 +107,26 @@ func create_table_user_info() -> void:
 
 
 func create_new_table_with_primary_id(table_title: String, data_columns: Dictionary) -> void:
-	var table_data: Dictionary = add_column_primary_id(data_columns)
+	var table_data: Dictionary = add_column_primary_id(table_title, data_columns)
 	active_database.create_table(table_title, table_data)
 
 
-func add_column_primary_id(data_parameter: Dictionary) -> Dictionary:
-	var combined_columns: Dictionary = create_column_primary_id()
+func add_column_primary_id(table_title: String, data_parameter: Dictionary) -> Dictionary:
+	var combined_columns: Dictionary = create_column_primary_id(table_title)
 	combined_columns.merge(data_parameter)
 	return combined_columns
 
 
-func create_column_primary_id() -> Dictionary:
+func create_column_primary_id(table_title_parameter: String) -> Dictionary:
 	var column: Dictionary = {
-		id : {data_type:int_, primary_key:true, not_null:true, auto_increment:true}
+		table_id(table_title_parameter) : {data_type:int_, primary_key:true, not_null:true, auto_increment:true}
 		}
 	return column
+
+
+func table_id(table_title_parameter: String) -> String:
+	var table_id: String = table_title_parameter + "_" + id
+	return table_id
 
 
 func add_unassigned_user_row() -> void:
@@ -185,7 +190,7 @@ func create_table_section_tasks(section_parameter: DataGlobal.Section) -> void:
 	var event_section_title: String = ""
 	var data_columns: Dictionary = {}
 	match section_parameter:
-		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+		DataGlobal.Section.MONTHLY:
 			event_count = 12
 			event_units = "month"
 			event_section_title = monthly_tasks_table

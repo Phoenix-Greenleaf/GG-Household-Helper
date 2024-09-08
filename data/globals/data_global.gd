@@ -3,7 +3,7 @@ extends Node
 
 
 enum Section {
-	YEARLY,
+	ALL,
 	MONTHLY,
 	WEEKLY,
 	DAILY,

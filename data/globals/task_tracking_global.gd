@@ -16,8 +16,9 @@ var filepath_task_tracking_settings: String = (DataGlobal.settings_folder
 var current_checkbox_state: Checkbox = Checkbox.ACTIVE
 var focus_checkbox_state: int
 var focus_checkbox_profile: Array
-var current_toggled_section: DataGlobal.Section = DataGlobal.Section.YEARLY
+var current_toggled_section: DataGlobal.Section = DataGlobal.Section.MONTHLY
 var current_toggled_month: DataGlobal.Month = DataGlobal.Month.JANUARY
+var current_toggled_year: int = 1990
 var current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
 var task_group_dropdown_items: Array 
 var user_profiles_dropdown_items: Array
@@ -218,6 +219,22 @@ schedule-incompatibility warning (mixing sections)
 - save protection based on change log size == 0
 - undo and redo changes?
 
+
+
+
+
+query data
+add any data changes
+get and set column count
+add elements
+--header row
+--info cells
+--store reference data for edits and updates
+
+
+search button, not on each little toggle
+
+
 """
 
 
@@ -237,38 +254,129 @@ var monthly := "monthly"
 var weekly := "weekly"
 var daily := "daily"
 
-var years_toggled: Array[int]
-var months_toggled: Dictionary = {
-	january : false,
-	february : false,
-	march : false,
-	april : false,
-	may : false,
-	june : false,
-	july : false,
-	august : false,
-	september : false,
-	october : false,
-	november : false,
-	december : false,
-}
-var sections_toggled: Dictionary = {
-	monthly : false,
-	weekly : false,
-	daily : false
-}
-#date range?
+
+var id := "id"
+var name_ := "name"
+var color_ := "color"
+var status := "status"
+var completed_by := "completed_by"
+var last_completed := "last_completed"
+var task := "task"
+var group := "group"
+var assigned_to := "assigned_to"
+var description := "description"
+var time_of_day := "time_of_day"
+var priority := "priority"
+var location := "location"
+var year := "year"
+var month := "month"
+var section := "section"
+var daily_scheduling_start := "daily_scheduling_start"
+var days_per_cycle := "days_per_cycle"
+var daily_scheduling_end := "daily_scheduling_end"
+var weekly_scheduling_start := "weekly_scheduling_start"
+var weeks_per_cycle := "weeks_per_cycle"
+var weekly_scheduling_end := "weekly_scheduling_end"
+var monthly_scheduling_start := "monthly_scheduling_start"
+var months_per_cycle := "months_per_cycle"
+var monthly_scheduling_end := "monthly_scheduling_end"
+
+
+
+
+
 
 
 
 var checkboxes_column_toggled: bool = true
 var scheduling_column_toggled: bool = true
-var completed_by_column_toggled: bool = true
-var last_completed_column_toggled: bool = true
+#var completed_by_column_toggled: bool = true
+#var last_completed_column_toggled: bool = true
 var group_column_toggled: bool = true
-var assigned_to_column_toggled: bool = true
+#var assigned_to_column_toggled: bool = true
 var description_column_toggled: bool = true
 var time_of_day_column_toggled: bool = true
 var priority_column_toggled: bool = true
 var location_column_toggled: bool = true
-var task_removal_column_toggled: bool = true
+#var task_removal_column_toggled: bool = true
+
+var task_info_id: String = SqlManager.table_id(SqlManager.task_info_table)
+
+
+var table_for_query = SqlManager.sections_table
+
+func form_query() -> String:
+	var new_query: String = ""
+	
+	return new_query
+
+
+func column_select_string() -> String:
+	var column_select: String = "select "
+	var column_array: PackedStringArray = []
+	column_array.append(task_info_id)
+	column_array.append(task)
+	column_array.append(section)
+	column_array.append(month)
+	column_array.append(year)
+	if location_column_toggled:
+		column_array.append(location)
+	if priority_column_toggled:
+		column_array.append(priority)
+	if time_of_day_column_toggled:
+		column_array.append(time_of_day)
+	if description_column_toggled:
+		column_array.append(description)
+	if group_column_toggled:
+		column_array.append(group)
+	if checkboxes_column_toggled:
+		column_array.append(assigned_to)
+		column_array.append(completed_by)
+		column_array.append(name_)
+	if scheduling_column_toggled:
+		if current_toggled_section == DataGlobal.Section.ALL or current_toggled_section == DataGlobal.Section.DAILY:
+			column_array.append(daily_scheduling_start)
+			column_array.append(days_per_cycle)
+			column_array.append(daily_scheduling_end)
+		if current_toggled_section == DataGlobal.Section.ALL or current_toggled_section == DataGlobal.Section.WEEKLY:
+			column_array.append(weekly_scheduling_start)
+			column_array.append(weeks_per_cycle)
+			column_array.append(weekly_scheduling_end)
+		if current_toggled_section == DataGlobal.Section.ALL or current_toggled_section == DataGlobal.Section.MONTHLY:
+			column_array.append(monthly_scheduling_start)
+			column_array.append(months_per_cycle)
+			column_array.append(monthly_scheduling_end)
+	var joined_strings: String = ", ".join(column_array)
+	column_select = column_select + joined_strings
+	return column_select
+
+
+func add_string(original_parameter: String, adding_parameter: String) -> String:
+	var new_string: String = original_parameter + adding_parameter
+	return new_string
+
+
+func join_string() -> String:
+	var join_string: String = ""
+	
+	return join_string
+
+
+func condition_string() -> String:
+	var condition_string: String = ""
+	
+	return condition_string
+
+
+
+
+
+"""
+
+select [current columns]
+
+join [only if needed]
+
+where 
+
+"""
