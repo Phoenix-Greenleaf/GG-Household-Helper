@@ -107,7 +107,7 @@ func generate_all_checkboxes() -> void:
 	scheduling_array.clear()
 	currently_scheduling = 1
 	match section:
-		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+		DataGlobal.Section.MONTHLY:
 			generate_schedule(12)
 			for month_iteration in month_checkbox_dictionary:
 				if month_iteration == "All":
@@ -208,7 +208,7 @@ func enum_uno_reverse(target_value: int, target_enum: Dictionary) -> String:
 func clear_self_checkboxes() -> void:
 	prints("Clearing Self Checkboxes")
 	match TaskTrackingGlobal.current_toggled_section:
-		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+		DataGlobal.Section.MONTHLY:
 			for month_iteration in month_checkbox_dictionary:
 				month_checkbox_dictionary[month_iteration].clear()
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
@@ -247,8 +247,6 @@ func section_transfer() -> void:
 		"to", DataGlobal.Section.keys()[section]
 	)
 	match previous_section:
-		DataGlobal.Section.YEARLY:
-			TaskTrackingGlobal.active_data.spreadsheet_year_data.erase(self)
 		DataGlobal.Section.MONTHLY:
 			TaskTrackingGlobal.active_data.spreadsheet_month_data.erase(self)
 		DataGlobal.Section.WEEKLY:
@@ -256,8 +254,6 @@ func section_transfer() -> void:
 		DataGlobal.Section.DAILY:
 			TaskTrackingGlobal.active_data.spreadsheet_day_data.erase(self)
 	match section:
-		DataGlobal.Section.YEARLY:
-			TaskTrackingGlobal.active_data.spreadsheet_year_data.append(self)
 		DataGlobal.Section.MONTHLY:
 			TaskTrackingGlobal.active_data.spreadsheet_month_data.append(self)
 		DataGlobal.Section.WEEKLY:

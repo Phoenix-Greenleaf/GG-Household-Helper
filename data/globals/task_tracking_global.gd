@@ -243,31 +243,31 @@ var priority_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Priorit
 
 
 
-var id := "id"
-var name_ := "name"
-var color_ := "color"
-var status := "status"
-var completed_by := "completed_by"
-var last_completed := "last_completed"
-var task := "task"
-var group := "group"
-var assigned_to := "assigned_to"
-var description := "description"
-var time_of_day := "time_of_day"
-var priority := "priority"
-var location := "location"
-var year := "year"
-var month := "month"
-var section := "section"
-var daily_scheduling_start := "daily_scheduling_start"
-var days_per_cycle := "days_per_cycle"
-var daily_scheduling_end := "daily_scheduling_end"
-var weekly_scheduling_start := "weekly_scheduling_start"
-var weeks_per_cycle := "weeks_per_cycle"
-var weekly_scheduling_end := "weekly_scheduling_end"
-var monthly_scheduling_start := "monthly_scheduling_start"
-var months_per_cycle := "months_per_cycle"
-var monthly_scheduling_end := "monthly_scheduling_end"
+@onready var id: String = SqlManager.id
+@onready var name_: String = SqlManager.name_
+@onready var color_: String = SqlManager.color_
+@onready var status: String = SqlManager.status
+@onready var completed_by: String = SqlManager.completed_by
+@onready var last_completed: String = SqlManager.last_completed
+@onready var task: String = SqlManager.task
+@onready var task_group: String = SqlManager.task_group
+@onready var assigned_to: String = SqlManager.assigned_to
+@onready var description: String = SqlManager.description
+@onready var time_of_day: String = SqlManager.time_of_day
+@onready var priority: String = SqlManager.priority
+@onready var location: String = SqlManager.location
+@onready var year: String = SqlManager.year
+@onready var month: String = SqlManager.month
+@onready var section: String = SqlManager.section
+@onready var daily_scheduling_start: String = SqlManager.daily_scheduling_start
+@onready var days_per_cycle: String = SqlManager.days_per_cycle
+@onready var daily_scheduling_end: String = SqlManager.daily_scheduling_end
+@onready var weekly_scheduling_start: String = SqlManager.weekly_scheduling_start
+@onready var weeks_per_cycle: String = SqlManager.weeks_per_cycle
+@onready var weekly_scheduling_end: String = SqlManager.weekly_scheduling_end
+@onready var monthly_scheduling_start: String = SqlManager.monthly_scheduling_start
+@onready var months_per_cycle: String = SqlManager.months_per_cycle
+@onready var monthly_scheduling_end: String = SqlManager.monthly_scheduling_end
 
 
 
@@ -288,19 +288,28 @@ var priority_column_toggled: bool = true
 var location_column_toggled: bool = true
 #var task_removal_column_toggled: bool = true
 
-var task_info_id: String = SqlManager.table_id(SqlManager.task_info_table)
-var sections_id: String = SqlManager.table_id(SqlManager.sections_table)
-var user_info_id: String = SqlManager.table_id(SqlManager.user_info_table)
-var monthly_tasks_id: String = SqlManager.table_id(SqlManager.monthly_tasks_table)
-var weekly_tasks_id: String = SqlManager.table_id(SqlManager.weekly_tasks_table)
-var daily_tasks_id: String = SqlManager.table_id(SqlManager.daily_tasks_table)
-var event_info_id: String = SqlManager.table_id(SqlManager.event_info_table)
+
+@onready var task_info_table: String = SqlManager.task_info_table
+@onready var sections_table: String = SqlManager.sections_table
+@onready var user_info_table: String = SqlManager.user_info_table
+@onready var monthly_tasks_table: String = SqlManager.monthly_tasks_table
+@onready var weekly_tasks_table: String = SqlManager.weekly_tasks_table
+@onready var daily_tasks_table: String = SqlManager.daily_tasks_table
+@onready var event_info_table: String = SqlManager.event_info_table
+
+@onready var task_info_id: String = SqlManager.task_info_id
+@onready var sections_id: String = SqlManager.sections_id
+@onready var user_info_id: String = SqlManager.user_info_id
+@onready var monthly_tasks_id: String = SqlManager.monthly_tasks_id
+@onready var weekly_tasks_id: String = SqlManager.weekly_tasks_id
+@onready var daily_tasks_id: String = SqlManager.daily_tasks_id
+@onready var event_info_id: String = SqlManager.event_info_id
 
 
 
 
 
-var table_for_query = SqlManager.sections_table
+@onready var table_for_query = SqlManager.sections_table
 
 func form_query() -> String:
 	var new_query: String = ""
@@ -325,7 +334,7 @@ func create_column_select_string() -> String:
 	if description_column_toggled:
 		column_array.append(description)
 	if group_column_toggled:
-		column_array.append(group)
+		column_array.append(task_group)
 	if checkboxes_column_toggled:
 		column_array.append(assigned_to)
 		column_array.append(completed_by)
@@ -353,10 +362,19 @@ func create_column_select_string() -> String:
 	#return new_string
 
 
-func join_string() -> String:
-	var join_string: String = ""
-	
-	return join_string
+#func join_string() -> String:
+	#var join_string: String = ""
+	#
+	#
+#task_info_table
+##sections_table
+#user_info_table
+#monthly_tasks_table
+#weekly_tasks_table
+#daily_tasks_table
+#event_info_table
+	#
+	#return join_string
 
 
 func create_condition_string() -> String:

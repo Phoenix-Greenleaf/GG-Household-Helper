@@ -6,6 +6,7 @@ extends Control
 
 func _ready() -> void:
 	versoning.text = "Version " + ProjectSettings.get_setting("application/config/version")
+	SqlManager.create_new_database()
 
 
 func _on_exit_button_pressed() -> void:

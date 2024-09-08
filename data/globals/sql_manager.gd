@@ -31,7 +31,7 @@ var status := "status"
 var completed_by := "completed_by"
 var last_completed := "last_completed"
 var task := "task"
-var group := "group"
+var task_group := "task_group"
 var assigned_to := "assigned_to"
 var description := "description"
 var time_of_day := "time_of_day"
@@ -62,6 +62,14 @@ var auto_increment := "auto_increment"
 var foreign_key := "foreign_key" # {"foreign_key" : "foreign_table.foreign_column"}
 
 
+var task_info_id: String = table_id(task_info_table)
+var sections_id: String = table_id(sections_table)
+var user_info_id: String = table_id(user_info_table)
+var monthly_tasks_id: String = table_id(monthly_tasks_table)
+var weekly_tasks_id: String = table_id(weekly_tasks_table)
+var daily_tasks_id: String = table_id(daily_tasks_table)
+var event_info_id: String = table_id(event_info_table)
+
 
 
 func char_(number: int) -> String:
@@ -81,6 +89,7 @@ func create_new_database() -> void:
 	active_database = SQLite.new()
 	active_database.path = database_path()
 	active_database.foreign_keys = true
+	#active_database.verbosity_level = SQLite.VERBOSE
 	active_database.open_db()
 	create_all_tables()
 
@@ -140,9 +149,9 @@ func add_unassigned_user_row() -> void:
 func create_table_task_info() -> void:
 	var data_columns: Dictionary = {
 		task : {data_type:text},
-		section : {data_type:int_, foreign_key:table_column_address(sections_table, id)},
-		group : {data_type:text},
-		assigned_to : {data_type:int_, foreign_key:table_column_address(user_info_table, id)},
+		section : {data_type:int_, foreign_key:table_column_address(sections_table, sections_id)},
+		task_group : {data_type:text},
+		assigned_to : {data_type:int_, foreign_key:table_column_address(user_info_table, user_info_id)},
 		description : {data_type:text},
 		time_of_day : {data_type:text},
 		priority : {data_type:text},
@@ -169,8 +178,8 @@ func table_column_address(table_parameter: String, column_parameter: String) -> 
 func create_table_event_info() -> void:
 	var data_columns: Dictionary = {
 		status : {data_type:text},
-		assigned_to : {data_type:int_, foreign_key:table_column_address(user_info_table, id)},
-		completed_by : {data_type:int_, foreign_key:table_column_address(user_info_table, id)}
+		assigned_to : {data_type:int_, foreign_key:table_column_address(user_info_table, user_info_id)},
+		completed_by : {data_type:int_, foreign_key:table_column_address(user_info_table, user_info_id)}
 	}
 	create_new_table_with_primary_id(event_info_table, data_columns)
 
@@ -209,8 +218,8 @@ func create_table_section_tasks(section_parameter: DataGlobal.Section) -> void:
 
 func section_tasks_standard_data() -> Dictionary:
 	var standard_data: Dictionary = {
-		task : {data_type:int_, foreign_key:table_column_address(task_info_table, id)},
-		section : {data_type:int_, foreign_key:table_column_address(sections_table, id)},
+		task : {data_type:int_, foreign_key:table_column_address(task_info_table, task_info_id)},
+		section : {data_type:int_, foreign_key:table_column_address(sections_table, sections_id)},
 	}
 	return standard_data
 
@@ -223,7 +232,7 @@ func add_columns_section_event_info(event_count_parameter: int, event_units_para
 func add_one_event_column(section_text: String, current_number: int, data_parameter: Dictionary) -> void:
 	var column_text = section_text + "_" + str(current_number + 1)
 	var new_event: Dictionary = {
-		column_text : {data_type:int_, foreign_key:table_column_address(event_info_table, id)}
+		column_text : {data_type:int_, foreign_key:table_column_address(event_info_table, event_info_id)}
 	}
 	data_parameter.merge(new_event)
 
