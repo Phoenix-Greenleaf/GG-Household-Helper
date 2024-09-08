@@ -236,23 +236,11 @@ search button, not on each little toggle
 
 
 """
+var month_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Month)
+var section_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Section)
+var time_of_day_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.TimeOfDay)
+var priority_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Priority)
 
-
-var january := "january"
-var february := "february"
-var march := "march"
-var april := "april"
-var may := "may"
-var june := "june"
-var july := "july"
-var august := "august"
-var september := "september"
-var october := "october"
-var november := "november"
-var december := "december"
-var monthly := "monthly"
-var weekly := "weekly"
-var daily := "daily"
 
 
 var id := "id"
@@ -301,6 +289,15 @@ var location_column_toggled: bool = true
 #var task_removal_column_toggled: bool = true
 
 var task_info_id: String = SqlManager.table_id(SqlManager.task_info_table)
+var sections_id: String = SqlManager.table_id(SqlManager.sections_table)
+var user_info_id: String = SqlManager.table_id(SqlManager.user_info_table)
+var monthly_tasks_id: String = SqlManager.table_id(SqlManager.monthly_tasks_table)
+var weekly_tasks_id: String = SqlManager.table_id(SqlManager.weekly_tasks_table)
+var daily_tasks_id: String = SqlManager.table_id(SqlManager.daily_tasks_table)
+var event_info_id: String = SqlManager.table_id(SqlManager.event_info_table)
+
+
+
 
 
 var table_for_query = SqlManager.sections_table
@@ -311,7 +308,7 @@ func form_query() -> String:
 	return new_query
 
 
-func column_select_string() -> String:
+func create_column_select_string() -> String:
 	var column_select: String = "select "
 	var column_array: PackedStringArray = []
 	column_array.append(task_info_id)
@@ -351,9 +348,9 @@ func column_select_string() -> String:
 	return column_select
 
 
-func add_string(original_parameter: String, adding_parameter: String) -> String:
-	var new_string: String = original_parameter + adding_parameter
-	return new_string
+#func add_string(original_parameter: String, adding_parameter: String) -> String:
+	#var new_string: String = original_parameter + adding_parameter
+	#return new_string
 
 
 func join_string() -> String:
@@ -362,21 +359,36 @@ func join_string() -> String:
 	return join_string
 
 
-func condition_string() -> String:
-	var condition_string: String = ""
-	
+func create_condition_string() -> String:
+	var condition_string: String = "where "
+	var condition_array: PackedStringArray = []
+	condition_array.append(year_condition())
+	condition_array.append(section_condition())
+	if current_toggled_month != DataGlobal.Month.ALL:
+		condition_array.append(month_condition())
+	var joined_strings: String = " and ".join(condition_array)
+	condition_string = condition_string + joined_strings
 	return condition_string
 
 
+func year_condition() -> String:
+	var current_condition: String = year + " = " + str(current_toggled_year)
+	return current_condition
 
 
+func month_condition() -> String:
+	var current_condition: String = month + " = " + month_enum_strings[current_toggled_month]
+	return current_condition
+
+
+func section_condition() -> String:
+	var current_condition: String = section + " = " + section_enum_strings[current_toggled_section]
+	return current_condition
 
 """
 
-select [current columns]
+order by?
 
-join [only if needed]
-
-where 
+group by?
 
 """
