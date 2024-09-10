@@ -40,6 +40,80 @@ enum CheckboxToggle {
 	INSPECT
 }
 
+
+
+
+func transer_old_data_to_database() -> void:
+	pass
+
+
+func transfer_process_old_section() -> void:
+	pass
+
+
+func transfer_process_new_section() -> void:
+	pass
+
+
+func transfer_create_row_dictionary() -> void:
+	pass
+
+
+func transfer_create_rows_array() -> void:
+	pass
+
+
+
+
+
+
+"""
+
+--reformat and redirect info
+-only care about:
+	-task
+	-section
+
+tables:
+	-sections
+	-task_info
+	-user info
+
+-daily_tasks
+-weekly_tasks
+-monthly_tasks
+-event_info
+
+
+
+
+submit changes to db
+check db in external editor
+
+
+"""
+
+func load_data_task_set(task_set_name: String, task_set_year: int) -> void:
+	active_data = null #does this have any impact?
+	active_data = TaskSetData.new()
+	var task_set_filepath := generate_task_set_filepath(task_set_name, task_set_year)
+	prints("task set filepath to load:", task_set_filepath)
+	var json_data = JsonSaveManager.load_data(task_set_filepath)
+	active_data.import_json_to_resource(json_data)
+	prints("load_data_task_set complete!")
+
+
+func generate_task_set_filepath(task_set_name: String, task_set_year: int) -> String:
+	var task_set_save_name: String = (data_name + task_set_name
+		+ "_" + str(task_set_year)
+	)
+	var task_set_filepath: String = DataGlobal.generate_filepath(task_set_save_name,
+		DataGlobal.FileType.TASK_TRACKING_DATA
+	)
+	return task_set_filepath
+
+
+
 #func _ready() -> void:
 	#connect_signals()
 
@@ -80,16 +154,6 @@ enum CheckboxToggle {
 ## data manager
 #
 #
-#func generate_task_set_filepath(task_set_name: String, task_set_year: int) -> String:
-	#var task_set_save_name: String = (data_name + task_set_name
-		#+ "_" + str(task_set_year)
-	#)
-	#var task_set_filepath: String = DataGlobal.generate_filepath(task_set_save_name,
-		#DataGlobal.FileType.TASK_TRACKING_DATA
-	#)
-	#return task_set_filepath
-#
-#
 #func create_data_task_set(task_set_name: String, task_set_year: int) -> void:
 	#var task_set_data := TaskSetData.new()
 	#task_set_data.task_set_title = task_set_name
@@ -120,14 +184,6 @@ enum CheckboxToggle {
 	#JsonSaveManager.save_data(task_set_filepath, json_for_save)
 #
 #
-#func load_data_task_set(task_set_name: String, task_set_year: int) -> void:
-	#active_data = null #does this have any impact?
-	#active_data = TaskSetData.new()
-	#var task_set_filepath := generate_task_set_filepath(task_set_name, task_set_year)
-	#prints("task set filepath to load:", task_set_filepath)
-	#var json_data = JsonSaveManager.load_data(task_set_filepath)
-	#active_data.import_json_to_resource(json_data)
-	#prints("load_data_task_set complete!")
 #
 #
 #func task_set_data_reloaded() -> void:
