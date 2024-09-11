@@ -156,7 +156,7 @@ func add_unassigned_user_row() -> void:
 func create_table_task_info() -> void:
 	var data_columns: Dictionary = {
 		task : {data_type:text},
-		section : {data_type:int_, foreign_key:table_column_address(sections_table, sections_id)},
+		#section : {data_type:int_, foreign_key:table_column_address(sections_table, sections_id)},
 		task_group : {data_type:text},
 		assigned_to : {data_type:int_, foreign_key:table_column_address(user_info_table, user_info_id)},
 		description : {data_type:text},

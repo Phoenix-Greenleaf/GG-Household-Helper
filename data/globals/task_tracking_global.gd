@@ -48,7 +48,7 @@ func transer_old_data_to_database() -> void:
 	SqlManager.add_data(user_info_table, user_info_to_insert)
 	#prints(user_info_to_insert)
 	
-	var sections_to_insert: Array = generate_test_sections()
+	var sections_to_insert: Array = generate_sections(2024)
 	SqlManager.add_data(sections_table, sections_to_insert)
 	#prints("")
 	#prints("Sections to Insert")
@@ -110,7 +110,6 @@ func extract_user_info() -> Array:
 func extract_task_info() -> Array:
 	var all_task_info_data_rows: Array
 	var current_users: Dictionary = query_user_info()
-	var current_sections: Dictionary = query_sections()  #left off here, introducing month and section
 	var gathered_task_info: Array = extract_old_sections()
 	for task_entry: TaskData in gathered_task_info:
 		var name_assigned_to: String = task_entry.assigned_user[0]
@@ -119,10 +118,10 @@ func extract_task_info() -> Array:
 		var task_info_data_row: Dictionary = {
 			task : task_entry.name,
 			assigned_to : current_users[name_assigned_to],
+			task_group : task_entry.group,
 		}
 		all_task_info_data_rows.append(task_info_data_row)
 	return all_task_info_data_rows
-			#task_group : task_entry.group,
 			#assigned_to : ,
 			#description : ,
 			#time_of_day : ,
@@ -154,16 +153,21 @@ func query_user_info() -> Dictionary:
 	return user_query
 
 
-func generate_test_sections() -> Array:
+func generate_sections(year_parameter: int) -> Array:
+	var year_string := str(year_parameter)
 	var all_section_data_rows: Array
+	var monthly_section_row: Dictionary = {
+		year : year_string,
+		month : "all",
+		section : "all",
+	}
+	all_section_data_rows.append(monthly_section_row)
 	for month_iteration in SqlManager.month_strings:
 		for section_iteration in SqlManager.section_strings:
-			if month_iteration == "all" and section_iteration != "all":
-				continue
-			if month_iteration != "all" and section_iteration == "all":
+			if month_iteration == "all" or section_iteration == "all" or section_iteration == "monthly":
 				continue
 			var section_data_row: Dictionary = {
-				year : "2024",
+				year : year_string,
 				month : month_iteration,
 				section : section_iteration,
 			}
@@ -171,29 +175,29 @@ func generate_test_sections() -> Array:
 	return all_section_data_rows
 
 
-func query_sections() -> Dictionary:
-	var raw_section_query: Array = SqlManager.query_data(
-		"select sections_id, month, section from sections"
-	)
-	var section_query: Dictionary
-	for section_string in SqlManager.section_strings:
-		section_query[section_string] = dictionary_of_month_strings()
-	for section_iteration in raw_section_query:
-		var iteration_section: String = section_iteration[section]
-		var iteration_month: String = section_iteration[month]
-		var section_address: Array = section_query[iteration_section][iteration_month]
-		section_address.append(section_iteration[sections_id])
-	prints("")
-	prints("Section Query")
-	prints(section_query)
-	prints("")
-	return section_query
+#func query_sections() -> Dictionary:
+	#var raw_section_query: Array = SqlManager.query_data(
+		#"select sections_id, month, section from sections"
+	#)
+	#var section_query: Dictionary
+	#for section_string in SqlManager.section_strings:
+		#section_query[section_string] = dictionary_of_month_strings()
+	#for section_iteration in raw_section_query:
+		#var iteration_section: String = section_iteration[section]
+		#var iteration_month: String = section_iteration[month]
+		#var section_address: Array = section_query[iteration_section][iteration_month]
+		#section_address.append(section_iteration[sections_id])
+	#prints("")
+	#prints("Section Query")
+	#prints(section_query)
+	#prints("")
+	#return section_query
 
-func dictionary_of_month_strings() -> Dictionary:
-	var month_strings: Dictionary
-	for month_iteration in SqlManager.month_strings:
-		month_strings[month_iteration] = []
-	return month_strings
+#func dictionary_of_month_strings() -> Dictionary:
+	#var month_strings: Dictionary
+	#for month_iteration in SqlManager.month_strings:
+		#month_strings[month_iteration] = []
+	#return month_strings
 
 
 
@@ -626,9 +630,73 @@ func section_condition() -> String:
 	return current_condition
 
 """
-
 order by?
-
 group by?
+"""
+
+
+
+"""
+any adding info:
+	- check if duplicate
+	- give error and do not add
+
+
+
+create task:
+	- grab relevant info
+	- fill in any important blanks
+	- create
+
+create user:
+	- just add
+
+
+create year: 
+	- add year
+
+create sections: 
+	- generate with new year
+
+create daily/weekly/monthly
+
+
+create events:
+	- load default status if event empty
+	- create data when actually modified
+	- 
+	- 
+	- 
+
+
+data changes:
+	- make dictionary of any changes
+	- new changes should override old change dictionary
+	- changes held in global memory, displayed info is just temporary
+	- have cells track important info for making change dictionary
+	- any display changes load unchanged info from database, then applies any relevant changes
+	- can cells call out to check for changes, based on being on screen? to prevent uneeded changes?
+	- will previous solution also need a 'just became screen visible' feature to check for updates?
+
+
+save data:
+	- get name
+	- submit changes dictionary to database
+
+
+load data:
+	- get list of availible databases
+	- verify main tables exists in file
+	- display name
+	- query database - based on which data cells are active
+	- load cells with data
+
+create database:
+	- check new name vs existing db names, throw error if sames
+	- create tables
+	- 
+	- 
+	- 
+
 
 """
