@@ -47,6 +47,13 @@ func transer_old_data_to_database() -> void:
 	var user_info_to_insert: Array = extract_user_info()
 	SqlManager.add_data(user_info_table, user_info_to_insert)
 	#prints(user_info_to_insert)
+	
+	var sections_to_insert: Array = generate_test_sections()
+	SqlManager.add_data(sections_table, sections_to_insert)
+	#prints("")
+	#prints("Sections to Insert")
+	#prints(sections_to_insert)
+	
 	var task_info_to_insert: Array = extract_task_info()
 	SqlManager.add_data(task_info_table, task_info_to_insert)
 	#prints(task_info_to_insert)
@@ -86,13 +93,16 @@ func extract_user_info() -> Array:
 	var all_user_info_data_rows: Array
 	for user_entry in active_data.user_profiles:
 		var user_color: String = user_entry[1].to_html()
-		Color.WHITE
+		var user_name: String = user_entry[0]
 		var user_info_data_row: Dictionary = {
-			name_ : user_entry[0],
+			name_ : user_name,
 			color_ : user_color
 		}
 		all_user_info_data_rows.append(user_info_data_row)
-	prints("User Info Extracted")
+	#prints("")
+	#prints("User Info Extracted")
+	#prints(all_user_info_data_rows)
+	#prints("")
 	return all_user_info_data_rows
 
 
@@ -100,13 +110,15 @@ func extract_user_info() -> Array:
 func extract_task_info() -> Array:
 	var all_task_info_data_rows: Array
 	var current_users: Dictionary = query_user_info()
+	var current_sections: Dictionary = query_sections()  #left off here, introducing month and section
 	var gathered_task_info: Array = extract_old_sections()
 	for task_entry: TaskData in gathered_task_info:
-		if task_entry.assigned_user[0] == "No Profile":
-			continue
+		var name_assigned_to: String = task_entry.assigned_user[0]
+		if name_assigned_to == "No Profile":
+			name_assigned_to = SqlManager.unassigned_user_text
 		var task_info_data_row: Dictionary = {
 			task : task_entry.name,
-			assigned_to : current_users[task_entry.assigned_user[0]],
+			assigned_to : current_users[name_assigned_to],
 		}
 		all_task_info_data_rows.append(task_info_data_row)
 	return all_task_info_data_rows
@@ -142,22 +154,49 @@ func query_user_info() -> Dictionary:
 	return user_query
 
 
-##event_info() -> void:
-	#
-		#status : {data_type:text},
-		#assigned_to : {data_type:int_, foreign_key:table_column_address(user_info_table, user_info_id)},
-		#completed_by : {data_type:int_, foreign_key:table_column_address(user_info_table, user_info_id)}
-	#}
-	#create_new_table_with_primary_id(event_info_table, data_columns)
-#
-#
-##sections() -> void:
-	#
-		#year : {data_type:text},
-		#month : {data_type:text},
-		#section : {data_type:text},
-		#}
-	#create_new_table_with_primary_id(sections_table, data_columns)
+func generate_test_sections() -> Array:
+	var all_section_data_rows: Array
+	for month_iteration in SqlManager.month_strings:
+		for section_iteration in SqlManager.section_strings:
+			if month_iteration == "all" and section_iteration != "all":
+				continue
+			if month_iteration != "all" and section_iteration == "all":
+				continue
+			var section_data_row: Dictionary = {
+				year : "2024",
+				month : month_iteration,
+				section : section_iteration,
+			}
+			all_section_data_rows.append(section_data_row)
+	return all_section_data_rows
+
+
+func query_sections() -> Dictionary:
+	var raw_section_query: Array = SqlManager.query_data(
+		"select sections_id, month, section from sections"
+	)
+	var section_query: Dictionary
+	for section_string in SqlManager.section_strings:
+		section_query[section_string] = dictionary_of_month_strings()
+	for section_iteration in raw_section_query:
+		var iteration_section: String = section_iteration[section]
+		var iteration_month: String = section_iteration[month]
+		var section_address: Array = section_query[iteration_section][iteration_month]
+		section_address.append(section_iteration[sections_id])
+	prints("")
+	prints("Section Query")
+	prints(section_query)
+	prints("")
+	return section_query
+
+func dictionary_of_month_strings() -> Dictionary:
+	var month_strings: Dictionary
+	for month_iteration in SqlManager.month_strings:
+		month_strings[month_iteration] = []
+	return month_strings
+
+
+
 #
 #
 ##section_tasks(section_parameter: DataGlobal.Section) -> void:

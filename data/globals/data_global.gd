@@ -159,6 +159,7 @@ func theme_variation_issue_workaround(correction_target: Node, theme_parameter: 
 
 func enum_to_strings(target_enum: Dictionary) -> Array:
 	var enum_strings: Array = target_enum.keys()
+	var lower_enum_strings: Array
 	for entry in enum_strings:
-		entry = entry.to_lower()
-	return enum_strings
+		lower_enum_strings.append(entry.to_lower())
+	return lower_enum_strings
