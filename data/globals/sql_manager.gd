@@ -4,7 +4,7 @@ var active_database: SQLite
 var database_directory: String = "user://"
 var household_name: String
 var household_default_name := "My"
-var database_standard_title: String = "_household_helper_data"
+var database_standard_title: String = "_household_helper_data.db"
 
 var program_info_table := "program_info"
 var user_info_table := "user_info"
@@ -70,7 +70,15 @@ var weekly_tasks_id: String = table_id(weekly_tasks_table)
 var daily_tasks_id: String = table_id(daily_tasks_table)
 var event_info_id: String = table_id(event_info_table)
 
+var verbose_sql_output: bool = false
 
+func _ready() -> void:
+	active_database = SQLite.new()
+	active_database.path = database_path()
+	active_database.foreign_keys = true
+	if verbose_sql_output:
+		active_database.verbosity_level = SQLite.VERBOSE
+	active_database.open_db()
 
 func char_(number: int) -> String:
 	var char_combined: String = char_part + str(number) + ")"
@@ -86,12 +94,11 @@ func database_path() -> String:
 
 
 func create_new_database() -> void:
-	active_database = SQLite.new()
-	active_database.path = database_path()
-	active_database.foreign_keys = true
-	#active_database.verbosity_level = SQLite.VERBOSE
-	active_database.open_db()
 	create_all_tables()
+
+
+func open_existing_database() -> void:
+	pass
 
 
 func create_all_tables() -> void:
@@ -274,3 +281,10 @@ func update_data(table_parameter: String, conditions_parameter: String, row_data
 
 func remove_data(table_parameter: String, conditions_parameter: String) -> void:
 	active_database.delete_rows(table_parameter, conditions_parameter)
+
+
+func database_tables_exist() -> bool:
+	var database_path: String = database_path()
+	var tables_exist_query: Array = SqlManager.select_data("sqlite_schema", "type='table' and name='" + user_info_table + "'", ["count(name)"])
+	var tables_exist: bool = tables_exist_query[0]["count(name)"]
+	return tables_exist

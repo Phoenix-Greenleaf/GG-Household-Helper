@@ -44,11 +44,30 @@ enum CheckboxToggle {
 
 
 func transer_old_data_to_database() -> void:
-	pass
+	var user_info_to_insert: Array = extract_user_info()
+	SqlManager.add_data(user_info_table, user_info_to_insert)
+	#prints(user_info_to_insert)
+	var task_info_to_insert: Array = extract_task_info()
+	SqlManager.add_data(task_info_table, task_info_to_insert)
+	#prints(task_info_to_insert)
 
 
-func transfer_process_old_section() -> void:
-	pass
+func extract_old_sections() -> Array:
+	var all_old_task_info: Array
+	all_old_task_info = extract_target_old_section(active_data.spreadsheet_year_data)
+	all_old_task_info.append_array(extract_target_old_section(active_data.spreadsheet_month_data))
+	all_old_task_info.append_array(extract_target_old_section(active_data.spreadsheet_week_data))
+	all_old_task_info.append_array(extract_target_old_section(active_data.spreadsheet_day_data))
+	return all_old_task_info
+
+
+func extract_target_old_section(target_section: Array) -> Array:
+	var section_tasks: Array
+	for task_info in target_section:
+		if task_info is not TaskData:
+			printerr("Extraction hit a non-TaskData entry, send help")
+		section_tasks.append(task_info)
+	return section_tasks
 
 
 func transfer_process_new_section() -> void:
@@ -63,6 +82,114 @@ func transfer_create_rows_array() -> void:
 	pass
 
 
+func extract_user_info() -> Array:
+	var all_user_info_data_rows: Array
+	for user_entry in active_data.user_profiles:
+		var user_color: String = user_entry[1].to_html()
+		Color.WHITE
+		var user_info_data_row: Dictionary = {
+			name_ : user_entry[0],
+			color_ : user_color
+		}
+		all_user_info_data_rows.append(user_info_data_row)
+	prints("User Info Extracted")
+	return all_user_info_data_rows
+
+
+
+func extract_task_info() -> Array:
+	var all_task_info_data_rows: Array
+	var current_users: Dictionary = query_user_info()
+	var gathered_task_info: Array = extract_old_sections()
+	for task_entry: TaskData in gathered_task_info:
+		if task_entry.assigned_user[0] == "No Profile":
+			continue
+		var task_info_data_row: Dictionary = {
+			task : task_entry.name,
+			assigned_to : current_users[task_entry.assigned_user[0]],
+		}
+		all_task_info_data_rows.append(task_info_data_row)
+	return all_task_info_data_rows
+			#task_group : task_entry.group,
+			#assigned_to : ,
+			#description : ,
+			#time_of_day : ,
+			#priority : ,
+			#location : ,
+			#last_completed : ,
+			#daily_scheduling_start : ,
+			#days_per_cycle : ,
+			#daily_scheduling_end : ,
+			#weekly_scheduling_start : ,
+			#weeks_per_cycle : ,
+			#weekly_scheduling_end : ,
+			#monthly_scheduling_start : ,
+			#months_per_cycle : ,
+			#monthly_scheduling_end : ,
+
+
+func query_user_info() -> Dictionary:
+	var raw_user_query: Array = SqlManager.query_data(
+		"select user_info_id, name from user_info"
+	)
+	var user_query: Dictionary
+	for user_iteration in raw_user_query:
+		user_query[user_iteration[name_]] = user_iteration[user_info_id]
+	prints("")
+	prints("User Query")
+	prints(user_query)
+	prints("")
+	return user_query
+
+
+##event_info() -> void:
+	#
+		#status : {data_type:text},
+		#assigned_to : {data_type:int_, foreign_key:table_column_address(user_info_table, user_info_id)},
+		#completed_by : {data_type:int_, foreign_key:table_column_address(user_info_table, user_info_id)}
+	#}
+	#create_new_table_with_primary_id(event_info_table, data_columns)
+#
+#
+##sections() -> void:
+	#
+		#year : {data_type:text},
+		#month : {data_type:text},
+		#section : {data_type:text},
+		#}
+	#create_new_table_with_primary_id(sections_table, data_columns)
+#
+#
+##section_tasks(section_parameter: DataGlobal.Section) -> void:
+	#var event_count: int = 0
+	#var event_units: String = ""
+	#var event_section_title: String = ""
+	#}
+	#match section_parameter:
+		#DataGlobal.Section.MONTHLY:
+			#event_count = 12
+			#event_units = "month"
+			#event_section_title = monthly_tasks_table
+		#DataGlobal.Section.WEEKLY:
+			#event_count = 5
+			#event_units = "week"
+			#event_section_title = weekly_tasks_table
+		#DataGlobal.Section.DAILY:
+			#event_count = 31
+			#event_units = "day"
+			#event_section_title = daily_tasks_table
+	#data_columns = section_tasks_standard_data()
+	#add_columns_section_event_info(event_count, event_units, data_columns)
+	#create_new_table_with_primary_id(event_section_title, data_columns)
+#
+#
+##section_tasks_standard_data() -> Dictionary:
+	#var standard_data: Dictionary = {
+		#task : {data_type:int_, foreign_key:table_column_address(task_info_table, task_info_id)},
+		#section : {data_type:int_, foreign_key:table_column_address(sections_table, sections_id)},
+	#}
+	#return standard_data
+#
 
 
 

@@ -23,7 +23,7 @@ func _ready() -> void:
 
 func update_active_data() -> void:
 	match TaskTrackingGlobal.current_toggled_section:
-		DataGlobal.Section.YEARLY, DataGlobal.Section.MONTHLY:
+		DataGlobal.Section.MONTHLY:
 			year_and_month_updater()
 		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
 			day_and_week_updater()
