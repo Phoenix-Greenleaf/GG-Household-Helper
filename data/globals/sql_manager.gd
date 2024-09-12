@@ -73,12 +73,7 @@ var event_info_id: String = table_id(event_info_table)
 var verbose_sql_output: bool = false
 
 func _ready() -> void:
-	active_database = SQLite.new()
-	active_database.path = database_path()
-	active_database.foreign_keys = true
-	if verbose_sql_output:
-		active_database.verbosity_level = SQLite.VERBOSE
-	active_database.open_db()
+	load_database()
 
 func char_(number: int) -> String:
 	var char_combined: String = char_part + str(number) + ")"
@@ -283,8 +278,21 @@ func remove_data(table_parameter: String, conditions_parameter: String) -> void:
 	active_database.delete_rows(table_parameter, conditions_parameter)
 
 
-func database_tables_exist() -> bool:
+func verify_database_tables_exist() -> bool:
 	var database_path: String = database_path()
 	var tables_exist_query: Array = SqlManager.select_data("sqlite_schema", "type='table' and name='" + user_info_table + "'", ["count(name)"])
 	var tables_exist: bool = tables_exist_query[0]["count(name)"]
 	return tables_exist
+
+
+
+func load_database() -> void:
+	active_database = SQLite.new()
+	active_database.path = database_path()
+	active_database.foreign_keys = true
+	if verbose_sql_output:
+		active_database.verbosity_level = SQLite.VERBOSE
+	active_database.open_db()
+	if not verify_database_tables_exist():
+		create_new_database()
+	TaskTrackingGlobal.database_is_active = true

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dyyf7omqhasxq"]
 
-[ext_resource type="Script" path="res://gui/task_tracking/data_manager/task_save_button.gd" id="1_4tmnx"]
+[ext_resource type="Script" path="res://gui/task_tracking/database_manager/task_save_button.gd" id="1_4tmnx"]
 
 [node name="TaskSaveButton" type="PanelContainer"]
 anchors_preset = 8

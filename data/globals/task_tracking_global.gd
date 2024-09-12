@@ -1,10 +1,11 @@
 extends Node
 
-var active_data: TaskSetData
-var active_settings: TaskSettingsData
+var active_data: TaskSetData #to be removed once old data import not needed
+var database_is_active: bool = false #the new active_data
+var active_settings: TaskSettingsData #still in the old format, for now
 
 var data_folder = "user://task_tracker_data/"
-var data_name: String = "task_tracking_"
+var data_name: String = "task_tracking_" #to be removed once old data import not needed
 var settings_name: String = "task_tracking_settings"
 
 var filepath_task_tracking_settings: String = (DataGlobal.settings_folder
@@ -237,31 +238,7 @@ func generate_sections(year_parameter: int) -> Array:
 
 
 
-"""
-
---reformat and redirect info
--only care about:
-	-task
-	-section
-
-tables:
-	-sections
-	-task_info
-	-user info
-
--daily_tasks
--weekly_tasks
--monthly_tasks
--event_info
-
-
-
-
-submit changes to db
-check db in external editor
-
-
-"""
+# just around to load old data sets
 
 func load_data_task_set(task_set_name: String, task_set_year: int) -> void:
 	active_data = null #does this have any impact?
@@ -583,26 +560,6 @@ func create_column_select_string() -> String:
 	return column_select
 
 
-#func add_string(original_parameter: String, adding_parameter: String) -> String:
-	#var new_string: String = original_parameter + adding_parameter
-	#return new_string
-
-
-#func join_string() -> String:
-	#var join_string: String = ""
-	#
-	#
-#task_info_table
-##sections_table
-#user_info_table
-#monthly_tasks_table
-#weekly_tasks_table
-#daily_tasks_table
-#event_info_table
-	#
-	#return join_string
-
-
 func create_condition_string() -> String:
 	var condition_string: String = "where "
 	var condition_array: PackedStringArray = []
@@ -629,18 +586,59 @@ func section_condition() -> String:
 	var current_condition: String = section + " = " + section_enum_strings[current_toggled_section]
 	return current_condition
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+
+load data:
+	- get list of availible databases
+	- verify main tables exists in file
+	- display name
+	- query database - based on which data cells are active
+	- load cells with data
+
+
+
+
+
+loading cells:
+	- bool toggles define the query and cell generation
+	- create any needed id decoder dictionaries
+	- initialize cells with data:
+		- data for change-dictionary-creation
+		- 
+	- apply changes-dictionary if there is any changes
+	- 
+	- 
+	- 
+
+
+"""
+
+
+
 """
 order by?
 group by?
-"""
 
 
-
-"""
 any adding info:
 	- check if duplicate
 	- give error and do not add
-
 
 
 create task:
@@ -666,7 +664,6 @@ create events:
 	- create data when actually modified
 	- 
 	- 
-	- 
 
 
 data changes:
@@ -684,19 +681,29 @@ save data:
 	- submit changes dictionary to database
 
 
-load data:
-	- get list of availible databases
-	- verify main tables exists in file
-	- display name
-	- query database - based on which data cells are active
-	- load cells with data
 
 create database:
 	- check new name vs existing db names, throw error if sames
 	- create tables
+	- create first user for unassigned entries
 	- 
 	- 
-	- 
+
+
+"""
+
+
+
+"""
+grid sync:
+	- resize is useless for now
+	- tie signal triggers to actions that would cause resize changes:
+		- header button presses
+		- data input / changes
+	- unsure where to resize:
+		- the grid cell
+		- the size of the object in the cell
+	- scroll seems ok so far
 
 
 """

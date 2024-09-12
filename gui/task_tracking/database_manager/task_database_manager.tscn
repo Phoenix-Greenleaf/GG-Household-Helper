@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b2gi1xlrdmw1p"]
 
-[ext_resource type="Script" path="res://gui/task_tracking/data_manager/task_data_manager.gd" id="1_64y23"]
+[ext_resource type="Script" path="res://gui/task_tracking/database_manager/task_database_manager.gd" id="1_64y23"]
 
 [node name="DataManager" type="PanelContainer"]
 clip_contents = true
@@ -77,14 +77,11 @@ layout_mode = 2
 [node name="VBox" type="VBoxContainer" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer"]
 layout_mode = 2
 
-[node name="HBox" type="HBoxContainer" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox"]
+[node name="TaskDataTitleLabel" type="Label" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox"]
 layout_mode = 2
+text = "Household (Database) Name"
 
-[node name="TaskDataTitleLabel" type="Label" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox/HBox"]
-layout_mode = 2
-text = "Task Data Title"
-
-[node name="TaskDataTitleLineEdit" type="LineEdit" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox/HBox"]
+[node name="TaskDataTitleLineEdit" type="LineEdit" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -93,30 +90,16 @@ alignment = 1
 expand_to_text_length = true
 clear_button_enabled = true
 
-[node name="TaskAcceptButton" type="Button" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox/HBox"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="TaskAcceptButton" type="Button" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Accept"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox"]
-layout_mode = 2
-
-[node name="TaskDataYearLabel" type="Label" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox/HBoxContainer2"]
-layout_mode = 2
-text = "Task Data Year"
-
-[node name="TaskDataYearSpinbox" type="SpinBox" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox/HBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-min_value = 1000.0
-max_value = 3000.0
-value = 2000.0
-rounded = true
-allow_greater = true
-alignment = 1
-
-[node name="TaskCancelButton" type="Button" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox/HBoxContainer2"]
+[node name="TaskCancelButton" type="Button" parent="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Cancel"
@@ -157,16 +140,6 @@ placeholder_text = "Name Here"
 alignment = 1
 expand_to_text_length = true
 clear_button_enabled = true
-
-[node name="CloneSpinBox" type="SpinBox" parent="MainMargin/DataManagerVBox/TaskGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-min_value = 1000.0
-max_value = 3000.0
-value = 2000.0
-rounded = true
-allow_greater = true
-alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MainMargin/DataManagerVBox/TaskGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
@@ -250,8 +223,8 @@ access = 1
 filters = PackedStringArray("*.csv ; Comma Separated Values")
 
 [connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/NewTaskButton" to="." method="_on_new_task_button_pressed"]
-[connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox/HBox/TaskAcceptButton" to="." method="_on_task_accept_button_pressed"]
-[connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox/HBoxContainer2/TaskCancelButton" to="." method="_on_task_cancel_button_pressed"]
+[connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox/HBoxContainer/TaskAcceptButton" to="." method="_on_task_accept_button_pressed"]
+[connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/NewTaskPanel/Margin/CenterContainer/VBox/HBoxContainer/TaskCancelButton" to="." method="_on_task_cancel_button_pressed"]
 [connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/CloneDataButton" to="." method="_on_clone_data_button_pressed"]
 [connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/CloneAcceptButton" to="." method="_on_clone_accept_button_pressed"]
 [connection signal="pressed" from="MainMargin/DataManagerVBox/TaskGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/CloneBackButton" to="." method="_on_clone_back_button_pressed"]

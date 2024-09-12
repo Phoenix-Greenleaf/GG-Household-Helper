@@ -85,6 +85,113 @@ func save_active_data() -> void:
 		TaskSignalBus._on_data_set_saved.emit()
 
 
+
+
+
+
+func populate_menu_load_database() -> void:
+	pass
+
+func find_database_files() -> void:
+	pass
+
+func get_database_name() -> void:
+	pass
+
+func create_buttons_load_database() -> void:
+	pass
+
+
+
+
+
+
+"""
+
+load data:
+	- get list of availible databases
+	- verify main tables exists in file
+	- display name
+	- query database - based on which data cells are active
+	- load cells with data
+
+
+
+
+
+loading cells:
+	- bool toggles define the query and cell generation
+	- create any needed id decoder dictionaries
+	- initialize cells with data:
+		- data for change-dictionary-creation
+		- 
+	- apply changes-dictionary if there is any changes
+	- 
+	- 
+	- 
+
+
+"""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 func _on_save_warning_button_pressed() -> void:
 	if save_warning_button.text == "Data Saved":
 		DataGlobal.button_based_message(save_warning_button, "Already Saved!")
