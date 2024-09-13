@@ -43,3 +43,5 @@ size_flags_vertical = 1
 text = "Task Set Name"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[connection signal="toggled" from="FunctionalButton" to="." method="_on_functional_button_toggled"]

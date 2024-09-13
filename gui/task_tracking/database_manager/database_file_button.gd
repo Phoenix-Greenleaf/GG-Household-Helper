@@ -4,6 +4,9 @@ extends PanelContainer
 @onready var functional_button: Button = %FunctionalButton
 @onready var database_name_label: Label = %DatabaseNameLabel
 
+var database_path: String = ""
+var database_name: String = ""
+
 
 func _ready() -> void:
 	initialize_button()
@@ -12,6 +15,12 @@ func _ready() -> void:
 
 func initialize_button() -> void:
 	database_name_label.text = "Button Test"
+
+
+func load_path_and_name(path_param: String, name_param: String) -> void:
+	database_path = path_param
+	database_name = name_param
+	database_name_label.text = name_param
 
 
 func retoggle_button_group() -> void:
@@ -24,4 +33,10 @@ func retoggle_button_group() -> void:
 
 
 func name_compare() -> bool:
-	return TaskTrackingGlobal.active_data.task_set_title == database_name_label.text
+	return SqlManager.database_name == database_name
+
+
+
+
+func _on_functional_button_toggled(toggled_on: bool) -> void:
+	pass # Replace with function body.

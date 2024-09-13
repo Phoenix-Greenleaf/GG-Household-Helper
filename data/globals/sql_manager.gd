@@ -1,6 +1,11 @@
 extends Node
 
 var active_database: SQLite
+var database_is_active: bool = false #the new active_data
+var database_path: String = ""
+var database_name: String = ""
+
+
 var database_directory: String = "user://"
 var household_name: String
 var household_default_name := "My"
@@ -288,22 +293,46 @@ func verify_database_tables_exist() -> bool:
 
 func load_database() -> void:
 	active_database = SQLite.new()
-	active_database.path = TaskTrackingGlobal.database_path
+	active_database.path = database_path
 	active_database.foreign_keys = true
 	if verbose_sql_output:
 		active_database.verbosity_level = SQLite.VERBOSE
 	active_database.open_db()
 	if not verify_database_tables_exist():
 		create_new_database()
-	TaskTrackingGlobal.database_is_active = true
+	database_is_active = true
 
 
 func get_existing_database_files() -> Array:
 	var existing_files_info =  DirAccess.get_files_at(database_directory)
-	prints("existing database file info:" + existing_files_info)
+	prints("existing files info:", existing_files_info)
 	var database_files_only: Array
 	for file_info_iteration: String in existing_files_info:
 		if not file_info_iteration.ends_with(database_extension):
 			continue
 		database_files_only.append(file_info_iteration)
+	prints("existing database files", database_files_only)
 	return database_files_only
+
+func get_existing_database_names() -> void:
+	pass
+
+
+
+
+#func get_database_file_names() -> Array:
+	#var full_database_paths: Array = SqlManager.get_existing_database_files()
+	#var database_file_names: Array
+	#for file_iteration: String in full_database_paths:
+		#var full_file_name: String = file_iteration.get_file()
+		#var file_name_without_extension: String = full_file_name.replace(".db", "")
+		#var capitalized_file_name: String = file_name_without_extension.capitalize()
+		#database_file_names.append(capitalized_file_name)
+	#return database_file_names
+
+
+func get_database_name_from_path(path_parameter: String) -> String:
+	var full_file_name: String = path_parameter.get_file()
+	var file_name_without_extension: String = full_file_name.replace(".db", "")
+	var capitalized_file_name: String = file_name_without_extension.capitalize()
+	return capitalized_file_name

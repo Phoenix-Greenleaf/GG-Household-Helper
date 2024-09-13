@@ -72,21 +72,20 @@ func starting_visibilities() -> void:
 	clone_menu_reset()
 
 
-func load_database_file_info() -> void:
-	var database_files: Array = get_database_file_names()
-	for iteration_name in database_files:
-		create_database_file_button(iteration_name)
+func populate_database_grid() -> void:
+	var database_paths: Array = SqlManager.get_existing_database_files()
+	var database_names: Array = get_database_file_names(database_paths)
+	for database_iteration in database_paths.size():
+		create_database_file_button(database_paths[database_iteration], database_names[database_iteration])
 	get_tree().call_group(database_file_button_group_string, retoggle_button_group_string)
 
 
-func get_database_file_names() -> Array:
-	var full_database_paths: Array = SqlManager.get_existing_database_files()
+func get_database_file_names(paths_parameter: Array) -> Array:
+	var full_database_paths: Array = paths_parameter
 	var database_file_names: Array
 	for file_iteration: String in full_database_paths:
-		var full_file_name: String = file_iteration.get_file()
-		var file_name_without_extension: String = full_file_name.replace(".db", "")
-		var capitalized_file_name: String = file_name_without_extension.capitalize()
-		database_file_names.append(capitalized_file_name)
+		var iteration_name = SqlManager.get_database_name_from_path(file_iteration)
+		database_file_names.append(iteration_name)
 	return database_file_names
 
 
@@ -106,12 +105,13 @@ func task_field_reset() -> void:
 	task_data_title_line_edit.clear()
 
 
-func create_database_file_button(target_name: String) -> void:
+func create_database_file_button(path_param: String, name_param: String) -> void:
 	var new_database_file_button := DATABASE_FILE_BUTTON.instantiate()
 	database_grid.add_child(new_database_file_button)
 	database_grid.move_child(new_database_file_button, database_file_button_count)
-	new_database_file_button.task_set_name_label.text = target_name
+	new_database_file_button.task_set_name_label.text = name_param
 	new_database_file_button.add_to_group(database_file_button_group_string)
+	new_database_file_button.load_path_and_name(path_param, name_param)
 	database_file_button_count += 1
 	var actual_task_button: Button = new_database_file_button.get_node("FunctionalButton")
 	actual_task_button.toggled.connect(_on_task_save_button_pressed.bind(target_name))
@@ -177,13 +177,13 @@ func _on_task_accept_button_pressed() -> void:
 	show_new_task_button()
 
 
-func _on_task_save_button_pressed(button_pressed: bool, name_parameter: String, year_parameter: int):
+func _on_database_file_button_pressed(button_pressed: bool, path_param: String, name_param: String):
 	if not button_pressed:
 		return
-	prints("Test _on_task_save_button_pressed:", name_parameter, year_parameter)
-	if TaskTrackingGlobal.active_data:
-		if [name_parameter, year_parameter] == DataGlobal.get_active_task_set_info():
-			prints("Tasksheet data already loaded, skipping.")
+	prints("Database Button Pressed:", name_param)
+	if SqlManager.database_is_active:
+		if SqlManager.database_name == name_param:
+			prints("Database already active, skipping.")
 			DataGlobal.button_based_message(current_tasksheet_label, "Data Already Loaded!") 
 			return
 	if safe_lock_active:
