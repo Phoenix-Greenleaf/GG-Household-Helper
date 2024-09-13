@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://dyyf7omqhasxq"]
 
-[ext_resource type="Script" path="res://gui/task_tracking/database_manager/task_save_button.gd" id="1_4tmnx"]
+[ext_resource type="Script" path="res://gui/task_tracking/database_manager/database_file_button.gd" id="1_qnbo0"]
 
-[node name="TaskSaveButton" type="PanelContainer"]
+[node name="DatabaseFileButton" type="PanelContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -16,9 +16,10 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_type_variation = &"PanelContainer_Blank"
-script = ExtResource("1_4tmnx")
+script = ExtResource("1_qnbo0")
 
 [node name="FunctionalButton" type="Button" parent="."]
+unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
 
@@ -35,18 +36,10 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="TaskSetNameLabel" type="Label" parent="MarginContainer/CenterContainer/VBox"]
+[node name="DatabaseNameLabel" type="Label" parent="MarginContainer/CenterContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 text = "Task Set Name"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TaskSetYearLabel" type="Label" parent="MarginContainer/CenterContainer/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 1
-text = "[YEAR]"
 horizontal_alignment = 1
 vertical_alignment = 1

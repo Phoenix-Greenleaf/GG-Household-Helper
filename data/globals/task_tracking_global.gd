@@ -2,6 +2,7 @@ extends Node
 
 var active_data: TaskSetData #to be removed once old data import not needed
 var database_is_active: bool = false #the new active_data
+var database_path: String = ""
 var active_settings: TaskSettingsData #still in the old format, for now
 
 var data_folder = "user://task_tracker_data/"

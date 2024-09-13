@@ -2,10 +2,15 @@ extends PanelContainer
 
 @export var visibility_node: Control
 
+
+@onready var database_grid: GridContainer = %DatabaseGrid
+
+
+
+
 @onready var close_manager_button: Button = %CloseManager
 @onready var import_task_file_dialog: FileDialog = $ImportTaskFileDialog
 @onready var task_data_title_line_edit: LineEdit = %TaskDataTitleLineEdit
-@onready var task_data_year_spinbox: SpinBox = %TaskDataYearSpinbox
 @onready var new_task_panel: PanelContainer = %NewTaskPanel
 @onready var new_task_button: Button = %NewTaskButton
 @onready var task_grid: GridContainer = %TaskGrid
@@ -19,19 +24,26 @@ extends PanelContainer
 @onready var clone_back_button: Button = %CloneBackButton
 @onready var clone_accept_button: Button = %CloneAcceptButton
 
-var task_save_button_group = preload("res://gui/task_tracking/data_manager/task_save_button_group.tres")
-var task_save_button = preload("res://gui/task_tracking/data_manager/task_save_button.tscn")
+
+
+
+const DATABASE_FILE_BUTTON = preload("res://gui/task_tracking/database_manager/database_file_button.tscn")
+const DATABASE_FILE_BUTTON_GROUP = preload("res://gui/task_tracking/database_manager/database_file_button_group.tres")
+#var task_save_button_group = preload("res://gui/task_tracking/data_manager/task_save_button_group.tres")
+#var task_save_button = preload("res://gui/task_tracking/data_manager/task_save_button.tscn")
 
 var safe_lock_active: bool
-var task_button_count: int = 4
+var database_file_button_count: int = 4
 var empty_string := ""
 
+var database_file_button_group_string := "database_file_buttons"
+var retoggle_button_group_string := "retoggle_button_group"
 
 
 func _ready() -> void:
 	connect_signal_bus()
 	starting_visibilities()
-	load_existing_task_sets()
+	#load_existing_task_sets()
 	if TaskTrackingGlobal.active_data:
 		update_current_tasksheet_label()
 
@@ -60,13 +72,24 @@ func starting_visibilities() -> void:
 	clone_menu_reset()
 
 
-func load_existing_task_sets() -> void:
-	var existing_files_info = TaskTrackingGlobal.get_task_sets_info()
-	for file_info_iteration in existing_files_info:
-		var interation_name = file_info_iteration[0]
-		var interation_year = file_info_iteration[1]
-		create_task_save_button(interation_name, interation_year)
-	get_tree().call_group("task_save_panels", "retoggle_button_group")
+func load_database_file_info() -> void:
+	var database_files: Array = get_database_file_names()
+	for iteration_name in database_files:
+		create_database_file_button(iteration_name)
+	get_tree().call_group(database_file_button_group_string, retoggle_button_group_string)
+
+
+func get_database_file_names() -> Array:
+	var full_database_paths: Array = SqlManager.get_existing_database_files()
+	var database_file_names: Array
+	for file_iteration: String in full_database_paths:
+		var full_file_name: String = file_iteration.get_file()
+		var file_name_without_extension: String = full_file_name.replace(".db", "")
+		var capitalized_file_name: String = file_name_without_extension.capitalize()
+		database_file_names.append(capitalized_file_name)
+	return database_file_names
+
+
 
 
 func show_new_task_panel() -> void:
@@ -80,21 +103,22 @@ func show_new_task_button() -> void:
 
 
 func task_field_reset() -> void:
-	task_data_year_spinbox.value = 2000
 	task_data_title_line_edit.clear()
 
 
-func create_task_save_button(target_name: String, target_year: int) -> void:
-	var new_task_save_button := task_save_button.instantiate()
-	task_grid.add_child(new_task_save_button)
-	task_grid.move_child(new_task_save_button, task_button_count)
-	new_task_save_button.task_set_name_label.text = target_name
-	new_task_save_button.task_set_year_label.text = str(target_year)
-	new_task_save_button.add_to_group("task_save_panels")
-	task_button_count += 1
-	var actual_task_button: Button = new_task_save_button.get_node("FunctionalButton")
-	actual_task_button.toggled.connect(_on_task_save_button_pressed.bind(target_name, target_year))
-	actual_task_button.set_button_group(task_save_button_group)
+func create_database_file_button(target_name: String) -> void:
+	var new_database_file_button := DATABASE_FILE_BUTTON.instantiate()
+	database_grid.add_child(new_database_file_button)
+	database_grid.move_child(new_database_file_button, database_file_button_count)
+	new_database_file_button.task_set_name_label.text = target_name
+	new_database_file_button.add_to_group(database_file_button_group_string)
+	database_file_button_count += 1
+	var actual_task_button: Button = new_database_file_button.get_node("FunctionalButton")
+	actual_task_button.toggled.connect(_on_task_save_button_pressed.bind(target_name))
+	actual_task_button.set_button_group(DATABASE_FILE_BUTTON_GROUP)
+
+
+
 
 
 func clone_menu_open() -> void:
@@ -126,7 +150,7 @@ func reset_data_manager() -> void:
 	for panel_iteration in get_tree().get_nodes_in_group("task_save_panels"):
 		task_grid.remove_child(panel_iteration)
 		panel_iteration.queue_free()
-	load_existing_task_sets()
+	load_database_file_info()
 
 
 func _on_import_task_file_dialog_file_selected(path: String) -> void:
@@ -146,10 +170,9 @@ func _on_task_accept_button_pressed() -> void:
 		printerr("Task Set needs title, not accepted")
 		DataGlobal.button_based_message(task_accept_button, "Title Needed!")
 		return
-	var new_tasksheet_year := int(task_data_year_spinbox.value)
 	var new_tasksheet_name: String = task_data_title_line_edit.text
-	TaskTrackingGlobal.create_data_task_set(new_tasksheet_name, new_tasksheet_year)
-	create_task_save_button(new_tasksheet_name, new_tasksheet_year)
+	TaskTrackingGlobal.create_data_task_set(new_tasksheet_name)
+	create_database_file_button(new_tasksheet_name)
 	task_field_reset()
 	show_new_task_button()
 
@@ -197,7 +220,7 @@ func _on_clone_accept_button_pressed() -> void:
 			)
 			return
 		DataGlobal.clone_task_set_data(cloned_title, cloned_year)
-		create_task_save_button(cloned_title, cloned_year)
+		create_database_file_button(cloned_title)
 		
 
 

@@ -4,7 +4,8 @@ var active_database: SQLite
 var database_directory: String = "user://"
 var household_name: String
 var household_default_name := "My"
-var database_standard_title: String = "_household_helper_data.db"
+var database_standard_title: String = "_household_helper_data"
+var database_extension: String = ".db"
 
 var program_info_table := "program_info"
 var user_info_table := "user_info"
@@ -80,11 +81,11 @@ func char_(number: int) -> String:
 	return char_combined
 
 
-func database_path() -> String:
+func create_database_path() -> String:
 	if not household_name:
 		push_warning("Using default household name for database path.")
 		household_name = household_default_name.to_snake_case()
-	var database_combined_path: String = database_directory + household_name + database_standard_title
+	var database_combined_path: String = database_directory + household_name + database_standard_title + database_extension
 	return database_combined_path
 
 
@@ -279,7 +280,6 @@ func remove_data(table_parameter: String, conditions_parameter: String) -> void:
 
 
 func verify_database_tables_exist() -> bool:
-	var database_path: String = database_path()
 	var tables_exist_query: Array = SqlManager.select_data("sqlite_schema", "type='table' and name='" + user_info_table + "'", ["count(name)"])
 	var tables_exist: bool = tables_exist_query[0]["count(name)"]
 	return tables_exist
@@ -288,7 +288,7 @@ func verify_database_tables_exist() -> bool:
 
 func load_database() -> void:
 	active_database = SQLite.new()
-	active_database.path = database_path()
+	active_database.path = TaskTrackingGlobal.database_path
 	active_database.foreign_keys = true
 	if verbose_sql_output:
 		active_database.verbosity_level = SQLite.VERBOSE
@@ -296,3 +296,14 @@ func load_database() -> void:
 	if not verify_database_tables_exist():
 		create_new_database()
 	TaskTrackingGlobal.database_is_active = true
+
+
+func get_existing_database_files() -> Array:
+	var existing_files_info =  DirAccess.get_files_at(database_directory)
+	prints("existing database file info:" + existing_files_info)
+	var database_files_only: Array
+	for file_info_iteration: String in existing_files_info:
+		if not file_info_iteration.ends_with(database_extension):
+			continue
+		database_files_only.append(file_info_iteration)
+	return database_files_only

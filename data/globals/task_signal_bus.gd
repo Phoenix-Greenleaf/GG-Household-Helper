@@ -1,7 +1,11 @@
 extends Node
 
 
-signal _on_active_data_set_switched
+signal _on_active_database_switched
+
+
+
+
 signal _on_data_set_modified
 signal _on_data_set_saved
 signal _on_data_manager_close_manager_button_pressed

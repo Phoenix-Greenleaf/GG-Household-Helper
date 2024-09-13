@@ -14,7 +14,7 @@
 [ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/task_spreadsheet_grid_container.gd" id="8_txnjo"]
 [ext_resource type="Script" path="res://scenes/task_editor/yearly_button.gd" id="9_0hqib"]
 [ext_resource type="PackedScene" uid="uid://c7tqndbd8llst" path="res://gui/task_tracking/checkbox_selection_popup.tscn" id="9_mlsj3"]
-[ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/task_tracking/database_manager/task_database_manager.tscn" id="10_7t8qi"]
+[ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/task_tracking/database_manager/database_manager.tscn" id="10_7t8qi"]
 [ext_resource type="Script" path="res://scenes/task_editor/monthly_button.gd" id="10_etwfq"]
 [ext_resource type="Script" path="res://scenes/task_editor/weekly_button.gd" id="11_ecy4k"]
 [ext_resource type="Script" path="res://scenes/task_editor/daily_button.gd" id="12_ycygh"]
