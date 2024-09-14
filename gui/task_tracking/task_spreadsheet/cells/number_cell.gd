@@ -29,3 +29,17 @@ func update_active_data(number_parameter: float) -> void:
 			prints("Spinbox Task", saved_task.name)
 			return
 	TaskSignalBus._on_data_set_modified.emit()
+
+
+
+
+
+func create_number_cell(number: int, current_type: String, column_group: String = "") -> void:
+	var cell: SpinBox = number_cell.instantiate()
+	self.add_child(cell)
+	cell.value = number
+	cell.saved_task = current_task
+	cell.saved_type = current_type
+	cell.connect_spinbox_update()
+	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)

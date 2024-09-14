@@ -30,3 +30,15 @@ func update_active_data(text_parameter) -> void:
 			prints("LineEdit active data update failed")
 			return
 	TaskSignalBus._on_data_set_modified.emit()
+
+
+
+
+func create_text_cell(text: String, current_type: String, column_group: String = "") -> void:
+	var cell: LineEdit = text_cell.instantiate()
+	self.add_child(cell)
+	cell.text = text
+	cell.saved_task = current_task
+	cell.saved_type = current_type
+	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)

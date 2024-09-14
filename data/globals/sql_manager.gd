@@ -301,6 +301,7 @@ func load_database() -> void:
 	if not verify_database_tables_exist():
 		create_new_database()
 	database_is_active = true
+	SignalBus._on_database_loaded.emit()
 
 
 func get_existing_database_files() -> Array:

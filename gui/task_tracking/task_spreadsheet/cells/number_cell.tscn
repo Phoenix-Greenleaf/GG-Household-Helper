@@ -5,5 +5,6 @@
 [node name="NumberCell" type="SpinBox"]
 alignment = 2
 script = ExtResource("1_hy1wj")
+saved_type = null
 
 [connection signal="resized" from="." to="." method="_on_resized"]

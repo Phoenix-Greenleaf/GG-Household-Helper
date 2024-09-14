@@ -78,3 +78,18 @@ func update_current_border(color_parameter: Color) -> void:
 		cell_checkbox_border_color_rect.update_border()
 		return
 	cell_checkbox_border_color_rect.update_border(color_parameter)
+
+
+
+func create_checkbox_cell(state: TaskTrackingGlobal.Checkbox, user_profile: Array,
+	cell_position: int, column_group: String = ""
+) -> void:
+	var cell: PanelContainer = checkbox_cell.instantiate()
+	self.add_child(cell)
+	cell.saved_position = cell_position
+	cell.saved_task = current_task
+	cell.saved_profile = user_profile 
+	cell.saved_state = state
+	cell.update_checkbox()
+	add_cell_to_groups(cell, column_group)
+	set_first_row_flag(cell)

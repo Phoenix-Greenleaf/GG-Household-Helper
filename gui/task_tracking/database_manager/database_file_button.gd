@@ -25,7 +25,7 @@ func load_path_and_name(path_param: String, name_param: String) -> void:
 
 func retoggle_button_group() -> void:
 	functional_button.set_pressed_no_signal(false)
-	if not TaskTrackingGlobal.database_is_active:
+	if not SqlManager.database_is_active:
 		return
 	if not name_compare():
 		return
@@ -39,4 +39,11 @@ func name_compare() -> bool:
 
 
 func _on_functional_button_toggled(toggled_on: bool) -> void:
-	pass # Replace with function body.
+	if not toggled_on:
+		return
+	if SqlManager.database_path == database_path:
+		prints("this database file already active")
+		return
+	SqlManager.database_path
+	SqlManager.database_name
+	SqlManager.load_database()

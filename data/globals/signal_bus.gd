@@ -5,3 +5,5 @@ signal _on_main_settings_back_button_pressed
 signal _on_theme_settings_color_palettes_loaded
 signal _on_theme_settings_color_palette_updated
 signal _on_theme_settings_color_palette_reset(palette: String)
+
+signal _on_database_loaded

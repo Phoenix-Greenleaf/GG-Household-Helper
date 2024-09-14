@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=22 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scenes/task_editor.gd" id="1_b0ww1"]
 [ext_resource type="ButtonGroup" uid="uid://c4hrg6nv6u6tb" path="res://gui/task_tracking/checkbox_toggle.tres" id="2_38p0l"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" path="res://scenes/task_editor/monthly_button.gd" id="10_etwfq"]
 [ext_resource type="Script" path="res://scenes/task_editor/weekly_button.gd" id="11_ecy4k"]
 [ext_resource type="Script" path="res://scenes/task_editor/daily_button.gd" id="12_ycygh"]
+[ext_resource type="Script" path="res://scenes/task_editor/task_add_panel.gd" id="14_58d3i"]
 [ext_resource type="Script" path="res://scenes/task_editor/multi_text_popup_center.gd" id="18_5n1d3"]
 [ext_resource type="Script" path="res://scenes/task_editor/data_manager_center.gd" id="18_t6koh"]
 
@@ -299,6 +300,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+script = ExtResource("14_58d3i")
 
 [node name="TaskAddMargin" type="MarginContainer" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel"]
 layout_mode = 2
