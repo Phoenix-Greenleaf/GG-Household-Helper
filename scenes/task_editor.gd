@@ -30,7 +30,7 @@ func connection_cental() -> void:
 
 
 func connect_other_signal_bus() -> void:
-	TaskSignalBus._on_active_data_set_switched.connect(update_current_tasksheet_label)
+	TaskSignalBus._on_new_database_loaded.connect(update_current_tasksheet_label)
 	TaskSignalBus._on_data_set_modified.connect(save_warning_triggered)
 	TaskSignalBus._on_data_set_modified.connect(save_warning_triggered)
 	TaskSignalBus._on_data_set_saved.connect(save_waring_reset)
@@ -51,12 +51,10 @@ func set_current_date_label() -> void:
 	current_date_label.set_text(current_label)
 
 
-func update_current_tasksheet_label() -> void:
-	var title = TaskTrackingGlobal.active_data.task_set_title
-	var year = TaskTrackingGlobal.active_data.task_set_year
+func update_database_label() -> void:
+	var database_name: String = SqlManager.database_name
 	var new_label = title + ": " + str(year)
 	current_save_label.text = new_label
-	TaskSignalBus._on_data_set_saved.emit()
 
 
 func section_enum_to_string() -> String:

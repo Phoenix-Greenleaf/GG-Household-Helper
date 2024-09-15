@@ -49,7 +49,7 @@ func _ready() -> void:
 
 
 func connect_signal_bus() -> void:
-	TaskSignalBus._on_active_data_set_switched.connect(update_current_tasksheet_label)
+	TaskSignalBus._on_new_database_loaded.connect(update_current_tasksheet_label)
 	TaskSignalBus._on_data_set_modified.connect(safety_toggle.bind(true))
 	TaskSignalBus._on_data_set_saved.connect(safety_toggle.bind(false))
 

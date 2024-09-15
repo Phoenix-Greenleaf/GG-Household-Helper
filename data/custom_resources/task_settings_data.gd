@@ -5,7 +5,7 @@ class_name TaskSettingsData
 enum NewCheckboxOption {ACTIVE, EXPIRED, ASSIGNED}
 
 @export var enable_auto_load_default_data: bool
-@export var default_data: Array
+@export var default_database_path: String
 @export var enable_deletion_buttons: bool
 @export var current_new_checkbox_option: NewCheckboxOption
 @export var description_preview_length: int

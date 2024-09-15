@@ -315,21 +315,15 @@ func get_existing_database_files() -> Array:
 	prints("existing database files", database_files_only)
 	return database_files_only
 
-func get_existing_database_names() -> void:
-	pass
 
-
-
-
-#func get_database_file_names() -> Array:
-	#var full_database_paths: Array = SqlManager.get_existing_database_files()
-	#var database_file_names: Array
-	#for file_iteration: String in full_database_paths:
-		#var full_file_name: String = file_iteration.get_file()
-		#var file_name_without_extension: String = full_file_name.replace(".db", "")
-		#var capitalized_file_name: String = file_name_without_extension.capitalize()
-		#database_file_names.append(capitalized_file_name)
-	#return database_file_names
+func get_existing_database_names(database_files_param: Array) -> Array:
+	var database_file_names: Array
+	for file_iteration: String in database_files_param:
+		var full_file_name: String = file_iteration.get_file()
+		var file_name_without_extension: String = full_file_name.replace(".db", "")
+		var capitalized_file_name: String = file_name_without_extension.capitalize()
+		database_file_names.append(capitalized_file_name)
+	return database_file_names
 
 
 func get_database_name_from_path(path_parameter: String) -> String:
@@ -337,3 +331,8 @@ func get_database_name_from_path(path_parameter: String) -> String:
 	var file_name_without_extension: String = full_file_name.replace(".db", "")
 	var capitalized_file_name: String = file_name_without_extension.capitalize()
 	return capitalized_file_name
+
+
+func set_database_name_and_path(name_param: String, path_param: String) -> void:
+	database_name = name_param
+	database_path = path_param
