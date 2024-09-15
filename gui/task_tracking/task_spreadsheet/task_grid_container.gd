@@ -13,30 +13,24 @@ const TEXT_CELL = preload("res://gui/task_tracking/task_spreadsheet/cells/text_c
 
 
 
-var blank_counter: int = 0
 var section_dropdown_items: Array
 var time_of_day_dropdown_items: Array
 var priority_dropdown_items: Array
-var current_text_edit_cell: MultiLineCell
 
 
 
 
 func _ready() -> void:
-
-
-
 	TaskTrackingGlobal.load_settings_task_tracking()
 	ready_connections()
 	get_dropdown_items_from_global()
 	auto_load_database()
-	TaskTrackingGlobal.task_editor_update_user_profile_dropdown_items()
-	SqlManager.load_database 
+	SqlManager.load_database
 
 
 
 func ready_connections() -> void:
-	pass
+	TaskSignalBus._on_task_grid_column_count_changed.connect(set_grid_columns)
 
 
 func get_dropdown_items_from_global() -> void:
@@ -47,6 +41,7 @@ func get_dropdown_items_from_global() -> void:
 	for item in DataGlobal.Priority.keys():
 		priority_dropdown_items.append(item.capitalize())
 
+
 func auto_load_database() -> void:
 	var task_settings = TaskTrackingGlobal.active_settings
 	if task_settings.enable_auto_load_default_data:
@@ -55,10 +50,52 @@ func auto_load_database() -> void:
 		SqlManager.set_database_name_and_path(auto_load_name, auto_load_path)
 
 
+func populate_task_grid() -> void:
+	var data_to_load: Array = SqlManager.query_data(TaskTrackingGlobal.create_column_select_string())
+	var first_row: Dictionary = data_to_load[0]
+	TaskSignalBus._on_task_grid_populated.emit(first_row)
+	for data_row_iteration in data_to_load:
+		populate_task_row(data_row_iteration)
+
+
+
+func populate_task_row(row_data_param: Dictionary) -> void:
+	var column_keys: Array = row_data_param.keys()
+	var current_id: String
+	for column_iteration in column_keys:
+		var current_value: String = row_data_param[column_iteration]
+		match column_iteration:
+			"task_info_id":
+				current_id = current_value
+			"task", "task_group", "location":
+				create_text_cell(current_id, column_iteration, current_value)
+			"year", "daily_scheduling_start", "days_per_cycle", "daily_scheduling_end",\
+					"weekly_scheduling_start", "weeks_per_cycle", "weekly_scheduling_end",\
+					"monthly_scheduling_start", "months_per_cycle", "monthly_scheduling_end":
+				create_number_cell(current_id, column_iteration, current_value)
+			"description":
+				
+			"assigned_to":
+				
+			"time_of_day":
+				
+			"priority":
+				
+			"month":
+				
+			"section":
+				
+				
+			_:
+				prints("Error populating rows.")
+
+
+func set_grid_columns(column_param: int) -> void:
+	columns = column_param
+
 
 func reload_grid() -> void:
 	clear_grid_children()
-
 
 
 func clear_grid_children() -> void:
@@ -68,11 +105,28 @@ func clear_grid_children() -> void:
 		current_kiddo.queue_free()
 
 
-
-func create_text_cell(text: String, current_type: String, column_group: String = "") -> void:
+func create_text_cell(task_id_param: String, column_param: String, text_param: String) -> void:
 	var cell: LineEdit = TEXT_CELL.instantiate()
-	self.add_child(cell)
-	pass
+	add_child(cell)
+	cell.set_text_cell(task_id_param, column_param, text_param)
+
+
+func create_number_cell(task_id_param: String, column_param: String, number_param: String) -> void:
+	var cell: SpinBox = NUMBER_CELL.instantiate()
+	add_child(cell)
+	cell.set_number_cell(task_id_param, column_param, number_param)
+
+
+func create_multi_line_cell(task_id_param: String, column_param: String, multi_text_parameter: String) -> void:
+	var cell: Button = MULTI_LINE_CELL.instantiate()
+	add_child(cell)
+	cell.set_multi_line_cell(task_id_param, column_param, multi_text_parameter)
+
+
+
+
+
+
 
 
 
@@ -88,28 +142,12 @@ func create_dropdown_cell(
 	pass
 
 
-
-func create_multi_line_cell(multi_text_parameter: String, column_group: String = "") -> void:
-	var cell: Button = MULTI_LINE_CELL.instantiate()
-	self.add_child(cell)
-	pass
-
-
-
-func create_number_cell(number: int, current_type: String, column_group: String = "") -> void:
-	var cell: SpinBox = NUMBER_CELL.instantiate()
-	self.add_child(cell)
-	pass
-
-
-
 func create_checkbox_cell(state: TaskTrackingGlobal.Checkbox, user_profile: Array,
 	cell_position: int, column_group: String = ""
 ) -> void:
 	var cell: PanelContainer = CHECKBOX_CELL.instantiate()
 	self.add_child(cell)
 	pass
-
 
 
 func delete_task_row(target_task: TaskData) -> void:

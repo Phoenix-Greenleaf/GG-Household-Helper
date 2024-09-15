@@ -482,3 +482,7 @@ func month_condition() -> String:
 func section_condition() -> String:
 	var current_condition: String = section + " = " + section_enum_strings[current_toggled_section]
 	return current_condition
+
+
+func _on_description_button_pressed(cell_param: Button) -> void:
+	pass

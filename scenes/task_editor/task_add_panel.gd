@@ -25,7 +25,6 @@ extends PanelContainer
 
 func update_task_add_assigned_users() -> void:
 	task_add_assigned_user_option_button.clear()
-	TaskTrackingGlobal.task_editor_update_user_profile_dropdown_items()
 	for item in TaskTrackingGlobal.user_profiles_dropdown_items:
 		task_add_assigned_user_option_button.add_item(item[0])
 

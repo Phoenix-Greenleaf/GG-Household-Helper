@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://bngrebw7ev34o"]
+
+[ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/cells/header_cell.gd" id="1_8nwbe"]
+
+[node name="HeaderCell" type="PanelContainer"]
+offset_right = 99.0
+offset_bottom = 34.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"PanelContainer_Quinary"
+script = ExtResource("1_8nwbe")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Header Cell"
+horizontal_alignment = 1
+vertical_alignment = 1
