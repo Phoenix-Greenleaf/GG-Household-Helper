@@ -4,7 +4,9 @@ extends Node
 signal _on_active_database_switched
 signal _on_task_grid_populated(row_data: Dictionary)
 signal _on_task_grid_column_count_changed(new_count: int)
+signal _on_description_button_pressed(cell: Button)
 
+signal _on_new_database_loaded
 
 
 
@@ -25,7 +27,3 @@ signal _on_save_button_pressed
 signal _on_grid_reload_pressed
 signal _on_group_dropdown_items_changed
 signal _on_assigned_user_dropdown_items_changed
-signal _on_header_sorting_button_pressed(mode_index: int)
-signal _on_header_order_spin_box_value_changed(value: int)
-signal _on_new_column_pairs_created(column_pairs: Dictionary)
-signal _on_grid_column_resized(column_pair_name: String)

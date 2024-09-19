@@ -15,7 +15,7 @@ func set_multi_line_cell(task_id_param: String, column_param: String, multi_text
 	saved_column = column_param
 	saved_multi_text = multi_text_param
 	update_button()
-	pressed.connect(TaskTrackingGlobal._on_description_button_pressed(self))
+	pressed.connect(TaskTrackingGlobal._on_description_button_pressed.bind(self))
 
 
 func update_button() -> void:
@@ -30,10 +30,5 @@ func update_button() -> void:
 	text = button_text
 
 
-func create_multi_line_cell(multi_text_parameter: String, column_group: String = "") -> void:
-	var cell: Button = multi_line_cell.instantiate()
-	self.add_child(cell)
-	cell.saved_task = current_task
-	cell.initialize_data(multi_text_parameter)
-	add_cell_to_groups(cell, column_group)
-	set_first_row_flag(cell) 
+func _on_pressed() -> void:
+	TaskSignalBus._on_description_button_pressed.emit(self)

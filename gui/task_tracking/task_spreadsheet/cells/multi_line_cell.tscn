@@ -6,4 +6,5 @@
 text = "MultiLineCell"
 script = ExtResource("1_vc24t")
 
+[connection signal="pressed" from="." to="." method="_on_pressed"]
 [connection signal="resized" from="." to="." method="_on_resized"]

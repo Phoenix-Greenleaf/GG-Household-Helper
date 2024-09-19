@@ -48,8 +48,8 @@ enum CheckboxToggle {
 func transer_old_data_to_database() -> void:
 	var user_info_to_insert: Array = extract_user_info()
 	SqlManager.add_data(user_info_table, user_info_to_insert)
-	var sections_to_insert: Array = generate_sections(2024)
-	SqlManager.add_data(sections_table, sections_to_insert)
+	#var sections_to_insert: Array = create_new_date_data(2024)
+	#SqlManager.add_data(dates_table, sections_to_insert)
 	var task_info_to_insert: Array = extract_task_info()
 	SqlManager.add_data(task_info_table, task_info_to_insert)
 
@@ -98,6 +98,7 @@ func extract_task_info() -> Array:
 		var task_info_data_row: Dictionary = {
 			task : task_entry.name,
 			assigned_to : current_users[name_assigned_to],
+			section : section_enum_strings[task_entry.section],
 			task_group : task_entry.group,
 		}
 		all_task_info_data_rows.append(task_info_data_row)
@@ -118,23 +119,20 @@ func query_user_info() -> Dictionary:
 	return user_query
 
 
-func generate_sections(year_parameter: int) -> Array:
+func create_new_date_data(year_parameter: int) -> Array: #needed anymore?
 	var year_string := str(year_parameter)
 	var all_section_data_rows: Array
 	var monthly_section_row: Dictionary = {
 		year : year_string,
 		month : "all",
-		section : "all",
 	}
 	all_section_data_rows.append(monthly_section_row)
 	for month_iteration in SqlManager.month_strings:
-		for section_iteration in SqlManager.section_strings:
-			if month_iteration == "all" or section_iteration == "all" or section_iteration == "monthly":
+			if month_iteration == "all":
 				continue
 			var section_data_row: Dictionary = {
 				year : year_string,
 				month : month_iteration,
-				section : section_iteration,
 			}
 			all_section_data_rows.append(section_data_row)
 	return all_section_data_rows
@@ -373,25 +371,8 @@ var priority_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Priorit
 @onready var months_per_cycle: String = SqlManager.months_per_cycle
 @onready var monthly_scheduling_end: String = SqlManager.monthly_scheduling_end
 
-
-var section_column_toggled: bool = true
-var month_column_toggled: bool = true
-var year_column_toggled: bool = true
-var checkboxes_column_toggled: bool = true
-var scheduling_column_toggled: bool = true
-var group_column_toggled: bool = true
-var description_column_toggled: bool = true
-var time_of_day_column_toggled: bool = true
-var priority_column_toggled: bool = true
-var location_column_toggled: bool = true
-var task_removal_column_toggled: bool = true
-#var assigned_to_column_toggled: bool = true
-#var completed_by_column_toggled: bool = true
-#var last_completed_column_toggled: bool = true
-
-
 @onready var task_info_table: String = SqlManager.task_info_table
-@onready var sections_table: String = SqlManager.sections_table
+@onready var dates_table: String = SqlManager.dates_table
 @onready var user_info_table: String = SqlManager.user_info_table
 @onready var monthly_tasks_table: String = SqlManager.monthly_tasks_table
 @onready var weekly_tasks_table: String = SqlManager.weekly_tasks_table
@@ -399,74 +380,144 @@ var task_removal_column_toggled: bool = true
 @onready var event_info_table: String = SqlManager.event_info_table
 
 @onready var task_info_id: String = SqlManager.task_info_id
-@onready var sections_id: String = SqlManager.sections_id
+@onready var dates_id: String = SqlManager.dates_id
 @onready var user_info_id: String = SqlManager.user_info_id
 @onready var monthly_tasks_id: String = SqlManager.monthly_tasks_id
 @onready var weekly_tasks_id: String = SqlManager.weekly_tasks_id
 @onready var daily_tasks_id: String = SqlManager.daily_tasks_id
 @onready var event_info_id: String = SqlManager.event_info_id
 
-@onready var table_for_query = SqlManager.sections_table
+@onready var monthly_column_keys: Array = SqlManager.monthly_checkbox_columns.keys()
+@onready var weekly_column_keys: Array = SqlManager.weekly_checkbox_columns.keys()
+@onready var daily_column_keys: Array = SqlManager.daily_checkbox_columns.keys()
+
+@onready var table_for_query = SqlManager.dates_table
+
+var section_column_toggled: bool = true
+var scheduling_column_toggled: bool = true
+var group_column_toggled: bool = true
+var description_column_toggled: bool = true
+var time_of_day_column_toggled: bool = true
+var priority_column_toggled: bool = true
+var location_column_toggled: bool = true
+var assigned_to_column_toggled: bool = true
+var task_removal_column_toggled: bool = true
+var year_column_toggled: bool = true
+var month_column_toggled: bool = true
+var checkboxes_column_toggled: bool = true
+
+
+
 
 func form_query() -> String:
 	var new_query: String = ""
-	
+	if checkboxes_column_toggled:
+		SqlManager.join_tables("task_info", assigned_to, "user_info", user_info_id)
 	return new_query
+LEFT OFF HERE
+
+
+
+
+
+
 
 
 func create_column_select_string() -> String:
 	var column_select: String = "select "
 	var column_array: PackedStringArray = []
-	column_array.append(task_info_id)
-	column_array.append(task)
-	if section_column_toggled:
-		column_array.append(section)
-	if month_column_toggled:
-		column_array.append(month)
-	if year_column_toggled:
-		column_array.append(year)
-	if location_column_toggled:
-		column_array.append(location)
-	if priority_column_toggled:
-		column_array.append(priority)
-	if time_of_day_column_toggled:
-		column_array.append(time_of_day)
-	if description_column_toggled:
-		column_array.append(description)
-	if group_column_toggled:
-		column_array.append(task_group)
-	if checkboxes_column_toggled:
-		column_array.append(assigned_to)
-		column_array.append(completed_by)
-		column_array.append(name_)
-	if scheduling_column_toggled:
-		if current_toggled_section == DataGlobal.Section.DAILY:
-			column_array.append(daily_scheduling_start)
-			column_array.append(days_per_cycle)
-			column_array.append(daily_scheduling_end)
-		if current_toggled_section == DataGlobal.Section.WEEKLY:
-			column_array.append(weekly_scheduling_start)
-			column_array.append(weeks_per_cycle)
-			column_array.append(weekly_scheduling_end)
-		if current_toggled_section == DataGlobal.Section.MONTHLY:
-			column_array.append(monthly_scheduling_start)
-			column_array.append(months_per_cycle)
-			column_array.append(monthly_scheduling_end)
+	gather_task_info_columns(column_array)
+	gather_checkbox_info_columns(column_array)
 	var joined_strings: String = ", ".join(column_array)
 	column_select = column_select + joined_strings
 	return column_select
 
 
+func gather_task_info_columns(column_array_param: PackedStringArray) -> void:
+	column_array_param.append(task_info_id)
+	column_array_param.append(task)
+	if section_column_toggled:
+		column_array_param.append(section)
+	if assigned_to_column_toggled:
+		column_array_param.append(assigned_to)
+	if location_column_toggled:
+		column_array_param.append(location)
+	if priority_column_toggled:
+		column_array_param.append(priority)
+	if time_of_day_column_toggled:
+		column_array_param.append(time_of_day)
+	if description_column_toggled:
+		column_array_param.append(description)
+	if group_column_toggled:
+		column_array_param.append(task_group)
+	if scheduling_column_toggled:
+		match current_toggled_section:
+			DataGlobal.Section.DAILY:
+				column_array_param.append(daily_scheduling_start)
+				column_array_param.append(days_per_cycle)
+				column_array_param.append(daily_scheduling_end)
+			DataGlobal.Section.WEEKLY:
+				column_array_param.append(weekly_scheduling_start)
+				column_array_param.append(weeks_per_cycle)
+				column_array_param.append(weekly_scheduling_end)
+			DataGlobal.Section.MONTHLY:
+				column_array_param.append(monthly_scheduling_start)
+				column_array_param.append(months_per_cycle)
+				column_array_param.append(monthly_scheduling_end)
+
+
+func gather_checkbox_info_columns(column_array_param: PackedStringArray) -> void:
+	if not checkboxes_column_toggled:
+		return
+	#if month_column_toggled: #not needed, since month/year is editor setting?
+		#column_array_param.append(month)
+	#if year_column_toggled:
+		#column_array_param.append(year)
+	var current_section_info: Array
+	match current_toggled_section:
+		DataGlobal.Section.DAILY:
+			column_array_param.append_array(daily_column_keys)
+		DataGlobal.Section.WEEKLY:
+			column_array_param.append_array(weekly_column_keys)
+		DataGlobal.Section.MONTHLY:
+			column_array_param.append_array(monthly_column_keys)
+
+
+
+
+"""
+for each unit in section
+length of month (add to dates?)
+
+
+check current section
+join event_info to sections
+join with task info string?
+query year month section, do not have to return value
+use bits to populate
+"""
+
+
+
 func create_condition_string() -> String:
-	var condition_string: String = "where "
-	var condition_array: PackedStringArray = []
-	condition_array.append(year_condition())
-	condition_array.append(section_condition())
-	if current_toggled_month != DataGlobal.Month.ALL:
-		condition_array.append(month_condition())
-	var joined_strings: String = " and ".join(condition_array)
-	condition_string = condition_string + joined_strings
+	var condition_start: String = "where "
+	var condition_array: PackedStringArray = [section_condition()]
+	add_checkbox_conditions(condition_array)
+	var condition_string = condition_start + join_condition_array(condition_array)
 	return condition_string
+
+
+func section_condition() -> String:
+	var current_condition: String = section + " = " + section_enum_strings[current_toggled_section]
+	return current_condition
+
+
+func add_checkbox_conditions(data_param: PackedStringArray) -> void:
+	if not checkboxes_column_toggled:
+		return
+	data_param.append(year_condition())
+	if current_toggled_month != DataGlobal.Month.ALL:
+		data_param.append(month_condition())
 
 
 func year_condition() -> String:
@@ -479,10 +530,10 @@ func month_condition() -> String:
 	return current_condition
 
 
-func section_condition() -> String:
-	var current_condition: String = section + " = " + section_enum_strings[current_toggled_section]
-	return current_condition
-
-
-func _on_description_button_pressed(cell_param: Button) -> void:
-	pass
+func join_condition_array(strings_to_join: PackedStringArray) -> String:
+	var joined_strings: String
+	if strings_to_join.size() > 1:
+		joined_strings = " and ".join(strings_to_join)
+	else:
+		joined_strings = strings_to_join[0]
+	return joined_strings

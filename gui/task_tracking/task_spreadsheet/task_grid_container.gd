@@ -45,8 +45,11 @@ func get_dropdown_items_from_global() -> void:
 func auto_load_database() -> void:
 	var task_settings = TaskTrackingGlobal.active_settings
 	if task_settings.enable_auto_load_default_data:
-		var auto_load_path: String = task_settings.default_database_path
+		var auto_load_path: String = task_settings.autoload_database_path
 		var auto_load_name: String = SqlManager.get_database_name_from_path(auto_load_path)
+		if SqlManager.database_name == auto_load_name:
+			prints("Database already open, no need to auto-load.")
+			return
 		SqlManager.set_database_name_and_path(auto_load_name, auto_load_path)
 
 
@@ -152,3 +155,30 @@ func create_checkbox_cell(state: TaskTrackingGlobal.Checkbox, user_profile: Arra
 
 func delete_task_row(target_task: TaskData) -> void:
 	pass
+
+
+
+
+func get_all_column_dropdown_options() -> void:
+	pass
+
+
+func get_target_column_dropdown_options(target_param: String) -> void:
+	pas
+
+
+
+
+
+"""
+trigger on loading db
+query for uniques in category
+set to array
+
+ongoing, add any new entries to change dictionary / array
+
+
+
+
+
+"""
