@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=21 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scenes/task_editor.gd" id="1_b0ww1"]
 [ext_resource type="ButtonGroup" uid="uid://c4hrg6nv6u6tb" path="res://gui/task_tracking/checkbox_toggle.tres" id="2_38p0l"]
@@ -12,7 +12,6 @@
 [ext_resource type="Script" path="res://scenes/month_selection_menu.gd" id="7_fofm3"]
 [ext_resource type="Script" path="res://scenes/task_editor/header_grid_container.gd" id="7_hn1ku"]
 [ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/task_grid_container.gd" id="8_txnjo"]
-[ext_resource type="Script" path="res://scenes/task_editor/yearly_button.gd" id="9_0hqib"]
 [ext_resource type="PackedScene" uid="uid://c7tqndbd8llst" path="res://gui/task_tracking/checkbox_selection_popup.tscn" id="9_mlsj3"]
 [ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/task_tracking/database_manager/database_manager.tscn" id="10_7t8qi"]
 [ext_resource type="Script" path="res://scenes/task_editor/monthly_button.gd" id="10_etwfq"]
@@ -144,16 +143,6 @@ layout_mode = 2
 layout_mode = 2
 text = "Section"
 horizontal_alignment = 1
-
-[node name="YearlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("4_hl67a")
-toggle_mode = true
-button_pressed = true
-button_group = ExtResource("5_vyaou")
-text = "Yearly"
-script = ExtResource("9_0hqib")
 
 [node name="MonthlyButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true
@@ -521,7 +510,6 @@ visibility_node = NodePath("..")
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxApplyToggle" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxApplyToggle" method="_on_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxInspectToggle" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxInspectToggle" method="_on_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/EditingLockButton" to="MainMargin/MainHBox/NonSideVBox/TaskGridScrollContainer/TaskGridContainer" method="_on_editing_lock_button_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/YearlyButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/YearlyButton" method="_on_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MonthlyButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MonthlyButton" method="_on_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/WeeklyButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/WeeklyButton" method="_on_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DailyButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DailyButton" method="_on_toggled"]

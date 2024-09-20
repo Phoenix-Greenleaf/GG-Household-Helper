@@ -43,6 +43,11 @@ enum CheckboxToggle {
 
 
 
+
+func _ready() -> void:
+	TaskSignalBus._on_new_database_loaded.connect(generate_dropdown_item_arrays)
+
+
 # just around to load old data sets
 
 func transer_old_data_to_database() -> void:
@@ -89,14 +94,13 @@ func extract_user_info() -> Array:
 
 func extract_task_info() -> Array:
 	var all_task_info_data_rows: Array
-	var current_users: Dictionary = query_user_info()
 	var gathered_task_info: Array = extract_old_sections()
 	for task_entry: TaskData in gathered_task_info:
 		var name_assigned_to: String = task_entry.assigned_user[0]
 		if name_assigned_to == "No Profile":
 			name_assigned_to = SqlManager.unassigned_user_text
 		var task_info_data_row: Dictionary = {
-			task : task_entry.name,
+			task_name : task_entry.name,
 			assigned_to : current_users[name_assigned_to],
 			section : section_enum_strings[task_entry.section],
 			task_group : task_entry.group,
@@ -334,8 +338,9 @@ grid sync:
 """
 
 
-
-
+var current_task_group_items: Array
+var current_location_items: Array
+var current_users: Dictionary
 
 
 var month_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Month)
@@ -352,6 +357,7 @@ var priority_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Priorit
 @onready var completed_by: String = SqlManager.completed_by
 @onready var last_completed: String = SqlManager.last_completed
 @onready var task: String = SqlManager.task
+@onready var task_name: String = SqlManager.task_name
 @onready var task_group: String = SqlManager.task_group
 @onready var assigned_to: String = SqlManager.assigned_to
 @onready var description: String = SqlManager.description
@@ -466,7 +472,7 @@ func create_column_select_string() -> String:
 
 func gather_task_info_columns(column_array_param: PackedStringArray) -> void:
 	column_array_param.append(task_info_id)
-	column_array_param.append(task)
+	column_array_param.append(task_name)
 	if section_column_toggled:
 		column_array_param.append(section)
 	if assigned_to_column_toggled:
@@ -552,3 +558,9 @@ func join_condition_array(strings_to_join: PackedStringArray) -> String:
 	else:
 		joined_strings = strings_to_join[0]
 	return joined_strings
+
+
+func generate_dropdown_item_arrays() -> void:
+	current_task_group_items = SqlManager.get_unique_elements_from_column(task_info_table, task_group)
+	current_location_items = SqlManager.get_unique_elements_from_column(task_info_table, location)
+	current_users = query_user_info()

@@ -39,6 +39,7 @@ var status := "status"
 var completed_by := "completed_by"
 var last_completed := "last_completed"
 var task := "task"
+var task_name := "task_name"
 var task_group := "task_group"
 var assigned_to := "assigned_to"
 var description := "description"
@@ -240,7 +241,7 @@ func add_unassigned_user_row() -> void:
 
 func create_table_task_info() -> void:
 	var data_columns: Dictionary = {
-		task : {data_type:text},
+		task_name : {data_type:text},
 		task_group : {data_type:text},
 		section : {data_type:text},
 		assigned_to : {data_type:int_, foreign_key:table_column_address(user_info_table, user_info_id)},
@@ -332,7 +333,7 @@ func load_database() -> void:
 		prints("Load_database creating new database")
 		create_new_database()
 	database_is_active = true
-	SignalBus._on_database_loaded.emit()
+	TaskSignalBus._on_new_database_loaded.emit()
 
 
 func get_existing_database_files() -> Array:
@@ -385,7 +386,12 @@ func join_tables(join_type: String, left_table: String, left_column: String, rig
 
 
 
-
+func get_unique_elements_from_column(table_param: String, column_param: String) -> Array:
+	var element_dictionaries: Array = query_data("select distinct " + column_param + " from " + table_param)
+	var element_array: Array
+	for dictionary_iteration in element_dictionaries:
+		element_array.append(dictionary_iteration[column_param])
+	return element_array
 
 
 

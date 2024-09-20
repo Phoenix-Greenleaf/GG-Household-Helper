@@ -72,44 +72,44 @@ func close_new_task_panel() -> void:
 
 
 
-
-func create_new_task_data() -> void: #task code, the data side
-	var new_task = TaskData.new()
-	var new_task_title = task_title_line_edit.text
-	new_task.name = new_task_title
-	var new_task_year = TaskTrackingGlobal.active_data.task_set_year
-	new_task.task_year = new_task_year
-	var new_task_section := TaskTrackingGlobal.current_toggled_section
-	new_task.section = new_task_section
-	new_task.previous_section = new_task_section
-	var new_task_assigned_user: Array = (
-		TaskTrackingGlobal.user_profiles_dropdown_items[
-			task_add_assigned_user_option_button.selected
-		]
-	)
-	new_task.assigned_user = new_task_assigned_user
-	var new_task_schedule_start: float = task_add_schedule_start_spin_box.value
-	new_task.scheduling_start = new_task_schedule_start
-	var new_task_units_per_cycle: float = task_add_units_per_cycle_spin_box.value
-	new_task.units_per_cycle = new_task_units_per_cycle
-	var new_task_group = "None"
-	if task_group_line_edit.text:
-		new_task_group = task_group_line_edit.text
-	row_group = new_task_group
-	new_task.group = new_task_group
-	new_task.offbrand_init()
-	match new_task_section:
-		DataGlobal.Section.YEARLY:
-			TaskTrackingGlobal.active_data.spreadsheet_year_data.append(new_task)
-		DataGlobal.Section.MONTHLY:
-			TaskTrackingGlobal.active_data.spreadsheet_month_data.append(new_task)
-		DataGlobal.Section.WEEKLY:
-			TaskTrackingGlobal.active_data.spreadsheet_week_data.append(new_task)
-		DataGlobal.Section.DAILY:
-			TaskTrackingGlobal.active_data.spreadsheet_day_data.append(new_task)
-	DataGlobal.task_editor_scan_task_for_group(new_task)
-	update_existing_groups_option_button_items()
-	process_task(new_task)
+#
+#func create_new_task_data() -> void: #task code, the data side
+	#var new_task = TaskData.new()
+	#var new_task_title = task_title_line_edit.text
+	#new_task.name = new_task_title
+	#var new_task_year = TaskTrackingGlobal.active_data.task_set_year
+	#new_task.task_year = new_task_year
+	#var new_task_section := TaskTrackingGlobal.current_toggled_section
+	#new_task.section = new_task_section
+	#new_task.previous_section = new_task_section
+	#var new_task_assigned_user: Array = (
+		#TaskTrackingGlobal.user_profiles_dropdown_items[
+			#task_add_assigned_user_option_button.selected
+		#]
+	#)
+	#new_task.assigned_user = new_task_assigned_user
+	#var new_task_schedule_start: float = task_add_schedule_start_spin_box.value
+	#new_task.scheduling_start = new_task_schedule_start
+	#var new_task_units_per_cycle: float = task_add_units_per_cycle_spin_box.value
+	#new_task.units_per_cycle = new_task_units_per_cycle
+	#var new_task_group = "None"
+	#if task_group_line_edit.text:
+		#new_task_group = task_group_line_edit.text
+	#row_group = new_task_group
+	#new_task.group = new_task_group
+	#new_task.offbrand_init()
+	#match new_task_section:
+		#DataGlobal.Section.YEARLY:
+			#TaskTrackingGlobal.active_data.spreadsheet_year_data.append(new_task)
+		#DataGlobal.Section.MONTHLY:
+			#TaskTrackingGlobal.active_data.spreadsheet_month_data.append(new_task)
+		#DataGlobal.Section.WEEKLY:
+			#TaskTrackingGlobal.active_data.spreadsheet_week_data.append(new_task)
+		#DataGlobal.Section.DAILY:
+			#TaskTrackingGlobal.active_data.spreadsheet_day_data.append(new_task)
+	#DataGlobal.task_editor_scan_task_for_group(new_task)
+	#update_existing_groups_option_button_items()
+	#process_task(new_task)
 
 
 
