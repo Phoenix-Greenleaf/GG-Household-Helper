@@ -45,6 +45,9 @@ enum CheckboxToggle {
 
 
 func _ready() -> void:
+	prints("")
+	prints("dropdown gen on loading signal connected.")
+	prints("")
 	TaskSignalBus._on_new_database_loaded.connect(generate_dropdown_item_arrays)
 
 
@@ -53,10 +56,13 @@ func _ready() -> void:
 func transer_old_data_to_database() -> void:
 	var user_info_to_insert: Array = extract_user_info()
 	SqlManager.add_data(user_info_table, user_info_to_insert)
+	generate_users_dropdown_items()
 	#var sections_to_insert: Array = create_new_date_data(2024)
 	#SqlManager.add_data(dates_table, sections_to_insert)
 	var task_info_to_insert: Array = extract_task_info()
 	SqlManager.add_data(task_info_table, task_info_to_insert)
+	generate_task_group_dropdown_items()
+	generate_location_dropdown_items()
 
 
 
@@ -105,6 +111,7 @@ func extract_task_info() -> Array:
 			section : section_enum_strings[task_entry.section],
 			task_group : task_entry.group,
 		}
+		#
 		all_task_info_data_rows.append(task_info_data_row)
 	return all_task_info_data_rows
 
@@ -529,7 +536,7 @@ func create_condition_string() -> String:
 
 
 func section_condition() -> String:
-	var current_condition: String = section + " = " + section_enum_strings[current_toggled_section]
+	var current_condition: String = section + " = '" + section_enum_strings[current_toggled_section] + "'"
 	return current_condition
 
 
@@ -542,12 +549,12 @@ func add_checkbox_conditions(data_param: PackedStringArray) -> void:
 
 
 func year_condition() -> String:
-	var current_condition: String = year + " = " + str(current_toggled_year)
+	var current_condition: String = year + " = '" + str(current_toggled_year) + "'"
 	return current_condition
 
 
 func month_condition() -> String:
-	var current_condition: String = month + " = " + month_enum_strings[current_toggled_month]
+	var current_condition: String = month + " = '" + month_enum_strings[current_toggled_month] + "'"
 	return current_condition
 
 
@@ -561,6 +568,18 @@ func join_condition_array(strings_to_join: PackedStringArray) -> String:
 
 
 func generate_dropdown_item_arrays() -> void:
+	generate_task_group_dropdown_items()
+	generate_location_dropdown_items()
+	generate_users_dropdown_items()
+
+
+func generate_task_group_dropdown_items() -> void:
 	current_task_group_items = SqlManager.get_unique_elements_from_column(task_info_table, task_group)
+
+
+func generate_location_dropdown_items() -> void:
 	current_location_items = SqlManager.get_unique_elements_from_column(task_info_table, location)
+
+
+func generate_users_dropdown_items() -> void:
 	current_users = query_user_info()

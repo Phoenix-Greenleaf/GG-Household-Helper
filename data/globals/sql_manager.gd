@@ -333,6 +333,9 @@ func load_database() -> void:
 		prints("Load_database creating new database")
 		create_new_database()
 	database_is_active = true
+	prints("")
+	prints("Emitting database loaded signal")
+	prints("")
 	TaskSignalBus._on_new_database_loaded.emit()
 
 

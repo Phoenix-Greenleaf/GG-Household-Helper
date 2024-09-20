@@ -7,11 +7,11 @@ var active_settings_main: MainSettingsData
 
 func _ready() -> void:
 	load_settings_main()
-	connect_signals()
+	#connect_signals()
 
 
-func connect_signals() -> void:
-	TaskSignalBus._on_new_database_loaded.connect(load_settings_main)
+#func connect_signals() -> void:
+	#TaskSignalBus._on_new_database_loaded.connect(load_settings_main)
 
 
 func create_settings_main() -> void:

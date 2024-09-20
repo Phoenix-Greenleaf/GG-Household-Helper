@@ -3,7 +3,7 @@ extends Control
 
 @onready var versoning: Label = %Versoning
 
-var sql_inject_old_data: bool = true
+var sql_inject_old_data: bool = false
 
 var sql_query_test_active: bool = false
 

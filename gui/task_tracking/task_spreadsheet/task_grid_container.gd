@@ -105,15 +105,6 @@ func populate_task_row(row_data_param: Dictionary) -> void:
 				prints("Error populating rows.")
 
 
-
-
-
-
-
-
-
-
-
 func set_grid_columns(column_param: int) -> void:
 	columns = column_param
 
@@ -162,24 +153,30 @@ func create_dropdown_cell(
 
 
 
+"_status"
+"_currently_assigned"
+"_completed_by"
 
 
 
 
+#
+#task
+#year
+#month
 
 
 
+func create_checkbox_cell(task_id_param: String, column_param: String, multi_text_parameter: String) -> void:
+	var cell: PanelContainer = CHECKBOX_CELL.instantiate()
+	add_child(cell)
+	cell
 
 
 
-
-
-
-func create_checkbox_cell(state: TaskTrackingGlobal.Checkbox, user_profile: Array,
+func old_create_checkbox_cell(state: TaskTrackingGlobal.Checkbox, user_profile: Array,
 	cell_position: int, column_group: String = ""
 ) -> void:
-	var cell: PanelContainer = CHECKBOX_CELL.instantiate()
-	self.add_child(cell)
 	pass
 
 
@@ -187,14 +184,6 @@ func delete_task_row(target_task: TaskData) -> void:
 	pass
 
 
-
-
-func get_all_column_dropdown_options() -> void:
-	pass
-
-
-func get_target_column_dropdown_options(target_param: String) -> void:
-	pass
 
 
 
