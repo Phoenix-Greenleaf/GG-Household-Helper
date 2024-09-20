@@ -371,13 +371,15 @@ var priority_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Priorit
 @onready var months_per_cycle: String = SqlManager.months_per_cycle
 @onready var monthly_scheduling_end: String = SqlManager.monthly_scheduling_end
 
+@onready var program_info_table: String = SqlManager.program_info_table
 @onready var task_info_table: String = SqlManager.task_info_table
-@onready var dates_table: String = SqlManager.dates_table
+#@onready var dates_table: String = SqlManager.dates_table
 @onready var user_info_table: String = SqlManager.user_info_table
 @onready var monthly_tasks_table: String = SqlManager.monthly_tasks_table
 @onready var weekly_tasks_table: String = SqlManager.weekly_tasks_table
 @onready var daily_tasks_table: String = SqlManager.daily_tasks_table
-@onready var event_info_table: String = SqlManager.event_info_table
+#@onready var event_info_table: String = SqlManager.event_info_table
+@onready var changelog_table: String = SqlManager.changelog_table
 
 @onready var task_info_id: String = SqlManager.task_info_id
 @onready var dates_id: String = SqlManager.dates_id
@@ -392,6 +394,7 @@ var priority_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Priorit
 @onready var daily_column_keys: Array = SqlManager.daily_checkbox_columns.keys()
 
 @onready var table_for_query = SqlManager.dates_table
+
 
 var section_column_toggled: bool = true
 var scheduling_column_toggled: bool = true
@@ -409,15 +412,43 @@ var checkboxes_column_toggled: bool = true
 
 
 
-func form_query() -> String:
-	var new_query: String = ""
-	if checkboxes_column_toggled:
-		SqlManager.join_tables("task_info", assigned_to, "user_info", user_info_id)
-	return new_query
-LEFT OFF HERE
+func form_task_grid_query() -> String:
+	var new_query_parts: PackedStringArray
+	new_query_parts.append(create_column_select_string())
+	new_query_parts.append(create_from_statment_string(task_info_table))
+	new_query_parts.append(create_join_statement_string())
+	new_query_parts.append(create_condition_string())
+	for line in new_query_parts:
+		prints(line)
+	return " ".join(new_query_parts)
 
 
+func create_from_statment_string(database_parameter: String) -> String:
+	return "from " + database_parameter
 
+
+func create_join_statement_string() -> String:
+	var join_parts: Array
+	var join_users_to_assigned_tasks: String = SqlManager.join_tables("join", task_info_table, assigned_to, user_info_table, user_info_id)
+	join_parts.append(join_users_to_assigned_tasks)
+	if not checkboxes_column_toggled:
+		return join_parts[0]
+	var join_checkbox_to_tasks = SqlManager.join_tables("left join", task_info_table, task_info_id, get_section_task_table(), task)
+	join_parts.append(join_checkbox_to_tasks)
+	return " ".join(join_parts)
+
+
+func get_section_task_table() -> String:
+	match current_toggled_section:
+		DataGlobal.Section.ALL, DataGlobal.Section.MONTHLY:
+			return monthly_tasks_table
+		DataGlobal.Section.WEEKLY:
+			return weekly_tasks_table
+		DataGlobal.Section.DAILY:
+			return daily_tasks_table
+		_:
+			printerr("Error getting section task table!")
+			return monthly_tasks_table
 
 
 
@@ -481,22 +512,6 @@ func gather_checkbox_info_columns(column_array_param: PackedStringArray) -> void
 			column_array_param.append_array(weekly_column_keys)
 		DataGlobal.Section.MONTHLY:
 			column_array_param.append_array(monthly_column_keys)
-
-
-
-
-"""
-for each unit in section
-length of month (add to dates?)
-
-
-check current section
-join event_info to sections
-join with task info string?
-query year month section, do not have to return value
-use bits to populate
-"""
-
 
 
 func create_condition_string() -> String:

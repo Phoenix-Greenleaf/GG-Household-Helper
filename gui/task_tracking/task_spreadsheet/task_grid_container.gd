@@ -26,6 +26,7 @@ func _ready() -> void:
 	get_dropdown_items_from_global()
 	auto_load_database()
 	SqlManager.load_database
+	populate_task_grid()
 
 
 
@@ -54,12 +55,15 @@ func auto_load_database() -> void:
 
 
 func populate_task_grid() -> void:
-	var data_to_load: Array = SqlManager.query_data(TaskTrackingGlobal.create_column_select_string())
+	var data_to_load: Array = query_for_task_grid()
 	var first_row: Dictionary = data_to_load[0]
 	TaskSignalBus._on_task_grid_populated.emit(first_row)
 	for data_row_iteration in data_to_load:
 		populate_task_row(data_row_iteration)
 
+
+func query_for_task_grid() -> Array:
+	SqlManager.query_data(TaskTrackingGlobal.form_task_grid_query())
 
 
 func populate_task_row(row_data_param: Dictionary) -> void:
@@ -76,17 +80,17 @@ func populate_task_row(row_data_param: Dictionary) -> void:
 					"weekly_scheduling_start", "weeks_per_cycle", "weekly_scheduling_end",\
 					"monthly_scheduling_start", "months_per_cycle", "monthly_scheduling_end":
 				create_number_cell(current_id, column_iteration, current_value)
-			"description":
-				
-			"assigned_to":
-				
-			"time_of_day":
-				
-			"priority":
-				
-			"month":
-				
-			"section":
+			#"description":
+				#
+			#"assigned_to":
+				#
+			#"time_of_day":
+				#
+			#"priority":
+				#
+			#"month":
+				#
+			#"section":
 				
 				
 			_:

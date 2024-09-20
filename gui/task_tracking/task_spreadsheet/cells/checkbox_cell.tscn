@@ -8,10 +8,6 @@ clip_contents = true
 focus_mode = 2
 theme_type_variation = &"PanelContainer_Blank"
 script = ExtResource("1_ejb78")
-saved_position = null
-saved_profile = null
-saved_state = null
-saved_color = null
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2

@@ -18,7 +18,7 @@ func _ready() -> void:
 	set_current_date_label()
 	add_task_button.disabled = true
 	if TaskTrackingGlobal.active_data:
-		update_current_tasksheet_label()
+		#update_current_tasksheet_label()
 		add_task_button.disabled = false
 		TaskSignalBus._on_section_changed.emit()
 	print("========= Editor Scene Ready! =========")
@@ -30,7 +30,7 @@ func connection_cental() -> void:
 
 
 func connect_other_signal_bus() -> void:
-	TaskSignalBus._on_new_database_loaded.connect(update_current_tasksheet_label)
+	#TaskSignalBus._on_new_database_loaded.connect(update_current_tasksheet_label)
 	TaskSignalBus._on_data_set_modified.connect(save_warning_triggered)
 	TaskSignalBus._on_data_set_modified.connect(save_warning_triggered)
 	TaskSignalBus._on_data_set_saved.connect(save_waring_reset)
@@ -53,8 +53,8 @@ func set_current_date_label() -> void:
 
 func update_database_label() -> void:
 	var database_name: String = SqlManager.database_name
-	var new_label = title + ": " + str(year)
-	current_save_label.text = new_label
+	#var new_label = title + ": " + str(year)
+	#current_save_label.text = new_label
 
 
 func section_enum_to_string() -> String:

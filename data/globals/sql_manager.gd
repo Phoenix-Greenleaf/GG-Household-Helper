@@ -369,10 +369,10 @@ func set_database_name_and_path(name_param: String, path_param: String) -> void:
 	database_path = path_param
 
 
-func join_tables(left_table, left_column, right_table, right_column) -> String:
+func join_tables(join_type: String, left_table: String, left_column: String, right_table: String, right_column: String) -> String:
 	var join_parts: Array
-	join_parts.append(left_table)
-	join_parts.append("JOIN")
+	#join_parts.append(left_table)
+	join_parts.append(join_type)
 	join_parts.append(right_table)
 	join_parts.append("ON")
 	var full_left_column = left_table + "." + left_column
