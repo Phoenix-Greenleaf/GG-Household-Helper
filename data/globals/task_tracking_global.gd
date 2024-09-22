@@ -21,7 +21,7 @@ var current_toggled_section: DataGlobal.Section = DataGlobal.Section.MONTHLY
 var current_toggled_month: DataGlobal.Month = DataGlobal.Month.JANUARY
 var current_toggled_year: int = 1990
 var current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
-var task_group_dropdown_items: Array 
+#var task_group_dropdown_items: Array 
 var user_profiles_dropdown_items: Array
 
 
@@ -116,18 +116,15 @@ func extract_task_info() -> Array:
 	return all_task_info_data_rows
 
 
-func query_user_info() -> Dictionary:
+func query_user_info() -> void:
 	var raw_user_query: Array = SqlManager.query_data(
-		"select user_info_id, name from user_info"
+		"select user_info_id, name, color from user_info"
 	)
 	var user_query: Dictionary
 	for user_iteration in raw_user_query:
-		user_query[user_iteration[name_]] = user_iteration[user_info_id]
-	prints("")
-	prints("User Query")
-	prints(user_query)
-	prints("")
-	return user_query
+		user_query[user_iteration[name_]] = [user_iteration[user_info_id], user_iteration[color_]]
+	current_users = user_query
+	current_users_keys = current_users.keys()
 
 
 func create_new_date_data(year_parameter: int) -> Array: #needed anymore?
@@ -169,22 +166,15 @@ func generate_task_set_filepath(task_set_name: String, task_set_year: int) -> St
 	return task_set_filepath
 
 
-
-
-
-
-
-
-
-
 """
-sql science
+SQL SCIENCE
 
-task - forever on
-(order)
-
-all month toggle
 schedule-incompatibility warning (mixing sections)
+search button, not on each little toggle
+
+column order?
+all month toggle? all item toggle?
+
 
 
 === edit logs ===
@@ -196,18 +186,6 @@ schedule-incompatibility warning (mixing sections)
 - undo and redo changes?
 - store changes like the requests, so it directly replace loaded data
 
-
-
-
-check all toggle options
-create query
-query data
-use any matching "change" data
-get and set column count
-add elements
---header row
---info cells
---store reference data for edits and updates
 
 on button edit:
 	add changes to edit dictionary
@@ -223,23 +201,6 @@ clear changes button? undo and or redo changes button?
 - changes menu, lists last undo, 
 
 
-
-get stored update info
-apply updates to db
-
-
-
-
-search button, not on each little toggle
-
-
-"""
-
-
-
-
-"""
-
 load data:
 	- get list of availible databases
 	- verify main tables exists in file
@@ -248,26 +209,6 @@ load data:
 	- load cells with data
 
 
-
-
-
-loading cells:
-	- bool toggles define the query and cell generation
-	- create any needed id decoder dictionaries
-	- initialize cells with data:
-		- data for change-dictionary-creation
-		- 
-	- apply changes-dictionary if there is any changes
-	- 
-	- 
-	- 
-
-
-"""
-
-
-
-"""
 order by?
 group by?
 
@@ -298,8 +239,6 @@ create daily/weekly/monthly
 create events:
 	- load default status if event empty
 	- create data when actually modified
-	- 
-	- 
 
 
 data changes:
@@ -322,38 +261,20 @@ create database:
 	- check new name vs existing db names, throw error if sames
 	- create tables
 	- create first user for unassigned entries
-	- 
-	- 
-
 
 """
 
 
-
-"""
-grid sync:
-	- resize is useless for now
-	- tie signal triggers to actions that would cause resize changes:
-		- header button presses
-		- data input / changes
-	- unsure where to resize:
-		- the grid cell
-		- the size of the object in the cell
-	- scroll seems ok so far
-
-
-"""
-
-
-var current_task_group_items: Array
-var current_location_items: Array
+var current_task_group_items: Array[String]
+var current_location_items: Array[String]
 var current_users: Dictionary
+var current_users_keys: Array[String]
 
 
-var month_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Month)
-var section_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Section)
-var time_of_day_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.TimeOfDay)
-var priority_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Priority)
+var month_enum_strings: Array[String] = DataGlobal.enum_to_strings(DataGlobal.Month)
+var section_enum_strings: Array[String] = DataGlobal.enum_to_strings(DataGlobal.Section)
+var time_of_day_enum_strings: Array[String] = DataGlobal.enum_to_strings(DataGlobal.TimeOfDay)
+var priority_enum_strings: Array[String] = DataGlobal.enum_to_strings(DataGlobal.Priority)
 
 
 
@@ -402,9 +323,9 @@ var priority_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Priorit
 @onready var daily_tasks_id: String = SqlManager.daily_tasks_id
 @onready var event_info_id: String = SqlManager.event_info_id
 
-@onready var monthly_column_keys: Array = SqlManager.monthly_checkbox_columns.keys()
-@onready var weekly_column_keys: Array = SqlManager.weekly_checkbox_columns.keys()
-@onready var daily_column_keys: Array = SqlManager.daily_checkbox_columns.keys()
+@onready var monthly_column_keys: Array[String] = SqlManager.monthly_checkbox_columns.keys()
+@onready var weekly_column_keys: Array[String] = SqlManager.weekly_checkbox_columns.keys()
+@onready var daily_column_keys: Array[String] = SqlManager.daily_checkbox_columns.keys()
 
 @onready var table_for_query = SqlManager.dates_table
 
@@ -422,6 +343,9 @@ var year_column_toggled: bool = true
 var month_column_toggled: bool = true
 var checkboxes_column_toggled: bool = true
 
+var most_recent_query: Array[Dictionary]
+var active_changes: Array[Dictionary]
+var undone_changes: Array[Dictionary]
 
 
 
@@ -462,9 +386,6 @@ func get_section_task_table() -> String:
 		_:
 			printerr("Error getting section task table!")
 			return monthly_tasks_table
-
-
-
 
 
 func create_column_select_string() -> String:
@@ -582,4 +503,29 @@ func generate_location_dropdown_items() -> void:
 
 
 func generate_users_dropdown_items() -> void:
-	current_users = query_user_info()
+	query_user_info()
+
+
+func add_task_info_to_active_changes(task_info: Dictionary) -> void:
+	active_changes.append(task_info)
+	apply_active_changes()
+
+
+func apply_active_changes() -> void:
+	pass
+
+
+func submit_active_changes_to_database() -> void:
+	pass
+
+
+func undo_active_changes() -> void:
+	var undo_action: Dictionary = active_changes.pop_back()
+	undone_changes.append(undo_action)
+	apply_active_changes()
+
+
+func redo_active_changes() -> void:
+	var redo_action: Dictionary = undone_changes.pop_back()
+	active_changes.append(redo_action)
+	apply_active_changes()

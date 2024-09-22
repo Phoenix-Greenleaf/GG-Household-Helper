@@ -5,24 +5,49 @@ signal _on_active_database_switched
 signal _on_task_grid_populated(row_data: Dictionary)
 signal _on_task_grid_column_count_changed(new_count: int)
 signal _on_description_button_pressed(cell: Button)
-
 signal _on_new_database_loaded
+signal _on_task_grid_column_toggled
 
 
 
+
+
+
+
+
+signal _on_database_manager_close_manager_button_pressed
+signal _on_database_manager_remote_open_pressed
 
 
 signal _on_data_set_modified
 signal _on_data_set_saved
-signal _on_data_manager_close_manager_button_pressed
 signal _on_section_changed
 signal _on_month_changed
-signal _on_column_visibility_toggled(column: String, toggle: bool)
+
+
+
+
+
 signal _on_checkbox_mode_changed
 signal _on_checkbox_selection_changed
 signal _on_profile_selection_changed
-signal _on_data_manager_remote_open_pressed
 signal _on_task_delete_button_primed_and_pressed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+signal _on_column_visibility_toggled(column: String, toggle: bool)
 signal _on_save_button_pressed
 signal _on_grid_reload_pressed
 signal _on_group_dropdown_items_changed

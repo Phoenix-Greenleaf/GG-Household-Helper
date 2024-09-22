@@ -1,76 +1,64 @@
 extends PanelContainer
 
-@export var saved_position: int
-@export var saved_task: TaskData
-@export var saved_profile: Array
-@export var saved_state: TaskTrackingGlobal.Checkbox
-@export var saved_color: Color
+var saved_task_id: String
+var saved_column: String
+var saved_status: String
+var saved_currently_assigned: String
+var saved_completed_by: String
+var saved_color: Color
+var white: Color = Color.WHITE
+var black: Color = Color.BLACK
 
-@onready var top: ColorRect = %TopColorRect
-@onready var bottom: ColorRect = %BottomColorRect
+@onready var top_color_rect: ColorRect = %TopColorRect
+@onready var bottom_color_rect: ColorRect = %BottomColorRect
 @onready var cell_checkbox_border_color_rect: ColorRect = %CellCheckboxBorderColorRect
 @onready var cell_x: float
 @onready var cell_y: float
 
-var white := Color(1, 1, 1)
-var black := Color(0, 0, 0)
-var first_row_flag: bool = false
-var column_pair: String
 
 
 func _ready() -> void:
 	name = "CheckboxCell"
 
-func update_active_data() -> void:
-	match TaskTrackingGlobal.current_toggled_section:
-		DataGlobal.Section.MONTHLY:
-			year_and_month_updater()
-		DataGlobal.Section.WEEKLY, DataGlobal.Section.DAILY:
-			day_and_week_updater()
-	TaskSignalBus._on_data_set_modified.emit()
 
-
-func year_and_month_updater() -> void: 
-	var current_position = saved_position
-	var current_month = DataGlobal.month_strings[current_position]
-	var current_data: TaskCheckboxData = saved_task.month_checkbox_dictionary[current_month][0]
-	current_data.checkbox_status = saved_state
-	current_data.assigned_user = saved_profile
-	prints("Active data for checkbox", current_month, "saved!")
-
-
-func day_and_week_updater() -> void: 
-	var current_month = TaskTrackingGlobal.current_toggled_month
-	var month_key = DataGlobal.Month.find_key(current_month).capitalize()
-	var current_position = saved_position - 1 
-	var current_data: TaskCheckboxData
-	current_data = saved_task.month_checkbox_dictionary[month_key][current_position]
-	current_data.checkbox_status = saved_state
-	current_data.assigned_user = saved_profile
-	prints("Active data for checkbox", saved_position, "saved!")
+func update_cell() -> void:
+	update_color()
+	update_checkbox()
 
 
 func update_checkbox() -> void:
-	saved_color = saved_profile[1]
-	match saved_state:
-		TaskTrackingGlobal.Checkbox.ACTIVE:
-			top.set_color(white)
-			bottom.set_color(white)
+	match saved_status:
+		"ACTIVE":
+			top_color_rect.set_color(white)
+			bottom_color_rect.set_color(white)
 			update_current_border(saved_color)
-		TaskTrackingGlobal.Checkbox.IN_PROGRESS:
-			top.set_color(white)
-			bottom.set_color(saved_color)
+		"IN_PROGRESS":
+			top_color_rect.set_color(white)
+			bottom_color_rect.set_color(saved_color)
 			update_current_border(white)
-		TaskTrackingGlobal.Checkbox.COMPLETED:
-			top.set_color(saved_color)
-			bottom.set_color(saved_color)
+		"COMPLETED":
+			top_color_rect.set_color(saved_color)
+			bottom_color_rect.set_color(saved_color)
 			update_current_border(white)
-		TaskTrackingGlobal.Checkbox.EXPIRED:
-			top.set_color(black)
-			bottom.set_color(black)
+		"EXPIRED":
+			top_color_rect.set_color(black)
+			bottom_color_rect.set_color(black)
 			update_current_border(saved_color)
 		_:
 			print("Checkbox_cell update color match failure!")
+
+
+func update_color() -> void:
+	var user_id_for_color: String
+	if saved_completed_by == "":
+		user_id_for_color = saved_currently_assigned
+	else:
+		user_id_for_color = saved_completed_by
+	for user_iteration in TaskTrackingGlobal.current_users:
+		if user_id_for_color != user_iteration[0]:
+			continue
+		saved_color = Color.from_string(user_iteration[1], Color.DARK_MAGENTA)
+		return
 
 
 func update_current_border(color_parameter: Color) -> void:
@@ -80,16 +68,32 @@ func update_current_border(color_parameter: Color) -> void:
 	cell_checkbox_border_color_rect.update_border(color_parameter)
 
 
+func set_checkbox_cell(
+	task_id_param: String,
+	column_param: String,
+	status_param: String,
+	assigned_param: String,
+	completed_param: String,
+) -> void:
+	saved_task_id = task_id_param
+	saved_column = column_param
+	saved_status = status_param
+	saved_currently_assigned = assigned_param
+	saved_completed_by = completed_param
+	update_cell()
 
-#func create_checkbox_cell(state: TaskTrackingGlobal.Checkbox, user_profile: Array,
-	#cell_position: int, column_group: String = ""
-#) -> void:
-	#var cell: PanelContainer = checkbox_cell.instantiate()
-	#self.add_child(cell)
-	#cell.saved_position = cell_position
-	#cell.saved_task = current_task
-	#cell.saved_profile = user_profile 
-	#cell.saved_state = state
-	#cell.update_checkbox()
-	#add_cell_to_groups(cell, column_group)
-	#set_first_row_flag(cell)
+
+"""
+
+INACTIVE
+ACTIVE
+IN_PROGRESS
+COMPLETED
+EXPIRED
+
+
+SqlManager.daily_checkbox_addresses
+SqlManager.weekly_checkbox_addresses
+SqlManager.monthly_checkbox_addresses
+
+"""

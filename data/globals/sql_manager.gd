@@ -87,6 +87,12 @@ var daily_checkbox_columns: Dictionary
 var weekly_checkbox_columns: Dictionary
 var monthly_checkbox_columns: Dictionary
 
+var daily_checkbox_addresses: Array
+var weekly_checkbox_addresses: Array
+var monthly_checkbox_addresses: Array
+
+
+
 func _ready() -> void:
 	generate_all_checkbox_columns_info()
 	initialize_database()
@@ -103,6 +109,7 @@ func generate_section_checkbox_column_info(section_parameter: DataGlobal.Section
 	var event_units: String = ""
 	var event_section_title: String = ""
 	var data_columns: Dictionary = {}
+	var checkbox_columns: Dictionary = {}
 	match section_parameter:
 		DataGlobal.Section.MONTHLY:
 			event_count = 12
@@ -116,16 +123,21 @@ func generate_section_checkbox_column_info(section_parameter: DataGlobal.Section
 			event_count = 31
 			event_units = "day"
 			event_section_title = daily_tasks_table
+	add_section_checkbox_columns_info(event_count, event_units, checkbox_columns)
 	data_columns = section_tasks_standard_data()
-	if section_parameter == DataGlobal.Section.DAILY:
-		add_standard_data_days_in_month(data_columns)
-	add_section_checkbox_columns_info(event_count, event_units, data_columns)
 	match section_parameter:
 		DataGlobal.Section.MONTHLY:
+			monthly_checkbox_addresses = checkbox_columns.keys()
+			data_columns.merge(checkbox_columns)
 			monthly_checkbox_columns = data_columns
 		DataGlobal.Section.WEEKLY:
+			weekly_checkbox_addresses = checkbox_columns.keys()
+			data_columns.merge(checkbox_columns)
 			weekly_checkbox_columns = data_columns
 		DataGlobal.Section.DAILY:
+			add_standard_data_days_in_month(data_columns)
+			daily_checkbox_addresses = checkbox_columns.keys()
+			data_columns.merge(checkbox_columns)
 			daily_checkbox_columns = data_columns
 
 

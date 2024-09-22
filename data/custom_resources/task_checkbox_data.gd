@@ -5,7 +5,7 @@ class_name TaskCheckboxData
 @export var checkbox_status: TaskTrackingGlobal.Checkbox
 @export var assigned_user: Array
 
-
+# to be deleted after old data not needed
 
 func update_checkbox_data(
 	checkbox_status_parameter := TaskTrackingGlobal.current_checkbox_state,

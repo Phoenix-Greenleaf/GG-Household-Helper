@@ -14,6 +14,7 @@ class_name TaskSetData
 @export var column_data: Dictionary
 @export var column_order: Array
 
+# to be deleted after old data not needed
 
 
 func export_json_from_resouce() -> Dictionary:

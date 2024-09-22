@@ -8,7 +8,7 @@ class_name MainSettingsData
 @export var window_height: int
 @export var monitor_mode: int
 @export var borderless: bool
-@export var last_monitor: int #is this used?
+#@export var last_monitor: int #is this used?
 @export var current_monitor: int
 
 @export var theme_title_size: int
@@ -16,6 +16,7 @@ class_name MainSettingsData
 @export var theme_large_size: int
 @export var theme_medium_size: int
 @export var theme_small_size: int
+
 @export var theme_font_color: Color
 @export var theme_outlines_color: Color
 @export var theme_background_color: Color
@@ -32,6 +33,7 @@ class_name MainSettingsData
 @export var theme_button_hover_color: Color
 @export var theme_transparency_default_color: Color
 @export var theme_transparency_warning_color: Color
+
 @export var theme_color_palettes: Dictionary
 @export var theme_current_color_palette: String
 
@@ -45,7 +47,7 @@ func export_json_from_resouce() -> Dictionary:
 		"window_height": window_height,
 		"monitor_mode": monitor_mode,
 		"borderless": borderless,
-		"last_monitor": last_monitor,
+		#"last_monitor": last_monitor,
 		"current_monitor": current_monitor,
 		"theme_title_size": theme_title_size,
 		"theme_sub_title_size": theme_sub_title_size,
@@ -63,7 +65,7 @@ func import_json_to_resource(data_parameter: Dictionary) -> void:
 	window_height = data_parameter.window_height
 	monitor_mode = data_parameter.monitor_mode
 	borderless = data_parameter.borderless
-	last_monitor = data_parameter.last_monitor
+	#last_monitor = data_parameter.last_monitor
 	current_monitor = data_parameter.current_monitor
 	theme_title_size = data_parameter.theme_title_size
 	theme_sub_title_size = data_parameter.theme_sub_title_size
@@ -83,7 +85,7 @@ func reset_settings_display() -> void:
 	window_width = ProjectSettings.get_setting("display/window/size/viewport_width")
 	window_height = ProjectSettings.get_setting("display/window/size/viewport_height")
 	monitor_mode = 1
-	last_monitor = 1
+	#last_monitor = 1
 	borderless = true
 	prints("Main Settings reset to defaults.")
 

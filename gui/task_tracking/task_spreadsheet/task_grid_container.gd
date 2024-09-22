@@ -26,6 +26,7 @@ func _ready() -> void:
 	get_dropdown_items_from_global()
 	#auto_load_database()
 	SqlManager.load_database
+	query_task_grid()
 	populate_task_grid()
 
 
@@ -53,23 +54,31 @@ func get_dropdown_items_from_global() -> void:
 			#return
 		#SqlManager.set_database_name_and_path(auto_load_name, auto_load_path)
 
+func query_task_grid() -> void:
+	var query_text: String = TaskTrackingGlobal.form_task_grid_query()
+	var queried_data: Array[Dictionary] = SqlManager.query_data(query_text)
+	TaskTrackingGlobal.most_recent_query = queried_data
+
 
 func populate_task_grid() -> void:
-	var data_to_load: Array = query_for_task_grid()
-	var first_row: Dictionary = data_to_load[0]
+	if TaskTrackingGlobal.most_recent_query == []:
+		prints("")
+		prints("Empty query: No data to populate with.")
+		prints("")
+		return
+	prints("Populate Task Grid with:", TaskTrackingGlobal.most_recent_query)
+	var first_row: Dictionary = TaskTrackingGlobal.most_recent_query[0]
 	TaskSignalBus._on_task_grid_populated.emit(first_row)
-	for data_row_iteration in data_to_load:
+	for data_row_iteration in TaskTrackingGlobal.most_recent_query:
 		populate_task_row(data_row_iteration)
-
-
-func query_for_task_grid() -> Array:
-	return SqlManager.query_data(TaskTrackingGlobal.form_task_grid_query())
 
 
 func populate_task_row(row_data_param: Dictionary) -> void:
 	var column_keys: Array = row_data_param.keys()
 	var current_id: String
-	for column_iteration in column_keys:
+	var checkbox_status: String
+	var checkbox_currently_assigned: String
+	for column_iteration: String in column_keys:
 		var current_value: String = row_data_param[column_iteration]
 		match column_iteration:
 			"task_info_id":
@@ -91,7 +100,7 @@ func populate_task_row(row_data_param: Dictionary) -> void:
 			"location":
 				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.current_location_items)
 			"assigned_to":
-				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.current_users.keys(), TaskTrackingGlobal.current_users[current_value])
+				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.current_users_keys, TaskTrackingGlobal.current_users[current_value][0])
 			"time_of_day":
 				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.time_of_day_enum_strings)
 			"priority":
@@ -100,9 +109,15 @@ func populate_task_row(row_data_param: Dictionary) -> void:
 				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.month_enum_strings)
 			"section":
 				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.section_enum_strings)
-				
 			_:
-				prints("Error populating rows.")
+				if column_iteration.ends_with("_status"):
+					checkbox_status = current_value
+				elif column_iteration.ends_with("_currently_assigned"):
+					checkbox_currently_assigned = current_value
+				elif column_iteration.ends_with("_completed_by"):
+					create_checkbox_cell(current_id, column_iteration, checkbox_status, checkbox_currently_assigned, current_value)
+				else:
+					prints("Error populating: Column:", column_iteration, "Value:", current_value)
 
 
 func set_grid_columns(column_param: int) -> void:
@@ -151,23 +166,29 @@ func create_dropdown_cell(
 
 
 
-
+"""
 
 "_status"
 "_currently_assigned"
 "_completed_by"
 
+task
+year
+month
+
+"""
 
 
 
-#
-#task
-#year
-#month
 
 
-
-func create_checkbox_cell(task_id_param: String, column_param: String, multi_text_parameter: String) -> void:
+func create_checkbox_cell(
+	task_id_param: String,
+	column_param: String,
+	status_param: String,
+	assigned_param: String,
+	completed_param: String,
+) -> void:
 	var cell: PanelContainer = CHECKBOX_CELL.instantiate()
 	add_child(cell)
 	cell

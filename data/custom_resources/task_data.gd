@@ -22,6 +22,7 @@ class_name TaskData
 var scheduling_array: Array
 var currently_scheduling: int
 
+# to be deleted after old data not needed
 
 
 func export_json_from_resource() -> Dictionary:
