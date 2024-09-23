@@ -13,14 +13,28 @@ var filepath_task_tracking_settings: String = (DataGlobal.settings_folder
 )
 
 
+var current_toggled_section: DataGlobal.Section = DataGlobal.Section.MONTHLY:
+	set(value):
+		current_toggled_section = value
+		TaskSignalBus._on_section_changed.emit()
+var current_toggled_month: DataGlobal.Month = DataGlobal.Month.JANUARY:
+	set(value):
+		current_toggled_month = value
+		TaskSignalBus._on_month_changed.emit()
+var current_toggled_year: int = 1990:
+	set(value):
+		current_toggled_year = value
+		TaskSignalBus._on_year_changed.emit()
+var current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT:
+	set(value):
+		current_toggled_checkbox_mode = value
+		TaskSignalBus._on_checkbox_mode_changed.emit()
+
+
 @onready var current_checkbox_profile: Array = default_profile
 var current_checkbox_state: Checkbox = Checkbox.ACTIVE
 var focus_checkbox_state: int
 var focus_checkbox_profile: Array
-var current_toggled_section: DataGlobal.Section = DataGlobal.Section.MONTHLY
-var current_toggled_month: DataGlobal.Month = DataGlobal.Month.JANUARY
-var current_toggled_year: int = 1990
-var current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT
 #var task_group_dropdown_items: Array 
 var user_profiles_dropdown_items: Array
 
@@ -265,16 +279,16 @@ create database:
 """
 
 
-var current_task_group_items: Array[String]
-var current_location_items: Array[String]
+var current_task_group_items: Array
+var current_location_items: Array
 var current_users: Dictionary
-var current_users_keys: Array[String]
+var current_users_keys: Array
 
 
-var month_enum_strings: Array[String] = DataGlobal.enum_to_strings(DataGlobal.Month)
-var section_enum_strings: Array[String] = DataGlobal.enum_to_strings(DataGlobal.Section)
-var time_of_day_enum_strings: Array[String] = DataGlobal.enum_to_strings(DataGlobal.TimeOfDay)
-var priority_enum_strings: Array[String] = DataGlobal.enum_to_strings(DataGlobal.Priority)
+var month_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Month)
+var section_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Section)
+var time_of_day_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.TimeOfDay)
+var priority_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Priority)
 
 
 
@@ -323,9 +337,9 @@ var priority_enum_strings: Array[String] = DataGlobal.enum_to_strings(DataGlobal
 @onready var daily_tasks_id: String = SqlManager.daily_tasks_id
 @onready var event_info_id: String = SqlManager.event_info_id
 
-@onready var monthly_column_keys: Array[String] = SqlManager.monthly_checkbox_columns.keys()
-@onready var weekly_column_keys: Array[String] = SqlManager.weekly_checkbox_columns.keys()
-@onready var daily_column_keys: Array[String] = SqlManager.daily_checkbox_columns.keys()
+@onready var monthly_column_keys: Array = SqlManager.monthly_checkbox_columns.keys()
+@onready var weekly_column_keys: Array = SqlManager.weekly_checkbox_columns.keys()
+@onready var daily_column_keys: Array = SqlManager.daily_checkbox_columns.keys()
 
 @onready var table_for_query = SqlManager.dates_table
 
@@ -507,25 +521,36 @@ func generate_users_dropdown_items() -> void:
 
 
 func add_task_info_to_active_changes(task_info: Dictionary) -> void:
+#	if the same cell as previous change, override.
 	active_changes.append(task_info)
 	apply_active_changes()
 
 
 func apply_active_changes() -> void:
+	TaskSignalBus._on_data_modified.emit()
 	pass
 
 
 func submit_active_changes_to_database() -> void:
+#	send data
+# 	reload database
+#   clear undo redo tables, to use modified data array as save check
 	pass
 
 
 func undo_active_changes() -> void:
+	if active_changes.is_empty():
+		prints("Nothing to Undo")
+		return
 	var undo_action: Dictionary = active_changes.pop_back()
 	undone_changes.append(undo_action)
 	apply_active_changes()
 
 
 func redo_active_changes() -> void:
+	if undone_changes.is_empty():
+		prints("Nothing to Redo")
+		return
 	var redo_action: Dictionary = undone_changes.pop_back()
 	active_changes.append(redo_action)
 	apply_active_changes()

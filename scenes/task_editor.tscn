@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=24 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scenes/task_editor.gd" id="1_b0ww1"]
 [ext_resource type="ButtonGroup" uid="uid://c4hrg6nv6u6tb" path="res://gui/task_tracking/checkbox_toggle.tres" id="2_38p0l"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scenes/task_editor/checkbox_inspect_toggle.gd" id="5_661uy"]
 [ext_resource type="ButtonGroup" uid="uid://tci5j17kmt8l" path="res://gui/task_tracking/section_button_group.tres" id="5_vyaou"]
 [ext_resource type="Script" path="res://scenes/task_editor/header_scroll_container.gd" id="6_pium1"]
+[ext_resource type="Script" path="res://scenes/task_editor/year_selection_button.gd" id="7_1s5eu"]
 [ext_resource type="Script" path="res://scenes/month_selection_menu.gd" id="7_fofm3"]
 [ext_resource type="Script" path="res://scenes/task_editor/header_grid_container.gd" id="7_hn1ku"]
 [ext_resource type="Script" path="res://gui/task_tracking/task_spreadsheet/task_grid_container.gd" id="8_txnjo"]
@@ -17,7 +18,9 @@
 [ext_resource type="Script" path="res://scenes/task_editor/monthly_button.gd" id="10_etwfq"]
 [ext_resource type="Script" path="res://scenes/task_editor/weekly_button.gd" id="11_ecy4k"]
 [ext_resource type="Script" path="res://scenes/task_editor/daily_button.gd" id="12_ycygh"]
+[ext_resource type="Script" path="res://scenes/task_editor/current_save_label.gd" id="13_lq2a4"]
 [ext_resource type="Script" path="res://scenes/task_editor/task_add_panel.gd" id="14_58d3i"]
+[ext_resource type="Script" path="res://scenes/task_editor/save_warning_button.gd" id="14_lyovr"]
 [ext_resource type="Script" path="res://scenes/task_editor/multi_text_popup_center.gd" id="18_5n1d3"]
 [ext_resource type="Script" path="res://scenes/task_editor/data_manager_center.gd" id="18_t6koh"]
 
@@ -139,6 +142,19 @@ layout_mode = 2
 [node name="HSeparator2" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
 
+[node name="YearSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+text = "Year"
+horizontal_alignment = 1
+
+[node name="YearSelectionButton" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+text = "Year Button"
+script = ExtResource("7_1s5eu")
+
+[node name="HSeparator6" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+
 [node name="SectionSelectionLabel" type="Label" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
 text = "Section"
@@ -179,40 +195,39 @@ layout_mode = 2
 text = "Month"
 horizontal_alignment = 1
 
-[node name="MonthSelectionMenu" type="MenuButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox" node_paths=PackedStringArray("task_editor")]
+[node name="MonthSelectionMenu" type="MenuButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox" node_paths=PackedStringArray("section_label", "section_divider")]
 unique_name_in_owner = true
 layout_mode = 2
-text = "January"
+text = "Needs Update"
 flat = false
-item_count = 13
-popup/item_0/separator = true
-popup/item_1/text = "January"
-popup/item_1/id = 1
-popup/item_1/disabled = true
-popup/item_2/text = "February"
-popup/item_2/id = 2
-popup/item_3/text = "March"
-popup/item_3/id = 3
-popup/item_4/text = "April"
-popup/item_4/id = 4
-popup/item_5/text = "May"
-popup/item_5/id = 5
-popup/item_6/text = "June"
-popup/item_6/id = 6
-popup/item_7/text = "July"
-popup/item_7/id = 7
-popup/item_8/text = "August"
-popup/item_8/id = 8
-popup/item_9/text = "September"
-popup/item_9/id = 9
-popup/item_10/text = "October"
-popup/item_10/id = 10
-popup/item_11/text = "November"
-popup/item_11/id = 11
-popup/item_12/text = "December"
-popup/item_12/id = 12
+item_count = 12
+popup/item_0/text = "January"
+popup/item_0/id = 1
+popup/item_1/text = "February"
+popup/item_1/id = 2
+popup/item_2/text = "March"
+popup/item_2/id = 3
+popup/item_3/text = "April"
+popup/item_3/id = 4
+popup/item_4/text = "May"
+popup/item_4/id = 5
+popup/item_5/text = "June"
+popup/item_5/id = 6
+popup/item_6/text = "July"
+popup/item_6/id = 7
+popup/item_7/text = "August"
+popup/item_7/id = 8
+popup/item_8/text = "September"
+popup/item_8/id = 9
+popup/item_9/text = "October"
+popup/item_9/id = 10
+popup/item_10/text = "November"
+popup/item_10/id = 11
+popup/item_11/text = "December"
+popup/item_11/id = 12
 script = ExtResource("7_fofm3")
-task_editor = NodePath("../../../../..")
+section_label = NodePath("../MonthSelectionLabel")
+section_divider = NodePath("../HSeparator3")
 
 [node name="NonSideVBox" type="VBoxContainer" parent="MainMargin/MainHBox"]
 layout_mode = 2
@@ -227,11 +242,13 @@ size_flags_vertical = 0
 unique_name_in_owner = true
 layout_mode = 2
 text = "Current File: YEAR"
+script = ExtResource("13_lq2a4")
 
 [node name="SaveWarningButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "No Data Loaded!"
+script = ExtResource("14_lyovr")
 
 [node name="HBoxFarSide" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox/TopMenuHBox"]
 layout_mode = 2

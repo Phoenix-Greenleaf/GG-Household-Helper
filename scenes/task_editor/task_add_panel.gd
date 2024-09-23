@@ -117,4 +117,4 @@ checkboxes_column_toggled
 
 """
 
-func add_new_task
+#func add_new_task
