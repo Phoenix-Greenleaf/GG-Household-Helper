@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=3 uid="uid://behwh6tk0c5jy"]
+
+[ext_resource type="Script" path="res://gui/task_tracking/year_selection_panel.gd" id="1_klvdd"]
+
+[node name="YearSelectionPanel" type="PanelContainer"]
+offset_right = 46.0
+offset_bottom = 34.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_klvdd")
+
+[node name="MainVBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MainVBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Label_Medium"
+text = "Year Selection"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OptionsHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="OptionButton" type="OptionButton" parent="MainVBoxContainer/OptionsHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+selected = 0
+fit_to_longest_item = false
+item_count = 1
+popup/item_0/text = "Existing Years"
+
+[node name="SpinBox" type="SpinBox" parent="MainVBoxContainer/OptionsHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1000.0
+max_value = 3000.0
+value = 2000.0
+alignment = 1
+
+[node name="ButtonsHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="AcceptButton" type="Button" parent="MainVBoxContainer/ButtonsHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Accept"
+
+[node name="CancelButton" type="Button" parent="MainVBoxContainer/ButtonsHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Cancel"
+
+[connection signal="item_selected" from="MainVBoxContainer/OptionsHBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="value_changed" from="MainVBoxContainer/OptionsHBoxContainer/SpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="pressed" from="MainVBoxContainer/ButtonsHBoxContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
+[connection signal="pressed" from="MainVBoxContainer/ButtonsHBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
