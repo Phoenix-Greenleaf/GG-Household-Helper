@@ -66,7 +66,7 @@ func populate_task_grid() -> void:
 		prints("Empty query: No data to populate with.")
 		prints("")
 		return
-	prints("Populate Task Grid with:", TaskTrackingGlobal.most_recent_query)
+	#prints("Populate Task Grid with:", TaskTrackingGlobal.most_recent_query)
 	var first_row: Dictionary = TaskTrackingGlobal.most_recent_query[0]
 	TaskSignalBus._on_task_grid_populated.emit(first_row)
 	for data_row_iteration in TaskTrackingGlobal.most_recent_query:
@@ -100,7 +100,12 @@ func populate_task_row(row_data_param: Dictionary) -> void:
 			"location":
 				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.current_location_items)
 			"assigned_to":
-				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.current_users_keys, TaskTrackingGlobal.current_users[current_value][0])
+				prints("Current Users Id:")
+				prints(TaskTrackingGlobal.current_users_id)
+				prints("Current Value:", current_value)
+				prints("Type:", type_string(typeof(current_value)))
+				var current_user_name: String = TaskTrackingGlobal.current_users_id.find_key(int(current_value))
+				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.current_users_keys, int(current_value))
 			"time_of_day":
 				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.time_of_day_enum_strings)
 			"priority":

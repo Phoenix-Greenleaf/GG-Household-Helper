@@ -14,6 +14,8 @@ func set_dropdown_cell(task_id_param: String, column_param: String, dropdown_par
 	if user_id_param != -1:
 		saved_user_id = user_id_param
 	var item_id: int = 0
+	if not dropdown_items[0]:
+		return
 	for item_iteration in dropdown_items:
 		add_item(item_iteration, item_id)
 		item_id += 1

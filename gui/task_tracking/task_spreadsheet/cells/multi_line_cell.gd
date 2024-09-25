@@ -15,7 +15,6 @@ func set_multi_line_cell(task_id_param: String, column_param: String, multi_text
 	saved_column = column_param
 	saved_multi_text = multi_text_param
 	update_button()
-	pressed.connect(TaskTrackingGlobal._on_description_button_pressed.bind(self))
 
 
 func update_button() -> void:

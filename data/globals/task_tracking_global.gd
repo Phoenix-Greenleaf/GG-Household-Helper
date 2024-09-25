@@ -60,13 +60,28 @@ enum CheckboxToggle {
 
 func _ready() -> void:
 	connect_signals()
-
+	load_task_tracking_settings()
 
 
 func connect_signals() -> void:
 	TaskSignalBus._on_new_database_loaded.connect(generate_dropdown_item_arrays)
 	TaskSignalBus._on_new_database_loaded.connect(generate_existing_years_index)
 
+
+func load_task_tracking_settings() -> void:
+	DataGlobal.directory_check(DataGlobal.settings_folder)
+	active_settings = TaskSettingsData.new()
+	if not FileAccess.file_exists(filepath_task_tracking_settings):
+		active_settings.reset_settings()
+		save_task_tracking_settings()
+		return
+	var json_data = JsonSaveManager.load_data(filepath_task_tracking_settings)
+	active_settings.import_json_to_resource(json_data)
+
+
+func save_task_tracking_settings() -> void:
+	var json_data = active_settings.export_json_from_resouce()
+	JsonSaveManager.save_data(filepath_task_tracking_settings, json_data)
 
 # just around to load old data sets
 
@@ -124,7 +139,7 @@ func extract_task_info() -> Array:
 			name_assigned_to = SqlManager.unassigned_user_text
 		var task_info_data_row: Dictionary = {
 			task_name : task_entry.name,
-			assigned_to : current_users[name_assigned_to],
+			assigned_to : current_users_id[name_assigned_to],
 			section : section_enum_strings[task_entry.section],
 			task_group : task_entry.group,
 		}
@@ -134,14 +149,15 @@ func extract_task_info() -> Array:
 
 
 func query_user_info() -> void:
-	var raw_user_query: Array = SqlManager.query_data(
-		"select user_info_id, name, color from user_info"
-	)
-	var user_query: Dictionary
+	var raw_user_query: Array = SqlManager.query_data("select user_info_id, name, color from user_info")
+	var user_id: Dictionary
+	var user_color: Dictionary
 	for user_iteration in raw_user_query:
-		user_query[user_iteration[name_]] = [user_iteration[user_info_id], user_iteration[color_]]
-	current_users = user_query
-	current_users_keys = current_users.keys()
+		user_id[user_iteration[name_]] = user_iteration[user_info_id]
+		user_color[user_iteration[name_]] = user_iteration[color_]
+	current_users_id = user_id
+	current_users_color = user_color
+	current_users_keys = current_users_id.keys()
 
 
 func create_new_date_data(year_parameter: int) -> Array: #needed anymore?
@@ -284,7 +300,8 @@ create database:
 var existing_years_index: Array
 var current_task_group_items: Array
 var current_location_items: Array
-var current_users: Dictionary
+var current_users_id: Dictionary
+var current_users_color: Dictionary
 var current_users_keys: Array
 
 
