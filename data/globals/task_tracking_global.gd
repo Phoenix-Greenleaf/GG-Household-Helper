@@ -59,10 +59,13 @@ enum CheckboxToggle {
 
 
 func _ready() -> void:
-	prints("")
-	prints("dropdown gen on loading signal connected.")
-	prints("")
+	connect_signals()
+
+
+
+func connect_signals() -> void:
 	TaskSignalBus._on_new_database_loaded.connect(generate_dropdown_item_arrays)
+	TaskSignalBus._on_new_database_loaded.connect(generate_existing_years_index)
 
 
 # just around to load old data sets
@@ -278,7 +281,7 @@ create database:
 
 """
 
-
+var existing_years_index: Array
 var current_task_group_items: Array
 var current_location_items: Array
 var current_users: Dictionary
@@ -344,23 +347,70 @@ var priority_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Priorit
 @onready var table_for_query = SqlManager.dates_table
 
 
-var section_column_toggled: bool = true
-var scheduling_column_toggled: bool = true
-var group_column_toggled: bool = true
-var description_column_toggled: bool = true
-var time_of_day_column_toggled: bool = true
-var priority_column_toggled: bool = true
-var location_column_toggled: bool = true
-var assigned_to_column_toggled: bool = true
-var task_removal_column_toggled: bool = true
-var year_column_toggled: bool = true
-var month_column_toggled: bool = true
-var checkboxes_column_toggled: bool = true
+var section_column_toggled: bool = true:
+	set(value):
+		section_column_toggled = value
+		TaskSignalBus._on_task_grid_column_toggled.emit()
+var scheduling_column_toggled: bool = true:
+	set(value):
+		scheduling_column_toggled = value
+		TaskSignalBus._on_task_grid_column_toggled.emit()
+var group_column_toggled: bool = true:
+	set(value):
+		group_column_toggled = value
+		TaskSignalBus._on_task_grid_column_toggled.emit()
+var description_column_toggled: bool = true:
+	set(value):
+		description_column_toggled = value
+		TaskSignalBus._on_task_grid_column_toggled.emit()
+var time_of_day_column_toggled: bool = true:
+	set(value):
+		time_of_day_column_toggled = value
+		TaskSignalBus._on_task_grid_column_toggled.emit()
+var priority_column_toggled: bool = true:
+	set(value):
+		priority_column_toggled = value
+		TaskSignalBus._on_task_grid_column_toggled.emit()
+var location_column_toggled: bool = true:
+	set(value):
+		location_column_toggled = value
+		TaskSignalBus._on_task_grid_column_toggled.emit()
+var assigned_to_column_toggled: bool = true:
+	set(value):
+		assigned_to_column_toggled = value
+		TaskSignalBus._on_task_grid_column_toggled.emit()
+var task_removal_column_toggled: bool = true:
+	set(value):
+		task_removal_column_toggled = value
+		TaskSignalBus._on_task_grid_column_toggled.emit()
+var year_column_toggled: bool = true:
+	set(value):
+		year_column_toggled = value
+		TaskSignalBus._on_task_grid_column_toggled.emit()
+var month_column_toggled: bool = true:
+	set(value):
+		month_column_toggled = value
+		TaskSignalBus._on_task_grid_column_toggled.emit()
+var checkboxes_column_toggled: bool = true:
+	set(value):
+		checkboxes_column_toggled = value
+		TaskSignalBus._on_task_grid_column_toggled.emit()
 
 var most_recent_query: Array[Dictionary]
 var active_changes: Array[Dictionary]
 var undone_changes: Array[Dictionary]
 
+
+
+
+
+func generate_existing_years_index() -> void:
+	if SqlManager.database_name == "":
+		return
+	existing_years_index.clear()
+	var existing_years: Array = SqlManager.get_unique_elements_from_column("daily_tasks, weekly_tasks, monthly_tasks", "daily_tasks.year, weekly_tasks.year, monthly_tasks.year")
+	for unique_year in existing_years: #only needed if int needed
+		existing_years_index.append(int(unique_year))
 
 
 func form_task_grid_query() -> String:
@@ -484,12 +534,14 @@ func add_checkbox_conditions(data_param: PackedStringArray) -> void:
 
 
 func year_condition() -> String:
-	var current_condition: String = year + " = '" + str(current_toggled_year) + "'"
+	var null_string: String = "' or " + year + " is null)"
+	var current_condition: String = "(" + year + " = '" + str(current_toggled_year) + null_string
 	return current_condition
 
 
 func month_condition() -> String:
-	var current_condition: String = month + " = '" + month_enum_strings[current_toggled_month] + "'"
+	var null_string: String = "' or " + month + " is null)"
+	var current_condition: String = "(" + month + " = '" + month_enum_strings[current_toggled_month] + null_string
 	return current_condition
 
 

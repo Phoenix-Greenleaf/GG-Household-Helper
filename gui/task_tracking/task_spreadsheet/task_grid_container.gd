@@ -79,7 +79,7 @@ func populate_task_row(row_data_param: Dictionary) -> void:
 	var checkbox_status: String
 	var checkbox_currently_assigned: String
 	for column_iteration: String in column_keys:
-		var current_value: String = row_data_param[column_iteration]
+		var current_value: String = str(row_data_param[column_iteration])
 		match column_iteration:
 			"task_info_id":
 				current_id = current_value

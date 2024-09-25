@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=26 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scenes/task_editor.gd" id="1_b0ww1"]
 [ext_resource type="ButtonGroup" uid="uid://c4hrg6nv6u6tb" path="res://gui/task_tracking/checkbox_toggle.tres" id="2_38p0l"]
@@ -19,10 +19,12 @@
 [ext_resource type="Script" path="res://scenes/task_editor/weekly_button.gd" id="11_ecy4k"]
 [ext_resource type="Script" path="res://scenes/task_editor/daily_button.gd" id="12_ycygh"]
 [ext_resource type="Script" path="res://scenes/task_editor/current_save_label.gd" id="13_lq2a4"]
+[ext_resource type="Script" path="res://scenes/task_editor/data_columns_toggle_option_button.gd" id="14_2vuht"]
 [ext_resource type="Script" path="res://scenes/task_editor/task_add_panel.gd" id="14_58d3i"]
 [ext_resource type="Script" path="res://scenes/task_editor/save_warning_button.gd" id="14_lyovr"]
 [ext_resource type="Script" path="res://scenes/task_editor/multi_text_popup_center.gd" id="18_5n1d3"]
 [ext_resource type="Script" path="res://scenes/task_editor/data_manager_center.gd" id="18_t6koh"]
+[ext_resource type="PackedScene" uid="uid://behwh6tk0c5jy" path="res://gui/task_tracking/year_selection_panel.tscn" id="24_mvrf5"]
 
 [node name="TaskEditor" type="Control"]
 layout_mode = 3
@@ -228,6 +230,20 @@ popup/item_11/id = 12
 script = ExtResource("7_fofm3")
 section_label = NodePath("../MonthSelectionLabel")
 section_divider = NodePath("../HSeparator3")
+
+[node name="HSeparator8" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+
+[node name="MonthSelectionLabel2" type="Label" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+text = "Data Columns"
+horizontal_alignment = 1
+
+[node name="DataColumnsToggleOptionButton" type="OptionButton" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+layout_mode = 2
+alignment = 1
+fit_to_longest_item = false
+script = ExtResource("14_2vuht")
 
 [node name="NonSideVBox" type="VBoxContainer" parent="MainMargin/MainHBox"]
 layout_mode = 2
@@ -523,6 +539,16 @@ z_as_relative = false
 layout_mode = 2
 visibility_node = NodePath("..")
 
+[node name="YearSelectionPanel" parent="." node_paths=PackedStringArray("opening_button", "node_for_position_sync") instance=ExtResource("24_mvrf5")]
+visible = false
+layout_mode = 0
+offset_left = 183.0
+offset_top = 523.0
+offset_right = 428.0
+offset_bottom = 656.0
+opening_button = NodePath("../MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/YearSelectionButton")
+node_for_position_sync = NodePath("../MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/YearSelectionLabel")
+
 [connection signal="pressed" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MenuButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MenuButton" method="_on_pressed"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxApplyToggle" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxApplyToggle" method="_on_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxInspectToggle" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxInspectToggle" method="_on_toggled"]
@@ -530,6 +556,7 @@ visibility_node = NodePath("..")
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MonthlyButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MonthlyButton" method="_on_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/WeeklyButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/WeeklyButton" method="_on_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DailyButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DailyButton" method="_on_toggled"]
+[connection signal="item_selected" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DataColumnsToggleOptionButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DataColumnsToggleOptionButton" method="_on_item_selected"]
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/SaveWarningButton" to="." method="_on_save_warning_button_pressed"]
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/AddTaskButton" to="MainMargin/MainHBox/NonSideVBox/TaskGridScrollContainer/TaskGridContainer" method="_on_add_task_button_pressed"]
 [connection signal="item_selected" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/ExistingGroupsOption" to="MainMargin/MainHBox/NonSideVBox/TaskGridScrollContainer/TaskGridContainer" method="_on_existing_groups_option_item_selected"]

@@ -84,7 +84,7 @@ func sync_position() -> void:
 	var sync_x: int = offset_x + menu_position_x + menu_button_width
 	var sync_y: int = offset_y + menu_position_y
 	var sync_vector := Vector2i(sync_x, sync_y)
-	self.position = sync_vector
+	position = sync_vector
 
 
 func update_menu_button_witdth() -> void:
