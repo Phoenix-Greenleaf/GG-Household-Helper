@@ -368,50 +368,62 @@ var section_column_toggled: bool = true:
 	set(value):
 		section_column_toggled = value
 		TaskSignalBus._on_task_grid_column_toggled.emit()
+		prints("section_column_toggled:", value)
 var scheduling_column_toggled: bool = true:
 	set(value):
 		scheduling_column_toggled = value
 		TaskSignalBus._on_task_grid_column_toggled.emit()
+		prints("section_column_toggled:", value)
 var group_column_toggled: bool = true:
 	set(value):
 		group_column_toggled = value
 		TaskSignalBus._on_task_grid_column_toggled.emit()
+		prints("section_column_toggled:", value)
 var description_column_toggled: bool = true:
 	set(value):
 		description_column_toggled = value
 		TaskSignalBus._on_task_grid_column_toggled.emit()
+		prints("section_column_toggled:", value)
 var time_of_day_column_toggled: bool = true:
 	set(value):
 		time_of_day_column_toggled = value
 		TaskSignalBus._on_task_grid_column_toggled.emit()
+		prints("section_column_toggled:", value)
 var priority_column_toggled: bool = true:
 	set(value):
 		priority_column_toggled = value
 		TaskSignalBus._on_task_grid_column_toggled.emit()
+		prints("section_column_toggled:", value)
 var location_column_toggled: bool = true:
 	set(value):
 		location_column_toggled = value
 		TaskSignalBus._on_task_grid_column_toggled.emit()
+		prints("section_column_toggled:", value)
 var assigned_to_column_toggled: bool = true:
 	set(value):
 		assigned_to_column_toggled = value
 		TaskSignalBus._on_task_grid_column_toggled.emit()
+		prints("section_column_toggled:", value)
 var task_removal_column_toggled: bool = true:
 	set(value):
 		task_removal_column_toggled = value
 		TaskSignalBus._on_task_grid_column_toggled.emit()
+		prints("section_column_toggled:", value)
 var year_column_toggled: bool = true:
 	set(value):
 		year_column_toggled = value
 		TaskSignalBus._on_task_grid_column_toggled.emit()
+		prints("section_column_toggled:", value)
 var month_column_toggled: bool = true:
 	set(value):
 		month_column_toggled = value
 		TaskSignalBus._on_task_grid_column_toggled.emit()
+		prints("section_column_toggled:", value)
 var checkboxes_column_toggled: bool = true:
 	set(value):
 		checkboxes_column_toggled = value
 		TaskSignalBus._on_task_grid_column_toggled.emit()
+		prints("section_column_toggled:", value)
 
 var most_recent_query: Array[Dictionary]
 var active_changes: Array[Dictionary]

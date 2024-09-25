@@ -21,10 +21,8 @@ var priority_dropdown_items: Array
 
 
 func _ready() -> void:
-	#TaskTrackingGlobal.load_settings_task_tracking()
 	ready_connections()
 	get_dropdown_items_from_global()
-	#auto_load_database()
 	SqlManager.load_database
 	query_task_grid()
 	populate_task_grid()
@@ -53,6 +51,7 @@ func get_dropdown_items_from_global() -> void:
 			#prints("Database already open, no need to auto-load.")
 			#return
 		#SqlManager.set_database_name_and_path(auto_load_name, auto_load_path)
+
 
 func query_task_grid() -> void:
 	var query_text: String = TaskTrackingGlobal.form_task_grid_query()
@@ -107,13 +106,13 @@ func populate_task_row(row_data_param: Dictionary) -> void:
 				var current_user_name: String = TaskTrackingGlobal.current_users_id.find_key(int(current_value))
 				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.current_users_keys, int(current_value))
 			"time_of_day":
-				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.time_of_day_enum_strings)
+				create_dropdown_cell(current_id, column_iteration, current_value, time_of_day_dropdown_items)
 			"priority":
-				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.priority_enum_strings)
+				create_dropdown_cell(current_id, column_iteration, current_value, priority_dropdown_items)
 			"month":
-				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.month_enum_strings)
+				create_dropdown_cell(current_id, column_iteration, current_value, DataGlobal.month_strings)
 			"section":
-				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.section_enum_strings)
+				create_dropdown_cell(current_id, column_iteration, current_value, section_dropdown_items)
 			_:
 				if column_iteration.ends_with("_status"):
 					checkbox_status = current_value

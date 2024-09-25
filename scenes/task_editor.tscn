@@ -235,6 +235,7 @@ section_divider = NodePath("../HSeparator3")
 layout_mode = 2
 
 [node name="MonthSelectionLabel2" type="Label" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
+visible = false
 layout_mode = 2
 text = "Data Columns"
 horizontal_alignment = 1
