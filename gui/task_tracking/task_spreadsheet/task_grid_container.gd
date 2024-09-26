@@ -99,10 +99,10 @@ func populate_task_row(row_data_param: Dictionary) -> void:
 			"location":
 				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.current_location_items)
 			"assigned_to":
-				prints("Current Users Id:")
-				prints(TaskTrackingGlobal.current_users_id)
-				prints("Current Value:", current_value)
-				prints("Type:", type_string(typeof(current_value)))
+				#prints("Current Users Id:")
+				#prints(TaskTrackingGlobal.current_users_id)
+				#prints("Current Value:", current_value)
+				#prints("Type:", type_string(typeof(current_value)))
 				var current_user_name: String = TaskTrackingGlobal.current_users_id.find_key(int(current_value))
 				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.current_users_keys, int(current_value))
 			"time_of_day":
