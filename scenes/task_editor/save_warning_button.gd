@@ -9,6 +9,7 @@ var changed_data: String = "SAVE CHANGES"
 
 func _ready() -> void:
 	TaskSignalBus._on_data_modified.connect(update_button)
+	TaskSignalBus._on_new_database_loaded.connect(update_button)
 	update_button()
 
 

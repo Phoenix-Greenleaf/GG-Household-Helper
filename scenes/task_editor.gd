@@ -16,11 +16,10 @@ func _ready() -> void:
 	#TaskTrackingGlobal.load_settings_task_tracking()
 	connection_cental()
 	set_current_date_label()
-	add_task_button.disabled = true
-	if TaskTrackingGlobal.active_data:
-		#update_current_tasksheet_label()
-		add_task_button.disabled = false
-		TaskSignalBus._on_section_changed.emit()
+	SqlManager.load_database()
+	#add_task_button.disabled = true
+	#if SqlManager.database_is_active:
+		#add_task_button.disabled = false
 	print("========= Editor Scene Ready! =========")
 
 

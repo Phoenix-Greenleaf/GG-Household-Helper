@@ -95,7 +95,7 @@ var monthly_checkbox_addresses: Array
 
 func _ready() -> void:
 	generate_all_checkbox_columns_info()
-	initialize_database()
+	#initialize_database()
 
 
 func generate_all_checkbox_columns_info() -> void:
@@ -177,7 +177,6 @@ func initialize_database() -> void:
 		database_path = create_database_path()
 	if database_name == "":
 		database_name = create_database_name(database_path)
-	load_database()
 
 
 func char_(number: int) -> String:
@@ -335,6 +334,10 @@ func verify_database_tables_exist() -> bool:
 
 
 func load_database() -> void:
+	if database_is_active:
+		prints("Database already loaded")
+		return
+	initialize_database()
 	active_database = SQLite.new()
 	active_database.path = database_path
 	active_database.foreign_keys = true
@@ -349,6 +352,15 @@ func load_database() -> void:
 	prints("Emitting database loaded signal")
 	prints("")
 	TaskSignalBus._on_new_database_loaded.emit()
+
+
+func unload_database() -> void:
+	if not database_is_active:
+		prints("No database to unload")
+		return
+	active_database.close_db()
+	active_database.call_deferred("free")
+	database_is_active = false
 
 
 func get_existing_database_files() -> Array:

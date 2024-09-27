@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=27 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scenes/task_editor.gd" id="1_b0ww1"]
 [ext_resource type="ButtonGroup" uid="uid://c4hrg6nv6u6tb" path="res://gui/task_tracking/checkbox_toggle.tres" id="2_38p0l"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scenes/task_editor/checkbox_apply_toggle.gd" id="4_w2xr7"]
 [ext_resource type="Script" path="res://scenes/task_editor/checkbox_inspect_toggle.gd" id="5_661uy"]
 [ext_resource type="ButtonGroup" uid="uid://tci5j17kmt8l" path="res://gui/task_tracking/section_button_group.tres" id="5_vyaou"]
+[ext_resource type="Script" path="res://scenes/task_editor/editing_lock_button.gd" id="6_dqly2"]
 [ext_resource type="Script" path="res://scenes/task_editor/header_scroll_container.gd" id="6_pium1"]
 [ext_resource type="Script" path="res://scenes/task_editor/year_selection_button.gd" id="7_1s5eu"]
 [ext_resource type="Script" path="res://scenes/month_selection_menu.gd" id="7_fofm3"]
@@ -131,6 +132,7 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Editing
 Lock"
+script = ExtResource("6_dqly2")
 
 [node name="HSeparator7" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
@@ -553,14 +555,14 @@ node_for_position_sync = NodePath("../MainMargin/MainHBox/SideMenuScrollContaine
 [connection signal="pressed" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MenuButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MenuButton" method="_on_pressed"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxApplyToggle" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxApplyToggle" method="_on_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxInspectToggle" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/CheckboxInspectToggle" method="_on_toggled"]
-[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/EditingLockButton" to="MainMargin/MainHBox/NonSideVBox/TaskGridScrollContainer/TaskGridContainer" method="_on_editing_lock_button_toggled"]
+[connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/EditingLockButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/EditingLockButton" method="_on_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MonthlyButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/MonthlyButton" method="_on_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/WeeklyButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/WeeklyButton" method="_on_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DailyButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DailyButton" method="_on_toggled"]
 [connection signal="item_selected" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DataColumnsToggleOptionButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DataColumnsToggleOptionButton" method="_on_item_selected"]
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/SaveWarningButton" to="." method="_on_save_warning_button_pressed"]
-[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/AddTaskButton" to="MainMargin/MainHBox/NonSideVBox/TaskGridScrollContainer/TaskGridContainer" method="_on_add_task_button_pressed"]
-[connection signal="item_selected" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/ExistingGroupsOption" to="MainMargin/MainHBox/NonSideVBox/TaskGridScrollContainer/TaskGridContainer" method="_on_existing_groups_option_item_selected"]
-[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/AcceptNewTaskButton" to="MainMargin/MainHBox/NonSideVBox/TaskGridScrollContainer/TaskGridContainer" method="_on_accept_new_task_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/AddTaskButton" to="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel" method="_on_add_task_button_pressed"]
+[connection signal="item_selected" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/ExistingGroupsOption" to="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel" method="_on_existing_groups_option_item_selected"]
+[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/AcceptNewTaskButton" to="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel" method="_on_accept_new_task_button_pressed"]
 [connection signal="pressed" from="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2/AcceptMultiTextButton" to="MainMargin/MainHBox/NonSideVBox/TaskGridScrollContainer/TaskGridContainer" method="_on_accept_multi_text_button_pressed"]
 [connection signal="pressed" from="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2/CancelMultiTextButton" to="MultiTextPopupCenter" method="_on_cancel_multi_text_button_pressed"]

@@ -1,7 +1,6 @@
 extends Node
 
 
-signal _on_active_database_switched
 signal _on_task_grid_populated(row_data: Dictionary)
 signal _on_task_grid_column_count_changed(new_count: int)
 signal _on_description_button_pressed(cell: Button)
@@ -13,6 +12,7 @@ signal _on_section_changed
 signal _on_month_changed
 signal _on_year_changed
 signal _on_checkbox_mode_changed
+signal _on_task_editing_lock_toggled(lock_active: bool)
 
 
 
@@ -48,6 +48,7 @@ signal _on_task_delete_button_primed_and_pressed
 
 
 
+signal _on_active_database_switched # retire this for on_new_database_loaded
 signal _on_column_visibility_toggled(column: String, toggle: bool)
 signal _on_save_button_pressed
 signal _on_grid_reload_pressed

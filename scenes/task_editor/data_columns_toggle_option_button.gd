@@ -38,6 +38,7 @@ func _ready() -> void:
 	text = "Data Columns"
 	popup_menu = get_popup()
 	popup_menu.hide_on_checkable_item_selection = false
+	allow_reselect = true
 	populate_with_checkboxes()
 	update_checkboxes()
 	TaskSignalBus._on_task_grid_column_toggled.connect(update_checkboxes)

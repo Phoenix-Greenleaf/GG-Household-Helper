@@ -7,18 +7,19 @@ func _ready() -> void:
 
 
 func signal_connections() -> void:
-	TaskSignalBus._on_grid_reload_pressed.connect(clear_header_children)
+	#TaskSignalBus._on_grid_reload_pressed.connect(clear_header_children)
 	TaskSignalBus._on_task_grid_populated.connect(create_header_row)
 
 
 func clear_header_children() -> void:
-	var children = self.get_children()
+	var children = get_children()
 	for current_kiddo in children:
-		self.remove_child(current_kiddo)
+		remove_child(current_kiddo)
 		current_kiddo.queue_free()
 
 
 func create_header_row(data_row_param: Dictionary) -> void:
+	clear_header_children()
 	var queried_columns: Array = data_row_param.keys()
 	for column_iteration in queried_columns:
 		if column_iteration == "task_info_id":

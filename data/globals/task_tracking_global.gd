@@ -66,6 +66,11 @@ func _ready() -> void:
 func connect_signals() -> void:
 	TaskSignalBus._on_new_database_loaded.connect(generate_dropdown_item_arrays)
 	TaskSignalBus._on_new_database_loaded.connect(generate_existing_years_index)
+	TaskSignalBus._on_task_editing_lock_toggled.connect(remember_editing_lock)
+
+
+func remember_editing_lock(locked: bool) -> void:
+	editing_locked = locked
 
 
 func load_task_tracking_settings() -> void:
@@ -425,6 +430,8 @@ var checkboxes_column_toggled: bool = true:
 		TaskSignalBus._on_task_grid_column_toggled.emit()
 		prints("section_column_toggled:", value)
 
+var editing_locked: bool = false
+
 var most_recent_query: Array[Dictionary]
 var active_changes: Array[Dictionary]
 var undone_changes: Array[Dictionary]
@@ -594,7 +601,8 @@ func generate_task_group_dropdown_items() -> void:
 
 
 func generate_location_dropdown_items() -> void:
-	current_location_items = SqlManager.get_unique_elements_from_column(task_info_table, location)
+	current_location_items.append("No Location")
+	current_location_items.append_array(SqlManager.get_unique_elements_from_column(task_info_table, location))
 
 
 func generate_users_dropdown_items() -> void:

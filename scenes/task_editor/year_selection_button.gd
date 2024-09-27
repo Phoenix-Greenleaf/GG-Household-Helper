@@ -2,7 +2,7 @@ extends Button
 
 
 func _ready() -> void:
-	TaskSignalBus._on_year_changed.connect(update_button)
+	TaskSignalBus._on_new_database_loaded.connect(update_button)
 	update_button()
 
 

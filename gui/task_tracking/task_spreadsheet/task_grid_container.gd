@@ -23,7 +23,8 @@ var priority_dropdown_items: Array
 func _ready() -> void:
 	ready_connections()
 	get_dropdown_items_from_global()
-	SqlManager.load_database
+	if not SqlManager.database_is_active:
+		SqlManager.load_database()
 	query_task_grid()
 	populate_task_grid()
 
@@ -31,6 +32,9 @@ func _ready() -> void:
 
 func ready_connections() -> void:
 	TaskSignalBus._on_task_grid_column_count_changed.connect(set_grid_columns)
+	TaskSignalBus._on_section_changed.connect(reload_grid)
+	TaskSignalBus._on_month_changed.connect(reload_grid)
+	TaskSignalBus._on_year_changed.connect(reload_grid)
 
 
 func get_dropdown_items_from_global() -> void:
@@ -104,7 +108,7 @@ func populate_task_row(row_data_param: Dictionary) -> void:
 				#prints("Current Value:", current_value)
 				#prints("Type:", type_string(typeof(current_value)))
 				var current_user_name: String = TaskTrackingGlobal.current_users_id.find_key(int(current_value))
-				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.current_users_keys, int(current_value))
+				create_dropdown_cell(current_id, column_iteration, current_user_name, TaskTrackingGlobal.current_users_keys, int(current_value))
 			"time_of_day":
 				create_dropdown_cell(current_id, column_iteration, current_value, time_of_day_dropdown_items)
 			"priority":
@@ -130,6 +134,9 @@ func set_grid_columns(column_param: int) -> void:
 
 func reload_grid() -> void:
 	clear_grid_children()
+	query_task_grid()
+	populate_task_grid()
+	check_for_editing_lock()
 
 
 func clear_grid_children() -> void:
@@ -137,6 +144,12 @@ func clear_grid_children() -> void:
 	for current_kiddo in children:
 		self.remove_child(current_kiddo)
 		current_kiddo.queue_free()
+
+
+func check_for_editing_lock() -> void:
+	if not TaskTrackingGlobal.editing_locked:
+		return
+	TaskSignalBus._on_task_editing_lock_toggled.emit(true)
 
 
 func create_text_cell(task_id_param: String, column_param: String, text_param: String) -> void:

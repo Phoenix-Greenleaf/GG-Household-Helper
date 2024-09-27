@@ -7,6 +7,11 @@ var saved_number: int
 
 func _ready() -> void:
 	name = "NumberCell"
+	TaskSignalBus._on_task_editing_lock_toggled.connect(disable_cell)
+
+
+func disable_cell(editing_locked: bool) -> void:
+	editable = !editing_locked
 
 
 func set_number_cell(task_id_param: String, column_param: String, number_param: String, min_param: int, max_param: int) -> void:

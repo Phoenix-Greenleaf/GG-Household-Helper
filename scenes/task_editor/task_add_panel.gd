@@ -19,10 +19,15 @@ extends PanelContainer
 @onready var v_separator_2: VSeparator = %VSeparator2
 @onready var v_separator: VSeparator = %VSeparator
 
+var cancel_txt: String = "Cancel"
+var add_task_txt: String = "Add Task"
+
+
 
 func _ready() -> void:
 	close_new_task_panel()
 	TaskSignalBus._on_task_grid_column_toggled.connect(refresh_panel)
+	TaskSignalBus._on_task_editing_lock_toggled.connect(toggle_editing_lock)
 
 
 func update_task_add_assigned_users() -> void:
@@ -47,9 +52,9 @@ func close_new_task_panel() -> void:
 
 func toggle_standard_parts(parts_active: bool) -> void:
 	if parts_active:
-		add_task_button.text = "Cancel"
+		add_task_button.text = cancel_txt
 	if not parts_active:
-		add_task_button.text = "Add Task"
+		add_task_button.text = add_task_txt
 	v_separator_6.visible = parts_active
 	task_title_line_edit.visible = parts_active
 	v_separator_5.visible = parts_active
@@ -118,3 +123,26 @@ checkboxes_column_toggled
 """
 
 #func add_new_task
+
+
+func toggle_editing_lock(lock_active: bool) -> void:
+	if lock_active:
+		close_new_task_panel()
+	add_task_button.disabled = lock_active
+
+
+
+func _on_add_task_button_pressed() -> void:
+	if add_task_button.text == add_task_txt:
+		open_new_task_panel()
+		return
+	if add_task_button.text == cancel_txt:
+		close_new_task_panel()
+
+
+func _on_existing_groups_option_item_selected(index: int) -> void:
+	pass # Replace with function body.
+
+
+func _on_accept_new_task_button_pressed() -> void:
+	pass # Replace with function body.
