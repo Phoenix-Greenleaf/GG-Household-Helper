@@ -105,6 +105,7 @@ func generate_all_checkbox_columns_info() -> void:
 
 
 func generate_section_checkbox_column_info(section_parameter: DataGlobal.Section) -> void:
+	prints("Generating section checkbox addresses")
 	var event_count: int = 0
 	var event_units: String = ""
 	var event_section_title: String = ""

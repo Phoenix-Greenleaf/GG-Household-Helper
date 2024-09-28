@@ -11,13 +11,10 @@ const TASK_CHECKBOX_CLEAR_BUTTON_CELL = preload("res://gui/task_tracking/task_sp
 const TEXT_CELL = preload("res://gui/task_tracking/task_spreadsheet/cells/text_cell.tscn")
 
 
-
-
 var section_dropdown_items: Array
 var time_of_day_dropdown_items: Array
 var priority_dropdown_items: Array
-
-
+var relevant_checkbox_addresses: Array
 
 
 func _ready() -> void:
@@ -27,6 +24,7 @@ func _ready() -> void:
 		SqlManager.load_database()
 	query_task_grid()
 	populate_task_grid()
+	check_for_editing_lock()
 
 
 
@@ -70,6 +68,8 @@ func populate_task_grid() -> void:
 		prints("")
 		return
 	#prints("Populate Task Grid with:", TaskTrackingGlobal.most_recent_query)
+	relevant_checkbox_addresses = current_section_checkbox_addresses()
+	#prints("Relevant Checkboxes:", relevant_checkbox_addresses)
 	var first_row: Dictionary = TaskTrackingGlobal.most_recent_query[0]
 	TaskSignalBus._on_task_grid_populated.emit(first_row)
 	for data_row_iteration in TaskTrackingGlobal.most_recent_query:
@@ -79,8 +79,6 @@ func populate_task_grid() -> void:
 func populate_task_row(row_data_param: Dictionary) -> void:
 	var column_keys: Array = row_data_param.keys()
 	var current_id: String
-	var checkbox_status: String
-	var checkbox_currently_assigned: String
 	for column_iteration: String in column_keys:
 		var current_value: String = str(row_data_param[column_iteration])
 		match column_iteration:
@@ -117,15 +115,44 @@ func populate_task_row(row_data_param: Dictionary) -> void:
 				create_dropdown_cell(current_id, column_iteration, current_value, DataGlobal.month_strings)
 			"section":
 				create_dropdown_cell(current_id, column_iteration, current_value, section_dropdown_items)
+			"days_in_month":
+				pass
 			_:
-				if column_iteration.ends_with("_status"):
-					checkbox_status = current_value
-				elif column_iteration.ends_with("_currently_assigned"):
-					checkbox_currently_assigned = current_value
-				elif column_iteration.ends_with("_completed_by"):
-					create_checkbox_cell(current_id, column_iteration, checkbox_status, checkbox_currently_assigned, current_value)
-				else:
+				#prints("Populate task wildcard:", column_iteration, current_value)
+				if not relevant_checkbox_addresses.has(column_iteration):
 					prints("Error populating: Column:", column_iteration, "Value:", current_value)
+					continue
+				populate_checkbox(current_id, column_iteration, current_value)
+
+
+
+
+
+func populate_checkbox(current_id, column_iteration, current_value) -> void:
+	var checkbox_status: String
+	var checkbox_currently_assigned: String
+	if column_iteration.ends_with("_status"):
+		checkbox_status = current_value
+		return
+	if column_iteration.ends_with("_currently_assigned"):
+		checkbox_currently_assigned = current_value
+		return
+	if column_iteration.ends_with("_completed_by"):
+		create_checkbox_cell(current_id, column_iteration, checkbox_status, checkbox_currently_assigned, current_value)
+
+
+
+func current_section_checkbox_addresses() -> Array:
+	match TaskTrackingGlobal.current_toggled_section:
+		DataGlobal.Section.DAILY:
+			return SqlManager.daily_checkbox_addresses
+		DataGlobal.Section.WEEKLY:
+			return SqlManager.weekly_checkbox_addresses
+		DataGlobal.Section.MONTHLY:
+			return SqlManager.monthly_checkbox_addresses
+		_:
+			return ["Error"]
+
 
 
 func set_grid_columns(column_param: int) -> void:
@@ -182,6 +209,16 @@ func create_dropdown_cell(
 	cell.set_dropdown_cell(task_id_param, column_param, dropdown_param, dropdown_items, user_id_param)
 
 
+func create_checkbox_cell(
+	task_id_param: String,
+	column_param: String,
+	status_param: String,
+	assigned_param: String,
+	completed_param: String,
+) -> void:
+	var cell: PanelContainer = CHECKBOX_CELL.instantiate()
+	add_child(cell)
+	cell.set_checkbox_cell(task_id_param, column_param, status_param, assigned_param, completed_param)
 
 """
 
@@ -199,16 +236,6 @@ month
 
 
 
-func create_checkbox_cell(
-	task_id_param: String,
-	column_param: String,
-	status_param: String,
-	assigned_param: String,
-	completed_param: String,
-) -> void:
-	var cell: PanelContainer = CHECKBOX_CELL.instantiate()
-	add_child(cell)
-	cell
 
 
 

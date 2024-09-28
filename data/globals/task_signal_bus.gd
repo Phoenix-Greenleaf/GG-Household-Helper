@@ -13,6 +13,7 @@ signal _on_month_changed
 signal _on_year_changed
 signal _on_checkbox_mode_changed
 signal _on_task_editing_lock_toggled(lock_active: bool)
+signal _on_task_grid_scrolled(value: float)
 
 
 

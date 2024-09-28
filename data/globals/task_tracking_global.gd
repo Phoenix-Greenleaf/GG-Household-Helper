@@ -63,6 +63,7 @@ func _ready() -> void:
 	load_task_tracking_settings()
 
 
+
 func connect_signals() -> void:
 	TaskSignalBus._on_new_database_loaded.connect(generate_dropdown_item_arrays)
 	TaskSignalBus._on_new_database_loaded.connect(generate_existing_years_index)
@@ -362,10 +363,6 @@ var priority_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Priorit
 @onready var daily_tasks_id: String = SqlManager.daily_tasks_id
 @onready var event_info_id: String = SqlManager.event_info_id
 
-@onready var monthly_column_keys: Array = SqlManager.monthly_checkbox_columns.keys()
-@onready var weekly_column_keys: Array = SqlManager.weekly_checkbox_columns.keys()
-@onready var daily_column_keys: Array = SqlManager.daily_checkbox_columns.keys()
-
 @onready var table_for_query = SqlManager.dates_table
 
 
@@ -541,11 +538,11 @@ func gather_checkbox_info_columns(column_array_param: PackedStringArray) -> void
 	var current_section_info: Array
 	match current_toggled_section:
 		DataGlobal.Section.DAILY:
-			column_array_param.append_array(daily_column_keys)
+			column_array_param.append_array(SqlManager.daily_checkbox_addresses)
 		DataGlobal.Section.WEEKLY:
-			column_array_param.append_array(weekly_column_keys)
+			column_array_param.append_array(SqlManager.weekly_checkbox_addresses)
 		DataGlobal.Section.MONTHLY:
-			column_array_param.append_array(monthly_column_keys)
+			column_array_param.append_array(SqlManager.monthly_checkbox_addresses)
 
 
 func create_condition_string() -> String:

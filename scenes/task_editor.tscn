@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=28 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scenes/task_editor.gd" id="1_b0ww1"]
 [ext_resource type="ButtonGroup" uid="uid://c4hrg6nv6u6tb" path="res://gui/task_tracking/checkbox_toggle.tres" id="2_38p0l"]
@@ -25,6 +25,7 @@
 [ext_resource type="Script" path="res://scenes/task_editor/save_warning_button.gd" id="14_lyovr"]
 [ext_resource type="Script" path="res://scenes/task_editor/multi_text_popup_center.gd" id="18_5n1d3"]
 [ext_resource type="Script" path="res://scenes/task_editor/data_manager_center.gd" id="18_t6koh"]
+[ext_resource type="Script" path="res://scenes/task_editor/task_grid_scroll_container.gd" id="21_6byvo"]
 [ext_resource type="PackedScene" uid="uid://behwh6tk0c5jy" path="res://gui/task_tracking/year_selection_panel.tscn" id="24_mvrf5"]
 
 [node name="TaskEditor" type="Control"]
@@ -431,14 +432,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
-[node name="HeaderScrollContainer" type="ScrollContainer" parent="MainMargin/MainHBox/NonSideVBox" node_paths=PackedStringArray("linked_scroll_container")]
+[node name="HeaderScrollContainer" type="ScrollContainer" parent="MainMargin/MainHBox/NonSideVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 follow_focus = true
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 0
 script = ExtResource("6_pium1")
-linked_scroll_container = NodePath("../TaskGridScrollContainer")
 
 [node name="HeaderGridContainer" type="GridContainer" parent="MainMargin/MainHBox/NonSideVBox/HeaderScrollContainer"]
 unique_name_in_owner = true
@@ -451,6 +451,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
+script = ExtResource("21_6byvo")
 
 [node name="TaskGridContainer" type="GridContainer" parent="MainMargin/MainHBox/NonSideVBox/TaskGridScrollContainer"]
 unique_name_in_owner = true

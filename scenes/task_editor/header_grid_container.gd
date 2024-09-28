@@ -2,6 +2,8 @@ extends GridContainer
 
 const HEADER_CELL = preload("res://gui/task_tracking/task_spreadsheet/cells/header_cell.tscn")
 
+
+
 func _ready() -> void:
 	signal_connections()
 
@@ -21,8 +23,10 @@ func clear_header_children() -> void:
 func create_header_row(data_row_param: Dictionary) -> void:
 	clear_header_children()
 	var queried_columns: Array = data_row_param.keys()
-	for column_iteration in queried_columns:
-		if column_iteration == "task_info_id":
+	for column_iteration: String in queried_columns:
+		if column_iteration == "task_info_id" or column_iteration == "days_in_month":
+			continue
+		if column_iteration.ends_with("_currently_assigned") or column_iteration.ends_with("_completed_by"):
 			continue
 		create_header_cell(column_iteration)
 	var child_count: int = get_child_count()
@@ -31,6 +35,8 @@ func create_header_row(data_row_param: Dictionary) -> void:
 
 
 func create_header_cell(column_param: String) -> void:
+	if column_param.ends_with("_status"):
+		column_param.replace("_status", "")
 	var printing_title: String = column_param.capitalize()
 	var new_header_cell: PanelContainer = HEADER_CELL.instantiate()
 	add_child(new_header_cell)

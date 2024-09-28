@@ -1,13 +1,12 @@
 extends ScrollContainer
 
-@export var linked_scroll_container: ScrollContainer
+@onready var interal_range: Range = get_h_scroll_bar()
+
 
 
 func _ready() -> void:
-	link_spreadsheet_header_scrolling()
+	TaskSignalBus._on_task_grid_scrolled.connect(follow_grid_scrolling)
 
 
-func link_spreadsheet_header_scrolling() -> void:
-	var header_scroll_bar = get_h_scroll_bar()
-	var spreadsheet_scroll_bar = linked_scroll_container.get_h_scroll_bar()
-	spreadsheet_scroll_bar.share(header_scroll_bar)
+func follow_grid_scrolling(value_param: float) -> void:
+	interal_range.value = value_param
