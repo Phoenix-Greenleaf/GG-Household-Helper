@@ -38,9 +38,9 @@ func update_task_add_assigned_users() -> void:
 
 func open_new_task_panel() -> void:
 	toggle_standard_parts(true)
-	toggle_task_group_parts(true)
-	toggle_assigned_user_parts(true)
-	toggle_scheduling_parts(true)
+	toggle_task_group_parts(TaskTrackingGlobal.group_column_toggled)
+	toggle_assigned_user_parts(TaskTrackingGlobal.assigned_to_column_toggled)
+	toggle_scheduling_parts(TaskTrackingGlobal.scheduling_column_toggled)
 
 
 func close_new_task_panel() -> void:

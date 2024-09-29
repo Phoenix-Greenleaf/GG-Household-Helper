@@ -33,6 +33,8 @@ func ready_connections() -> void:
 	TaskSignalBus._on_section_changed.connect(reload_grid)
 	TaskSignalBus._on_month_changed.connect(reload_grid)
 	TaskSignalBus._on_year_changed.connect(reload_grid)
+	TaskSignalBus._on_task_grid_column_toggled.connect(reload_grid)
+
 
 
 func get_dropdown_items_from_global() -> void:
