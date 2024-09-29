@@ -148,7 +148,7 @@ func connect_paired_menu_button() -> void:
 		self.visible = true
 		print("No menu button for visibility!")
 		return
-	var menu_button = paired_checkbox_menu_button.get_node("Button")
+	var menu_button = paired_checkbox_menu_button.get_node("CurrentCheckboxActualButton")
 	menu_button.toggled.connect(_on_menu_button_toggled)
 	paired_checkbox_menu_button.resized.connect(update_menu_button_witdth)
 

@@ -16,7 +16,6 @@ func _ready() -> void:
 	#TaskTrackingGlobal.load_settings_task_tracking()
 	connection_cental()
 	set_current_date_label()
-	SqlManager.load_database()
 	#add_task_button.disabled = true
 	#if SqlManager.database_is_active:
 		#add_task_button.disabled = false
@@ -40,6 +39,12 @@ func set_current_date_label() -> void:
 	var current_year: String = str(current_date["year"])
 	var current_label:= "Today: " + current_weekday + current_day + current_month + current_year
 	current_date_label.set_text(current_label)
+
+
+func autoload_database() -> void:
+	
+	SqlManager.load_database()
+
 
 
 func section_enum_to_string() -> String:

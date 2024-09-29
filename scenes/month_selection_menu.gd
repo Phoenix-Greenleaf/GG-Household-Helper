@@ -13,12 +13,21 @@ func _ready() -> void:
 	connect_signals()
 	update_month_selection_menu()
 	check_section()
+	no_database_toggle()
 
 
 func connect_signals() -> void:
 	TaskSignalBus._on_section_changed.connect(check_section)
 	TaskSignalBus._on_month_changed.connect(update_month_selection_menu)
+	TaskSignalBus._on_new_database_loaded.connect(no_database_toggle)
 	menu_popup.id_pressed.connect(month_menu_button_actions)
+
+
+func no_database_toggle() -> void:
+	if SqlManager.active_database:
+		disabled = false
+		return
+	disabled = true
 
 
 func update_month_selection_menu() -> void:

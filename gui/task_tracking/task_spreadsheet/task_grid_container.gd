@@ -20,13 +20,8 @@ var relevant_checkbox_addresses: Array
 func _ready() -> void:
 	ready_connections()
 	get_dropdown_items_from_global()
-	if not SqlManager.database_is_active:
-		SqlManager.load_database()
-	query_task_grid()
-	populate_task_grid()
-	check_for_editing_lock()
-
-
+	if SqlManager.active_database:
+		reload_grid()
 
 func ready_connections() -> void:
 	TaskSignalBus._on_task_grid_column_count_changed.connect(set_grid_columns)
@@ -34,7 +29,6 @@ func ready_connections() -> void:
 	TaskSignalBus._on_month_changed.connect(reload_grid)
 	TaskSignalBus._on_year_changed.connect(reload_grid)
 	TaskSignalBus._on_task_grid_column_toggled.connect(reload_grid)
-
 
 
 func get_dropdown_items_from_global() -> void:

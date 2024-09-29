@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://ds4yxf6rofxhb"]
+[gd_scene load_steps=4 format=3 uid="uid://ds4yxf6rofxhb"]
 
 [ext_resource type="Script" path="res://gui/task_tracking/current_checkbox_button.gd" id="1_116pv"]
+[ext_resource type="Script" path="res://gui/task_tracking/current_checkbox_actual_button.gd" id="2_f0v36"]
 [ext_resource type="Script" path="res://gui/task_tracking/checkbox_border_color_rect.gd" id="3_olb64"]
 
 [node name="CurrentCheckboxButton" type="PanelContainer"]
@@ -8,9 +9,10 @@ mouse_filter = 2
 theme_type_variation = &"PanelContainer_Blank"
 script = ExtResource("1_116pv")
 
-[node name="Button" type="Button" parent="."]
+[node name="CurrentCheckboxActualButton" type="Button" parent="."]
 layout_mode = 2
 toggle_mode = true
+script = ExtResource("2_f0v36")
 
 [node name="CurrentCheckboxMargin" type="MarginContainer" parent="."]
 layout_mode = 2
