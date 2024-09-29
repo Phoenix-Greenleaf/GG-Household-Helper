@@ -115,9 +115,8 @@ func send_in_size_for_comparison(column_param: String, header_param: Control) ->
 
 func sync_size(size_param: float) -> void:
 	var min_size: Vector2 = Vector2(size_param, 0)
-	set_custom_minimum_size(min_size)
-	#size = min_size
-	prints("Checkbox cell size synced")
+	custom_minimum_size = min_size
+
 
 
 

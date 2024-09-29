@@ -28,11 +28,12 @@ func set_number_cell(task_id_param: String, column_param: String, number_param: 
 func send_in_size_for_comparison(column_param: String, header_param: Control) -> void:
 	if column_param != saved_column:
 		return
-	header_param.tally_cell(size.x, self)
+	header_param.tally_cell(get_combined_minimum_size().x, self)
 
 
 func sync_size(size_param: float) -> void:
-	size.x = size_param
+	var min_size: Vector2 = Vector2(size_param, 0)
+	custom_minimum_size = min_size
 
 #
 #
