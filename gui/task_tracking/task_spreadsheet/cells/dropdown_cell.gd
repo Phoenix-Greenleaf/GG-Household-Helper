@@ -9,6 +9,7 @@ var saved_dropdown_item_id: int
 
 func _ready() -> void:
 	TaskSignalBus._on_task_editing_lock_toggled.connect(disable_cell)
+	TaskSignalBus._on_task_cells_resized_comparison_started.connect(send_in_size_for_comparison)
 
 
 func disable_cell(editing_locked: bool) -> void:
@@ -33,3 +34,14 @@ func set_dropdown_cell(task_id_param: String, column_param: String, dropdown_par
 			saved_dropdown_item_id = item_id
 		item_id += 1
 	selected = saved_dropdown_item_id
+
+
+
+func send_in_size_for_comparison(column_param: String, header_param: Control) -> void:
+	if column_param != saved_column:
+		return
+	header_param.tally_cell(size.x, self)
+
+
+func sync_size(size_param: float) -> void:
+	size.x = size_param

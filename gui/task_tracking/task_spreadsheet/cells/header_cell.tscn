@@ -5,8 +5,6 @@
 [node name="HeaderCell" type="PanelContainer"]
 offset_right = 99.0
 offset_bottom = 34.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
 theme_type_variation = &"PanelContainer_Quinary"
 script = ExtResource("1_8nwbe")
 

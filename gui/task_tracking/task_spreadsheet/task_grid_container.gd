@@ -74,6 +74,7 @@ func populate_task_grid() -> void:
 	TaskSignalBus._on_task_grid_populated.emit(first_row)
 	for data_row_iteration in TaskTrackingGlobal.most_recent_query:
 		populate_task_row(data_row_iteration)
+	TaskSignalBus._on_task_cells_resized_workaround_all_columns.emit()
 
 
 func populate_task_row(row_data_param: Dictionary) -> void:
@@ -125,9 +126,6 @@ func populate_task_row(row_data_param: Dictionary) -> void:
 				populate_checkbox(current_id, column_iteration, current_value)
 
 
-
-
-
 func populate_checkbox(current_id, column_iteration, current_value) -> void:
 	var checkbox_status: String
 	var checkbox_currently_assigned: String
@@ -138,6 +136,7 @@ func populate_checkbox(current_id, column_iteration, current_value) -> void:
 		checkbox_currently_assigned = current_value
 		return
 	if column_iteration.ends_with("_completed_by"):
+		column_iteration = column_iteration.replace("_completed_by", "")
 		create_checkbox_cell(current_id, column_iteration, checkbox_status, checkbox_currently_assigned, current_value)
 
 
@@ -152,6 +151,8 @@ func current_section_checkbox_addresses() -> Array:
 			return SqlManager.monthly_checkbox_addresses
 		_:
 			return ["Error"]
+
+
 
 
 

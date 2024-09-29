@@ -23,6 +23,9 @@ var defaulted_completed_by: bool = false
 
 func _ready() -> void:
 	name = "CheckboxCell"
+	TaskSignalBus._on_task_cells_resized_comparison_started.connect(send_in_size_for_comparison)
+
+
 
 
 func update_cell() -> void:
@@ -99,6 +102,29 @@ func set_checkbox_cell(
 		saved_completed_by = "1"
 		defaulted_completed_by = true
 	update_cell()
+
+
+
+
+
+func send_in_size_for_comparison(column_param: String, header_param: Control) -> void:
+	if column_param != saved_column:
+		return
+	header_param.tally_cell(get_combined_minimum_size().x, self)
+
+
+func sync_size(size_param: float) -> void:
+	var min_size: Vector2 = Vector2(size_param, 0)
+	set_custom_minimum_size(min_size)
+	#size = min_size
+	prints("Checkbox cell size synced")
+
+
+
+
+
+
+
 
 
 
