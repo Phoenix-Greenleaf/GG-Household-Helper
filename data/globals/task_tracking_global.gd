@@ -68,6 +68,7 @@ func connect_signals() -> void:
 	TaskSignalBus._on_new_database_loaded.connect(generate_dropdown_item_arrays)
 	TaskSignalBus._on_new_database_loaded.connect(generate_existing_years_index)
 	TaskSignalBus._on_task_editing_lock_toggled.connect(remember_editing_lock)
+	TaskSignalBus._on_task_editing_settings_changed.connect(save_task_tracking_settings)
 
 
 func remember_editing_lock(locked: bool) -> void:

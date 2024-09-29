@@ -83,4 +83,3 @@ func _reset_value():
 # Support debug
 func get_class() -> String:
 	return "GDActionNode"
-

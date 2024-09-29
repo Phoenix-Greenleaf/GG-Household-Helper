@@ -14,12 +14,19 @@ signal _on_year_changed
 signal _on_checkbox_mode_changed
 signal _on_task_editing_lock_toggled(lock_active: bool)
 signal _on_task_grid_scrolled(value: float)
+signal _on_task_editing_settings_changed
+
 
 
 signal _on_task_cells_resized_workaround_all_columns
 signal _on_task_cells_resized_workaround(column: String)
 signal _on_task_cells_resized_comparison_started(column: String, column_header: Control)
 signal _on_task_cells_resized_final_size(cell_size: Vector2)
+
+
+
+
+
 
 
 
