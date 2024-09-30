@@ -29,7 +29,7 @@ var scan_data: TaskSetData
 
 
 func _ready() -> void:
-	TaskTrackingGlobal.load_settings_task_tracking()
+	TaskTrackingGlobal.load_task_tracking_settings()
 	settings = TaskTrackingGlobal.active_settings
 	new_checkbox_options = settings.NewCheckboxOption
 	establish_connections()
@@ -61,21 +61,19 @@ func load_all_settings() -> void:
 func load_auto_load_setting() -> void:
 	if not settings.enable_auto_load_default_data:
 		auto_load_check_button.button_pressed = false
-		auto_load_check_button.text = "Auto Load Default Data (Off)"
+		auto_load_check_button.text = "Auto-Load Default Database (Off)"
 	if settings.enable_auto_load_default_data:
 		auto_load_check_button.button_pressed = true
-		auto_load_check_button.text = "Auto Load Default Data (On!)"
+		auto_load_check_button.text = "Auto-Load Default Database (On!)"
 
 
 func load_default_task_data() -> void:
-	if settings.default_data:
-		var task_name = settings.default_data[0]
-		var task_year = str(settings.default_data[1])
-		default_data_display_button.text = "Current Default: " + task_name + " " + task_year
+	if settings.autoload_database_path:
+		default_data_display_button.text = "Current Default: " + SqlManager.database_name
 		default_data_display_button.set_pressed_no_signal(true)
 		default_data_display_button.disabled = false
-	if not settings.default_data:
-		default_data_display_button.text = "Data Not Set"
+	if not settings.autoload_database_path:
+		default_data_display_button.text = "No Database Set"
 		default_data_display_button.set_pressed_no_signal(false)
 		default_data_display_button.disabled = true
 		auto_load_check_button.button_pressed = false
@@ -170,7 +168,7 @@ func reset_buttons() -> void:
 
 
 func reload_settings() -> void:
-	TaskTrackingGlobal.save_settings_task_tracking()
+	TaskTrackingGlobal.save_task_tracking_settings()
 	load_all_settings()
 
 
@@ -447,22 +445,22 @@ func _on_reset_checkboxes_button_pressed() -> void:
 	if reset_checkboxes_button.text == "CONFIRM Clear and Reset?":
 		reset_checkboxes_button.text = "Reset Current Checkboxes"
 		#regen_all_checkboxes()
-		DataGlobal.save_settings_task_tracking()
+		TaskTrackingGlobal.save_task_tracking_settings()
 		DataGlobal.button_based_message(reset_checkboxes_button, "RESET SUCCESSFUL!")
 
 
 
-func _on_reset_checkboxes_section_option_button_item_selected(index: int) -> void:
-	settings.reset_current_checkboxes_section = index
-	prints("Reset Checkboxes Section selected:",
-		reset_checkboxes_section_option_button.get_item_text(index), index
-	)
-	reload_settings()
+#func _on_reset_checkboxes_section_option_button_item_selected(index: int) -> void:
+	#settings.reset_current_checkboxes_section = index
+	#prints("Reset Checkboxes Section selected:",
+		#reset_checkboxes_section_option_button.get_item_text(index), index
+	#)
+	#reload_settings()
 
 
-func _on_reset_checkboxes_month_option_button_item_selected(index: int) -> void:
-	settings.reset_current_checkboxes_month = index
-	prints("Reset Checkboxes Month selected:",
-		reset_checkboxes_month_option_button.get_item_text(index), index
-	)
-	reload_settings()
+#func _on_reset_checkboxes_month_option_button_item_selected(index: int) -> void:
+	#settings.reset_current_checkboxes_month = index
+	#prints("Reset Checkboxes Month selected:",
+		#reset_checkboxes_month_option_button.get_item_text(index), index
+	#)
+	#reload_settings()

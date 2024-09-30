@@ -84,7 +84,7 @@ layout_mode = 2
 layout_mode = 2
 text = "Household (Database) Name"
 
-[node name="TaskDataTitleLineEdit" type="LineEdit" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/NewDatabasePanel/Margin/CenterContainer/VBox"]
+[node name="DatabaseTitleLineEdit" type="LineEdit" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/NewDatabasePanel/Margin/CenterContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -97,12 +97,12 @@ clear_button_enabled = true
 layout_mode = 2
 alignment = 1
 
-[node name="TaskAcceptButton" type="Button" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/NewDatabasePanel/Margin/CenterContainer/VBox/HBoxContainer"]
+[node name="DatabaseAcceptButton" type="Button" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/NewDatabasePanel/Margin/CenterContainer/VBox/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Accept"
 
-[node name="TaskCancelButton" type="Button" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/NewDatabasePanel/Margin/CenterContainer/VBox/HBoxContainer"]
+[node name="DatabaseCancelButton" type="Button" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/NewDatabasePanel/Margin/CenterContainer/VBox/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Cancel"
@@ -113,28 +113,28 @@ layout_mode = 2
 theme_type_variation = &"Button_Medium"
 text = "Clone Database"
 
-[node name="CloneDataPanel" type="PanelContainer" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid"]
+[node name="CloneDatabasePanel" type="PanelContainer" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDataPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDatabasePanel"]
 layout_mode = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDataPanel/MarginContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDatabasePanel/MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDataPanel/MarginContainer/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDatabasePanel/MarginContainer/CenterContainer"]
 layout_mode = 2
 
-[node name="CloneLabel" type="Label" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer"]
+[node name="CloneLabel" type="Label" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDatabasePanel/MarginContainer/CenterContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Cloning Label"
 horizontal_alignment = 1
 
-[node name="CloneLineEdit" type="LineEdit" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer"]
+[node name="CloneLineEdit" type="LineEdit" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDatabasePanel/MarginContainer/CenterContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Load Error"
@@ -143,21 +143,21 @@ alignment = 1
 expand_to_text_length = true
 clear_button_enabled = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDatabasePanel/MarginContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="CloneAcceptButton" type="Button" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="CloneAcceptButton" type="Button" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDatabasePanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Accept"
 
-[node name="CloneBackButton" type="Button" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="CloneBackButton" type="Button" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDatabasePanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Back"
 
-[node name="CloneCancelButton" type="Button" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="CloneCancelButton" type="Button" parent="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDatabasePanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Cancel"
 
@@ -214,23 +214,12 @@ size_flags_horizontal = 4
 theme_type_variation = &"Button_Medium"
 text = "Close Manager"
 
-[node name="ImportTaskFileDialog" type="FileDialog" parent="."]
-title = "Import Task Data CSV"
-initial_position = 2
-size = Vector2i(600, 400)
-ok_button_text = "Open"
-mode_overrides_title = false
-file_mode = 0
-access = 1
-filters = PackedStringArray("*.csv ; Comma Separated Values")
-
-[connection signal="pressed" from="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/NewDatabaseButton" to="." method="_on_new_task_button_pressed"]
-[connection signal="pressed" from="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/NewDatabasePanel/Margin/CenterContainer/VBox/HBoxContainer/TaskAcceptButton" to="." method="_on_task_accept_button_pressed"]
-[connection signal="pressed" from="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/NewDatabasePanel/Margin/CenterContainer/VBox/HBoxContainer/TaskCancelButton" to="." method="_on_task_cancel_button_pressed"]
+[connection signal="pressed" from="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/NewDatabaseButton" to="." method="_on_new_database_button_pressed"]
+[connection signal="pressed" from="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/NewDatabasePanel/Margin/CenterContainer/VBox/HBoxContainer/DatabaseAcceptButton" to="." method="_on_task_accept_button_pressed"]
+[connection signal="pressed" from="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/NewDatabasePanel/Margin/CenterContainer/VBox/HBoxContainer/DatabaseCancelButton" to="." method="_on_task_cancel_button_pressed"]
 [connection signal="pressed" from="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDatabaseButton" to="." method="_on_clone_data_button_pressed"]
-[connection signal="pressed" from="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/CloneAcceptButton" to="." method="_on_clone_accept_button_pressed"]
-[connection signal="pressed" from="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/CloneBackButton" to="." method="_on_clone_back_button_pressed"]
-[connection signal="pressed" from="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDataPanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/CloneCancelButton" to="." method="_on_clone_cancel_button_pressed"]
+[connection signal="pressed" from="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDatabasePanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/CloneAcceptButton" to="." method="_on_clone_accept_button_pressed"]
+[connection signal="pressed" from="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDatabasePanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/CloneBackButton" to="." method="_on_clone_back_button_pressed"]
+[connection signal="pressed" from="MainMargin/DatabaseManagerVBox/ScrollContainer/DatabaseGrid/CloneDatabasePanel/MarginContainer/CenterContainer/VBoxContainer/HBoxContainer/CloneCancelButton" to="." method="_on_clone_cancel_button_pressed"]
 [connection signal="pressed" from="MainMargin/DatabaseManagerVBox/TaskCSVHBox/ImportTasksheet" to="." method="_on_import_tasksheet_pressed"]
 [connection signal="pressed" from="MainMargin/DatabaseManagerVBox/CloseManager" to="." method="_on_close_manager_pressed"]
-[connection signal="file_selected" from="ImportTaskFileDialog" to="." method="_on_import_task_file_dialog_file_selected"]

@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://cmarrcbuuyj62"]
+
+[ext_resource type="Script" path="res://scenes/task_database_manager_screen.gd" id="1_6gc25"]
+[ext_resource type="PackedScene" uid="uid://b2gi1xlrdmw1p" path="res://gui/task_tracking/database_manager/database_manager.tscn" id="2_jku51"]
+
+[node name="DatabaseManagerScreen" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PanelContainer_Background"
+script = ExtResource("1_6gc25")
+
+[node name="DatabaseManager" parent="." instance=ExtResource("2_jku51")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4

@@ -8,6 +8,7 @@ signal _on_new_database_loaded
 signal _on_task_grid_column_toggled
 signal _on_task_grid_cell_changes_applied(task_id: String, column: String, data_changes: Array)
 signal _on_data_modified
+signal _on_data_saved
 signal _on_section_changed
 signal _on_month_changed
 signal _on_year_changed
@@ -15,6 +16,8 @@ signal _on_checkbox_mode_changed
 signal _on_task_editing_lock_toggled(lock_active: bool)
 signal _on_task_grid_scrolled(value: float)
 signal _on_task_editing_settings_changed
+signal _on_database_manager_close_manager_button_pressed
+signal _on_database_manager_remote_open_pressed
 
 
 
@@ -34,8 +37,6 @@ signal _on_task_cells_resized_final_size(cell_size: Vector2)
 
 
 
-signal _on_database_manager_close_manager_button_pressed
-signal _on_database_manager_remote_open_pressed
 
 
 signal _on_data_set_saved

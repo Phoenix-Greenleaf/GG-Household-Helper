@@ -51,7 +51,7 @@ enum FileType {
 
 
 
-
+var last_scene #use it for "back" buttons on menus and stuff
 
 var themes_initiated: bool = false
 

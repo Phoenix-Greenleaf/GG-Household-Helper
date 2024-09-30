@@ -54,7 +54,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_type_variation = &"Button_Medium"
-text = "Set Current Data as Default Data"
+text = "Set Current Database as Default"
 
 [node name="DefaultDataDisplayButton" type="Button" parent="Center/PanelContainer/MarginContainer/VBox/GridContainer/DefaultDataPanelContainer/DefaultDataVBox"]
 unique_name_in_owner = true

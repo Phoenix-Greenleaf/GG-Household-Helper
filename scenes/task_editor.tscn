@@ -24,7 +24,7 @@
 [ext_resource type="Script" path="res://scenes/task_editor/task_add_panel.gd" id="14_58d3i"]
 [ext_resource type="Script" path="res://scenes/task_editor/save_warning_button.gd" id="14_lyovr"]
 [ext_resource type="Script" path="res://scenes/task_editor/multi_text_popup_center.gd" id="18_5n1d3"]
-[ext_resource type="Script" path="res://scenes/task_editor/data_manager_center.gd" id="18_t6koh"]
+[ext_resource type="Script" path="res://scenes/task_editor/database_manager_center.gd" id="18_t6koh"]
 [ext_resource type="Script" path="res://scenes/task_editor/add_task_button.gd" id="19_m5e8t"]
 [ext_resource type="Script" path="res://scenes/task_editor/task_grid_scroll_container.gd" id="21_6byvo"]
 [ext_resource type="PackedScene" uid="uid://behwh6tk0c5jy" path="res://gui/task_tracking/year_selection_panel.tscn" id="24_mvrf5"]
@@ -97,7 +97,7 @@ popup/item_8/text = "Quit"
 popup/item_8/id = 8
 script = ExtResource("2_57sr6")
 task_editor = NodePath("../../../../..")
-data_manager_center = NodePath("../../../../../DataManagerCenter")
+data_manager_center = NodePath("../../../../../DatabaseManagerCenter")
 
 [node name="HSeparator4" type="HSeparator" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 layout_mode = 2
@@ -527,8 +527,7 @@ text = "Accept & Save"
 layout_mode = 2
 text = "Cancel"
 
-[node name="DataManagerCenter" type="CenterContainer" parent="."]
-visible = false
+[node name="DatabaseManagerCenter" type="CenterContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -538,7 +537,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("18_t6koh")
 
-[node name="DataManager" parent="DataManagerCenter" node_paths=PackedStringArray("visibility_node") instance=ExtResource("10_7t8qi")]
+[node name="DatabaseManager" parent="DatabaseManagerCenter" node_paths=PackedStringArray("visibility_node") instance=ExtResource("10_7t8qi")]
 unique_name_in_owner = true
 z_index = 5
 z_as_relative = false
@@ -563,7 +562,7 @@ node_for_position_sync = NodePath("../MainMargin/MainHBox/SideMenuScrollContaine
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/WeeklyButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/WeeklyButton" method="_on_toggled"]
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DailyButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DailyButton" method="_on_toggled"]
 [connection signal="item_selected" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DataColumnsToggleOptionButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DataColumnsToggleOptionButton" method="_on_item_selected"]
-[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/SaveWarningButton" to="." method="_on_save_warning_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/SaveWarningButton" to="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/SaveWarningButton" method="_on_pressed"]
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/AddTaskButton" to="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel" method="_on_add_task_button_pressed"]
 [connection signal="item_selected" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/ExistingGroupsOption" to="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel" method="_on_existing_groups_option_item_selected"]
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/AcceptNewTaskButton" to="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel" method="_on_accept_new_task_button_pressed"]

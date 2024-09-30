@@ -24,3 +24,9 @@ func update_button() -> void:
 		return
 	text = changed_data
 	disabled = false
+
+
+func _on_pressed() -> void:
+	if not SqlManager.database_is_active:
+		TaskSignalBus._on_database_manager_remote_open_pressed.emit()
+	"""function to save"""
