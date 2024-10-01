@@ -173,23 +173,21 @@ func add_one_checkbox_column_set(section_text: String, current_number: int, data
 	data_parameter.merge(new_event)
 
 
-func initialize_database() -> void:
-	if database_path == "":
-		database_path = create_database_path()
-	if database_name == "":
-		database_name = create_database_name(database_path)
-
-
 func char_(number: int) -> String:
 	var char_combined: String = char_part + str(number) + ")"
 	return char_combined
 
 
-func create_database_path() -> String:
-	if not household_name:
-		push_warning("Using default household name for database path.")
-		household_name = household_default_name.to_snake_case()
-	var database_combined_path: String = database_directory + household_name + database_standard_title + database_extension
+func create_database_path(custom_path_part: String, include_standard_title: bool = false) -> String:
+	#if not household_name:
+		#push_warning("Using default household name for database path.")
+		#household_name = household_default_name.to_snake_case()
+	custom_path_part = custom_path_part.to_snake_case()
+	var database_path_parts: PackedStringArray = [database_directory, custom_path_part, database_extension]
+	if include_standard_title:
+		database_path_parts.insert(2, database_standard_title)
+	var database_combined_path: String = "".join(database_path_parts)
+	prints("Created path:", database_combined_path)
 	return database_combined_path
 
 
@@ -338,7 +336,6 @@ func load_database() -> void:
 	if database_is_active:
 		prints("Database already loaded")
 		return
-	initialize_database()
 	active_database = SQLite.new()
 	active_database.path = database_path
 	active_database.foreign_keys = true

@@ -42,7 +42,6 @@ func set_current_date_label() -> void:
 
 
 func autoload_database() -> void:
-	
 	SqlManager.load_database()
 
 

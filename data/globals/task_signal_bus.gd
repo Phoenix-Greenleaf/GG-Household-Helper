@@ -16,7 +16,7 @@ signal _on_checkbox_mode_changed
 signal _on_task_editing_lock_toggled(lock_active: bool)
 signal _on_task_grid_scrolled(value: float)
 signal _on_task_editing_settings_changed
-signal _on_database_manager_close_manager_button_pressed
+signal _on_database_manager_remote_close_pressed
 signal _on_database_manager_remote_open_pressed
 
 

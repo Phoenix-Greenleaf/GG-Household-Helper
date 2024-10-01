@@ -4,8 +4,8 @@ extends PanelContainer
 @onready var functional_button: Button = %FunctionalButton
 @onready var database_name_label: Label = %DatabaseNameLabel
 
-var database_path: String = ""
-var database_name: String = ""
+var stored_database_path: String = ""
+var stored_database_name: String = ""
 
 
 func _ready() -> void:
@@ -18,8 +18,8 @@ func initialize_button() -> void:
 
 
 func load_path_and_name(path_param: String, name_param: String) -> void:
-	database_path = path_param
-	database_name = name_param
+	stored_database_path = path_param
+	stored_database_name = name_param
 	database_name_label.text = name_param
 
 
@@ -33,17 +33,16 @@ func retoggle_button_group() -> void:
 
 
 func name_compare() -> bool:
-	return SqlManager.database_name == database_name
-
-
+	return SqlManager.database_name == stored_database_name
 
 
 func _on_functional_button_toggled(toggled_on: bool) -> void:
 	if not toggled_on:
 		return
-	if SqlManager.database_path == database_path:
+	if SqlManager.database_path == stored_database_path:
 		prints("this database file already active")
 		return
-	SqlManager.database_path
-	SqlManager.database_name
+	if SqlManager.database_is_active:
+		SqlManager.unload_database()
+	SqlManager.set_database_name_and_path(stored_database_name, stored_database_path)
 	SqlManager.load_database()

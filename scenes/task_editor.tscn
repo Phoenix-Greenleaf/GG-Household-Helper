@@ -85,7 +85,7 @@ popup/item_2/text = "Task Settings"
 popup/item_2/id = 2
 popup/item_3/id = 3
 popup/item_3/separator = true
-popup/item_4/text = "Task Data Manager"
+popup/item_4/text = "Database Manager"
 popup/item_4/id = 4
 popup/item_5/id = 5
 popup/item_5/separator = true
@@ -528,6 +528,7 @@ layout_mode = 2
 text = "Cancel"
 
 [node name="DatabaseManagerCenter" type="CenterContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

@@ -74,10 +74,10 @@ layout_mode = 2
 theme_type_variation = &"Button_Large"
 text = "Task Settings"
 
-[node name="DataManagerButton" type="Button" parent="MenuCenter/MiddleManagement"]
+[node name="DatabaseManagerButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
 theme_type_variation = &"Button_Large"
-text = "Task Data Manager"
+text = "Database Manager"
 
 [node name="BackButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
@@ -94,5 +94,5 @@ autowrap_mode = 3
 
 [connection signal="pressed" from="MenuCenter/MiddleManagement/TaskSheetsButton" to="." method="_on_task_sheets_button_pressed"]
 [connection signal="pressed" from="MenuCenter/MiddleManagement/SettingsButton" to="." method="_on_settings_button_pressed"]
-[connection signal="pressed" from="MenuCenter/MiddleManagement/DataManagerButton" to="." method="_on_data_manager_button_pressed"]
+[connection signal="pressed" from="MenuCenter/MiddleManagement/DatabaseManagerButton" to="." method="_on_database_manager_button_pressed"]
 [connection signal="pressed" from="MenuCenter/MiddleManagement/BackButton" to="." method="_on_back_button_pressed"]
