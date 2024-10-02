@@ -56,8 +56,6 @@ enum CheckboxToggle {
 }
 
 
-
-
 func _ready() -> void:
 	connect_signals()
 	load_task_tracking_settings()
@@ -317,7 +315,8 @@ var section_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Section)
 var time_of_day_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.TimeOfDay)
 var priority_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Priority)
 
-
+var last_changed_id
+var last_changed_column: String
 
 @onready var id: String = SqlManager.id
 @onready var name_: String = SqlManager.name_
@@ -431,8 +430,10 @@ var checkboxes_column_toggled: bool = true:
 var editing_locked: bool = false
 
 var most_recent_query: Array[Dictionary]
-var active_changes: Array[Dictionary]
-var undone_changes: Array[Dictionary]
+var changed_existing_data: Dictionary
+var changed_new_data: Array[Dictionary]
+var active_changes: Array
+var undone_changes: Array
 
 
 
@@ -607,37 +608,78 @@ func generate_users_dropdown_items() -> void:
 	query_user_info()
 
 
-func add_task_info_to_active_changes(task_info: Dictionary) -> void:
-#	if the same cell as previous change, override.
-	active_changes.append(task_info)
-	apply_active_changes()
+#func create_task_data() -> Dictionary:
+	#var new_task_data: Dictionary = {
+		#"task_name":
+	#}
+	#TaskTrackingGlobal.group_column_toggled
+	#TaskTrackingGlobal.assigned_to_column_toggled
+	#TaskTrackingGlobal.scheduling_column_toggled
+	#return new_task_data
 
 
-func apply_active_changes() -> void:
+
+"""
+"task_group":
+"assigned_to":
+"daily_scheduling_start", "days_per_cycle", "daily_scheduling_end":
+"weekly_scheduling_start", "weeks_per_cycle", "weekly_scheduling_end":
+"monthly_scheduling_start", "months_per_cycle", "monthly_scheduling_end":
+
+
+"task_info_id":
+"year":
+"description":
+"location":
+
+"time_of_day":
+"priority":
+"month":
+"section":
+"days_in_month":
+
+"""
+
+
+
+func submit_change(cell_id, column_name: String, original_value, new_value) -> void:
+	if column_name == last_changed_column:
+		#if typeof(cell_id) == typeof(last_changed_id):
+		if cell_id == last_changed_id:
+			active_changes.pop_back()
+	active_changes.append([cell_id, column_name, original_value, new_value])
+	match type_string(typeof(cell_id)):
+		"String":
+			var target_existing_data: Dictionary = changed_existing_data[cell_id]
+			target_existing_data[column_name] = new_value
+		"int":
+			var target_new_data: Dictionary = changed_new_data[cell_id]
+			target_new_data[column_name] = new_value
+	last_changed_id = cell_id
 	TaskSignalBus._on_data_modified.emit()
-	pass
 
 
-func submit_active_changes_to_database() -> void:
-#	send data
+
+func submit_changed_data_to_database() -> void:
+#	send data: Exisiting update then create new
 # 	reload database
 #   clear undo redo tables, to use modified data array as save check
 	pass
 
 
-func undo_active_changes() -> void:
+func undo_active_changes() -> Array:
 	if active_changes.is_empty():
 		prints("Nothing to Undo")
-		return
-	var undo_action: Dictionary = active_changes.pop_back()
+		return []
+	var undo_action: Array = active_changes.pop_back()
 	undone_changes.append(undo_action)
-	apply_active_changes()
+	return undo_action
 
 
-func redo_active_changes() -> void:
+func redo_active_changes() -> Array:
 	if undone_changes.is_empty():
 		prints("Nothing to Redo")
-		return
-	var redo_action: Dictionary = undone_changes.pop_back()
+		return []
+	var redo_action: Array = undone_changes.pop_back()
 	active_changes.append(redo_action)
-	apply_active_changes()
+	return redo_action

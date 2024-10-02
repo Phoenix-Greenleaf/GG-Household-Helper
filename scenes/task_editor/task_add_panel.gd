@@ -11,7 +11,10 @@ extends PanelContainer
 @onready var task_add_schedule_start_spin_box: SpinBox = %TaskAddScheduleStartSpinBox
 @onready var task_add_units_per_cycle_label: Label = %TaskAddUnitsPerCycleLabel
 @onready var task_add_units_per_cycle_spin_box: SpinBox = %TaskAddUnitsPerCycleSpinBox
+@onready var task_add_schedule_end_label: Label = %TaskAddScheduleEndLabel
+@onready var task_add_schedule_end_spin_box: SpinBox = %TaskAddScheduleEndSpinBox
 @onready var accept_new_task_button: Button = %AcceptNewTaskButton
+@onready var v_separator_7: VSeparator = %VSeparator7
 @onready var v_separator_6: VSeparator = %VSeparator6
 @onready var v_separator_5: VSeparator = %VSeparator5
 @onready var v_separator_4: VSeparator = %VSeparator4
@@ -80,6 +83,9 @@ func toggle_scheduling_parts(parts_active: bool) -> void:
 	task_add_units_per_cycle_label.visible = parts_active
 	task_add_units_per_cycle_spin_box.visible = parts_active
 	v_separator.visible = parts_active
+	task_add_schedule_end_label.visible = parts_active
+	task_add_schedule_end_spin_box.visible = parts_active
+	v_separator_7.visible = parts_active
 
 
 func refresh_panel() -> void:
@@ -95,6 +101,21 @@ func new_task_field_reset() -> void:
 	task_add_assigned_user_option_button.select(0)
 	task_add_schedule_start_spin_box.value = 0
 	task_add_units_per_cycle_spin_box.value = 0
+	match TaskTrackingGlobal.current_toggled_section:
+		DataGlobal.Section.MONTHLY:
+			reset_new_task_section_scheduling(12)
+		DataGlobal.Section.WEEKLY:
+			reset_new_task_section_scheduling(5)
+		DataGlobal.Section.DAILY:
+			reset_new_task_section_scheduling(31)
+
+
+func reset_new_task_section_scheduling(max_value_param: float) -> void:
+	task_add_schedule_start_spin_box.max_value = max_value_param
+	task_add_units_per_cycle_spin_box.max_value = max_value_param
+	task_add_schedule_end_spin_box.max_value = max_value_param
+	task_add_schedule_end_spin_box.value = max_value_param
+	
 
 
 func update_existing_groups_option_button_items() -> void:
@@ -103,11 +124,22 @@ func update_existing_groups_option_button_items() -> void:
 	for group_item in TaskTrackingGlobal.current_task_group_items:
 		existing_groups_option_button.add_item(group_item)
 
-"""
 
+func toggle_editing_lock(lock_active: bool) -> void:
+	if lock_active:
+		close_new_task_panel()
+	add_task_button.disabled = lock_active
+
+
+
+
+"""
+task_title_line_edit
+task_group_line_edit
 group_column_toggled
 assigned_to_column_toggled
 scheduling_column_toggled
+task_add_assigned_user_option_button
 
 
 section_column_toggled
@@ -125,10 +157,39 @@ checkboxes_column_toggled
 #func add_new_task
 
 
-func toggle_editing_lock(lock_active: bool) -> void:
-	if lock_active:
-		close_new_task_panel()
-	add_task_button.disabled = lock_active
+func create_task_data() -> Dictionary:
+	var new_task_data: Dictionary = {"task_name": task_title_line_edit.text}
+	TaskTrackingGlobal.group_column_toggled
+	TaskTrackingGlobal.assigned_to_column_toggled
+	TaskTrackingGlobal.scheduling_column_toggled
+	return new_task_data
+
+
+task_group_line_edit
+
+"""
+task_add_schedule_start_spin_box
+task_add_units_per_cycle_spin_box
+task_add_schedule_end_spin_box
+
+
+"task_group":
+"assigned_to":
+"daily_scheduling_start", "days_per_cycle", "daily_scheduling_end":
+"weekly_scheduling_start", "weeks_per_cycle", "weekly_scheduling_end":
+"monthly_scheduling_start", "months_per_cycle", "monthly_scheduling_end":
+
+"""
+
+
+
+
+
+
+
+
+
+
 
 
 

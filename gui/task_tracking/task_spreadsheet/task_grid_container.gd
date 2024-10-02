@@ -10,11 +10,11 @@ const NUMBER_CELL = preload("res://gui/task_tracking/task_spreadsheet/cells/numb
 const TASK_CHECKBOX_CLEAR_BUTTON_CELL = preload("res://gui/task_tracking/task_spreadsheet/cells/task_checkbox_clear_button_cell.tscn")
 const TEXT_CELL = preload("res://gui/task_tracking/task_spreadsheet/cells/text_cell.tscn")
 
-
 var section_dropdown_items: Array
 var time_of_day_dropdown_items: Array
 var priority_dropdown_items: Array
 var relevant_checkbox_addresses: Array
+
 
 
 func _ready() -> void:
@@ -22,6 +22,7 @@ func _ready() -> void:
 	get_dropdown_items_from_global()
 	if SqlManager.active_database:
 		reload_grid()
+
 
 func ready_connections() -> void:
 	TaskSignalBus._on_task_grid_column_count_changed.connect(set_grid_columns)
@@ -38,17 +39,6 @@ func get_dropdown_items_from_global() -> void:
 		time_of_day_dropdown_items.append(item.capitalize())
 	for item in DataGlobal.Priority.keys():
 		priority_dropdown_items.append(item.capitalize())
-
-
-#func auto_load_database() -> void:
-	#var task_settings = TaskTrackingGlobal.active_settings
-	#if task_settings.enable_auto_load_default_data:
-		#var auto_load_path: String = task_settings.autoload_database_path
-		#var auto_load_name: String = SqlManager.get_database_name_from_path(auto_load_path)
-		#if SqlManager.database_name == auto_load_name:
-			#prints("Database already open, no need to auto-load.")
-			#return
-		#SqlManager.set_database_name_and_path(auto_load_name, auto_load_path)
 
 
 func query_task_grid() -> void:
@@ -136,7 +126,6 @@ func populate_checkbox(current_id, column_iteration, current_value) -> void:
 		create_checkbox_cell(current_id, column_iteration, checkbox_status, checkbox_currently_assigned, current_value)
 
 
-
 func current_section_checkbox_addresses() -> Array:
 	match TaskTrackingGlobal.current_toggled_section:
 		DataGlobal.Section.DAILY:
@@ -147,9 +136,6 @@ func current_section_checkbox_addresses() -> Array:
 			return SqlManager.monthly_checkbox_addresses
 		_:
 			return ["Error"]
-
-
-
 
 
 func set_grid_columns(column_param: int) -> void:
@@ -217,7 +203,27 @@ func create_checkbox_cell(
 	add_child(cell)
 	cell.set_checkbox_cell(task_id_param, column_param, status_param, assigned_param, completed_param)
 
+
+func editor_undo() -> void:
+	var undone_task: Array = TaskTrackingGlobal.undo_active_changes()
+	TaskSignalBus._on_data_cell_remote_updated.emit(undone_task[0], undone_task[1], undone_task[2])
+
+
+func editor_redo() -> void:
+	var redone_task: Array = TaskTrackingGlobal.redo_active_changes()
+	TaskSignalBus._on_data_cell_remote_updated.emit(redone_task[0], redone_task[1], redone_task[3])
+
+
+
 """
+
+[cell_id, column_name, original_value, new_value]
+#_on_data_cell_remote_updated(cell_id, column_name: String, new_value)
+
+
+TaskSignalBus._on_data_cell_remote_updated.emit()
+
+
 
 "_status"
 "_currently_assigned"
@@ -227,31 +233,16 @@ task
 year
 month
 
-"""
-
-
-
-
-
-
-
-
-func old_create_checkbox_cell(state: TaskTrackingGlobal.Checkbox, user_profile: Array,
-	cell_position: int, column_group: String = ""
-) -> void:
-	pass
-
 
 func delete_task_row(target_task: TaskData) -> void:
-	pass
 
 
+submit_change
+submit_changed_data_to_database
+undo_active_changes
+redo_active_changes
 
 
-
-
-
-"""
 trigger on loading db
 query for uniques in category
 set to array

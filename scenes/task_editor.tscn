@@ -420,6 +420,22 @@ max_value = 30.0
 rounded = true
 alignment = 1
 
+[node name="VSeparator7" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TaskAddScheduleEndLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Schedule End:"
+
+[node name="TaskAddScheduleEndSpinBox" type="SpinBox" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 30.0
+rounded = true
+alignment = 1
+
 [node name="VSeparator" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
 unique_name_in_owner = true
 layout_mode = 2

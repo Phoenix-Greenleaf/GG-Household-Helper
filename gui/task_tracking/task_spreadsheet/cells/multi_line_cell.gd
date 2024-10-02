@@ -4,13 +4,18 @@ class_name MultiLineCell
 var saved_task_id: String
 var saved_column: String
 var saved_multi_text: String
+var saved_new_data_id: int
 
 
+
+
+# cell_modified(new_multi_text: String) needs to be called when multi-text is changed.
 func _ready() -> void:
 	name = "MultiLineCell"
 	text = "Ready"
 	TaskSignalBus._on_task_editing_lock_toggled.connect(disable_cell)
 	TaskSignalBus._on_task_cells_resized_comparison_started.connect(send_in_size_for_comparison)
+	TaskSignalBus._on_data_cell_remote_updated.connect(remote_update)
 
 
 func disable_cell(editing_locked: bool) -> void:
@@ -49,6 +54,29 @@ func send_in_size_for_comparison(column_param: String, header_param: Control) ->
 func sync_size(size_param: float) -> void:
 	var min_size: Vector2 = Vector2(size_param, 0)
 	custom_minimum_size = min_size
+
+
+func cell_modified(new_multi: String) -> void:
+	var current_id
+	if not saved_task_id.is_empty():
+		current_id = saved_task_id
+	if saved_new_data_id:
+		current_id = saved_new_data_id
+	TaskSignalBus._on_data_cell_modified.emit(current_id, saved_column, saved_multi_text, new_multi)
+	saved_multi_text = new_multi
+
+
+func remote_update(cell_id, column_name: String, new_value) -> void:
+	if column_name != saved_column:
+		return
+	match type_string(typeof(cell_id)):
+		"String":
+			if cell_id != saved_task_id:
+				return
+		"int":
+			if cell_id != saved_new_data_id:
+				return
+	saved_multi_text = new_value
 
 
 func _on_pressed() -> void:

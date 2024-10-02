@@ -8,6 +8,7 @@ var saved_completed_by: String
 var saved_color: Color
 var white: Color = Color.WHITE
 var black: Color = Color.BLACK
+var saved_new_data_id: int
 
 var defaulted_status: bool = false
 var defaulted_assigned_to: bool = false
@@ -21,9 +22,11 @@ var defaulted_completed_by: bool = false
 
 
 
+ #call cell_modified when edited
 func _ready() -> void:
 	name = "CheckboxCell"
 	TaskSignalBus._on_task_cells_resized_comparison_started.connect(send_in_size_for_comparison)
+	TaskSignalBus._on_data_cell_remote_updated.connect(remote_update)
 
 
 
@@ -121,10 +124,37 @@ func sync_size(size_param: float) -> void:
 
 
 
+func cell_modified(new_status, new_currently_assigned, new_completed_by) -> void:
+	var current_id
+	if not saved_task_id.is_empty():
+		current_id = saved_task_id
+	if saved_new_data_id:
+		current_id = saved_new_data_id
+	var original_values: Array = [saved_status, saved_currently_assigned, saved_completed_by]
+	var new_values: Array = [new_status, new_currently_assigned, new_completed_by]
+	TaskSignalBus._on_data_cell_modified.emit(current_id, saved_column, original_values, new_values)
+	saved_status = new_status
+	saved_currently_assigned = new_currently_assigned
+	saved_completed_by = new_completed_by
+	update_cell()
+	#cell_id, column_name: String, original_value, new_value
 
 
 
-
+func remote_update(cell_id, column_name: String, new_values: Array) -> void:
+	if column_name != saved_column:
+		return
+	match type_string(typeof(cell_id)):
+		"String":
+			if cell_id != saved_task_id:
+				return
+		"int":
+			if cell_id != saved_new_data_id:
+				return
+	saved_status = new_values[0]
+	saved_currently_assigned = new_values[1]
+	saved_completed_by = new_values[2]
+	update_cell()
 
 
 """
