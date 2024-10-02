@@ -640,6 +640,11 @@ func generate_users_dropdown_items() -> void:
 
 """
 
+func submit_new_task(task_data: Dictionary) -> void:
+	var new_id: int = changed_new_data.size()
+	changed_new_data.append(task_data)
+	TaskSignalBus._on_new_task_added.emit(new_id, task_data)
+	TaskSignalBus._on_data_modified.emit()
 
 
 func submit_change(cell_id, column_name: String, original_value, new_value) -> void:
@@ -659,14 +664,6 @@ func submit_change(cell_id, column_name: String, original_value, new_value) -> v
 	TaskSignalBus._on_data_modified.emit()
 
 
-
-func submit_changed_data_to_database() -> void:
-#	send data: Exisiting update then create new
-# 	reload database
-#   clear undo redo tables, to use modified data array as save check
-	pass
-
-
 func undo_active_changes() -> Array:
 	if active_changes.is_empty():
 		prints("Nothing to Undo")
@@ -683,3 +680,68 @@ func redo_active_changes() -> Array:
 	var redo_action: Array = undone_changes.pop_back()
 	active_changes.append(redo_action)
 	return redo_action
+
+
+
+
+func submit_changed_data_to_database() -> void:
+	var rows_to_update_count: int = changed_existing_data.size()
+	var update_row_keys: Array = changed_existing_data.keys()
+	var update_row_values: Array = changed_existing_data.values()
+	for update_row_iteration in rows_to_update_count:
+		var update_row_id: String = update_row_keys[update_row_iteration]
+		var update_row_data: Dictionary = update_row_values[update_row_iteration]
+		#var update_row_complete_data: Dictionary = {"task_info_id":update_row_id}
+		#update_row_complete_data.merge(update_partial_data)
+		var update_condition: String = "where " + task_info_id + " = " + update_row_id
+		SqlManager.update_existing_data(task_info_table, update_condition, update_row_data)
+	clear_changed_existing_data_with_failsafe()
+	SqlManager.add_new_data(task_info_table, changed_new_data)
+	clear_changed_new_data_with_failsafe()
+
+
+
+
+func clear_changed_existing_data_with_failsafe() -> void:
+	if SqlManager.active_database.error_message:
+		printerr("Error updating existing data: ", SqlManager.active_database.error_message)
+		return
+	changed_existing_data.clear()
+
+
+func clear_changed_new_data_with_failsafe() -> void:
+	if SqlManager.active_database.error_message:
+		printerr("Error adding new data: ", SqlManager.active_database.error_message)
+		return
+	changed_new_data.clear()
+
+
+
+func section_scheduling_start() -> String:
+	match current_toggled_section:
+		DataGlobal.Section.DAILY:
+			return "daily_scheduling_start"
+		DataGlobal.Section.WEEKLY:
+			return "weekly_scheduling_start"
+		_:
+			return "monthly_scheduling_start"
+
+
+func section_units_per_cycle() -> String:
+	match current_toggled_section:
+		DataGlobal.Section.DAILY:
+			return "days_per_cycle"
+		DataGlobal.Section.WEEKLY:
+			return "weeks_per_cycle"
+		_:
+			return "months_per_cycle"
+
+
+func section_scheduling_end() -> String:
+	match current_toggled_section:
+		DataGlobal.Section.DAILY:
+			return "daily_scheduling_end"
+		DataGlobal.Section.WEEKLY:
+			return "weekly_scheduling_end"
+		_:
+			return "monthly_scheduling_end"

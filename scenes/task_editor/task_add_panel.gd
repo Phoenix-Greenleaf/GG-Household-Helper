@@ -159,35 +159,34 @@ checkboxes_column_toggled
 
 func create_task_data() -> Dictionary:
 	var new_task_data: Dictionary = {"task_name": task_title_line_edit.text}
-	TaskTrackingGlobal.group_column_toggled
-	TaskTrackingGlobal.assigned_to_column_toggled
-	TaskTrackingGlobal.scheduling_column_toggled
+	if TaskTrackingGlobal.group_column_toggled:
+		new_task_data.merge({"task_group": task_group_line_edit.text})
+	if TaskTrackingGlobal.assigned_to_column_toggled:
+		var current_index: int = task_add_assigned_user_option_button.selected
+		var assigned_name: String = task_add_assigned_user_option_button.get_item_text(current_index)
+		var assigned_id: String = TaskTrackingGlobal.current_users_id[assigned_name]
+		new_task_data.merge({"assigned_to":assigned_id})
+	if TaskTrackingGlobal.scheduling_column_toggled:
+		new_task_data.merge({
+			TaskTrackingGlobal.section_scheduling_start(): task_add_schedule_start_spin_box,
+			TaskTrackingGlobal.section_units_per_cycle(): task_add_units_per_cycle_spin_box,
+			TaskTrackingGlobal.section_scheduling_end(): task_add_schedule_end_spin_box,
+		})
 	return new_task_data
 
 
-task_group_line_edit
-
 """
-task_add_schedule_start_spin_box
-task_add_units_per_cycle_spin_box
-task_add_schedule_end_spin_box
+
+task_group_line_edit
 
 
 "task_group":
-"assigned_to":
+:
 "daily_scheduling_start", "days_per_cycle", "daily_scheduling_end":
 "weekly_scheduling_start", "weeks_per_cycle", "weekly_scheduling_end":
 "monthly_scheduling_start", "months_per_cycle", "monthly_scheduling_end":
 
 """
-
-
-
-
-
-
-
-
 
 
 
@@ -206,4 +205,7 @@ func _on_existing_groups_option_item_selected(index: int) -> void:
 
 
 func _on_accept_new_task_button_pressed() -> void:
-	pass # Replace with function body.
+	var new_id: int = TaskTrackingGlobal.changed_new_data.size()
+	var new_data: Dictionary = create_task_data()
+	TaskTrackingGlobal.submit_new_task(new_data)
+	close_new_task_panel()

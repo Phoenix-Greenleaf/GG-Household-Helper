@@ -237,8 +237,8 @@ func create_column_primary_id(table_title_parameter: String) -> Dictionary:
 
 
 func table_id(table_title_parameter: String) -> String:
-	var table_id: String = table_title_parameter + "_" + id
-	return table_id
+	var new_table_id: String = table_title_parameter + "_" + id
+	return new_table_id
 
 
 func add_unassigned_user_row() -> void:
@@ -301,11 +301,6 @@ func create_table_changelog() -> void:
 # unstable science warning
 
 
-
-func add_data(table_parameter: String, row_data_parameter: Array) -> void:
-	active_database.insert_rows(table_parameter, row_data_parameter)
-
-
 func select_data(table_parameter: String, conditions_parameter: String, column_parameters: Array) -> Array:
 	var returned_data: Array = []
 	returned_data = active_database.select_rows(table_parameter, conditions_parameter, column_parameters)
@@ -317,7 +312,11 @@ func query_data(query_parameter: String) -> Array:
 	return active_database.query_result
 
 
-func update_data(table_parameter: String, conditions_parameter: String, row_data_parameter: Dictionary) -> void:
+func add_new_data(table_parameter: String, row_data_parameter: Array) -> void:
+	active_database.insert_rows(table_parameter, row_data_parameter)
+
+
+func update_existing_data(table_parameter: String, conditions_parameter: String, row_data_parameter: Dictionary) -> void:
 	active_database.update_rows(table_parameter, conditions_parameter, row_data_parameter)
 
 

@@ -33,7 +33,7 @@ func connect_menu_button_popup() -> void:
 func menu_button_actions(id: int) -> void:
 	match id:
 		save_files_index:
-			task_editor.save_active_data()
+			TaskTrackingGlobal.submit_changed_data_to_database()
 			popup.hide()
 		change_logs_index:
 			print("Change Logs Pressed")
@@ -95,7 +95,6 @@ func save_protection(index_parameter: int) -> bool:
 func correct_menu_item(item_index: int, item_text: String) -> void:
 	if popup.get_item_text(item_index) != item_text:
 		popup.set_item_text(item_index, item_text)
-
 
 
 func _on_pressed() -> void:
