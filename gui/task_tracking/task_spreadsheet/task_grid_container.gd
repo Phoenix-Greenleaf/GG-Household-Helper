@@ -30,6 +30,7 @@ func ready_connections() -> void:
 	TaskSignalBus._on_month_changed.connect(reload_grid)
 	TaskSignalBus._on_year_changed.connect(reload_grid)
 	TaskSignalBus._on_task_grid_column_toggled.connect(reload_grid)
+	TaskSignalBus._on_new_task_added.connect(populate_new_task_cells)
 
 
 func get_dropdown_items_from_global() -> void:
@@ -162,26 +163,26 @@ func check_for_editing_lock() -> void:
 	TaskSignalBus._on_task_editing_lock_toggled.emit(true)
 
 
-func create_text_cell(task_id_param: String, column_param: String, text_param: String) -> void:
+func create_text_cell(task_id_param, column_param: String, text_param: String) -> void:
 	var cell: LineEdit = TEXT_CELL.instantiate()
 	add_child(cell)
 	cell.set_text_cell(task_id_param, column_param, text_param)
 
 
-func create_number_cell(task_id_param: String, column_param: String, number_param: String, min_param: int, max_param: int) -> void:
+func create_number_cell(task_id_param, column_param: String, number_param: String, min_param: int, max_param: int) -> void:
 	var cell: SpinBox = NUMBER_CELL.instantiate()
 	add_child(cell)
 	cell.set_number_cell(task_id_param, column_param, number_param, min_param, max_param)
 
 
-func create_multi_line_cell(task_id_param: String, column_param: String, multi_text_parameter: String) -> void:
+func create_multi_line_cell(task_id_param, column_param: String, multi_text_parameter: String) -> void:
 	var cell: Button = MULTI_LINE_CELL.instantiate()
 	add_child(cell)
 	cell.set_multi_line_cell(task_id_param, column_param, multi_text_parameter)
 
 
 func create_dropdown_cell(
-	task_id_param: String,
+	task_id_param,
 	column_param: String,
 	dropdown_param: String,
 	dropdown_items: Array,
@@ -193,7 +194,7 @@ func create_dropdown_cell(
 
 
 func create_checkbox_cell(
-	task_id_param: String,
+	task_id_param,
 	column_param: String,
 	status_param: String,
 	assigned_param: String,
@@ -215,7 +216,9 @@ func editor_redo() -> void:
 
 
 func apply_current_changes() -> void:
-	pass
+	generate_cells_for_changed_new_data()
+	apply_changed_existing_data()
+	apply_changed_new_data()
 
 
 """
@@ -237,13 +240,211 @@ func submit_changed_data_to_database() -> void:
 
 
 
-func add_new_task() -> void:
+func generate_cells_for_changed_new_data() -> void:
 	pass
 
+
+func apply_changed_existing_data() -> void:
+	var data_keys: Array = TaskTrackingGlobal.changed_existing_data.keys()
+	var data_values: Array =  TaskTrackingGlobal.changed_existing_data.values()
+	for data_iteration in TaskTrackingGlobal.changed_existing_data.size():
+		var cell_id: String = data_keys[data_iteration]
+		var column_name: String
+		var new_value
+		TaskSignalBus._on_data_cell_remote_updated.emit(cell_id, column_name, new_value)
+
+
+func apply_changed_new_data() -> void:
+	for data_iteration in TaskTrackingGlobal.changed_new_data.size():
+		var cell_id: int = data_iteration
+		var column_name: String
+		var new_value
+		TaskSignalBus._on_data_cell_remote_updated.emit(cell_id, column_name, new_value)
+
+
+
+
+
+func populate_new_task_cells(new_task_id: int, new_task_data: Dictionary) -> void:
+	var section_string: String = TaskTrackingGlobal.section_enum_strings[TaskTrackingGlobal.current_toggled_section]
+	if new_task_data["section"] != section_string:
+		return
+	var column_keys: Array = new_task_data.keys()
+	var column_iteration: String = "task_name"
+	var current_value: String = str(new_task_data[column_iteration])
+	create_text_cell(new_task_id, column_iteration, current_value)
+	
+	if TaskTrackingGlobal.section_column_toggled:
+		column_iteration = "section"
+		current_value = section_string
+		create_dropdown_cell(new_task_id, column_iteration, current_value, section_dropdown_items)
+	
+	if TaskTrackingGlobal.assigned_to_column_toggled:
+		column_iteration = "assigned_to"
+		if column_keys.has(column_iteration):
+			current_value = str(new_task_data[column_iteration])
+		else:
+			current_value = "0"
+		var current_user_name: String = TaskTrackingGlobal.current_users_id.find_key(int(current_value))
+		create_dropdown_cell(new_task_id, column_iteration, current_user_name, TaskTrackingGlobal.current_users_keys, int(current_value))
+	
+	if TaskTrackingGlobal.group_column_toggled:
+		column_iteration = "task_group"
+		if column_keys.has(column_iteration):
+			current_value = str(new_task_data[column_iteration])
+		else:
+			current_value = ""
+		create_dropdown_cell(new_task_id, column_iteration, current_value, TaskTrackingGlobal.current_task_group_items)
+	
+	if TaskTrackingGlobal.scheduling_column_toggled:
+		match TaskTrackingGlobal.current_toggled_section:
+			DataGlobal.Section.DAILY:
+				column_iteration = "daily_scheduling_start"
+				if column_keys.has(column_iteration):
+					current_value = str(new_task_data[column_iteration])
+				else:
+					current_value = "0"
+				create_number_cell(new_task_id, column_iteration, current_value, 0, 31)
+				column_iteration = "days_per_cycle"
+				if column_keys.has(column_iteration):
+					current_value = str(new_task_data[column_iteration])
+				else:
+					current_value = "0"
+				create_number_cell(new_task_id, column_iteration, current_value, 0, 31)
+				column_iteration = "daily_scheduling_end"
+				if column_keys.has(column_iteration):
+					current_value = str(new_task_data[column_iteration])
+				else:
+					current_value = "31"
+				create_number_cell(new_task_id, column_iteration, current_value, 0, 31)
+			DataGlobal.Section.WEEKLY:
+				column_iteration = "weekly_scheduling_start"
+				if column_keys.has(column_iteration):
+					current_value = str(new_task_data[column_iteration])
+				else:
+					current_value = "0"
+				create_number_cell(new_task_id, column_iteration, current_value, 0, 5)
+				column_iteration = "weeks_per_cycle"
+				if column_keys.has(column_iteration):
+					current_value = str(new_task_data[column_iteration])
+				else:
+					current_value = "0"
+				create_number_cell(new_task_id, column_iteration, current_value, 0, 5)
+				column_iteration = "weekly_scheduling_end"
+				if column_keys.has(column_iteration):
+					current_value = str(new_task_data[column_iteration])
+				else:
+					current_value = "5"
+				create_number_cell(new_task_id, column_iteration, current_value, 0, 5)
+			DataGlobal.Section.MONTHLY:
+				column_iteration = "monthly_scheduling_start"
+				if column_keys.has(column_iteration):
+					current_value = str(new_task_data[column_iteration])
+				else:
+					current_value = "0"
+				create_number_cell(new_task_id, column_iteration, current_value, 0, 12)
+				column_iteration = "months_per_cycle"
+				if column_keys.has(column_iteration):
+					current_value = str(new_task_data[column_iteration])
+				else:
+					current_value = "0"
+				create_number_cell(new_task_id, column_iteration, current_value, 0, 12)
+				column_iteration = "monthly_scheduling_end"
+				if column_keys.has(column_iteration):
+					current_value = str(new_task_data[column_iteration])
+				else:
+					current_value = "12"
+				create_number_cell(new_task_id, column_iteration, current_value, 0, 12)
+	
+			#"year":
+				#create_number_cell(new_task_id, column_iteration, current_value, 1000, 3000)
+			#"month":
+				#create_dropdown_cell(new_task_id, column_iteration, current_value, DataGlobal.month_strings)
+	
+	if TaskTrackingGlobal.location_column_toggled:
+		column_iteration = "location"
+		if column_keys.has(column_iteration):
+			current_value = str(new_task_data[column_iteration])
+		else:
+			current_value = "0"
+		create_dropdown_cell(new_task_id, column_iteration, current_value, TaskTrackingGlobal.current_location_items)
+	
+	if TaskTrackingGlobal.priority_column_toggled:
+		column_iteration = "priority"
+		if column_keys.has(column_iteration):
+			current_value = str(new_task_data[column_iteration])
+		else:
+			current_value = "0"
+		create_dropdown_cell(new_task_id, column_iteration, current_value, priority_dropdown_items)
+	
+	if TaskTrackingGlobal.time_of_day_column_toggled:
+		column_iteration = "time_of_day"
+		if column_keys.has(column_iteration):
+			current_value = str(new_task_data[column_iteration])
+		else:
+			current_value = "0"
+		create_dropdown_cell(new_task_id, column_iteration, current_value, time_of_day_dropdown_items)
+
+	if TaskTrackingGlobal.description_column_toggled:
+		column_iteration = "description"
+		if column_keys.has(column_iteration):
+			current_value = str(new_task_data[column_iteration])
+		else:
+			current_value = ""
+
+	if TaskTrackingGlobal.checkboxes_column_toggled:
+		var checkbox_status: String
+		var checkbox_currently_assigned: String
+		match TaskTrackingGlobal.current_toggled_section:
+			DataGlobal.Section.DAILY:
+				for checkbox_column_iteration in SqlManager.daily_checkbox_addresses:
+					if column_keys.has(column_iteration):
+						current_value = str(new_task_data[column_iteration])
+					else:
+						current_value = ""
+					process_checkbox_new_data_cells(new_task_id, checkbox_column_iteration, current_value, checkbox_status, checkbox_currently_assigned)
+			DataGlobal.Section.WEEKLY:
+				for checkbox_column_iteration in SqlManager.weekly_checkbox_addresses:
+					if column_keys.has(column_iteration):
+						current_value = str(new_task_data[column_iteration])
+					else:
+						current_value = ""
+					process_checkbox_new_data_cells(new_task_id, checkbox_column_iteration, current_value, checkbox_status, checkbox_currently_assigned)
+			DataGlobal.Section.MONTHLY:
+				for checkbox_column_iteration in SqlManager.monthly_checkbox_addresses:
+					if column_keys.has(column_iteration):
+						current_value = str(new_task_data[column_iteration])
+					else:
+						current_value = ""
+					process_checkbox_new_data_cells(new_task_id, checkbox_column_iteration, current_value, checkbox_status, checkbox_currently_assigned)
+
+
+func process_checkbox_new_data_cells(
+	current_id,
+	column_iteration: String,
+	current_value,
+	checkbox_status,
+	checkbox_currently_assigned
+) -> void:
+	if column_iteration.ends_with("_status"):
+		checkbox_status = current_value
+		return
+	if column_iteration.ends_with("_currently_assigned"):
+		checkbox_currently_assigned = current_value
+		return
+	if column_iteration.ends_with("_completed_by"):
+		column_iteration = column_iteration.replace("_completed_by", "")
+		create_checkbox_cell(current_id, column_iteration, checkbox_status, checkbox_currently_assigned, current_value)
 
 
 
 """
+
+				populate_checkbox(new_task_id, column_iteration, current_value)
+
+
+signal _on_data_cell_remote_updated(cell_id, column_name: String, new_value)
+
 "just" combine those two monster: populate row's cell gen plus query's column toggle.
 
 
@@ -253,120 +454,6 @@ func add_new_task() -> void:
 
 
 func populate_task_row(row_data_param: Dictionary) -> void:
-	var column_keys: Array = row_data_param.keys()
-	var current_id: String
-	for column_iteration: String in column_keys:
-		var current_value: String = str(row_data_param[column_iteration])
-		match column_iteration:
-			"task_info_id":
-				current_id = current_value
-			"task_name":
-				create_text_cell(current_id, column_iteration, current_value)
-			"year":
-				create_number_cell(current_id, column_iteration, current_value, 1000, 3000)
-			"daily_scheduling_start", "days_per_cycle", "daily_scheduling_end":
-				create_number_cell(current_id, column_iteration, current_value, 0, 31)
-			"weekly_scheduling_start", "weeks_per_cycle", "weekly_scheduling_end":
-				create_number_cell(current_id, column_iteration, current_value, 0, 5)
-			"monthly_scheduling_start", "months_per_cycle", "monthly_scheduling_end":
-				create_number_cell(current_id, column_iteration, current_value, 0, 12)
-			"description":
-				create_multi_line_cell(current_id, column_iteration, current_value)
-			"task_group":
-				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.current_task_group_items)
-			"location":
-				create_dropdown_cell(current_id, column_iteration, current_value, TaskTrackingGlobal.current_location_items)
-			"assigned_to":
-				#prints("Current Users Id:")
-				#prints(TaskTrackingGlobal.current_users_id)
-				#prints("Current Value:", current_value)
-				#prints("Type:", type_string(typeof(current_value)))
-				var current_user_name: String = TaskTrackingGlobal.current_users_id.find_key(int(current_value))
-				create_dropdown_cell(current_id, column_iteration, current_user_name, TaskTrackingGlobal.current_users_keys, int(current_value))
-			"time_of_day":
-				create_dropdown_cell(current_id, column_iteration, current_value, time_of_day_dropdown_items)
-			"priority":
-				create_dropdown_cell(current_id, column_iteration, current_value, priority_dropdown_items)
-			"month":
-				create_dropdown_cell(current_id, column_iteration, current_value, DataGlobal.month_strings)
-			"section":
-				create_dropdown_cell(current_id, column_iteration, current_value, section_dropdown_items)
-			"days_in_month":
-				pass
-			_:
-				#prints("Populate task wildcard:", column_iteration, current_value)
-				if not relevant_checkbox_addresses.has(column_iteration):
-					prints("Error populating: Column:", column_iteration, "Value:", current_value)
-					continue
-				populate_checkbox(current_id, column_iteration, current_value)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-func gather_task_info_columns(column_array_param: PackedStringArray) -> void:
-	column_array_param.append(task_info_id)
-	column_array_param.append(task_name)
-	if section_column_toggled:
-		column_array_param.append(section)
-	if assigned_to_column_toggled:
-		column_array_param.append(assigned_to)
-	if location_column_toggled:
-		column_array_param.append(location)
-	if priority_column_toggled:
-		column_array_param.append(priority)
-	if time_of_day_column_toggled:
-		column_array_param.append(time_of_day)
-	if description_column_toggled:
-		column_array_param.append(description)
-	if group_column_toggled:
-		column_array_param.append(task_group)
-	if scheduling_column_toggled:
-		match current_toggled_section:
-			DataGlobal.Section.DAILY:
-				column_array_param.append(daily_scheduling_start)
-				column_array_param.append(days_per_cycle)
-				column_array_param.append(daily_scheduling_end)
-			DataGlobal.Section.WEEKLY:
-				column_array_param.append(weekly_scheduling_start)
-				column_array_param.append(weeks_per_cycle)
-				column_array_param.append(weekly_scheduling_end)
-			DataGlobal.Section.MONTHLY:
-				column_array_param.append(monthly_scheduling_start)
-				column_array_param.append(months_per_cycle)
-				column_array_param.append(monthly_scheduling_end)
-
-
-func gather_checkbox_info_columns(column_array_param: PackedStringArray) -> void:
-	if not checkboxes_column_toggled:
-		return
-	#if month_column_toggled: #not needed, since month/year is editor setting?
-		#column_array_param.append(month)
-	#if year_column_toggled:
-		#column_array_param.append(year)
-	var current_section_info: Array
-	match current_toggled_section:
-		DataGlobal.Section.DAILY:
-			column_array_param.append_array(SqlManager.daily_checkbox_addresses)
-		DataGlobal.Section.WEEKLY:
-			column_array_param.append_array(SqlManager.weekly_checkbox_addresses)
-		DataGlobal.Section.MONTHLY:
-			column_array_param.append_array(SqlManager.monthly_checkbox_addresses)
-
-
-
-
-
 
 [cell_id, column_name, original_value, new_value]
 #_on_data_cell_remote_updated(cell_id, column_name: String, new_value)

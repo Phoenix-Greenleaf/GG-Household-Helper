@@ -19,8 +19,11 @@ func disable_cell(editing_locked: bool) -> void:
 	editable = !editing_locked
 
 
-func set_text_cell(task_id_param: String, column_param: String, text_param: String) -> void:
-	saved_task_id = task_id_param
+func set_text_cell(task_id_param, column_param: String, text_param: String) -> void:
+	if type_string(typeof(task_id_param)) == "String":
+		saved_task_id = task_id_param
+	if type_string(typeof(task_id_param)) == "int":
+		saved_new_data_id = task_id_param
 	saved_column = column_param
 	update_text(text_param)
 

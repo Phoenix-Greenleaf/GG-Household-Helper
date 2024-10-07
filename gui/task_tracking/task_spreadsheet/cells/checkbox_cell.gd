@@ -81,7 +81,7 @@ func update_current_border(color_parameter: Color) -> void:
 
 
 func set_checkbox_cell(
-	task_id_param: String,
+	task_id_param,
 	column_param: String,
 	status_param: String,
 	assigned_param: String,
@@ -90,7 +90,10 @@ func set_checkbox_cell(
 	defaulted_status = false
 	defaulted_assigned_to = false
 	defaulted_completed_by = false
-	saved_task_id = task_id_param
+	if type_string(typeof(task_id_param)) == "String":
+		saved_task_id = task_id_param
+	if type_string(typeof(task_id_param)) == "int":
+		saved_new_data_id = task_id_param
 	saved_column = column_param
 	saved_status = status_param
 	if status_param == "" or status_param == "<null>":
