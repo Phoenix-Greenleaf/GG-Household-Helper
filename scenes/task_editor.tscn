@@ -107,7 +107,6 @@ layout_mode = 2
 text = "Checkbox Mode"
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 3
 
 [node name="CheckboxApplyToggle" type="Button" parent="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox"]
 unique_name_in_owner = true

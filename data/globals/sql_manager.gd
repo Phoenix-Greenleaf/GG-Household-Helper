@@ -367,8 +367,9 @@ func get_existing_database_files() -> Array:
 	for file_info_iteration: String in existing_files_info:
 		if not file_info_iteration.ends_with(database_extension):
 			continue
+		file_info_iteration = database_directory + file_info_iteration
 		database_files_only.append(file_info_iteration)
-	prints("existing database files", database_files_only)
+	prints("existing database files, FULL PATH", database_files_only)
 	return database_files_only
 
 

@@ -703,14 +703,14 @@ func submit_changed_data_to_database() -> void:
 
 
 func clear_changed_existing_data_with_failsafe() -> void:
-	if SqlManager.active_database.error_message:
+	if SqlManager.active_database.error_message != "not an error":
 		printerr("Error updating existing data: ", SqlManager.active_database.error_message)
 		return
 	changed_existing_data.clear()
 
 
 func clear_changed_new_data_with_failsafe() -> void:
-	if SqlManager.active_database.error_message:
+	if SqlManager.active_database.error_message != "not an error":
 		printerr("Error adding new data: ", SqlManager.active_database.error_message)
 		return
 	changed_new_data.clear()

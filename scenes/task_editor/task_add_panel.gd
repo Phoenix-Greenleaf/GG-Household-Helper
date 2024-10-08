@@ -159,6 +159,7 @@ checkboxes_column_toggled
 
 func create_task_data() -> Dictionary:
 	var new_task_data: Dictionary = {"task_name": task_title_line_edit.text}
+	new_task_data.merge({"section": TaskTrackingGlobal.section_enum_strings[TaskTrackingGlobal.current_toggled_section]})
 	if TaskTrackingGlobal.group_column_toggled:
 		new_task_data.merge({"task_group": task_group_line_edit.text})
 	if TaskTrackingGlobal.assigned_to_column_toggled:
@@ -205,7 +206,7 @@ func _on_existing_groups_option_item_selected(index: int) -> void:
 
 
 func _on_accept_new_task_button_pressed() -> void:
-	var new_id: int = TaskTrackingGlobal.changed_new_data.size()
+	#var new_id: int = TaskTrackingGlobal.changed_new_data.size()
 	var new_data: Dictionary = create_task_data()
 	TaskTrackingGlobal.submit_new_task(new_data)
 	close_new_task_panel()
