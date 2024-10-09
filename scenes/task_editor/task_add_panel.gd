@@ -167,6 +167,8 @@ func create_task_data() -> Dictionary:
 		var assigned_name: String = task_add_assigned_user_option_button.get_item_text(current_index)
 		var assigned_id: String = TaskTrackingGlobal.current_users_id[assigned_name]
 		new_task_data.merge({"assigned_to":assigned_id})
+	if not TaskTrackingGlobal.assigned_to_column_toggled:
+		new_task_data.merge({"assigned_to":"1"})
 	if TaskTrackingGlobal.scheduling_column_toggled:
 		new_task_data.merge({
 			TaskTrackingGlobal.section_scheduling_start(): task_add_schedule_start_spin_box,

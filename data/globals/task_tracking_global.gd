@@ -451,11 +451,18 @@ func generate_existing_years_index() -> void:
 func form_task_grid_query() -> String:
 	var new_query_parts: PackedStringArray
 	new_query_parts.append(create_column_select_string())
+	prints("")
+	prints("Column Select String:")
+	prints(new_query_parts[0])
 	new_query_parts.append(create_from_statment_string(task_info_table))
+	prints("From Statement String:")
+	prints(new_query_parts[1])
 	new_query_parts.append(create_join_statement_string())
+	prints("Join Statement String:")
+	prints(new_query_parts[2])
 	new_query_parts.append(create_condition_string())
-	for line in new_query_parts:
-		prints(line)
+	prints("Condition String:")
+	prints(new_query_parts[3])
 	return " ".join(new_query_parts)
 
 
@@ -465,7 +472,7 @@ func create_from_statment_string(database_parameter: String) -> String:
 
 func create_join_statement_string() -> String:
 	var join_parts: Array
-	var join_users_to_assigned_tasks: String = SqlManager.join_tables("join", task_info_table, assigned_to, user_info_table, user_info_id)
+	var join_users_to_assigned_tasks: String = SqlManager.join_tables("left join", task_info_table, assigned_to, user_info_table, user_info_id)
 	join_parts.append(join_users_to_assigned_tasks)
 	if not checkboxes_column_toggled:
 		return join_parts[0]

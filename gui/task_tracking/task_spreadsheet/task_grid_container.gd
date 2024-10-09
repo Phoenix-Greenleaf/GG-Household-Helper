@@ -45,6 +45,7 @@ func get_dropdown_items_from_global() -> void:
 func query_task_grid() -> void:
 	var query_text: String = TaskTrackingGlobal.form_task_grid_query()
 	var queried_data: Array[Dictionary] = SqlManager.query_data(query_text)
+	prints("Task Grid Query Size:", queried_data.size())
 	TaskTrackingGlobal.most_recent_query = queried_data
 
 

@@ -20,6 +20,7 @@ func _ready() -> void:
 	#if SqlManager.database_is_active:
 		#add_task_button.disabled = false
 	print("========= Editor Scene Ready! =========")
+	prints("")
 
 
 func connection_cental() -> void:

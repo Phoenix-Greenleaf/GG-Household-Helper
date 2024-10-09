@@ -346,7 +346,7 @@ func load_database() -> void:
 		create_new_database()
 	database_is_active = true
 	prints("")
-	prints("Emitting database loaded signal")
+	prints("Database Loaded:", database_name)
 	prints("")
 	TaskSignalBus._on_new_database_loaded.emit()
 
@@ -362,14 +362,14 @@ func unload_database() -> void:
 
 func get_existing_database_files() -> Array:
 	var existing_files_info =  DirAccess.get_files_at(database_directory)
-	prints("existing files info:", existing_files_info)
+	#prints("existing files info:", existing_files_info)
 	var database_files_only: Array
 	for file_info_iteration: String in existing_files_info:
 		if not file_info_iteration.ends_with(database_extension):
 			continue
 		file_info_iteration = database_directory + file_info_iteration
 		database_files_only.append(file_info_iteration)
-	prints("existing database files, FULL PATH", database_files_only)
+	#prints("existing database files, FULL PATH", database_files_only)
 	return database_files_only
 
 
