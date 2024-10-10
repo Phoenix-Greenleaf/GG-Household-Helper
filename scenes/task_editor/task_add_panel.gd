@@ -165,7 +165,9 @@ func create_task_data() -> Dictionary:
 	if TaskTrackingGlobal.assigned_to_column_toggled:
 		var current_index: int = task_add_assigned_user_option_button.selected
 		var assigned_name: String = task_add_assigned_user_option_button.get_item_text(current_index)
-		var assigned_id: String = TaskTrackingGlobal.current_users_id[assigned_name]
+		if assigned_name == "No Assigned User":
+			assigned_name = "Not Assigned"
+		var assigned_id: String = str(TaskTrackingGlobal.current_users_id[assigned_name])
 		new_task_data.merge({"assigned_to":assigned_id})
 	if not TaskTrackingGlobal.assigned_to_column_toggled:
 		new_task_data.merge({"assigned_to":"1"})
@@ -209,6 +211,9 @@ func _on_existing_groups_option_item_selected(index: int) -> void:
 
 func _on_accept_new_task_button_pressed() -> void:
 	#var new_id: int = TaskTrackingGlobal.changed_new_data.size()
+	if task_title_line_edit.text.is_empty():
+		DataGlobal.button_based_message(accept_new_task_button, "Title Needed!")
+		return
 	var new_data: Dictionary = create_task_data()
 	TaskTrackingGlobal.submit_new_task(new_data)
 	close_new_task_panel()
