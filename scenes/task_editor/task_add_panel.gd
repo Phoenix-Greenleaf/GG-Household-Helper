@@ -173,9 +173,9 @@ func create_task_data() -> Dictionary:
 		new_task_data.merge({"assigned_to":"1"})
 	if TaskTrackingGlobal.scheduling_column_toggled:
 		new_task_data.merge({
-			TaskTrackingGlobal.section_scheduling_start(): task_add_schedule_start_spin_box,
-			TaskTrackingGlobal.section_units_per_cycle(): task_add_units_per_cycle_spin_box,
-			TaskTrackingGlobal.section_scheduling_end(): task_add_schedule_end_spin_box,
+			TaskTrackingGlobal.section_scheduling_start(): str(task_add_schedule_start_spin_box.value),
+			TaskTrackingGlobal.section_units_per_cycle(): str(task_add_units_per_cycle_spin_box.value),
+			TaskTrackingGlobal.section_scheduling_end(): str(task_add_schedule_end_spin_box.value),
 		})
 	return new_task_data
 

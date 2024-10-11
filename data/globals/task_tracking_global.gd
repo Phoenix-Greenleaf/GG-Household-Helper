@@ -689,9 +689,14 @@ func redo_active_changes() -> Array:
 	return redo_action
 
 
-
-
 func submit_changed_data_to_database() -> void:
+	submit_existing_changed_data_to_database()
+	submit_new_changed_data_to_database()
+
+
+func submit_existing_changed_data_to_database() -> void:
+	if changed_existing_data.is_empty():
+		return
 	var rows_to_update_count: int = changed_existing_data.size()
 	var update_row_keys: Array = changed_existing_data.keys()
 	var update_row_values: Array = changed_existing_data.values()
@@ -703,10 +708,18 @@ func submit_changed_data_to_database() -> void:
 		var update_condition: String = "where " + task_info_id + " = " + update_row_id
 		SqlManager.update_existing_data(task_info_table, update_condition, update_row_data)
 	clear_changed_existing_data_with_failsafe()
-	SqlManager.add_new_data(task_info_table, changed_new_data)
+	prints("Existing changed data submitted to database.")
+
+
+func submit_new_changed_data_to_database() -> void:
+	if changed_new_data.is_empty():
+		return
+	var rows_to_add_count: int = changed_new_data.size()
+	for new_row_iteration in rows_to_add_count:
+		var row_data: Dictionary = changed_new_data[new_row_iteration]
+		SqlManager.add_new_data(task_info_table, row_data)
 	clear_changed_new_data_with_failsafe()
-
-
+	prints("New changed data submitted to database.")
 
 
 func clear_changed_existing_data_with_failsafe() -> void:
@@ -721,7 +734,6 @@ func clear_changed_new_data_with_failsafe() -> void:
 		printerr("Error adding new data: ", SqlManager.active_database.error_message)
 		return
 	changed_new_data.clear()
-
 
 
 func section_scheduling_start() -> String:

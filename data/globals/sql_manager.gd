@@ -312,8 +312,8 @@ func query_data(query_parameter: String) -> Array:
 	return active_database.query_result
 
 
-func add_new_data(table_parameter: String, row_data_parameter: Array) -> void:
-	active_database.insert_rows(table_parameter, row_data_parameter)
+func add_new_data(table_parameter: String, row_data_parameter: Dictionary) -> void:
+	active_database.insert_row(table_parameter, row_data_parameter)
 
 
 func update_existing_data(table_parameter: String, conditions_parameter: String, row_data_parameter: Dictionary) -> void:

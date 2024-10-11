@@ -34,6 +34,7 @@ func create_header_row(data_row_param: Dictionary) -> void:
 	var child_count: int = get_child_count()
 	columns = child_count
 	TaskSignalBus._on_task_grid_column_count_changed.emit(child_count)
+	resize_all_columns()
 
 
 

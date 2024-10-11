@@ -63,13 +63,11 @@ func populate_task_grid() -> void:
 	populate_header(first_row)
 	for data_row_iteration in TaskTrackingGlobal.most_recent_query:
 		populate_task_row(data_row_iteration)
+	apply_current_changes()
 	TaskSignalBus._on_task_cells_resized_workaround_all_columns.emit()
 
 
 func populate_header(first_row_param: Dictionary) -> void:
-	if header_grid.get_child_count() != 0:
-		prints("Populate Header protection: Header already exists!")
-		return
 	TaskSignalBus._on_task_grid_populated.emit(first_row_param)
 
 
@@ -225,9 +223,8 @@ func editor_redo() -> void:
 
 
 func apply_current_changes() -> void:
-	generate_cells_for_changed_new_data()
+	populate_changed_new_data()
 	apply_changed_existing_data()
-	apply_changed_new_data()
 
 
 """
@@ -249,8 +246,11 @@ func submit_changed_data_to_database() -> void:
 
 
 
-func generate_cells_for_changed_new_data() -> void:
-	pass
+func populate_changed_new_data() -> void:
+	var new_data_size: int = TaskTrackingGlobal.changed_new_data.size()
+	for new_data_id in new_data_size:
+		var iteration_data: Dictionary = TaskTrackingGlobal.changed_new_data[new_data_id]
+		populate_new_task_cells(new_data_id, iteration_data)
 
 
 func apply_changed_existing_data() -> void:
@@ -262,13 +262,6 @@ func apply_changed_existing_data() -> void:
 		var new_value
 		TaskSignalBus._on_data_cell_remote_updated.emit(cell_id, column_name, new_value)
 
-
-func apply_changed_new_data() -> void:
-	for data_iteration in TaskTrackingGlobal.changed_new_data.size():
-		var cell_id: int = data_iteration
-		var column_name: String
-		var new_value
-		TaskSignalBus._on_data_cell_remote_updated.emit(cell_id, column_name, new_value)
 
 
 func populate_new_task_cells(new_task_id: int, new_task_data: Dictionary) -> void:
@@ -426,6 +419,7 @@ func populate_new_task_description(new_task_id: int, new_task_data: Dictionary, 
 			current_value = str(new_task_data[column_iteration])
 		else:
 			current_value = ""
+		create_multi_line_cell(new_task_id, column_iteration, current_value)
 
 
 func populate_new_task_checkboxes(new_task_id: int, new_task_data: Dictionary, column_iteration: String, column_keys: Array) -> void:
