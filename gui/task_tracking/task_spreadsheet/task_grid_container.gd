@@ -1,6 +1,6 @@
 extends GridContainer
 
-
+@export var header_grid: GridContainer
 
 const CHECKBOX_CELL = preload("res://gui/task_tracking/task_spreadsheet/cells/checkbox_cell.tscn")
 const DELETE_TASK_DATA_CELL = preload("res://gui/task_tracking/task_spreadsheet/cells/delete_task_data_cell.tscn")
@@ -30,6 +30,7 @@ func ready_connections() -> void:
 	TaskSignalBus._on_month_changed.connect(reload_grid)
 	TaskSignalBus._on_year_changed.connect(reload_grid)
 	TaskSignalBus._on_task_grid_column_toggled.connect(reload_grid)
+	TaskSignalBus._on_new_database_loaded.connect(reload_grid)
 	TaskSignalBus._on_new_task_added.connect(populate_new_task_cells)
 
 
@@ -59,10 +60,17 @@ func populate_task_grid() -> void:
 	relevant_checkbox_addresses = current_section_checkbox_addresses()
 	#prints("Relevant Checkboxes:", relevant_checkbox_addresses)
 	var first_row: Dictionary = TaskTrackingGlobal.most_recent_query[0]
-	TaskSignalBus._on_task_grid_populated.emit(first_row)
+	populate_header(first_row)
 	for data_row_iteration in TaskTrackingGlobal.most_recent_query:
 		populate_task_row(data_row_iteration)
 	TaskSignalBus._on_task_cells_resized_workaround_all_columns.emit()
+
+
+func populate_header(first_row_param: Dictionary) -> void:
+	if header_grid.get_child_count() != 0:
+		prints("Populate Header protection: Header already exists!")
+		return
+	TaskSignalBus._on_task_grid_populated.emit(first_row_param)
 
 
 func populate_task_row(row_data_param: Dictionary) -> void:
@@ -263,41 +271,67 @@ func apply_changed_new_data() -> void:
 		TaskSignalBus._on_data_cell_remote_updated.emit(cell_id, column_name, new_value)
 
 
-
-
-
 func populate_new_task_cells(new_task_id: int, new_task_data: Dictionary) -> void:
 	var section_string: String = TaskTrackingGlobal.section_enum_strings[TaskTrackingGlobal.current_toggled_section]
 	if new_task_data["section"] != section_string:
 		return
 	var column_keys: Array = new_task_data.keys()
-	var column_iteration: String = "task_name"
-	var current_value: String = str(new_task_data[column_iteration])
+	generate_new_task_add_header()
+	populate_new_task_name(new_task_id, "task_name", str(new_task_data["task_name"]))
+	populate_new_task_section(new_task_id, "section", section_string)
+	populate_new_task_assigned_to(new_task_id, new_task_data, "assigned_to", column_keys)
+	populate_new_task_location(new_task_id, new_task_data, "location", column_keys)
+	populate_new_task_priority(new_task_id, new_task_data, "", column_keys)
+	populate_new_task_time_of_day(new_task_id, new_task_data, "", column_keys)
+	populate_new_task_description(new_task_id, new_task_data, "", column_keys)
+	populate_new_task_group(new_task_id, new_task_data, "task_group", column_keys)
+	populate_new_task_scheduling(new_task_id, new_task_data, "", column_keys)
+	populate_new_task_checkboxes(new_task_id, new_task_data, "", column_keys)
+
+
+func populate_new_task_name(new_task_id: int, column_iteration: String, current_value) -> void:
 	create_text_cell(new_task_id, column_iteration, current_value)
-	
+
+
+func populate_new_task_section(new_task_id: int, column_iteration: String, current_value) -> void:
 	if TaskTrackingGlobal.section_column_toggled:
-		column_iteration = "section"
-		current_value = section_string
 		create_dropdown_cell(new_task_id, column_iteration, current_value, section_dropdown_items)
-	
+
+
+func populate_new_task_assigned_to(new_task_id: int, new_task_data: Dictionary, column_iteration: String, column_keys: Array) -> void:
 	if TaskTrackingGlobal.assigned_to_column_toggled:
-		column_iteration = "assigned_to"
+		var current_value: String
 		if column_keys.has(column_iteration):
 			current_value = str(new_task_data[column_iteration])
 		else:
 			current_value = "0"
 		var current_user_name: String = TaskTrackingGlobal.current_users_id.find_key(int(current_value))
 		create_dropdown_cell(new_task_id, column_iteration, current_user_name, TaskTrackingGlobal.current_users_keys, int(current_value))
-	
+
+
+func populate_new_task_location(new_task_id: int, new_task_data: Dictionary, column_iteration: String, column_keys: Array) -> void:
+	if TaskTrackingGlobal.location_column_toggled:
+		var current_value: String
+		if column_keys.has(column_iteration):
+			current_value = str(new_task_data[column_iteration])
+		else:
+			current_value = "0"
+		create_dropdown_cell(new_task_id, column_iteration, current_value, TaskTrackingGlobal.current_location_items)
+
+
+func populate_new_task_group(new_task_id: int, new_task_data: Dictionary, column_iteration: String, column_keys: Array) -> void:
 	if TaskTrackingGlobal.group_column_toggled:
-		column_iteration = "task_group"
+		var current_value: String
 		if column_keys.has(column_iteration):
 			current_value = str(new_task_data[column_iteration])
 		else:
 			current_value = ""
 		create_dropdown_cell(new_task_id, column_iteration, current_value, TaskTrackingGlobal.current_task_group_items)
-	
+
+
+func populate_new_task_scheduling(new_task_id: int, new_task_data: Dictionary, column_iteration: String, column_keys: Array) -> void:
 	if TaskTrackingGlobal.scheduling_column_toggled:
+		var current_value: String
 		match TaskTrackingGlobal.current_toggled_section:
 			DataGlobal.Section.DAILY:
 				column_iteration = "daily_scheduling_start"
@@ -356,29 +390,26 @@ func populate_new_task_cells(new_task_id: int, new_task_data: Dictionary) -> voi
 				else:
 					current_value = "12"
 				create_number_cell(new_task_id, column_iteration, current_value, 0, 12)
-	
 			#"year":
 				#create_number_cell(new_task_id, column_iteration, current_value, 1000, 3000)
 			#"month":
 				#create_dropdown_cell(new_task_id, column_iteration, current_value, DataGlobal.month_strings)
-	
-	if TaskTrackingGlobal.location_column_toggled:
-		column_iteration = "location"
-		if column_keys.has(column_iteration):
-			current_value = str(new_task_data[column_iteration])
-		else:
-			current_value = "0"
-		create_dropdown_cell(new_task_id, column_iteration, current_value, TaskTrackingGlobal.current_location_items)
-	
+
+
+func populate_new_task_priority(new_task_id: int, new_task_data: Dictionary, column_iteration: String, column_keys: Array) -> void:
 	if TaskTrackingGlobal.priority_column_toggled:
+		var current_value: String
 		column_iteration = "priority"
 		if column_keys.has(column_iteration):
 			current_value = str(new_task_data[column_iteration])
 		else:
 			current_value = "0"
 		create_dropdown_cell(new_task_id, column_iteration, current_value, priority_dropdown_items)
-	
+
+
+func populate_new_task_time_of_day(new_task_id: int, new_task_data: Dictionary, column_iteration: String, column_keys: Array) -> void:
 	if TaskTrackingGlobal.time_of_day_column_toggled:
+		var current_value: String
 		column_iteration = "time_of_day"
 		if column_keys.has(column_iteration):
 			current_value = str(new_task_data[column_iteration])
@@ -386,14 +417,20 @@ func populate_new_task_cells(new_task_id: int, new_task_data: Dictionary) -> voi
 			current_value = "0"
 		create_dropdown_cell(new_task_id, column_iteration, current_value, time_of_day_dropdown_items)
 
+
+func populate_new_task_description(new_task_id: int, new_task_data: Dictionary, column_iteration: String, column_keys: Array) -> void:
 	if TaskTrackingGlobal.description_column_toggled:
+		var current_value: String
 		column_iteration = "description"
 		if column_keys.has(column_iteration):
 			current_value = str(new_task_data[column_iteration])
 		else:
 			current_value = ""
 
+
+func populate_new_task_checkboxes(new_task_id: int, new_task_data: Dictionary, column_iteration: String, column_keys: Array) -> void:
 	if TaskTrackingGlobal.checkboxes_column_toggled:
+		var current_value: String
 		var checkbox_status: String
 		var checkbox_currently_assigned: String
 		match TaskTrackingGlobal.current_toggled_section:
@@ -418,6 +455,19 @@ func populate_new_task_cells(new_task_id: int, new_task_data: Dictionary) -> voi
 					else:
 						current_value = ""
 					process_checkbox_new_data_cells(new_task_id, checkbox_column_iteration, current_value, checkbox_status, checkbox_currently_assigned)
+
+
+func generate_new_task_add_header() -> void:
+	if header_grid.get_child_count() != 0:
+		prints("Generate New Task Header protection: Header already exists!")
+		return
+	var column_array: PackedStringArray = []
+	TaskTrackingGlobal.gather_task_info_columns(column_array)
+	TaskTrackingGlobal.gather_checkbox_info_columns(column_array)
+	var prepped_header_data: Dictionary
+	for iteration in column_array:
+		prepped_header_data[iteration] = ""
+	populate_header(prepped_header_data)
 
 
 func process_checkbox_new_data_cells(

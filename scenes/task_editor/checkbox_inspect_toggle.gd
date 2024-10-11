@@ -13,12 +13,12 @@ func update_button() -> void:
 			set_pressed_no_signal(true)
 
 
-
 func no_database_toggle() -> void:
 	if SqlManager.active_database:
 		disabled = false
 		return
 	disabled = true
+
 
 func _on_toggled(toggled_on: bool) -> void:
 	if not toggled_on:

@@ -210,7 +210,6 @@ func _on_existing_groups_option_item_selected(index: int) -> void:
 
 
 func _on_accept_new_task_button_pressed() -> void:
-	#var new_id: int = TaskTrackingGlobal.changed_new_data.size()
 	if task_title_line_edit.text.is_empty():
 		DataGlobal.button_based_message(accept_new_task_button, "Title Needed!")
 		return
