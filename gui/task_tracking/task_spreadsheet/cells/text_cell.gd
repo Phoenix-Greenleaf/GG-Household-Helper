@@ -44,7 +44,7 @@ func sync_size(size_param: float) -> void:
 	custom_minimum_size = min_size
 
 
-func cell_modified() -> void:
+func cell_modified(text_param: String) -> void:
 	var current_id
 	if not saved_task_id.is_empty():
 		current_id = saved_task_id

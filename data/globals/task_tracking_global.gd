@@ -67,6 +67,7 @@ func connect_signals() -> void:
 	TaskSignalBus._on_new_database_loaded.connect(generate_existing_years_index)
 	TaskSignalBus._on_task_editing_lock_toggled.connect(remember_editing_lock)
 	TaskSignalBus._on_task_editing_settings_changed.connect(save_task_tracking_settings)
+	TaskSignalBus._on_data_cell_modified.connect(submit_change)
 
 
 func remember_editing_lock(locked: bool) -> void:
@@ -655,6 +656,7 @@ func submit_new_task(task_data: Dictionary) -> void:
 
 
 func submit_change(cell_id, column_name: String, original_value, new_value) -> void:
+	#prints("Change detected:", cell_id, column_name)
 	if column_name == last_changed_column:
 		#if typeof(cell_id) == typeof(last_changed_id):
 		if cell_id == last_changed_id:
@@ -662,7 +664,7 @@ func submit_change(cell_id, column_name: String, original_value, new_value) -> v
 	active_changes.append([cell_id, column_name, original_value, new_value])
 	match type_string(typeof(cell_id)):
 		"String":
-			var target_existing_data: Dictionary = changed_existing_data[cell_id]
+			var target_existing_data: Dictionary = changed_existing_data.get_or_add(cell_id, {})
 			target_existing_data[column_name] = new_value
 		"int":
 			var target_new_data: Dictionary = changed_new_data[cell_id]

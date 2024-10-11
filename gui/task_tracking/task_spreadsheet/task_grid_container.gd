@@ -247,6 +247,8 @@ func submit_changed_data_to_database() -> void:
 
 
 func populate_changed_new_data() -> void:
+	if TaskTrackingGlobal.changed_new_data.is_empty():
+		return
 	var new_data_size: int = TaskTrackingGlobal.changed_new_data.size()
 	for new_data_id in new_data_size:
 		var iteration_data: Dictionary = TaskTrackingGlobal.changed_new_data[new_data_id]
@@ -254,13 +256,15 @@ func populate_changed_new_data() -> void:
 
 
 func apply_changed_existing_data() -> void:
-	var data_keys: Array = TaskTrackingGlobal.changed_existing_data.keys()
-	var data_values: Array =  TaskTrackingGlobal.changed_existing_data.values()
-	for data_iteration in TaskTrackingGlobal.changed_existing_data.size():
-		var cell_id: String = data_keys[data_iteration]
-		var column_name: String
-		var new_value
-		TaskSignalBus._on_data_cell_remote_updated.emit(cell_id, column_name, new_value)
+	if TaskTrackingGlobal.changed_existing_data.is_empty():
+		return
+	for id_key_iteration in TaskTrackingGlobal.changed_existing_data:
+		var cell_id: String = id_key_iteration
+		var row_data: Dictionary = TaskTrackingGlobal.changed_existing_data[id_key_iteration]
+		for column_key_iteration in row_data:
+			var column_name: String = column_key_iteration
+			var new_value = row_data[column_key_iteration]
+			TaskSignalBus._on_data_cell_remote_updated.emit(cell_id, column_name, new_value)
 
 
 
