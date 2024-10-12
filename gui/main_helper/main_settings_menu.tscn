@@ -392,7 +392,7 @@ alignment = 2
 
 [node name="ThemeTitleSizeLabel" type="Label" parent="MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn1VBoxContainer/ThemeTextSizePanelContainer/ThemeTextSizeMarginContainer/ThemeTextSizeVBoxContainer/ThemeTitleSizeHBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"Label_Title"
+theme_type_variation = &"Label_Medium"
 text = "Title"
 
 [node name="ThemeTitleSizeSpinBox" type="SpinBox" parent="MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn1VBoxContainer/ThemeTextSizePanelContainer/ThemeTextSizeMarginContainer/ThemeTextSizeVBoxContainer/ThemeTitleSizeHBoxContainer" groups=["theme_testing_lock"]]
@@ -407,7 +407,7 @@ alignment = 2
 
 [node name="ThemeSubTitleSizeLabel" type="Label" parent="MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn1VBoxContainer/ThemeTextSizePanelContainer/ThemeTextSizeMarginContainer/ThemeTextSizeVBoxContainer/ThemeSubTitleSizeHBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"Label_Title_Secondary"
+theme_type_variation = &"Label_Medium"
 text = "Sub-Title"
 
 [node name="ThemeSubTitleSizeSpinBox" type="SpinBox" parent="MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn1VBoxContainer/ThemeTextSizePanelContainer/ThemeTextSizeMarginContainer/ThemeTextSizeVBoxContainer/ThemeSubTitleSizeHBoxContainer" groups=["theme_testing_lock"]]
@@ -422,7 +422,7 @@ alignment = 2
 
 [node name="ThemeLargeSizeLabel" type="Label" parent="MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn1VBoxContainer/ThemeTextSizePanelContainer/ThemeTextSizeMarginContainer/ThemeTextSizeVBoxContainer/ThemeLargeSizeHBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"Label_Large"
+theme_type_variation = &"Label_Medium"
 text = "Large"
 
 [node name="ThemeLargeSizeSpinBox" type="SpinBox" parent="MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn1VBoxContainer/ThemeTextSizePanelContainer/ThemeTextSizeMarginContainer/ThemeTextSizeVBoxContainer/ThemeLargeSizeHBoxContainer" groups=["theme_testing_lock"]]
@@ -452,6 +452,7 @@ alignment = 2
 
 [node name="ThemeSmallSizeLabel" type="Label" parent="MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn1VBoxContainer/ThemeTextSizePanelContainer/ThemeTextSizeMarginContainer/ThemeTextSizeVBoxContainer/ThemeSmallSizeHBoxContainer"]
 layout_mode = 2
+theme_type_variation = &"Label_Medium"
 text = "Small"
 
 [node name="ThemeSmallSizeSpinBox" type="SpinBox" parent="MarginContainer/SettingsVBoxContainer/MainSettingsTabContainer/Theme/ThemeMarginContainer/ThemeVBoxContainer/ThemeColumnsHBoxContainer/ThemeColumn1VBoxContainer/ThemeTextSizePanelContainer/ThemeTextSizeMarginContainer/ThemeTextSizeVBoxContainer/ThemeSmallSizeHBoxContainer" groups=["theme_testing_lock"]]

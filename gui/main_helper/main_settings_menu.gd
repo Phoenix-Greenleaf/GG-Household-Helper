@@ -212,10 +212,11 @@ func fix_theme_variations() -> void:
 	DataGlobal.theme_variation_issue_workaround(display_preference_option_button, "PopupMenu_Medium")
 	DataGlobal.theme_variation_issue_workaround(display_mode_option_button, "PopupMenu_Medium")
 	
-	DataGlobal.theme_variation_issue_workaround(theme_title_size_spin_box, "LineEdit_Title")
-	DataGlobal.theme_variation_issue_workaround(theme_sub_title_size_spin_box, "LineEdit_Title_Secondary")
-	DataGlobal.theme_variation_issue_workaround(theme_large_size_spin_box, "LineEdit_Large")
+	DataGlobal.theme_variation_issue_workaround(theme_title_size_spin_box, "LineEdit_Medium")
+	DataGlobal.theme_variation_issue_workaround(theme_sub_title_size_spin_box, "LineEdit_Medium")
+	DataGlobal.theme_variation_issue_workaround(theme_large_size_spin_box, "LineEdit_Medium")
 	DataGlobal.theme_variation_issue_workaround(theme_medium_size_spin_box, "LineEdit_Medium")
+	DataGlobal.theme_variation_issue_workaround(theme_small_size_spin_box, "LineEdit_Medium")
 
 
 func get_display_data() -> void:
