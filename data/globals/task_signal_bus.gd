@@ -5,6 +5,7 @@ signal _on_task_grid_populated(row_data: Dictionary)
 signal _on_task_grid_column_count_changed(new_count: int)
 signal _on_description_button_pressed(cell: Button)
 signal _on_new_database_loaded
+signal _on_database_unloaded
 signal _on_task_grid_column_toggled
 signal _on_task_grid_cell_changes_applied(task_id: String, column: String, data_changes: Array)
 signal _on_data_modified

@@ -1,11 +1,11 @@
 extends Node
 
 var active_data: TaskSetData #to be removed once old data import not needed
+var data_name: String = "task_tracking_" #to be removed once old data import not needed
 
-var active_settings: TaskSettingsData #still in the old format, for now
+var active_settings: TaskSettingsData
 
 var data_folder = "user://task_tracker_data/"
-var data_name: String = "task_tracking_" #to be removed once old data import not needed
 var settings_name: String = "task_tracking_settings"
 
 var filepath_task_tracking_settings: String = (DataGlobal.settings_folder

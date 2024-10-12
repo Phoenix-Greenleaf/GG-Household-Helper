@@ -1,7 +1,14 @@
 extends Node
 
 var active_database: SQLite
-var database_is_active: bool = false #the new active_data
+var database_is_active: bool = false: #the new active_data
+	set(value):
+		database_is_active = value
+		if value:
+			TaskSignalBus._on_new_database_loaded.emit()
+		if not value:
+			TaskSignalBus._on_database_unloaded.emit()
+
 var database_path: String = ""
 var database_name: String = ""
 
@@ -348,7 +355,7 @@ func load_database() -> void:
 	prints("")
 	prints("Database Loaded:", database_name)
 	prints("")
-	TaskSignalBus._on_new_database_loaded.emit()
+	
 
 
 func unload_database() -> void:

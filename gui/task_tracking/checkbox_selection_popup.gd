@@ -311,7 +311,7 @@ func _on_edit_profile_menu_accept_pressed() -> void:
 	replacement_scan(previous_profile, edited_profile)
 	TaskTrackingGlobal.current_checkbox_profile = edited_profile
 	TaskSignalBus._on_save_button_pressed.emit()
-	TaskSignalBus._on_new_database_loaded.emit()
+	#TaskSignalBus._on_new_database_loaded.emit()
 	update_edit_profile_menu()
 	reload_profiles()
 	TaskSignalBus._on_checkbox_selection_changed.emit()
