@@ -49,11 +49,12 @@ enum Checkbox {
 	EXPIRED,  #black
 }
 
-
 enum CheckboxToggle {
 	APPLY,
 	INSPECT
 }
+
+
 
 
 func _ready() -> void:

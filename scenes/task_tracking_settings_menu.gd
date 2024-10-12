@@ -313,7 +313,7 @@ func _on_auto_load_check_button_toggled(button_pressed: bool) -> void:
 		settings.enable_auto_load_default_data = false
 		reload_settings()
 		return
-	if not settings.default_data:
+	if not settings.autoload_database_path:
 		prints("Default data is needed to enable auto-load")
 		DataGlobal.button_based_message(default_data_display_button,
 			"Auto-load requires Default Data"
@@ -333,11 +333,11 @@ func _on_reset_default_settings_button_pressed() -> void:
 
 
 func _on_set_default_data_button_pressed() -> void:
-	if not TaskTrackingGlobal.active_data:
+	if not SqlManager.database_is_active:
 		prints("No data to set as default")
 		DataGlobal.button_based_message(default_data_display_button, "No Data to set as Default!")
 		return
-	settings.default_data = TaskTrackingGlobal.get_active_task_set_info()
+	settings.autoload_database_path = SqlManager.database_path
 	reload_settings()
 
 

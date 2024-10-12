@@ -15,11 +15,15 @@ var time_of_day_dropdown_items: Array
 var priority_dropdown_items: Array
 var relevant_checkbox_addresses: Array
 
+@onready var settings: TaskSettingsData
+
 
 
 func _ready() -> void:
 	ready_connections()
 	get_dropdown_items_from_global()
+	settings = TaskTrackingGlobal.active_settings
+	run_auto_load()
 	if SqlManager.active_database:
 		reload_grid()
 
@@ -41,6 +45,12 @@ func get_dropdown_items_from_global() -> void:
 		time_of_day_dropdown_items.append(item.capitalize())
 	for item in DataGlobal.Priority.keys():
 		priority_dropdown_items.append(item.capitalize())
+
+
+func run_auto_load() -> void:
+	if settings.autoload_database_path:
+		SqlManager.set_database_path_and_generate_name(settings.autoload_database_path)
+		SqlManager.load_database()
 
 
 func query_task_grid() -> void:

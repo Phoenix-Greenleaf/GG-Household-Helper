@@ -390,9 +390,15 @@ func get_database_name_from_path(path_parameter: String) -> String:
 	return capitalized_file_name
 
 
-func set_database_name_and_path(name_param: String, path_param: String) -> void:
-	database_name = name_param
+func set_database_path_and_name(path_param: String, name_param: String) -> void:
 	database_path = path_param
+	database_name = name_param
+
+
+func set_database_path_and_generate_name(path_param: String) -> void:
+	database_path = path_param
+	var name_param: String = get_database_name_from_path(path_param)
+	database_name = name_param
 
 
 func join_tables(join_type: String, left_table: String, left_column: String, right_table: String, right_column: String) -> String:

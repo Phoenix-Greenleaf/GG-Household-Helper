@@ -44,5 +44,5 @@ func _on_functional_button_toggled(toggled_on: bool) -> void:
 		return
 	if SqlManager.database_is_active:
 		SqlManager.unload_database()
-	SqlManager.set_database_name_and_path(stored_database_name, stored_database_path)
+	SqlManager.set_database_path_and_name(stored_database_path, stored_database_name)
 	SqlManager.load_database()

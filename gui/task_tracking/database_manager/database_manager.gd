@@ -218,7 +218,7 @@ func database_panel_accepted(
 	var current_path: String = SqlManager.create_database_path(preview_label.text)
 	var current_name: String = SqlManager.create_database_name(current_path)
 	SqlManager.unload_database()
-	SqlManager.set_database_name_and_path(current_name, current_path)
+	SqlManager.set_database_path_and_name(current_path, current_name)
 	SqlManager.load_database()
 	create_database_file_button(current_path, current_name)
 
