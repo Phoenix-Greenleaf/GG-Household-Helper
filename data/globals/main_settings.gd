@@ -3,58 +3,6 @@ extends Node
 
 var active_settings_main: MainSettingsData
 
-
-func _ready() -> void:
-	load_settings_main()
-
-
-func create_settings_main() -> void:
-	active_settings_main = MainSettingsData.new()
-	active_settings_main.reset_settings_all_main()
-	prints("New main settings data created")
-	save_settings_main()
-
-
-func save_settings_main() -> void:
-	var json_data = active_settings_main.export_json_from_resouce()
-	JsonSaveManager.save_data(DataGlobal.filepath_main_settings, json_data)
-	prints("Main settings data saved")
-
-
-func load_settings_main() -> void:
-	DataGlobal.directory_check(DataGlobal.settings_folder)
-	if active_settings_main:
-		prints("Main settings exist")
-		return
-	if not FileAccess.file_exists(DataGlobal.filepath_main_settings):
-		prints("Creating new main settings")
-		create_settings_main()
-		return
-	prints("Loading main settings")
-	active_settings_main = MainSettingsData.new()
-	var json_data = JsonSaveManager.load_data(DataGlobal.filepath_main_settings)
-	active_settings_main.import_json_to_resource(json_data)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const MAIN_THEME = preload("res://theme/main_theme.tres")
 # Regular Panels: squared edges, no border
 const PANEL_BACKGROUND = preload("res://theme/theme_parts/panel_background.tres")
@@ -83,7 +31,6 @@ const BUTTON_PRESSED_BOX = preload("res://theme/theme_parts/button_pressed_box.t
 
 const SEPARATOR_LINE = preload("res://theme/theme_parts/separator_line.tres")
 const SEPARATOR_LINE_VERTICAL = preload("res://theme/theme_parts/separator_line_vertical.tres")
-
 
 var primary_screen: int
 var current_screen: int
@@ -158,11 +105,44 @@ var theme_palette_reset_needs_saving: bool = false
 
 
 
+func _ready() -> void:
+	load_settings_main()
+	get_display_data()
+	load_all_settings()
+	initial_setup()
 
 
+func initial_setup() -> void:
+	set_window(current_screen, monitor_mode, borderless, window_width, window_height)
+	set_themes()
 
 
+func create_settings_main() -> void:
+	active_settings_main = MainSettingsData.new()
+	active_settings_main.reset_settings_all_main()
+	prints("New main settings data created")
+	save_settings_main()
 
+
+func save_settings_main() -> void:
+	var json_data = active_settings_main.export_json_from_resouce()
+	JsonSaveManager.save_data(DataGlobal.filepath_main_settings, json_data)
+	prints("Main settings data saved")
+
+
+func load_settings_main() -> void:
+	DataGlobal.directory_check(DataGlobal.settings_folder)
+	if active_settings_main:
+		prints("Main settings exist")
+		return
+	if not FileAccess.file_exists(DataGlobal.filepath_main_settings):
+		prints("Creating new main settings")
+		create_settings_main()
+		return
+	prints("Loading main settings")
+	active_settings_main = MainSettingsData.new()
+	var json_data = JsonSaveManager.load_data(DataGlobal.filepath_main_settings)
+	active_settings_main.import_json_to_resource(json_data)
 
 
 func get_display_data() -> void:
@@ -176,11 +156,6 @@ func get_display_data() -> void:
 	screen_native_height = screen_size.y
 
 
-	#if not DataGlobal.main_settings_active:
-		#apply_display_settings_to_menu()
-		#set_window(current_screen, monitor_mode, borderless, window_width, window_height)
-		#DataGlobal.main_settings_active = true
-		#return
 
 func load_all_settings() -> void:
 	load_display_settings()
