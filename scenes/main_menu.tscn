@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://be574yx4gi08t"]
+[gd_scene load_steps=2 format=3 uid="uid://be574yx4gi08t"]
 
 [ext_resource type="Script" path="res://scenes/main_menu.gd" id="1_ei0oi"]
-[ext_resource type="PackedScene" uid="uid://esmp6jtqggdn" path="res://gui/main_helper/main_settings_menu.tscn" id="2_qohpd"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -118,10 +117,6 @@ layout_mode = 2
 theme_type_variation = &"Label_Medium"
 text = "Version Major.Minor.Patch.Revision"
 horizontal_alignment = 1
-
-[node name="MainSettings" parent="MenuCenter/MiddleManagement" instance=ExtResource("2_qohpd")]
-visible = false
-layout_mode = 2
 
 [connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/TaskTrackingButton" to="." method="_on_task_tracking_button_pressed"]
 [connection signal="pressed" from="MenuCenter/MiddleManagement/MenuVBox/HouseholdDocumentsButton" to="." method="_on_household_documents_button_pressed"]
