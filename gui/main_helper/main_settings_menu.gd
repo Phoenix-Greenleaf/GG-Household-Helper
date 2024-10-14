@@ -59,7 +59,9 @@ const COLOR_PALETTE_LABEL_BUTTON_GROUP = preload("res://gui/main_helper/color_pa
 var testing_active: bool = false
 var test_time: int = 13
 var current_setting_tab: int = 0
-var ignore_window_resize: bool = true
+var ignore_window_resize: bool = false
+var adjusted_window_width: int = 0
+var adjusted_window_height: int = 0
 
 
 
@@ -70,6 +72,7 @@ func _ready() -> void:
 	fix_theme_variations()
 	toggle_changed_settings_section()
 	theme_toggle_changed_settings_section()
+	window_resized()
 	main_settings_tab_container.set_current_tab(0)
 
 
@@ -311,10 +314,13 @@ func changed_settings_check() -> bool:
 
 
 func test_changes_start() -> void:
+	check_for_resized_window()
+	ignore_window_resize = true
 	test_mass_disable(true)
 	disable_main_settings_tab_container_all_tabs(true)
-	MainSettings.set_window(display_preference_option_button.selected,
-		display_mode_option_button.selected,
+	MainSettings.set_window(
+		display_preference_option_button.get_item_id(display_preference_option_button.selected),
+		display_mode_option_button.get_item_id(display_mode_option_button.selected),
 		borderless_check_button.button_pressed,
 		int(custom_width_spin_box.value),
 		int(custom_height_spin_box.value)
@@ -335,21 +341,40 @@ func fullscreen_resolution_lock(lock_parameter: bool) -> void:
 	get_tree().call_group("fullscreen_lock", "set_editable", !lock_parameter)
 
 
+func check_for_resized_window() -> void:
+	adjusted_window_width = 0
+	adjusted_window_height = 0
+	var resized_window_size: Vector2i = DisplayServer.window_get_size(MainSettings.current_screen)
+	var resized_window_width: int = resized_window_size.x
+	if resized_window_width != MainSettings.window_width:
+		adjusted_window_width = resized_window_width
+	var resized_window_height: int = resized_window_size.y
+	if resized_window_height != MainSettings.window_height:
+		adjusted_window_height = resized_window_height
+
+
 func test_changes_end() -> void:
 	if not testing_active:
 		return
 	test_mass_disable(false)
 	disable_main_settings_tab_container_all_tabs(false)
+	var previous_width = MainSettings.window_width
+	var previous_height = MainSettings.window_height
+	if adjusted_window_width:
+		previous_width = adjusted_window_width
+	if adjusted_window_height:
+		previous_height = adjusted_window_height
 	MainSettings.set_window(
 		MainSettings.current_screen,
 		MainSettings.monitor_mode,
 		MainSettings.borderless,
-		MainSettings.window_width,
-		MainSettings.window_height,
+		previous_width,
+		previous_height,
 	)
 	test_button.text = "Test Changes"
 	save_warning_label.text = "Changes not saved!"
 	testing_active = false
+	ignore_window_resize = false
 	if not test_change_timer.is_stopped():
 		test_change_timer.stop()
 	test_change_timer_label.text = ""
@@ -375,7 +400,7 @@ func window_resized() -> void:
 		prints("Window resized signal IGNORED")
 		return
 	var resized_window_size: Vector2i = DisplayServer.window_get_size(MainSettings.current_screen)
-	prints("Window resized function activated")
+	prints("Window resized function activated:", resized_window_size)
 	var resized_window_width: int = resized_window_size.x
 	var resized_window_height: int = resized_window_size.y
 	apply_both_resolutions(resized_window_width, resized_window_height)
