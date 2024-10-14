@@ -1,7 +1,6 @@
 extends Control
 
 @onready var main_settings_tab_container: TabContainer = %MainSettingsTabContainer
-
 @onready var resolution_width_option_button: OptionButton = %ResolutionWidthOptionButton
 @onready var resolution_height_option_button: OptionButton = %ResolutionHeightOptionButton
 @onready var custom_resolution_h_box_container: HBoxContainer = %CustomResolutionHBoxContainer
@@ -21,7 +20,6 @@ extends Control
 @onready var test_change_timer_label: Label = %TestChangeTimerLabel
 @onready var test_change_timer: Timer = %TestChangeTimer
 @onready var cancel_changes_button: Button = %CancelChangesButton
-
 @onready var theme_title_size_spin_box: SpinBox = %ThemeTitleSizeSpinBox
 @onready var theme_sub_title_size_spin_box: SpinBox = %ThemeSubTitleSizeSpinBox
 @onready var theme_large_size_spin_box: SpinBox = %ThemeLargeSizeSpinBox
@@ -56,114 +54,13 @@ extends Control
 
 @onready var settings = MainSettings.active_settings_main
 
+const COLOR_PALETTE_LABEL_BUTTON_GROUP = preload("res://gui/main_helper/color_palette_label_button_group.tres")
+
 var testing_active: bool = false
 var test_time: int = 13
-
-const COLOR_PALETTE_LABEL_BUTTON_GROUP = preload("res://gui/main_helper/color_palette_label_button_group.tres")
-#
-#const MAIN_THEME = preload("res://theme/main_theme.tres")
-## Regular Panels: squared edges, no border
-#const PANEL_BACKGROUND = preload("res://theme/theme_parts/panel_background.tres")
-#const PANEL_PRIMARY = preload("res://theme/theme_parts/panel_primary.tres")
-#const PANEL_SECONDARY = preload("res://theme/theme_parts/panel_secondary.tres")
-#const PANEL_TERTIARY = preload("res://theme/theme_parts/panel_tertiary.tres")
-#const PANEL_QUATERNARY = preload("res://theme/theme_parts/panel_quaternary.tres")
-#const PANEL_QUINARY = preload("res://theme/theme_parts/panel_quinary.tres")
-#const PANEL_TRANSPARENCY_DEFAULT = preload("res://theme/theme_parts/panel_transparency_default.tres")
-#const PANEL_TRANSPARENCY_WARNING = preload("res://theme/theme_parts/panel_transparency_warning.tres")
-## Popup Panels: rounded edges, colored border
-#const POPUP_PRIMARY = preload("res://theme/theme_parts/popup_primary.tres")
-#const POPUP_SECONDARY = preload("res://theme/theme_parts/popup_secondary.tres")
-#const POPUP_TERTIARY = preload("res://theme/theme_parts/popup_tertiary.tres")
-#const POPUP_QUATERNARY = preload("res://theme/theme_parts/popup_quaternary.tres")
-#const POPUP_QUINARY = preload("res://theme/theme_parts/popup_quinary.tres")
-#const POPUP_TRANSPARENCY_DEFAULT = preload("res://theme/theme_parts/popup_transparency_default.tres")
-#const POPUP_TRANSPARENCY_WARNING = preload("res://theme/theme_parts/popup_transparency_warning.tres")
-## unsure that these popup_transparencies are needed
-#
-#const BUTTON_DISABLED_BOX = preload("res://theme/theme_parts/button_disabled_box.tres")
-#const BUTTON_FOCUS_BOX = preload("res://theme/theme_parts/button_focus_box.tres")
-#const BUTTON_HOVER_BOX = preload("res://theme/theme_parts/button_hover_box.tres")
-#const BUTTON_NORMAL_BOX = preload("res://theme/theme_parts/button_normal_box.tres")
-#const BUTTON_PRESSED_BOX = preload("res://theme/theme_parts/button_pressed_box.tres")
-#
-#const SEPARATOR_LINE = preload("res://theme/theme_parts/separator_line.tres")
-#const SEPARATOR_LINE_VERTICAL = preload("res://theme/theme_parts/separator_line_vertical.tres")
-#
-#
 var current_setting_tab: int = 0
-#
-#var primary_screen: int
-#var current_screen: int
-#var screen_count: int
-#var screen_size: Vector2i
-#var screen_native_width: int
-#var screen_native_height: int
-#var monitor_mode: int
-#var borderless: bool
-#var window_size: Vector2i
-#var starting_window_size: Vector2i
-#var window_width: int
-#var window_height: int
-#
-#
 var ignore_window_resize: bool = true
-#
-#var resolution_list: Array = [
-	#600,
-	#640,
-	#648,
-	#720,
-	#768,
-	#800,
-	#810,
-	#864,
-	#900,
-	#1024,
-	#1080,
-	#1154,
-	#1200,
-	#1280,
-	#1360,
-	#1366,
-	#1440,
-	#1536,
-	#1600,
-	#1680,
-	#1920,
-	#2048,
-	#2160,
-	#2560,
-	#3840,
-	#4320,
-	#7680,
-#]
-#
-#var theme_title_size: int
-#var theme_sub_title_size: int
-#var theme_large_size: int
-#var theme_medium_size: int
-#var theme_small_size: int
-#var theme_font_color: Color
-#var theme_outlines_color: Color
-#var theme_background_color: Color
-#var theme_border_line_color: Color
-#var theme_primary_color: Color
-#var theme_secondary_color: Color
-#var theme_tertiary_color: Color
-#var theme_quaternary_color: Color
-#var theme_quinary_color: Color
-#var theme_button_default_color: Color
-#var theme_button_disabled_color: Color
-#var theme_button_focus_color: Color
-#var theme_button_pressed_color: Color
-#var theme_button_hover_color: Color
-#var theme_transparency_default_color: Color
-#var theme_transparency_warning_color: Color
-#
-#var theme_current_color_palette: String
-#var theme_loaded_color_palette: String
-#var theme_palette_reset_needs_saving: bool = false
+
 
 
 
@@ -196,11 +93,6 @@ func initialize_all_sections() -> void:
 func initialize_display() -> void:
 	initialize_option_buttons()
 	test_change_timer_label.text = ""
-	#if not DataGlobal.main_settings_active:
-		#apply_display_settings_to_menu()
-		#set_window(current_screen, monitor_mode, borderless, window_width, window_height)
-		#DataGlobal.main_settings_active = true
-		#return
 	apply_current_display_server_to_menu()
 
 
@@ -219,17 +111,15 @@ func fix_theme_variations() -> void:
 	DataGlobal.theme_variation_issue_workaround(theme_small_size_spin_box, "LineEdit_Medium")
 
 
-
-
-
 func initialize_option_buttons() -> void:
 	initialize_resolution_lists(resolution_width_option_button, MainSettings.screen_native_width)
 	initialize_resolution_lists(resolution_height_option_button, MainSettings.screen_native_height)
 	initialize_display_preference_options()
 
 
-func initialize_resolution_lists(button_parameter: OptionButton,
-	native_resolution_paramter: int
+func initialize_resolution_lists(
+	button_parameter: OptionButton,
+	native_resolution_paramter: int,
 ) -> void:
 	button_parameter.clear()
 	for resolution_iteration in MainSettings.resolution_list:
@@ -278,9 +168,6 @@ func connect_theme_color_pickers() -> void:
 	theme_button_hover_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
 	theme_transparency_default_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
 	theme_transparency_warning_color_picker_button.color_changed.connect(theme_preset_palette_swaps_to_custom_when_edited)
-
-
-
 
 
 func apply_display_settings_to_menu() -> void:
@@ -357,7 +244,7 @@ func toggle_custom_dimension_disable(option_button_parameter: OptionButton,
 
 
 func apply_display_preference(display_parameter: int) -> void:
-	display_preference_option_button.select(display_parameter)
+	display_preference_option_button.select(display_preference_option_button.get_item_index(display_parameter))
 	toggle_display_preference_option_button()
 
 
@@ -367,7 +254,7 @@ func toggle_display_preference_option_button() -> void:
 
 
 func apply_display_mode(display_mode_parameter: int) -> void:
-	display_mode_option_button.select(display_mode_parameter)
+	display_mode_option_button.select(display_mode_option_button.get_item_index(display_mode_parameter)) 
 
 
 func apply_borderless(borderless_parameter: bool) -> void:
@@ -423,10 +310,10 @@ func changed_settings_check() -> bool:
 	if MainSettings.window_height != custom_height_spin_box.value:
 		prints("Height setting changed")
 		return true
-	if MainSettings.monitor_mode != display_mode_option_button.selected:
+	if MainSettings.monitor_mode != display_mode_option_button.get_item_id(display_mode_option_button.selected): 
 		prints("Display mode setting changed")
 		return true
-	if MainSettings.current_screen != display_preference_option_button.selected:
+	if MainSettings.current_screen != display_preference_option_button.get_item_id(display_preference_option_button.selected):
 		prints("Display preference setting changed")
 		return true
 	if MainSettings.borderless != borderless_check_button.button_pressed:
@@ -494,9 +381,6 @@ func save_display_settings() -> void:
 	MainSettings.save_settings_main()
 	MainSettings.load_display_settings()
 	apply_display_settings_to_menu()
-
-
-
 
 
 func window_resized() -> void:
@@ -662,9 +546,6 @@ func theme_test_changes_end() -> void:
 	theme_toggle_changed_settings_section()
 
 
-
-
-
 func save_theme_settings() -> void:
 	settings.theme_title_size = theme_title_size_spin_box.value
 	settings.theme_sub_title_size = theme_sub_title_size_spin_box.value
@@ -693,7 +574,6 @@ func save_theme_settings() -> void:
 	MainSettings.save_settings_main()
 	MainSettings.load_theme_settings()
 	apply_theme_settings_to_menu()
-
 
 
 func test_themes() -> void:
@@ -889,6 +769,7 @@ func _on_display_preference_option_button_item_selected(_index: int) -> void:
 
 func _on_borderless_check_button_toggled(button_pressed: bool) -> void:
 	toggle_changed_settings_section()
+	prints("Borderless toggle button:", button_pressed)
 	if button_pressed:
 		borderless_status_label.text = "On"
 		return

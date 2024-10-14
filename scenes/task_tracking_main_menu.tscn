@@ -40,7 +40,7 @@ vertical_alignment = 2
 [node name="TaskSheetsButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2
 theme_type_variation = &"Button_Large"
-text = "Task Sheets"
+text = " Task Database Editor "
 
 [node name="ToDoListButton" type="Button" parent="MenuCenter/MiddleManagement"]
 layout_mode = 2

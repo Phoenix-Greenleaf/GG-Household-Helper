@@ -156,7 +156,6 @@ func get_display_data() -> void:
 	screen_native_height = screen_size.y
 
 
-
 func load_all_settings() -> void:
 	load_display_settings()
 	load_theme_settings()
@@ -176,13 +175,16 @@ func set_window(current_screen_parameter: int, mode_parameter: int,
 ) -> void:
 	ignore_window_resize = true
 	var window_instance = get_window()
+	window_instance.set_current_screen(current_screen_parameter)
 	if mode_parameter == 1:
 		window_instance.set_mode(Window.MODE_FULLSCREEN)
 	if mode_parameter == 0:
 		window_instance.set_mode(Window.MODE_WINDOWED)
-		window_instance.set_flag(Window.FLAG_BORDERLESS, borderless_parameter)
+		prints("Set window borderless param:", borderless_parameter)
+		window_instance.borderless = bool(borderless_parameter)
+		#window_instance.set_flag(Window.FLAG_BORDERLESS, borderless_parameter)
 		window_instance.set_size(Vector2i(width_parameter, height_parameter))
-	window_instance.set_current_screen(current_screen_parameter)
+		window_instance.move_to_center()
 	ignore_window_resize = false
 
 
