@@ -179,24 +179,11 @@ func apply_display_settings_to_menu() -> void:
 
 
 func apply_current_display_server_to_menu() -> void:
-	var active_screen = DisplayServer.window_get_current_screen()
-	var active_window = DisplayServer.window_get_size(active_screen)
-	var active_window_width = active_window.x
-	var active_window_height = active_window.y
-	var active_true_display_mode = DisplayServer.window_get_mode(active_screen)
-	var active_display_mode
-	match active_true_display_mode:
-		DisplayServer.WINDOW_MODE_FULLSCREEN:
-			active_display_mode = 1
-			active_window_width = MainSettings.window_width
-			active_window_height = MainSettings.window_height
-		DisplayServer.WINDOW_MODE_WINDOWED, DisplayServer.WINDOW_MODE_MAXIMIZED:
-			active_display_mode = 0
-		_:
-			printerr("Issue matching Window Mode")
-	var active_borderless = false
-	if DisplayServer.window_get_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, active_screen):
-		active_borderless = true
+	var active_window_width = MainSettings.window_width
+	var active_window_height = MainSettings.window_height
+	var active_screen = MainSettings.current_screen
+	var active_display_mode = MainSettings.monitor_mode
+	var active_borderless = MainSettings.borderless
 	apply_both_resolutions(active_window_width, active_window_height)
 	apply_display_preference(active_screen)
 	apply_display_mode(active_display_mode)
