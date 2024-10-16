@@ -32,6 +32,13 @@ func _ready() -> void:
 func connect_signals() -> void:
 	TaskSignalBus._on_editor_data_add_panels_activated.connect(toggle_entire_panel)
 	TaskSignalBus._on_editor_data_add_panels_standby_set.connect(panel_standby)
+	TaskSignalBus._on_task_editing_lock_toggled.connect(toggle_editing_lock)
+
+
+func toggle_editing_lock(lock_active: bool) -> void:
+	if lock_active:
+		panel_standby()
+	add_button.disabled = lock_active
 
 
 func toggle_entire_panel(panel_name: String) -> void:
@@ -92,11 +99,13 @@ func does_task_group_already_exist() -> bool:
 
 func _on_add_button_pressed() -> void:
 	if line_edit.visible:
+		if not data_check():
+			return
 		add_data()
 		line_edit.clear()
 		error_message(success_message)
 		return
-	set_editing_visibility(true)
+	TaskSignalBus._on_editor_data_add_panels_activated.emit(name)
 
 
 func _on_cancel_button_pressed() -> void:

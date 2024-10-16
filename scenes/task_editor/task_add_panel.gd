@@ -2,6 +2,8 @@ extends PanelContainer
 
 
 @onready var add_task_button: Button = %AddTaskButton
+@onready var cancel_button: Button = %CancelButton
+#@onready var accept_new_task_button: Button = %AcceptNewTaskButton
 @onready var task_title_line_edit: LineEdit = %TaskTitleLineEdit
 @onready var task_group_line_edit: LineEdit = %TaskGroupLineEdit
 @onready var existing_groups_option_button: OptionButton = %ExistingGroupsOption
@@ -13,7 +15,6 @@ extends PanelContainer
 @onready var task_add_units_per_cycle_spin_box: SpinBox = %TaskAddUnitsPerCycleSpinBox
 @onready var task_add_schedule_end_label: Label = %TaskAddScheduleEndLabel
 @onready var task_add_schedule_end_spin_box: SpinBox = %TaskAddScheduleEndSpinBox
-@onready var accept_new_task_button: Button = %AcceptNewTaskButton
 @onready var v_separator_7: VSeparator = %VSeparator7
 @onready var v_separator_6: VSeparator = %VSeparator6
 @onready var v_separator_5: VSeparator = %VSeparator5
@@ -22,21 +23,49 @@ extends PanelContainer
 @onready var v_separator_2: VSeparator = %VSeparator2
 @onready var v_separator: VSeparator = %VSeparator
 
-var cancel_txt: String = "Cancel"
-var add_task_txt: String = "Add Task"
-
+#var cancel_txt: String = "Cancel"
+#var add_task_txt: String = "Add Task"
+var empty_name_error: String = "Title Required!"
+var existing_name_error: String = "Title already in use!"
+var success_message: String = "Task Added!"
+var error_bundle: Array[String] = [
+	empty_name_error,
+	existing_name_error,
+	success_message,
+]
 
 
 func _ready() -> void:
 	close_new_task_panel()
+	connect_signals()
+	panel_standby()
+
+
+func connect_signals() -> void:
 	TaskSignalBus._on_task_grid_column_toggled.connect(refresh_panel)
 	TaskSignalBus._on_task_editing_lock_toggled.connect(toggle_editing_lock)
+	TaskSignalBus._on_editor_data_add_panels_activated.connect(toggle_entire_panel)
+	TaskSignalBus._on_editor_data_add_panels_standby_set.connect(panel_standby)
 
 
 func update_task_add_assigned_users() -> void:
 	task_add_assigned_user_option_button.clear()
 	for user_name in TaskTrackingGlobal.current_users_keys:
 		task_add_assigned_user_option_button.add_item(user_name)
+
+
+func panel_activation() -> void:
+	visible = true
+	open_new_task_panel()
+
+
+func panel_deactivation() -> void:
+	visible = false
+
+
+func panel_standby() -> void:
+	visible = true
+	close_new_task_panel()
 
 
 func open_new_task_panel() -> void:
@@ -54,18 +83,13 @@ func close_new_task_panel() -> void:
 
 
 func toggle_standard_parts(parts_active: bool) -> void:
-	if parts_active:
-		add_task_button.text = cancel_txt
-	if not parts_active:
-		add_task_button.text = add_task_txt
 	v_separator_6.visible = parts_active
 	task_title_line_edit.visible = parts_active
 	v_separator_5.visible = parts_active
-	accept_new_task_button.visible = parts_active
+	cancel_button.visible = parts_active
 
 
 func toggle_task_group_parts(parts_active: bool) -> void:
-	task_group_line_edit.visible = parts_active
 	existing_groups_option_button.visible = parts_active
 	v_separator_4.visible = parts_active
 
@@ -132,6 +156,23 @@ func toggle_editing_lock(lock_active: bool) -> void:
 
 
 
+func error_message(message_param: String) -> void:
+	DataGlobal.button_based_message(add_task_button, message_param, 3, error_bundle)
+
+
+func data_check() -> bool:
+	if not line_edit_check():
+		return false
+	return true
+
+
+func line_edit_check() -> bool:
+	if task_title_line_edit.text.is_empty():
+		error_message(empty_name_error)
+		return false
+	return true
+
+
 
 """
 task_title_line_edit
@@ -152,9 +193,25 @@ year_column_toggled
 month_column_toggled
 checkboxes_column_toggled
 
+
+task_group_line_edit
+
+
+"task_group":
+:
+"daily_scheduling_start", "days_per_cycle", "daily_scheduling_end":
+"weekly_scheduling_start", "weeks_per_cycle", "weekly_scheduling_end":
+"monthly_scheduling_start", "months_per_cycle", "monthly_scheduling_end":
 """
 
 #func add_new_task
+
+
+
+func add_data() -> void:
+	return
+	var new_data: Dictionary = create_task_data()
+	TaskTrackingGlobal.submit_new_task(new_data)
 
 
 func create_task_data() -> Dictionary:
@@ -180,39 +237,23 @@ func create_task_data() -> Dictionary:
 	return new_task_data
 
 
-"""
-
-task_group_line_edit
-
-
-"task_group":
-:
-"daily_scheduling_start", "days_per_cycle", "daily_scheduling_end":
-"weekly_scheduling_start", "weeks_per_cycle", "weekly_scheduling_end":
-"monthly_scheduling_start", "months_per_cycle", "monthly_scheduling_end":
-
-"""
-
-
-
+func toggle_entire_panel(panel_name: String) -> void:
+	if panel_name == name:
+		panel_activation()
+		return
+	panel_deactivation()
 
 
 func _on_add_task_button_pressed() -> void:
-	if add_task_button.text == add_task_txt:
-		open_new_task_panel()
+	if task_title_line_edit.visible:
+		if not data_check():
+			return
+		add_data()
+		task_title_line_edit.clear()
+		error_message(success_message)
 		return
-	if add_task_button.text == cancel_txt:
-		close_new_task_panel()
+	TaskSignalBus._on_editor_data_add_panels_activated.emit(name)
 
 
-func _on_existing_groups_option_item_selected(index: int) -> void:
-	pass # Replace with function body.
-
-
-func _on_accept_new_task_button_pressed() -> void:
-	if task_title_line_edit.text.is_empty():
-		DataGlobal.button_based_message(accept_new_task_button, "Title Needed!")
-		return
-	var new_data: Dictionary = create_task_data()
-	TaskTrackingGlobal.submit_new_task(new_data)
-	close_new_task_panel()
+func _on_cancel_button_pressed() -> void:
+	TaskSignalBus._on_editor_data_add_panels_standby_set.emit()

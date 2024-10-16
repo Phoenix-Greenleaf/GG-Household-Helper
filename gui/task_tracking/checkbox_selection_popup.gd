@@ -226,7 +226,7 @@ func _on_new_profile_button_pressed() -> void:
 	new_profile_button.visible = false
 	new_profile_menu.visible = true
 	profile_name_line_edit.clear()
-	profile_color_picker_button.set_pick_color(random_color())
+	profile_color_picker_button.set_pick_color(DataGlobal.random_color())
 
 
 func _on_profile_menu_cancel_pressed() -> void:
@@ -244,7 +244,7 @@ func _on_profile_menu_accept_pressed() -> void:
 	if profile_color == Color.WHITE:
 		prints("Profiles cannot be white!")
 		DataGlobal.button_based_message(profile_menu_accept, "Can't use White!")
-		profile_color_picker_button.set_pick_color(random_color())
+		profile_color_picker_button.set_pick_color(DataGlobal.random_color())
 		return
 	create_new_profile(profile_name, profile_color)
 	TaskSignalBus._on_section_changed.emit()
@@ -274,7 +274,7 @@ func unlock_new_profile() -> void:
 
 
 func _on_random_color_button_pressed() -> void:
-	profile_color_picker_button.set_pick_color(random_color())
+	profile_color_picker_button.set_pick_color(DataGlobal.random_color())
 
 
 func _on_edit_profile_menu_accept_pressed() -> void:
@@ -287,7 +287,7 @@ func _on_edit_profile_menu_accept_pressed() -> void:
 	if profile_color == Color.WHITE:
 		prints("Profiles cannot be white!")
 		DataGlobal.button_based_message(edit_profile_menu_accept, "Can't use White!")
-		edit_profile_color_picker_button.set_pick_color(random_color())
+		edit_profile_color_picker_button.set_pick_color(DataGlobal.random_color())
 		return
 	var edited_profile: Array = [profile_name, profile_color]
 	var previous_profile: Array = TaskTrackingGlobal.current_checkbox_profile
@@ -324,7 +324,7 @@ func _on_edit_profile_menu_cancel_pressed() -> void:
 
 
 func _on_edit_random_color_button_pressed() -> void:
-	edit_profile_color_picker_button.set_pick_color(random_color())
+	edit_profile_color_picker_button.set_pick_color(DataGlobal.random_color())
 
 
 func _on_edit_profile_button_pressed() -> void:

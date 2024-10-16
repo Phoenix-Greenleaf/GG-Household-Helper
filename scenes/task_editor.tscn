@@ -26,7 +26,7 @@
 [ext_resource type="Script" path="res://scenes/task_editor/multi_text_popup_center.gd" id="18_5n1d3"]
 [ext_resource type="Script" path="res://scenes/task_editor/database_manager_center.gd" id="18_t6koh"]
 [ext_resource type="Script" path="res://scenes/task_editor/add_task_button.gd" id="19_m5e8t"]
-[ext_resource type="PackedScene" uid="uid://cr5xr3kdfsimk" path="res://gui/task_tracking/editor_add_user.tscn" id="20_0hkek"]
+[ext_resource type="PackedScene" uid="uid://cr2fla4xyoh5m" path="res://gui/task_tracking/editor_add_task_group.tscn" id="20_pcc2d"]
 [ext_resource type="Script" path="res://scenes/task_editor/task_grid_scroll_container.gd" id="21_6byvo"]
 [ext_resource type="PackedScene" uid="uid://cm2ajl3ha51ur" path="res://gui/task_tracking/editor_add_location.tscn" id="21_h4wca"]
 [ext_resource type="PackedScene" uid="uid://behwh6tk0c5jy" path="res://gui/task_tracking/year_selection_panel.tscn" id="24_mvrf5"]
@@ -320,52 +320,44 @@ layout_mode = 2
 size_flags_horizontal = 8
 text = "Date Goes Here"
 
-[node name="BottomMenuHBox" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MainMargin/MainHBox/NonSideVBox"]
+layout_mode = 2
+vertical_scroll_mode = 0
+
+[node name="BottomMenuHBox" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer"]
 layout_mode = 2
 
-[node name="TaskAddPanel" type="PanelContainer" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox"]
+[node name="TaskAddPanel" type="PanelContainer" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
 script = ExtResource("14_58d3i")
 
-[node name="TaskAddMargin" type="MarginContainer" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin"]
+[node name="HBox" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel"]
 layout_mode = 2
 theme_type_variation = &"HBoxContainer_No_Space"
 
-[node name="AddTaskButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="AddTaskButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Add Task"
 script = ExtResource("19_m5e8t")
 
-[node name="VSeparator6" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="VSeparator6" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TaskTitleLineEdit" type="LineEdit" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="TaskTitleLineEdit" type="LineEdit" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "Task Title"
 expand_to_text_length = true
 clear_button_enabled = true
 
-[node name="VSeparator5" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="VSeparator5" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TaskGroupLineEdit" type="LineEdit" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
-unique_name_in_owner = true
-layout_mode = 2
-placeholder_text = "Task Group"
-expand_to_text_length = true
-clear_button_enabled = true
-
-[node name="ExistingGroupsOption" type="OptionButton" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="ExistingGroupsOption" type="OptionButton" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 selected = 0
@@ -373,89 +365,84 @@ fit_to_longest_item = false
 item_count = 1
 popup/item_0/text = "Existing Groups"
 
-[node name="VSeparator4" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="VSeparator4" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TaskAddAssignedUserLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="TaskAddAssignedUserLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Assigned to:"
 
-[node name="TaskAddAssignedUserOptionButton" type="OptionButton" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="TaskAddAssignedUserOptionButton" type="OptionButton" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 selected = 0
 item_count = 1
 popup/item_0/text = "No Assigned User"
 
-[node name="VSeparator3" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="VSeparator3" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TaskAddScheduleStartLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="TaskAddScheduleStartLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Schedule Start:"
 
-[node name="TaskAddScheduleStartSpinBox" type="SpinBox" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="TaskAddScheduleStartSpinBox" type="SpinBox" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 max_value = 30.0
 rounded = true
 alignment = 1
 
-[node name="VSeparator2" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="VSeparator2" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TaskAddUnitsPerCycleLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="TaskAddUnitsPerCycleLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Units per Cycle:"
 
-[node name="TaskAddUnitsPerCycleSpinBox" type="SpinBox" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="TaskAddUnitsPerCycleSpinBox" type="SpinBox" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 max_value = 30.0
 rounded = true
 alignment = 1
 
-[node name="VSeparator7" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="VSeparator7" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TaskAddScheduleEndLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="TaskAddScheduleEndLabel" type="Label" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Schedule End:"
 
-[node name="TaskAddScheduleEndSpinBox" type="SpinBox" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="TaskAddScheduleEndSpinBox" type="SpinBox" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 max_value = 30.0
 rounded = true
 alignment = 1
 
-[node name="VSeparator" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="VSeparator" type="VSeparator" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="AcceptNewTaskButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox"]
+[node name="CancelButton" type="Button" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Accept"
+text = "Cancel"
 
-[node name="EditorAddUser" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox" instance=ExtResource("20_0hkek")]
+[node name="EditorAddTaskGroup" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox" instance=ExtResource("20_pcc2d")]
 layout_mode = 2
 
-[node name="EditorAddLocation" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox" instance=ExtResource("21_h4wca")]
+[node name="EditorAddLocation" parent="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox" instance=ExtResource("21_h4wca")]
 layout_mode = 2
-
-[node name="HBoxLowerFarside" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 2
 
 [node name="HeaderScrollContainer" type="ScrollContainer" parent="MainMargin/MainHBox/NonSideVBox"]
 unique_name_in_owner = true
@@ -588,8 +575,8 @@ node_for_position_sync = NodePath("../MainMargin/MainHBox/SideMenuScrollContaine
 [connection signal="toggled" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DailyButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DailyButton" method="_on_toggled"]
 [connection signal="item_selected" from="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DataColumnsToggleOptionButton" to="MainMargin/MainHBox/SideMenuScrollContainer/SideMenuVBox/DataColumnsToggleOptionButton" method="_on_item_selected"]
 [connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/SaveWarningButton" to="MainMargin/MainHBox/NonSideVBox/TopMenuHBox/SaveWarningButton" method="_on_pressed"]
-[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/AddTaskButton" to="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel" method="_on_add_task_button_pressed"]
-[connection signal="item_selected" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/ExistingGroupsOption" to="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel" method="_on_existing_groups_option_item_selected"]
-[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel/TaskAddMargin/HBox/AcceptNewTaskButton" to="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox/TaskAddPanel" method="_on_accept_new_task_button_pressed"]
+[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox/AddTaskButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel" method="_on_add_task_button_pressed"]
+[connection signal="item_selected" from="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox/ExistingGroupsOption" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel" method="_on_existing_groups_option_item_selected"]
+[connection signal="pressed" from="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel/HBox/CancelButton" to="MainMargin/MainHBox/NonSideVBox/ScrollContainer/BottomMenuHBox/TaskAddPanel" method="_on_cancel_button_pressed"]
 [connection signal="pressed" from="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2/AcceptMultiTextButton" to="MainMargin/MainHBox/NonSideVBox/TaskGridScrollContainer/TaskGridContainer" method="_on_accept_multi_text_button_pressed"]
 [connection signal="pressed" from="MultiTextPopupCenter/MultiTextPopupPanelContainer/VBoxContainer/HBox2/CancelMultiTextButton" to="MultiTextPopupCenter" method="_on_cancel_multi_text_button_pressed"]
