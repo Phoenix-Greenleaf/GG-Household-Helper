@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://cm2ajl3ha51ur"]
+
+[ext_resource type="Script" path="res://gui/task_tracking/editor_add_location.gd" id="1_mnwss"]
+
+[node name="EditorAddLocation" type="PanelContainer"]
+script = ExtResource("1_mnwss")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Add Location"
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Location Title"
+alignment = 1
+expand_to_text_length = true
+clear_button_enabled = true
+
+[node name="CancelButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Cancel"
+
+[connection signal="pressed" from="HBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

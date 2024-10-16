@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dcunatisg8ibr"]
+[gd_scene load_steps=31 format=3 uid="uid://dcunatisg8ibr"]
 
 [ext_resource type="Script" path="res://scenes/task_editor.gd" id="1_b0ww1"]
 [ext_resource type="ButtonGroup" uid="uid://c4hrg6nv6u6tb" path="res://gui/task_tracking/checkbox_toggle.tres" id="2_38p0l"]
@@ -26,7 +26,9 @@
 [ext_resource type="Script" path="res://scenes/task_editor/multi_text_popup_center.gd" id="18_5n1d3"]
 [ext_resource type="Script" path="res://scenes/task_editor/database_manager_center.gd" id="18_t6koh"]
 [ext_resource type="Script" path="res://scenes/task_editor/add_task_button.gd" id="19_m5e8t"]
+[ext_resource type="PackedScene" uid="uid://cr5xr3kdfsimk" path="res://gui/task_tracking/editor_add_user.tscn" id="20_0hkek"]
 [ext_resource type="Script" path="res://scenes/task_editor/task_grid_scroll_container.gd" id="21_6byvo"]
+[ext_resource type="PackedScene" uid="uid://cm2ajl3ha51ur" path="res://gui/task_tracking/editor_add_location.tscn" id="21_h4wca"]
 [ext_resource type="PackedScene" uid="uid://behwh6tk0c5jy" path="res://gui/task_tracking/year_selection_panel.tscn" id="24_mvrf5"]
 
 [node name="TaskEditor" type="Control"]
@@ -443,6 +445,12 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 text = "Accept"
+
+[node name="EditorAddUser" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox" instance=ExtResource("20_0hkek")]
+layout_mode = 2
+
+[node name="EditorAddLocation" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox" instance=ExtResource("21_h4wca")]
+layout_mode = 2
 
 [node name="HBoxLowerFarside" type="HBoxContainer" parent="MainMargin/MainHBox/NonSideVBox/BottomMenuHBox"]
 layout_mode = 2

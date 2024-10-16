@@ -84,7 +84,10 @@ func _ready() -> void:
 
 
 
-func button_based_message(target: Node, message: String, time: int = 2,
+func button_based_message(
+	target: Node,
+	message: String,
+	time: int = 2,
 	interfering_messages: Array = []
 ) -> void:
 	if target.text == message:
@@ -163,3 +166,10 @@ func enum_to_strings(target_enum: Dictionary) -> Array:
 	for entry in enum_strings:
 		lower_enum_strings.append(entry.to_lower())
 	return lower_enum_strings
+
+
+func random_color() -> Color:
+	var red: float = randf()
+	var green: float = randf()
+	var blue: float = randf()
+	return Color(red, green, blue)

@@ -22,6 +22,8 @@ signal _on_database_manager_remote_open_pressed
 signal _on_data_cell_modified(cell_id, column_name: String, original_value, new_value)
 signal _on_data_cell_remote_updated(cell_id, column_name: String, new_value)
 signal _on_new_task_added(new_id: int, task_data: Dictionary)
+signal _on_editor_data_add_panels_activated(current_panel: String)
+signal _on_editor_data_add_panels_standby_set
 
 
 signal _on_task_cells_resized_workaround_all_columns

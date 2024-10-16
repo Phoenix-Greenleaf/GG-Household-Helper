@@ -161,11 +161,11 @@ func update_paired_menu() -> void:
 	TaskSignalBus._on_checkbox_selection_changed.emit()
 
 
-func random_color() -> Color:
-	var red: float = randf()
-	var green: float = randf()
-	var blue: float = randf()
-	return Color(red, green, blue)
+#func random_color() -> Color:
+	#var red: float = randf()
+	#var green: float = randf()
+	#var blue: float = randf()
+	#return Color(red, green, blue)
 
 
 func status_change(new_state: TaskTrackingGlobal.Checkbox) -> void:
