@@ -11,22 +11,22 @@ var checkbox_status_keys = TaskTrackingGlobal.Checkbox.keys()
 
 
 func _ready() -> void:
-	disable_capslock()
+	capitalize_checkbox_status_keys()
 	TaskSignalBus._on_checkbox_selection_changed.connect(update_all)
 	update_all()
+
+
+func capitalize_checkbox_status_keys() -> void:
+	for status_number in checkbox_status_keys.size():
+		var allcaps: String = checkbox_status_keys[status_number]
+		var capitalized: String = allcaps.capitalize()
+		checkbox_status_keys[status_number] = capitalized
 
 
 func update_all() -> void:
 	update_status()
 	update_profile()
 	update_checkbox_colors()
-
-
-func disable_capslock() -> void:
-	for status_number in checkbox_status_keys.size():
-		var allcaps: String = checkbox_status_keys[status_number]
-		var capitalized: String = allcaps.capitalize()
-		checkbox_status_keys[status_number] = capitalized
 
 
 func update_status() -> void:
@@ -36,14 +36,14 @@ func update_status() -> void:
 
 
 func update_profile() -> void:
-	var new_profile_text: String = TaskTrackingGlobal.current_checkbox_profile[0]
+	var new_profile_text: String = TaskTrackingGlobal.current_checkbox_profile_name
 	current_checkbox_profile_label.set_text(new_profile_text)
 
 
 func update_checkbox_colors() -> void:
-	var profile_color: Color = TaskTrackingGlobal.current_checkbox_profile[1]
-	var white := Color(1, 1, 1)
-	var black := Color(0, 0, 0)
+	var profile_color: Color = TaskTrackingGlobal.current_checkbox_profile_color
+	var white: Color = Color.WHITE
+	var black: Color = Color.BLACK
 	match TaskTrackingGlobal.current_checkbox_state:
 		TaskTrackingGlobal.Checkbox.ACTIVE:
 			current_checkbox_color_rect_top.set_color(white)

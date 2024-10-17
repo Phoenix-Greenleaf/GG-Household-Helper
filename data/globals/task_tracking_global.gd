@@ -31,15 +31,16 @@ var current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT:
 		TaskSignalBus._on_checkbox_mode_changed.emit()
 
 
-@onready var current_checkbox_profile: Array = default_profile
+var current_checkbox_profile_name: String = default_profile_name
+var current_checkbox_profile_color: Color = default_profile_color
 var current_checkbox_state: Checkbox = Checkbox.ACTIVE
 var focus_checkbox_state: int
 var focus_checkbox_profile: Array
-#var task_group_dropdown_items: Array 
+var task_group_dropdown_items: Array 
 var user_profiles_dropdown_items: Array
 
-
-var default_profile: Array = ["No Profile", Color.WHITE]
+var default_profile_name: String = "No Profile"
+var default_profile_color: Color = Color.WHITE
 
 enum Checkbox {
 	INACTIVE, #blank
@@ -306,10 +307,14 @@ create database:
 
 var existing_years_index: Array
 var current_task_group_items: Array
+var new_task_group_items: Array
 var current_location_items: Array
+var new_location_items: Array
 var current_users_id: Dictionary
 var current_users_color: Dictionary
 var current_users_keys: Array
+var new_users_names: Array
+var new_users_colors: Array
 
 
 var month_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Month)
