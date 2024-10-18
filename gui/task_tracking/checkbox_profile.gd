@@ -44,5 +44,18 @@ func toggle_to_focused_cell() -> void:
 		profile_button.set_pressed_no_signal(false)
 		return
 	profile_button.set_pressed_no_signal(true)
-	
-	
+
+
+func activate_profile() -> void:
+	TaskTrackingGlobal.current_checkbox_profile_id = saved_profile_id
+	TaskTrackingGlobal.current_checkbox_profile_name = saved_profile_name
+	TaskTrackingGlobal.current_checkbox_profile_color = saved_profile_color
+
+
+func _on_profile_button_toggled(button_pressed: bool) -> void:
+	if not button_pressed:
+		return
+	if saved_profile_id == TaskTrackingGlobal.current_checkbox_profile_id:
+		prints("PROFILE ALREADY TOGGLED")
+		return
+	activate_profile()

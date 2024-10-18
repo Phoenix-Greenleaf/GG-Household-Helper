@@ -31,18 +31,21 @@ var current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT:
 		TaskSignalBus._on_checkbox_mode_changed.emit()
 
 
-var current_checkbox_profile_name: String = default_profile_name
-var current_checkbox_profile_color: Color = default_profile_color
+var default_profile_id: int = 1
+var default_profile_name: String = "No Profile"
+var default_profile_color: Color = Color.WHITE
 var current_checkbox_profile_id: int = default_profile_id
+var current_checkbox_profile_name: String = default_profile_name
+var current_checkbox_profile_color: Color = default_profile_color:
+	set(value):
+		current_checkbox_profile_color = value
+		TaskSignalBus._on_current_checkbox_profile_changed.emit()
 var current_checkbox_state: Checkbox = Checkbox.ACTIVE
 var focus_checkbox_state: int
 var focus_checkbox_profile: Array
 var task_group_dropdown_items: Array 
 var user_profiles_dropdown_items: Array
 
-var default_profile_id: int = 1
-var default_profile_name: String = "No Profile"
-var default_profile_color: Color = Color.WHITE
 
 enum Checkbox {
 	INACTIVE, #blank
@@ -161,8 +164,11 @@ func query_user_info() -> void:
 	var user_id: Dictionary
 	var user_color: Dictionary
 	for user_iteration in raw_user_query:
-		user_id[user_iteration[name_]] = user_iteration[user_info_id]
-		user_color[user_iteration[name_]] = user_iteration[color_]
+		var iteration_name: String = user_iteration[name_]
+		if iteration_name == "<null>":
+			continue
+		user_id[iteration_name] = user_iteration[user_info_id]
+		user_color[iteration_name] = user_iteration[color_]
 	current_users_id = user_id
 	current_users_color = user_color
 	current_users_keys = current_users_id.keys()
@@ -376,7 +382,6 @@ var last_changed_column: String
 @onready var daily_tasks_id: String = SqlManager.daily_tasks_id
 @onready var event_info_id: String = SqlManager.event_info_id
 
-@onready var event: String = SqlManager.
 
 @onready var table_for_query = SqlManager.dates_table
 
@@ -790,7 +795,21 @@ func update_user_info(target_id: int, target_name: String, target_color: Color) 
 		var new_user_address: int = new_user_ids.find(target_id)
 		new_user_profiles[new_user_address] = [target_id, target_name, target_color]
 		prints("New user updated.")
-		return
+		TaskSignalBus._on_current_checkbox_profile_changed.emit()
+	else:
+		var old_name: String = TaskTrackingGlobal.current_users_id.find_key(target_id)
+		TaskTrackingGlobal.current_users_id.erase(old_name)
+		TaskTrackingGlobal.current_users_color.erase(old_name)
+		TaskTrackingGlobal.current_users_id[target_name] = target_id
+		TaskTrackingGlobal.current_users_color[target_name] = target_color
+		TaskTrackingGlobal.current_users_keys = TaskTrackingGlobal.current_users_id.keys()
+	TaskTrackingGlobal.current_checkbox_profile_name = target_name
+	TaskTrackingGlobal.current_checkbox_profile_color = target_color
+
+
+
+
+func add_existing_user_to_database(target_id: int, target_name: String, target_color: Color) -> void:
 	var color_text: String = target_color.to_html()
 	var update_condition: String = "where " + user_info_id + " = " + str(target_id)
 	var row_data: Dictionary = {"name": target_name, "color": color_text}

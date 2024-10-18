@@ -43,12 +43,11 @@ var status_button_group = preload("res://gui/task_tracking/checkbox_status_group
 
 func _ready() -> void:
 	load_all_profiles()
-	update_status_colors()
-	update_paired_menu()
 	connection_central()
 	starting_visibilities()
 	database_check()
-
+	update_panel()
+	prints(TaskTrackingGlobal.current_checkbox_profile_id, TaskTrackingGlobal.current_checkbox_profile_name, TaskTrackingGlobal.current_checkbox_profile_color)
 
 func _process(_delta: float) -> void:
 	if self.visible and paired_checkbox_menu_button:
@@ -64,15 +63,50 @@ func connection_central() -> void:
 func signal_bus_connections() -> void:
 	TaskSignalBus._on_checkbox_selection_changed.connect(update_status_colors)
 	TaskSignalBus._on_profile_selection_changed.connect(reload_profiles)
+	TaskSignalBus._on_current_checkbox_profile_changed.connect(update_panel)
 	TaskSignalBus._on_data_set_saved.connect(unlock_new_profile)
 	TaskSignalBus._on_new_database_loaded.connect(database_check)
 	TaskSignalBus._on_database_unloaded.connect(database_check)
 
 
 func database_check() -> void:
-	if SqlManager.database_is_active:
-		pass
-	new_profile_button.text = "Task Data\nNeeded!"
+	if not SqlManager.database_is_active:
+		new_profile_button.text = "Task Data\nNeeded!"
+	database_active_visibility()
+
+
+func reset_panel() -> void:
+	new_profile_menu.visible = false
+	edit_profile_menu.visible = false
+	visible = false
+
+
+func database_active_visibility() -> void:
+	in_progress_panel_container.visible = SqlManager.database_is_active
+	completed_panel_container.visible = SqlManager.database_is_active
+
+
+func default_profile_status_limiter() -> void:
+	if TaskTrackingGlobal.current_checkbox_profile_id == TaskTrackingGlobal.default_profile_id:
+		in_progress_panel_container.visible = false
+		completed_panel_container.visible = false
+		edit_profile_button.visible = false
+		return
+	in_progress_panel_container.visible = true
+	completed_panel_container.visible = true
+	edit_profile_button.visible = true
+
+
+func update_edit_profile_menu() -> void:
+	if TaskTrackingGlobal.current_checkbox_profile_id == TaskTrackingGlobal.default_profile_id:
+		edit_profile_button.visible = false
+	else:
+		edit_profile_button.visible = true
+	if edit_profile_menu.visible:
+		edit_profile_button.visible = false
+	edit_profile_name_line_edit.text = TaskTrackingGlobal.current_checkbox_profile_name
+	edit_profile_color_picker_button.color = TaskTrackingGlobal.current_checkbox_profile_color
+	edit_profile_button.add_theme_color_override("font_color", TaskTrackingGlobal.current_checkbox_profile_color)
 
 
 func starting_visibilities() -> void:
@@ -114,9 +148,9 @@ func load_existing_profiles() -> void:
 	if TaskTrackingGlobal.current_users_id.is_empty():
 		return
 	for current_user_name in TaskTrackingGlobal.current_users_keys:
-		var current_user_id: String = TaskTrackingGlobal.current_users_id[current_user_name]
-		if current_user_id == "1":
-			return
+		var current_user_id: int = TaskTrackingGlobal.current_users_id[current_user_name]
+		if current_user_id == 1:
+			continue
 		var current_user_color: Color = TaskTrackingGlobal.current_users_color[current_user_name]
 		add_profile(int(current_user_id), current_user_name, current_user_color)
 
@@ -137,7 +171,6 @@ func add_profile(target_id: int, target_name: String, target_color: Color) -> vo
 	var new_profile = checkbox_profile.instantiate()
 	new_profile.add_to_group("profile_children")
 	var profile_button = new_profile.get_node("ProfileButton")
-	profile_button.toggled.connect(_on_profile_button_toggled.bind(target_id))
 	profile_button.set_button_group(profile_button_group)
 	current_sibling.add_sibling(new_profile)
 	new_profile.load_checkbox_profile(target_id, target_name, target_color)
@@ -172,7 +205,6 @@ func create_new_profile(profile_name: String, profile_color: Color) -> void:
 	var current_user_name: String = new_profile[1]
 	var current_user_color: Color = new_profile[2]
 	add_profile(current_user_id, current_user_name, current_user_color)
-	TaskSignalBus._on_data_set_modified.emit()
 
 
 func connect_paired_menu_button() -> void:
@@ -201,32 +233,14 @@ func status_change(new_state: TaskTrackingGlobal.Checkbox) -> void:
 	update_paired_menu()
 
 
-func _on_profile_button_toggled(button_pressed: bool, target_profile_id: int) -> void:
-	if not button_pressed:
-		return
-	if target_profile_id == TaskTrackingGlobal.current_checkbox_profile_id:
-		prints("PROFILE ALREADY TOGGLED")
-		return
-	default_profile_status_limiter(target_profile_id)
-	TaskTrackingGlobal.current_checkbox_profile = target_profile_id
+func update_panel() -> void:
+	default_profile_status_limiter()
 	update_status_colors()
 	update_paired_menu()
 	update_edit_profile_menu()
 
 
-func default_profile_status_limiter(target_profile_id) -> void:
-	if target_profile_id == TaskTrackingGlobal.default_profile_id:
-		in_progress_panel_container.visible = false
-		completed_panel_container.visible = false
-		edit_profile_button.visible = false
-		return
-	in_progress_panel_container.visible = true
-	completed_panel_container.visible = true
-	edit_profile_button.visible = true
-
-
 func reload_profiles() -> void:
-	#prints("Reloading Profiles")
 	clear_profiles()
 	load_all_profiles()
 
@@ -264,7 +278,8 @@ func _on_menu_button_toggled(_button_pressed: bool) -> void:
 
 func _on_new_profile_button_pressed() -> void:
 	if new_profile_button.text == "Task Data\nNeeded!":
-		TaskSignalBus._on_data_manager_remote_open_pressed.emit()
+		TaskSignalBus._on_database_manager_remote_open_pressed.emit()
+		visible = !visible
 		return
 	new_profile_button.visible = false
 	new_profile_menu.visible = true
@@ -321,10 +336,6 @@ func edit_profile_menu_data_check(profile_name: String, profile_color: Color, ed
 		prints("No changes made to profile!")
 		DataGlobal.button_based_message(edit_profile_menu_accept, no_change_error)
 		return false
-	#var profile_index = TaskTrackingGlobal.active_data.user_profiles.find(previous_profile)
-	#if profile_index == -1:
-		#prints("Error locating previous profile for replacement!")
-		#return false
 	prints("Replacing", previous_profile)
 	prints("with", edited_profile)
 	return true
@@ -342,15 +353,16 @@ func _on_edit_profile_menu_accept_pressed() -> void:
 		return
 	var profile_buttons = get_tree().get_nodes_in_group("profile_children")
 	for profile: CheckboxProfile in profile_buttons:
-		if profile.saved_profile == previous_profile:
+		var iteration_profile: Array = [profile.saved_profile_name, profile.saved_profile_color]
+		if iteration_profile == previous_profile:
 			profile.update_checkbox_profile(profile_name, profile_color)
 	edit_profile_button.visible = true
 	edit_profile_menu.visible = false
 	#replacement_scan(previous_profile, edited_profile)
-	TaskTrackingGlobal.current_checkbox_profile = edited_profile
-	TaskSignalBus._on_save_button_pressed.emit()
+	#TaskTrackingGlobal.current_checkbox_profile_name = profile_name
+	#TaskTrackingGlobal.current_checkbox_profile_color = profile_color
+	#TaskSignalBus._on_save_button_pressed.emit()
 	#TaskSignalBus._on_new_database_loaded.emit()
-	update_edit_profile_menu()
 	reload_profiles()
 	TaskSignalBus._on_checkbox_selection_changed.emit()
 	TaskSignalBus._on_profile_selection_changed.emit()
@@ -368,40 +380,3 @@ func _on_edit_random_color_button_pressed() -> void:
 func _on_edit_profile_button_pressed() -> void:
 	edit_profile_button.visible = false
 	edit_profile_menu.visible = true
-
-
-func update_edit_profile_menu() -> void:
-	if TaskTrackingGlobal.current_checkbox_profile == TaskTrackingGlobal.default_profile:
-		edit_profile_button.visible = false
-	else:
-		edit_profile_button.visible = true
-	if edit_profile_menu.visible:
-		edit_profile_button.visible = false
-	edit_profile_name_line_edit.text = TaskTrackingGlobal.current_checkbox_profile[0]
-	edit_profile_color_picker_button.set_pick_color(
-		TaskTrackingGlobal.current_checkbox_profile[1]
-	)
-	edit_profile_button.add_theme_color_override(
-		"font_color", TaskTrackingGlobal.current_checkbox_profile[1]
-	)
-
-
-#func replacement_scan(previous_profile, new_profile) -> void:
-	#var current_data = TaskTrackingGlobal.active_data
-	#scan_section(current_data.spreadsheet_year_data, previous_profile, new_profile)
-	#scan_section(current_data.spreadsheet_month_data, previous_profile, new_profile)
-	#scan_section(current_data.spreadsheet_week_data, previous_profile, new_profile)
-	#scan_section(current_data.spreadsheet_day_data, previous_profile, new_profile)
-	#prints("Purge complete")
-#
-#
-#func scan_section(target_section, previous_profile_parameter, new_profile_parameter) -> void:
-	#for task_iteration in target_section:
-		#if task_iteration.assigned_user == previous_profile_parameter:
-			#task_iteration.assigned_user = new_profile_parameter
-		#for month_iteration in task_iteration.month_checkbox_dictionary:
-			#var checkbox_array = task_iteration.month_checkbox_dictionary[month_iteration]
-			#for checkbox_iteration in checkbox_array:
-				#var profile_iteration: Array = checkbox_iteration.assigned_user
-				#if profile_iteration == previous_profile_parameter:
-					#checkbox_iteration.assigned_user = new_profile_parameter

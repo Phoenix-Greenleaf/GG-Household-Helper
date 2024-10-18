@@ -40,3 +40,5 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Default 1"
 horizontal_alignment = 1
+
+[connection signal="toggled" from="ProfileButton" to="." method="_on_profile_button_toggled"]

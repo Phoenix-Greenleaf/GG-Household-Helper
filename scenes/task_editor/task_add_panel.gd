@@ -5,7 +5,6 @@ extends PanelContainer
 @onready var cancel_button: Button = %CancelButton
 #@onready var accept_new_task_button: Button = %AcceptNewTaskButton
 @onready var task_title_line_edit: LineEdit = %TaskTitleLineEdit
-@onready var task_group_line_edit: LineEdit = %TaskGroupLineEdit
 @onready var existing_groups_option_button: OptionButton = %ExistingGroupsOption
 @onready var task_add_assigned_user_label: Label = %TaskAddAssignedUserLabel
 @onready var task_add_assigned_user_option_button: OptionButton = %TaskAddAssignedUserOptionButton
@@ -120,7 +119,6 @@ func refresh_panel() -> void:
 
 func new_task_field_reset() -> void:
 	task_title_line_edit.clear()
-	task_group_line_edit.clear()
 	existing_groups_option_button.select(0)
 	task_add_assigned_user_option_button.select(0)
 	task_add_schedule_start_spin_box.value = 0
@@ -218,7 +216,10 @@ func create_task_data() -> Dictionary:
 	var new_task_data: Dictionary = {"task_name": task_title_line_edit.text}
 	new_task_data.merge({"section": TaskTrackingGlobal.section_enum_strings[TaskTrackingGlobal.current_toggled_section]})
 	if TaskTrackingGlobal.group_column_toggled:
-		new_task_data.merge({"task_group": task_group_line_edit.text})
+		var selected_group_index: int = existing_groups_option_button.selected
+		var task_group: String = existing_groups_option_button.get_item_text(selected_group_index)
+		if task_group != "Existing Groups":
+			new_task_data.merge({"task_group": task_group})
 	if TaskTrackingGlobal.assigned_to_column_toggled:
 		var current_index: int = task_add_assigned_user_option_button.selected
 		var assigned_name: String = task_add_assigned_user_option_button.get_item_text(current_index)
