@@ -1,26 +1,46 @@
 extends PanelContainer
 
+class_name CheckboxProfile
 
 @onready var profile_color_rect: ColorRect = %ProfileColorRect
 @onready var profile_label: Label = %ProfileLabel
 @onready var profile_button: Button = %ProfileButton
-@onready var saved_profile: Array
+var saved_profile_name: String
+var saved_profile_color: Color
+var saved_profile_id: int
 
 
 func _ready() -> void:
-	var default_profile: Array = TaskTrackingGlobal.default_profile
-	load_checkbox_profile(default_profile)
+	load_checkboad_default()
 	TaskSignalBus._on_checkbox_selection_changed.connect(toggle_to_focused_cell)
 
 
-func load_checkbox_profile(target_profile: Array) -> void:
-	saved_profile = target_profile
-	profile_label.set_text(saved_profile[0])
-	profile_color_rect.set_color(saved_profile[1])
+func load_checkboad_default() -> void:
+	load_checkbox_profile(
+		TaskTrackingGlobal.default_profile_id,
+		TaskTrackingGlobal.default_profile_name,
+		TaskTrackingGlobal.default_profile_color,
+	)
+
+
+func load_checkbox_profile(target_id: int, target_name: String, target_color: Color) -> void:
+	saved_profile_id = target_id
+	saved_profile_name = target_name
+	saved_profile_color = target_color
+	profile_label.set_text(saved_profile_name)
+	profile_color_rect.set_color(saved_profile_color)
+
+
+func update_checkbox_profile(target_name: String, target_color: Color) -> void:
+	saved_profile_name = target_name
+	saved_profile_color = target_color
+	profile_label.set_text(saved_profile_name)
+	profile_color_rect.set_color(saved_profile_color)
+	TaskSignalBus._on_user_profile_updated.emit(saved_profile_id, saved_profile_name, saved_profile_color)
 
 
 func toggle_to_focused_cell() -> void:
-	if TaskTrackingGlobal.current_checkbox_profile != saved_profile:
+	if TaskTrackingGlobal.current_checkbox_profile_id != saved_profile_id:
 		profile_button.set_pressed_no_signal(false)
 		return
 	profile_button.set_pressed_no_signal(true)

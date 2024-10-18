@@ -33,12 +33,14 @@ var current_toggled_checkbox_mode: CheckboxToggle = CheckboxToggle.INSPECT:
 
 var current_checkbox_profile_name: String = default_profile_name
 var current_checkbox_profile_color: Color = default_profile_color
+var current_checkbox_profile_id: int = default_profile_id
 var current_checkbox_state: Checkbox = Checkbox.ACTIVE
 var focus_checkbox_state: int
 var focus_checkbox_profile: Array
 var task_group_dropdown_items: Array 
 var user_profiles_dropdown_items: Array
 
+var default_profile_id: int = 1
 var default_profile_name: String = "No Profile"
 var default_profile_color: Color = Color.WHITE
 
@@ -70,6 +72,7 @@ func connect_signals() -> void:
 	TaskSignalBus._on_task_editing_lock_toggled.connect(remember_editing_lock)
 	TaskSignalBus._on_task_editing_settings_changed.connect(save_task_tracking_settings)
 	TaskSignalBus._on_data_cell_modified.connect(submit_change)
+	TaskSignalBus._on_user_profile_updated.connect(update_user_info)
 
 
 func remember_editing_lock(locked: bool) -> void:
@@ -105,7 +108,6 @@ func transer_old_data_to_database() -> void:
 	generate_location_dropdown_items()
 
 
-
 func extract_old_sections() -> Array:
 	var all_old_task_info: Array
 	all_old_task_info = extract_target_old_section(active_data.spreadsheet_year_data)
@@ -137,7 +139,6 @@ func extract_user_info() -> Array:
 	return all_user_info_data_rows
 
 
-
 func extract_task_info() -> Array:
 	var all_task_info_data_rows: Array
 	var gathered_task_info: Array = extract_old_sections()
@@ -151,7 +152,6 @@ func extract_task_info() -> Array:
 			section : section_enum_strings[task_entry.section],
 			task_group : task_entry.group,
 		}
-		#
 		all_task_info_data_rows.append(task_info_data_row)
 	return all_task_info_data_rows
 
@@ -166,6 +166,13 @@ func query_user_info() -> void:
 	current_users_id = user_id
 	current_users_color = user_color
 	current_users_keys = current_users_id.keys()
+
+
+func add_new_user_info(user_name: String, user_color: Color) -> void:
+	var new_user_id: int = current_users_id.size() + 1
+	new_user_id += new_user_profiles.size()
+	var new_profile: Array = [new_user_id, user_name, user_color]
+	new_user_profiles.append(new_profile)
 
 
 func create_new_date_data(year_parameter: int) -> Array: #needed anymore?
@@ -313,8 +320,7 @@ var new_location_items: Array
 var current_users_id: Dictionary
 var current_users_color: Dictionary
 var current_users_keys: Array
-var new_users_names: Array
-var new_users_colors: Array
+var new_user_profiles: Array
 
 
 var month_enum_strings: Array = DataGlobal.enum_to_strings(DataGlobal.Month)
@@ -369,6 +375,8 @@ var last_changed_column: String
 @onready var weekly_tasks_id: String = SqlManager.weekly_tasks_id
 @onready var daily_tasks_id: String = SqlManager.daily_tasks_id
 @onready var event_info_id: String = SqlManager.event_info_id
+
+@onready var event: String = SqlManager.
 
 @onready var table_for_query = SqlManager.dates_table
 
@@ -772,3 +780,22 @@ func section_scheduling_end() -> String:
 			return "weekly_scheduling_end"
 		_:
 			return "monthly_scheduling_end"
+
+
+func update_user_info(target_id: int, target_name: String, target_color: Color) -> void:
+	var new_user_ids: Array
+	for user_iteration in new_user_profiles:
+		new_user_ids.append(user_iteration[0])
+	if new_user_ids.has(target_id):
+		var new_user_address: int = new_user_ids.find(target_id)
+		new_user_profiles[new_user_address] = [target_id, target_name, target_color]
+		prints("New user updated.")
+		return
+	var color_text: String = target_color.to_html()
+	var update_condition: String = "where " + user_info_id + " = " + str(target_id)
+	var row_data: Dictionary = {"name": target_name, "color": color_text}
+	SqlManager.update_existing_data(user_info_table, update_condition, row_data)
+
+
+func add_new_users_to_database() -> void:
+	pass
