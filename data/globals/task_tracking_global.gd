@@ -455,6 +455,9 @@ var changed_new_data: Array[Dictionary]
 var active_changes: Array
 var undone_changes: Array
 
+var changed_existing_scheduling_data: Dictionary
+var changed_new_scheduling_data: Array[Dictionary]
+
 
 
 
@@ -692,6 +695,12 @@ func submit_change(cell_id, column_name: String, original_value, new_value) -> v
 	TaskSignalBus._on_data_modified.emit()
 
 
+func change_to_lower(target) -> void:
+	if target is not String:
+		return
+	target = target.to_lower()
+
+
 func undo_active_changes() -> Array:
 	if active_changes.is_empty():
 		prints("Nothing to Undo")
@@ -725,12 +734,18 @@ func submit_existing_changed_data_to_database() -> void:
 	for update_row_iteration in rows_to_update_count:
 		var update_row_id: String = update_row_keys[update_row_iteration]
 		var update_row_data: Dictionary = update_row_values[update_row_iteration]
-		#var update_row_complete_data: Dictionary = {"task_info_id":update_row_id}
-		#update_row_complete_data.merge(update_partial_data)
+		if update_row_data.has("assigned_to"):
+			format_user_data_for_saving("assigned_to", update_row_data)
 		var update_condition: String = task_info_id + " = " + update_row_id
 		SqlManager.update_existing_data(task_info_table, update_condition, update_row_data)
 	clear_changed_existing_data_with_failsafe()
 	prints("Existing changed data submitted to database.")
+
+
+func format_user_data_for_saving(column_param: String, original_data: Dictionary) -> void:
+	var original_value: String = original_data[column_param]
+	var new_value: int = current_users_id[original_value]
+	original_data[column_param] = new_value
 
 
 func submit_new_changed_data_to_database() -> void:

@@ -111,7 +111,7 @@ func populate_task_row(row_data_param: Dictionary) -> void:
 				#prints("Current Value:", current_value)
 				#prints("Type:", type_string(typeof(current_value)))
 				var current_user_name: String = TaskTrackingGlobal.current_users_id.find_key(int(current_value))
-				create_dropdown_cell(current_id, column_iteration, current_user_name, TaskTrackingGlobal.current_users_keys, int(current_value))
+				create_dropdown_cell(current_id, column_iteration, current_user_name, TaskTrackingGlobal.current_users_keys)
 			"time_of_day":
 				create_dropdown_cell(current_id, column_iteration, current_value, time_of_day_dropdown_items)
 			"priority":
@@ -203,11 +203,10 @@ func create_dropdown_cell(
 	column_param: String,
 	dropdown_param: String,
 	dropdown_items: Array,
-	user_id_param: int = -1,
 ) -> void:
 	var cell: OptionButton = DROPDOWN_CELL.instantiate()
 	add_child(cell)
-	cell.set_dropdown_cell(task_id_param, column_param, dropdown_param, dropdown_items, user_id_param)
+	cell.set_dropdown_cell(task_id_param, column_param, dropdown_param, dropdown_items)
 
 
 func create_checkbox_cell(
@@ -313,7 +312,7 @@ func populate_new_task_assigned_to(new_task_id: int, new_task_data: Dictionary, 
 		else:
 			current_value = "0"
 		var current_user_name: String = TaskTrackingGlobal.current_users_id.find_key(int(current_value))
-		create_dropdown_cell(new_task_id, column_iteration, current_user_name, TaskTrackingGlobal.current_users_keys, int(current_value))
+		create_dropdown_cell(new_task_id, column_iteration, current_user_name, TaskTrackingGlobal.current_users_keys)
 
 
 func populate_new_task_location(new_task_id: int, new_task_data: Dictionary, column_iteration: String, column_keys: Array) -> void:

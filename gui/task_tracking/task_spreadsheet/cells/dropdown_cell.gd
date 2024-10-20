@@ -1,11 +1,9 @@
 extends OptionButton
 
 var saved_task_id: String
-var saved_column: String
-var saved_user_id: int
-var saved_dropdown_text: String
-var saved_dropdown_item_index: int
 var saved_new_data_id: int
+var saved_column: String
+var saved_dropdown_text: String
 
 
 func _ready() -> void:
@@ -19,29 +17,22 @@ func disable_cell(editing_locked: bool) -> void:
 	disabled = editing_locked
 
 
-func set_dropdown_cell(task_id_param, column_param: String, dropdown_param: String, dropdown_items: Array, user_id_param: int) -> void:
+func set_dropdown_cell(task_id_param, column_param: String, dropdown_param: String, dropdown_items: Array) -> void:
 	if type_string(typeof(task_id_param)) == "String":
 		saved_task_id = task_id_param
 	if type_string(typeof(task_id_param)) == "int":
 		saved_new_data_id = task_id_param
 	saved_column = column_param
-	#saved_dropdown_item_id = 0
 	saved_dropdown_text = dropdown_param.capitalize()
-	if user_id_param != -1:
-		saved_user_id = user_id_param
-	var item_id: int = 0
 	if dropdown_items.is_empty():
 		return
 	for item_iteration in dropdown_items:
 		if item_iteration == null:
 			continue
-		add_item(item_iteration, item_id)
-		if item_iteration == saved_dropdown_text:
-			var dropdown_item_id = item_id
-			saved_dropdown_item_index = get_item_index(dropdown_item_id)
-		item_id += 1
-	selected = saved_dropdown_item_index
-
+		add_item(item_iteration)
+	for index_iteration in item_count:
+		if get_item_text(index_iteration) == saved_dropdown_text:
+			selected = index_iteration
 
 
 func send_in_size_for_comparison(column_param: String, header_param: Control) -> void:
@@ -56,16 +47,17 @@ func sync_size(size_param: float) -> void:
 
 
 func cell_modified(new_selected_index: int) -> void:
+	var new_selected_text: String = get_item_text(new_selected_index)
 	var current_id
 	if not saved_task_id.is_empty():
 		current_id = saved_task_id
 	if saved_new_data_id:
 		current_id = saved_new_data_id
-	TaskSignalBus._on_data_cell_modified.emit(current_id, saved_column, saved_dropdown_item_index, new_selected_index)
-	saved_dropdown_item_index = new_selected_index
+	TaskSignalBus._on_data_cell_modified.emit(current_id, saved_column, saved_dropdown_text, new_selected_text)
+	saved_dropdown_text = new_selected_text
 
 
-func remote_update(cell_id, column_name: String, new_value) -> void:
+func remote_update(cell_id, column_name: String, new_value: String) -> void:
 	if column_name != saved_column:
 		return
 	match type_string(typeof(cell_id)):
@@ -75,5 +67,7 @@ func remote_update(cell_id, column_name: String, new_value) -> void:
 		"int":
 			if cell_id != saved_new_data_id:
 				return
-	selected = new_value
-	saved_dropdown_item_index = new_value
+	for index_iteration in item_count:
+		if get_item_text(index_iteration) == new_value:
+			selected = index_iteration
+			saved_dropdown_text = new_value
