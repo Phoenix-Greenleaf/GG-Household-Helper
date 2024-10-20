@@ -219,7 +219,7 @@ func create_checkbox_cell(
 ) -> void:
 	var cell: PanelContainer = CHECKBOX_CELL.instantiate()
 	add_child(cell)
-	cell.set_checkbox_cell(task_id_param, column_param, status_param, assigned_param, completed_param)
+	cell.set_checkbox_cell(task_id_param, column_param, status_param, int(assigned_param), int(completed_param))
 
 
 func editor_undo() -> void:

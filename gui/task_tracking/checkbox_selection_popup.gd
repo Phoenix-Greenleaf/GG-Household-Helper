@@ -243,6 +243,7 @@ func update_panel() -> void:
 func reload_profiles() -> void:
 	clear_profiles()
 	load_all_profiles()
+	
 
 
 func clear_profiles() -> void:
@@ -353,19 +354,13 @@ func _on_edit_profile_menu_accept_pressed() -> void:
 		return
 	var profile_buttons = get_tree().get_nodes_in_group("profile_children")
 	for profile: CheckboxProfile in profile_buttons:
-		var iteration_profile: Array = [profile.saved_profile_name, profile.saved_profile_color]
-		if iteration_profile == previous_profile:
+		var iteration_id: int = profile.saved_profile_id
+		if iteration_id == TaskTrackingGlobal.current_checkbox_profile_id:
 			profile.update_checkbox_profile(profile_name, profile_color)
 	edit_profile_button.visible = true
 	edit_profile_menu.visible = false
-	#replacement_scan(previous_profile, edited_profile)
-	#TaskTrackingGlobal.current_checkbox_profile_name = profile_name
-	#TaskTrackingGlobal.current_checkbox_profile_color = profile_color
-	#TaskSignalBus._on_save_button_pressed.emit()
-	#TaskSignalBus._on_new_database_loaded.emit()
 	reload_profiles()
 	TaskSignalBus._on_checkbox_selection_changed.emit()
-	TaskSignalBus._on_profile_selection_changed.emit()
 
 
 func _on_edit_profile_menu_cancel_pressed() -> void:

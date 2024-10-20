@@ -1,5 +1,9 @@
 extends Node
 
+
+var verbose_sql_output: bool = true
+
+
 var active_database: SQLite
 var database_is_active: bool = false: #the new active_data
 	set(value):
@@ -88,7 +92,6 @@ var weekly_tasks_id: String = table_id(weekly_tasks_table)
 var daily_tasks_id: String = table_id(daily_tasks_table)
 var event_info_id: String = table_id(event_info_table)
 
-var verbose_sql_output: bool = false
 
 var daily_checkbox_columns: Dictionary
 var weekly_checkbox_columns: Dictionary

@@ -26,6 +26,8 @@ signal _on_editor_data_add_panels_activated(current_panel_name: String)
 signal _on_editor_data_add_panels_standby_set
 signal _on_user_profile_updated(target_id: int, target_name: String, target_color: Color)
 signal _on_current_checkbox_profile_changed
+signal _on_checkbox_inspection(new_id: int)
+
 
 
 signal _on_task_cells_resized_workaround_all_columns

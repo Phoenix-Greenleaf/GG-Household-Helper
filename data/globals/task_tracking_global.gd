@@ -713,6 +713,7 @@ func redo_active_changes() -> Array:
 func submit_changed_data_to_database() -> void:
 	submit_existing_changed_data_to_database()
 	submit_new_changed_data_to_database()
+	add_new_users_to_database()
 
 
 func submit_existing_changed_data_to_database() -> void:
@@ -726,7 +727,7 @@ func submit_existing_changed_data_to_database() -> void:
 		var update_row_data: Dictionary = update_row_values[update_row_iteration]
 		#var update_row_complete_data: Dictionary = {"task_info_id":update_row_id}
 		#update_row_complete_data.merge(update_partial_data)
-		var update_condition: String = "where " + task_info_id + " = " + update_row_id
+		var update_condition: String = task_info_id + " = " + update_row_id
 		SqlManager.update_existing_data(task_info_table, update_condition, update_row_data)
 	clear_changed_existing_data_with_failsafe()
 	prints("Existing changed data submitted to database.")
@@ -795,26 +796,35 @@ func update_user_info(target_id: int, target_name: String, target_color: Color) 
 		var new_user_address: int = new_user_ids.find(target_id)
 		new_user_profiles[new_user_address] = [target_id, target_name, target_color]
 		prints("New user updated.")
-		TaskSignalBus._on_current_checkbox_profile_changed.emit()
 	else:
-		var old_name: String = TaskTrackingGlobal.current_users_id.find_key(target_id)
-		TaskTrackingGlobal.current_users_id.erase(old_name)
-		TaskTrackingGlobal.current_users_color.erase(old_name)
-		TaskTrackingGlobal.current_users_id[target_name] = target_id
-		TaskTrackingGlobal.current_users_color[target_name] = target_color
-		TaskTrackingGlobal.current_users_keys = TaskTrackingGlobal.current_users_id.keys()
-	TaskTrackingGlobal.current_checkbox_profile_name = target_name
-	TaskTrackingGlobal.current_checkbox_profile_color = target_color
+		update_existing_user(target_id, target_name, target_color)
+		prints("Existing user updated.")
+	current_checkbox_profile_name = target_name
+	current_checkbox_profile_color = target_color
+	TaskSignalBus._on_checkbox_selection_changed.emit()
+	TaskSignalBus._on_profile_selection_changed.emit()
 
 
-
-
-func add_existing_user_to_database(target_id: int, target_name: String, target_color: Color) -> void:
+func update_existing_user(target_id: int, target_name: String, target_color: Color) -> void:
 	var color_text: String = target_color.to_html()
-	var update_condition: String = "where " + user_info_id + " = " + str(target_id)
+	var update_condition: String = user_info_id + " = " + str(target_id)
 	var row_data: Dictionary = {"name": target_name, "color": color_text}
 	SqlManager.update_existing_data(user_info_table, update_condition, row_data)
+	query_user_info()
 
 
 func add_new_users_to_database() -> void:
-	pass
+	for user_iteration in new_user_profiles:
+		var user_name: String = user_iteration[1]
+		var user_color: Color = user_iteration[2]
+		var color_string: String = user_color.to_html()
+		var row_to_add: Dictionary = {
+			"name": user_name,
+			"color": color_string,
+		}
+		SqlManager.add_new_data(user_info_table, row_to_add)
+	new_user_profiles.clear()
+	query_user_info()
+	
+	#var new_profile: Array = [new_user_id, user_name, user_color]
+	#new_user_profiles.append(new_profile)

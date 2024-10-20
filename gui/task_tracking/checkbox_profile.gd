@@ -37,6 +37,7 @@ func update_checkbox_profile(target_name: String, target_color: Color) -> void:
 	profile_label.set_text(saved_profile_name)
 	profile_color_rect.set_color(saved_profile_color)
 	TaskSignalBus._on_user_profile_updated.emit(saved_profile_id, saved_profile_name, saved_profile_color)
+	#activate_profile()
 
 
 func toggle_to_focused_cell() -> void:

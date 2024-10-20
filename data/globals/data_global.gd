@@ -50,6 +50,21 @@ enum FileType {
 	}
 
 
+enum Checkbox {
+	INACTIVE, #blank
+	ACTIVE, #white
+	IN_PROGRESS, #faint color
+	COMPLETED, #full color
+	EXPIRED,  #black
+}
+
+enum CheckboxToggle {
+	APPLY,
+	INSPECT
+}
+
+
+
 
 var last_scene #use it for "back" buttons on menus and stuff
 
