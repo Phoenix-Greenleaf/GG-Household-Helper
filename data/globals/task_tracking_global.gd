@@ -45,6 +45,7 @@ var focus_checkbox_state: int
 var focus_checkbox_profile: Array
 var task_group_dropdown_items: Array 
 var user_profiles_dropdown_items: Array
+var current_checkbox_data: Array
 
 
 enum Checkbox {
@@ -75,7 +76,9 @@ func connect_signals() -> void:
 	TaskSignalBus._on_task_editing_lock_toggled.connect(remember_editing_lock)
 	TaskSignalBus._on_task_editing_settings_changed.connect(save_task_tracking_settings)
 	TaskSignalBus._on_data_cell_modified.connect(submit_change)
+	TaskSignalBus._on_checkbox_cell_modified.connect(submit_checkbox_change)
 	TaskSignalBus._on_user_profile_updated.connect(update_user_info)
+	TaskSignalBus._on_section_changed.connect(query_checkbox_data)
 
 
 func remember_editing_lock(locked: bool) -> void:
@@ -172,6 +175,20 @@ func query_user_info() -> void:
 	current_users_id = user_id
 	current_users_color = user_color
 	current_users_keys = current_users_id.keys()
+
+
+func query_checkbox_data() -> void:
+	var raw_checkbox_query: Array = SqlManager.query_data(
+		"select task from " + section_table()
+		+ "where month = " + month_enum_strings[current_toggled_month]
+		+ " and year = " + str(current_toggled_year)
+	)
+	var checkbox_data: Array
+	for task_iteration in raw_checkbox_query:
+		var iteration_id: String = task_iteration[task]
+		var number_id: int = int(iteration_id)
+		checkbox_data.append(number_id)
+	current_checkbox_data = checkbox_data
 
 
 func add_new_user_info(user_name: String, user_color: Color) -> void:
@@ -455,8 +472,8 @@ var changed_new_data: Array[Dictionary]
 var active_changes: Array
 var undone_changes: Array
 
-var changed_existing_scheduling_data: Dictionary
-var changed_new_scheduling_data: Array[Dictionary]
+var changed_existing_checkbox_data: Dictionary
+var changed_new_checkbox_data: Dictionary
 
 
 
@@ -678,9 +695,7 @@ func submit_new_task(task_data: Dictionary) -> void:
 
 
 func submit_change(cell_id, column_name: String, original_value, new_value) -> void:
-	#prints("Change detected:", cell_id, column_name)
 	if column_name == last_changed_column:
-		#if typeof(cell_id) == typeof(last_changed_id):
 		if cell_id == last_changed_id:
 			active_changes.pop_back()
 	active_changes.append([cell_id, column_name, original_value, new_value])
@@ -695,10 +710,34 @@ func submit_change(cell_id, column_name: String, original_value, new_value) -> v
 	TaskSignalBus._on_data_modified.emit()
 
 
-func change_to_lower(target) -> void:
-	if target is not String:
-		return
-	target = target.to_lower()
+
+func submit_checkbox_change(cell_id: int, column_name: String, original_value, new_value) -> void:
+	if column_name == last_changed_column:
+		if cell_id == last_changed_id:
+			active_changes.pop_back()
+	active_changes.append([cell_id, column_name, original_value, new_value])
+	submit_checkbox_data_to_change_dictionary(cell_id, column_name, new_value)
+	#changed_existing_checkbox_data
+	#changed_new_checkbox_data
+	last_changed_id = cell_id
+	TaskSignalBus._on_data_modified.emit()
+
+
+func submit_checkbox_data_to_change_dictionary(cell_id: int, column_name: String, new_value) -> void:
+	if current_checkbox_data.has(cell_id):
+		var target_existing_data: Dictionary = changed_existing_checkbox_data.get_or_add(cell_id, {})
+		target_existing_data[column_name.to_lower() + "_status"] = new_value[0]
+		target_existing_data[column_name.to_lower() + "_currently_assigned"] = new_value[1]
+		target_existing_data[column_name.to_lower() + "_completed_by"] = new_value[2]
+		target_existing_data["year"] = str(current_toggled_year)
+		target_existing_data["month"] = month_enum_strings[current_toggled_month]
+	else:
+		var target_new_data: Dictionary = changed_new_checkbox_data.get_or_add(cell_id, {})
+		target_new_data[column_name.to_lower() + "_status"] = new_value[0]
+		target_new_data[column_name.to_lower() + "_currently_assigned"] = new_value[1]
+		target_new_data[column_name.to_lower() + "_completed_by"] = new_value[2]
+		target_new_data["year"] = str(current_toggled_year)
+		target_new_data["month"] = month_enum_strings[current_toggled_month]
 
 
 func undo_active_changes() -> Array:
@@ -803,6 +842,26 @@ func section_scheduling_end() -> String:
 			return "monthly_scheduling_end"
 
 
+func section_table() -> String:
+	match current_toggled_section:
+		DataGlobal.Section.DAILY:
+			return daily_tasks_table
+		DataGlobal.Section.WEEKLY:
+			return weekly_tasks_table
+		_:
+			return monthly_tasks_table
+
+
+func section_id() -> String:
+	match current_toggled_section:
+		DataGlobal.Section.DAILY:
+			return daily_tasks_id
+		DataGlobal.Section.WEEKLY:
+			return weekly_tasks_id
+		_:
+			return monthly_tasks_id
+
+
 func update_user_info(target_id: int, target_name: String, target_color: Color) -> void:
 	var new_user_ids: Array
 	for user_iteration in new_user_profiles:
@@ -840,6 +899,38 @@ func add_new_users_to_database() -> void:
 		SqlManager.add_new_data(user_info_table, row_to_add)
 	new_user_profiles.clear()
 	query_user_info()
-	
-	#var new_profile: Array = [new_user_id, user_name, user_color]
-	#new_user_profiles.append(new_profile)
+
+
+func update_all_checkbox_data_to_database() -> void:
+	update_existing_checkbox_data()
+	add_new_checkbox_data()
+
+
+func update_existing_checkbox_data() -> void:
+	if changed_existing_checkbox_data.is_empty():
+		return
+	var rows_to_update_count: int = changed_existing_checkbox_data.size()
+	var update_row_keys: Array = changed_existing_checkbox_data.keys()
+	var update_row_values: Array = changed_existing_checkbox_data.values()
+	for update_row_iteration in rows_to_update_count:
+		var update_row_id: String = update_row_keys[update_row_iteration]
+		var update_row_data: Dictionary = update_row_values[update_row_iteration]
+		#if update_row_data.has("assigned_to"):
+			#format_user_data_for_saving("assigned_to", update_row_data)
+		var current_month: String = month_enum_strings[current_toggled_month]
+		var current_year: String = str(current_toggled_year)
+		var update_condition: String = task + " = " + update_row_id + " and year = " + current_year + " and month = " + current_month
+		var update_table: String = section_table()
+		SqlManager.update_existing_data(update_table, update_condition, update_row_data)
+	prints("Existing changed checkbox data submitted to database.")
+	changed_existing_checkbox_data.clear()
+
+
+func add_new_checkbox_data() -> void:
+	if changed_new_checkbox_data.is_empty():
+		return
+	for checkbox_iteration in changed_new_checkbox_data:
+		SqlManager.add_new_data(section_table(), checkbox_iteration)
+	changed_new_checkbox_data.clear()
+	current_checkbox_data.clear()
+	query_checkbox_data()

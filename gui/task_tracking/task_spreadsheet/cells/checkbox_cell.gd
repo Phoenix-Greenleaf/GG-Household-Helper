@@ -119,14 +119,14 @@ func sync_size(size_param: float) -> void:
 
 
 func cell_modified(new_status: String, new_currently_assigned: int, new_completed_by: int) -> void:
-	var current_id
+	var current_id: int
 	if not saved_task_id.is_empty():
-		current_id = saved_task_id
+		current_id = int(saved_task_id)
 	if saved_new_data_id:
 		current_id = saved_new_data_id
 	var original_values: Array = [saved_status, saved_currently_assigned, saved_completed_by]
 	var new_values: Array = [new_status, new_currently_assigned, new_completed_by]
-	TaskSignalBus._on_data_cell_modified.emit(current_id, saved_column, original_values, new_values)
+	TaskSignalBus._on_checkbox_cell_modified.emit(current_id, saved_column, original_values, new_values)
 	saved_status = new_status
 	saved_currently_assigned = new_currently_assigned
 	saved_completed_by = new_completed_by
