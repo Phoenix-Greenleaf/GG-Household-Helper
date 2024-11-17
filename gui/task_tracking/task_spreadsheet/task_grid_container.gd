@@ -234,6 +234,7 @@ func editor_redo() -> void:
 func apply_current_changes() -> void:
 	populate_changed_new_data()
 	apply_changed_existing_data()
+	apply_all_checkbox_data()
 
 
 """
@@ -275,6 +276,25 @@ func apply_changed_existing_data() -> void:
 			var new_value = row_data[column_key_iteration]
 			TaskSignalBus._on_data_cell_remote_updated.emit(cell_id, column_name, new_value)
 
+
+#changed_existing_checkbox_data
+#changed_new_checkbox_data
+
+
+func apply_all_checkbox_data() -> void:
+	apply_checkbox_data(TaskTrackingGlobal.changed_existing_checkbox_data)
+	apply_checkbox_data(TaskTrackingGlobal.changed_new_checkbox_data)
+
+
+func apply_checkbox_data(data_to_apply: Dictionary) -> void:
+	var data_keys = data_to_apply.keys()
+	var data_values = data_to_apply.values()
+	for checkbox_iteration in data_to_apply.size():
+		var checkbox_data: Dictionary = data_values[checkbox_iteration]
+		var current_id = data_keys[checkbox_iteration]
+		var column_name: String = checkbox_data["column_name"]
+		checkbox_data.erase("column_name")
+		TaskSignalBus._on_data_cell_remote_updated.emit(current_id, column_name, checkbox_data)
 
 
 func populate_new_task_cells(new_task_id: int, new_task_data: Dictionary) -> void:
@@ -435,7 +455,7 @@ func populate_new_task_description(new_task_id: int, new_task_data: Dictionary, 
 		create_multi_line_cell(new_task_id, column_iteration, current_value)
 
 
-func populate_new_task_checkboxes(new_task_id: int, new_task_data: Dictionary, column_iteration: String, column_keys: Array) -> void:
+func populate_new_task_checkboxes(new_task_id, new_task_data: Dictionary, column_iteration: String, column_keys: Array) -> void:
 	if TaskTrackingGlobal.checkboxes_column_toggled:
 		var current_value: String
 		var checkbox_status: String
@@ -504,6 +524,7 @@ func process_checkbox_new_data_cells(
 signal _on_data_cell_remote_updated(cell_id, column_name: String, new_value)
 
 "just" combine those two monster: populate row's cell gen plus query's column toggle.
+NOPE just genarate the empty checkboxes, and update shortly after
 
 
 

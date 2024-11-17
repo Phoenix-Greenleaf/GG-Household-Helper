@@ -1,6 +1,7 @@
 extends PanelContainer
 
 var saved_task_id: String
+var saved_new_data_id: int
 var saved_column: String
 var saved_status: String
 var saved_currently_assigned: int
@@ -8,7 +9,6 @@ var saved_completed_by: int
 var saved_color: Color
 var white: Color = Color.WHITE
 var black: Color = Color.BLACK
-var saved_new_data_id: int
 
 var defaulted_status: bool = false
 var defaulted_assigned_to: bool = false
@@ -119,9 +119,9 @@ func sync_size(size_param: float) -> void:
 
 
 func cell_modified(new_status: String, new_currently_assigned: int, new_completed_by: int) -> void:
-	var current_id: int
+	var current_id
 	if not saved_task_id.is_empty():
-		current_id = int(saved_task_id)
+		current_id = saved_task_id
 	if saved_new_data_id:
 		current_id = saved_new_data_id
 	var original_values: Array = [saved_status, saved_currently_assigned, saved_completed_by]
@@ -134,8 +134,7 @@ func cell_modified(new_status: String, new_currently_assigned: int, new_complete
 	#cell_id, column_name: String, original_value, new_value
 
 
-
-func remote_update(cell_id, column_name: String, new_values: Array) -> void:
+func remote_update(cell_id, column_name: String, new_values: Dictionary) -> void:
 	if column_name != saved_column:
 		return
 	match type_string(typeof(cell_id)):
@@ -145,10 +144,19 @@ func remote_update(cell_id, column_name: String, new_values: Array) -> void:
 		"int":
 			if cell_id != saved_new_data_id:
 				return
-	saved_status = new_values[0]
-	saved_currently_assigned = new_values[1]
-	saved_completed_by = new_values[2]
+	saved_status = new_values[column_name.to_lower() + "_status"]
+	saved_currently_assigned = new_values[column_name.to_lower() + "_currently_assigned"]
+	saved_completed_by = new_values[column_name.to_lower() + "_completed_by"]
 	update_cell()
+
+
+		#var target_new_data: Dictionary = changed_new_checkbox_data.get_or_add(cell_id, {})
+		#target_new_data["column_name"] = column_name
+		#target_new_data[column_name.to_lower() + "_status"] = new_value[0]
+		#target_new_data[column_name.to_lower() + "_currently_assigned"] = new_value[1]
+		#target_new_data[column_name.to_lower() + "_completed_by"] = new_value[2]
+		#target_new_data["year"] = str(current_toggled_year)
+		#target_new_data["month"] = month_enum_strings[current_toggled_month]
 
 
 """
@@ -166,7 +174,7 @@ SqlManager.monthly_checkbox_addresses
 
 """
 
-func checkbox_focused() -> void:
+func checkbox_focused() -> void: #change you to clicked not focused? isnt focus used for arrow key navigation
 	match TaskTrackingGlobal.current_toggled_checkbox_mode:
 		TaskTrackingGlobal.CheckboxToggle.INSPECT:
 			#focus_inspect_checkbox()

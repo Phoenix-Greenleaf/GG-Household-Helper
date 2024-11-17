@@ -467,6 +467,7 @@ var checkboxes_column_toggled: bool = true:
 var editing_locked: bool = false
 
 var most_recent_query: Array[Dictionary]
+# make a querry section for each section (y m w d)[and checkboxes] so that they load ONCE and are stored Until Cleared (new database, changes merged with current db)
 var changed_existing_data: Dictionary
 var changed_new_data: Array[Dictionary]
 var active_changes: Array
@@ -710,8 +711,7 @@ func submit_change(cell_id, column_name: String, original_value, new_value) -> v
 	TaskSignalBus._on_data_modified.emit()
 
 
-
-func submit_checkbox_change(cell_id: int, column_name: String, original_value, new_value) -> void:
+func submit_checkbox_change(cell_id, column_name: String, original_value, new_value) -> void:
 	if column_name == last_changed_column:
 		if cell_id == last_changed_id:
 			active_changes.pop_back()
@@ -723,9 +723,10 @@ func submit_checkbox_change(cell_id: int, column_name: String, original_value, n
 	TaskSignalBus._on_data_modified.emit()
 
 
-func submit_checkbox_data_to_change_dictionary(cell_id: int, column_name: String, new_value) -> void:
+func submit_checkbox_data_to_change_dictionary(cell_id, column_name: String, new_value) -> void:
 	if current_checkbox_data.has(cell_id):
 		var target_existing_data: Dictionary = changed_existing_checkbox_data.get_or_add(cell_id, {})
+		target_existing_data["column_name"] = column_name
 		target_existing_data[column_name.to_lower() + "_status"] = new_value[0]
 		target_existing_data[column_name.to_lower() + "_currently_assigned"] = new_value[1]
 		target_existing_data[column_name.to_lower() + "_completed_by"] = new_value[2]
@@ -733,6 +734,7 @@ func submit_checkbox_data_to_change_dictionary(cell_id: int, column_name: String
 		target_existing_data["month"] = month_enum_strings[current_toggled_month]
 	else:
 		var target_new_data: Dictionary = changed_new_checkbox_data.get_or_add(cell_id, {})
+		target_new_data["column_name"] = column_name
 		target_new_data[column_name.to_lower() + "_status"] = new_value[0]
 		target_new_data[column_name.to_lower() + "_currently_assigned"] = new_value[1]
 		target_new_data[column_name.to_lower() + "_completed_by"] = new_value[2]
@@ -762,6 +764,7 @@ func submit_changed_data_to_database() -> void:
 	submit_existing_changed_data_to_database()
 	submit_new_changed_data_to_database()
 	add_new_users_to_database()
+	update_all_checkbox_data_to_database()
 
 
 func submit_existing_changed_data_to_database() -> void:
@@ -930,7 +933,7 @@ func add_new_checkbox_data() -> void:
 	if changed_new_checkbox_data.is_empty():
 		return
 	for checkbox_iteration in changed_new_checkbox_data:
-		SqlManager.add_new_data(section_table(), checkbox_iteration)
+		SqlManager.add_new_data(section_table(), changed_new_checkbox_data[checkbox_iteration])
 	changed_new_checkbox_data.clear()
 	current_checkbox_data.clear()
 	query_checkbox_data()
