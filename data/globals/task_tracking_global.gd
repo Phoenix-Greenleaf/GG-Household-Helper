@@ -708,6 +708,7 @@ func submit_change(cell_id, column_name: String, original_value, new_value) -> v
 			var target_new_data: Dictionary = changed_new_data[cell_id]
 			target_new_data[column_name] = new_value
 	last_changed_id = cell_id
+	last_changed_column = column_name
 	TaskSignalBus._on_data_modified.emit()
 
 
@@ -720,21 +721,24 @@ func submit_checkbox_change(cell_id, column_name: String, original_value, new_va
 	#changed_existing_checkbox_data
 	#changed_new_checkbox_data
 	last_changed_id = cell_id
+	last_changed_column = column_name
 	TaskSignalBus._on_data_modified.emit()
 
 
 func submit_checkbox_data_to_change_dictionary(cell_id, column_name: String, new_value) -> void:
 	if current_checkbox_data.has(cell_id):
-		var target_existing_data: Dictionary = changed_existing_checkbox_data.get_or_add(cell_id, {})
-		target_existing_data["column_name"] = column_name
+		var target_address: Array = [cell_id, column_name]
+		var target_existing_data: Dictionary = changed_existing_checkbox_data.get_or_add(target_address, {})
+		#target_existing_data["column_name"] = column_name
 		target_existing_data[column_name.to_lower() + "_status"] = new_value[0]
 		target_existing_data[column_name.to_lower() + "_currently_assigned"] = new_value[1]
 		target_existing_data[column_name.to_lower() + "_completed_by"] = new_value[2]
 		target_existing_data["year"] = str(current_toggled_year)
 		target_existing_data["month"] = month_enum_strings[current_toggled_month]
 	else:
-		var target_new_data: Dictionary = changed_new_checkbox_data.get_or_add(cell_id, {})
-		target_new_data["column_name"] = column_name
+		var target_address: Array = [cell_id, column_name]
+		var target_new_data: Dictionary = changed_new_checkbox_data.get_or_add(target_address, {})
+		#target_new_data["column_name"] = column_name
 		target_new_data[column_name.to_lower() + "_status"] = new_value[0]
 		target_new_data[column_name.to_lower() + "_currently_assigned"] = new_value[1]
 		target_new_data[column_name.to_lower() + "_completed_by"] = new_value[2]

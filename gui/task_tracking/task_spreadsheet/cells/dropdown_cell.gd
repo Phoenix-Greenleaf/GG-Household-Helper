@@ -57,7 +57,7 @@ func cell_modified(new_selected_index: int) -> void:
 	saved_dropdown_text = new_selected_text
 
 
-func remote_update(cell_id, column_name: String, new_value: String) -> void:
+func remote_update(cell_id, column_name: String, new_value) -> void:
 	if column_name != saved_column:
 		return
 	match type_string(typeof(cell_id)):

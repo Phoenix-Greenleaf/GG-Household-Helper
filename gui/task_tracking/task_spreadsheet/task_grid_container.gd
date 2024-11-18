@@ -290,10 +290,10 @@ func apply_checkbox_data(data_to_apply: Dictionary) -> void:
 	var data_keys = data_to_apply.keys()
 	var data_values = data_to_apply.values()
 	for checkbox_iteration in data_to_apply.size():
+		var current_address = data_keys[checkbox_iteration]
+		var current_id = current_address[0]
+		var column_name: String = current_address[1]
 		var checkbox_data: Dictionary = data_values[checkbox_iteration]
-		var current_id = data_keys[checkbox_iteration]
-		var column_name: String = checkbox_data["column_name"]
-		checkbox_data.erase("column_name")
 		TaskSignalBus._on_data_cell_remote_updated.emit(current_id, column_name, checkbox_data)
 
 
